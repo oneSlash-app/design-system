@@ -1,6 +1,7 @@
 {
   "name": "oneslash-design-system",
-  "version": "1.0.3",
+  "description": "A design system for the Oneslash projects",
+  "version": "1.0.4",
   "private": false,
   "scripts": {
     "dev": "next dev",
