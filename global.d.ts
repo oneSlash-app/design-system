@@ -122,7 +122,7 @@ declare global {
 
     interface AlertProps {
       open: boolean;
-      type: string;
+      type: 'success' | 'warning' | 'error' | 'info';
       message: string;
       onClose: () => void;
     }

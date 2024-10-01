@@ -1,7 +1,5 @@
-import './index.css';  
-import  Button from './components/button/button'; 
-export { Button };
-
+import './index.css';
+export * from './components/button/button';
 export * from './components/alert/alert';
 export * from './components/button/button';
 export * from './components/checkBox/checkBox';

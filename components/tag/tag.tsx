@@ -1,5 +1,18 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
+import * as HeroIcons from '@heroicons/react/24/outline';
+
+interface TagProps{
+  key?: any;
+  variant: "contained" | "textOnly";
+  size: "medium" | "small";
+  state?: "enabled" | "selected" ;
+  label: any;
+  iconName?: keyof typeof HeroIcons;
+  isDeletable?: keyof typeof HeroIcons;
+  onClick?: any;
+  color?: 'default' | 'info';
+}
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
@@ -14,6 +27,7 @@ export default function Tag({
   onClick,
   color = 'default',
 }: TagProps) {
+
   const [isHovered, setIsHovered] = useState(false);
   const [Icon, setIcon] = useState<IconType | null>(null);
   const [DeleteIcon, setDeleteIcon] = useState<IconType | null>(null);

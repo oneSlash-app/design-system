@@ -2,6 +2,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import NextLink from 'next/link';
 
+interface MenuItemProps {
+  href?: string;
+  iconName?: string;
+  label: string;
+  isSelected?: boolean;
+  onClick: any;
+}
+
 export default function MenuItem({ 
 	href = '#', 
 	iconName, 

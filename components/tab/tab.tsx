@@ -2,6 +2,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 
+type TabProps = {
+  label: string;
+  href?: string;
+  isSelected: boolean;
+  onClick: () => void;
+  iconName?: string;
+};
 
 const TabIcon: React.FC<{ iconName?: string }> = ({ iconName }) => {
   const [Icon, setIcon] = useState<React.ComponentType<React.SVGProps<SVGSVGElement>> | null>(null);
@@ -37,7 +44,7 @@ const Tab: React.FC<TabProps> = ({ label, href, isSelected, onClick, iconName })
   const handleClick = () => {
     onClick();
     if (href) {
-    router.push(href);
+      router.push(href);
     }
   };
 

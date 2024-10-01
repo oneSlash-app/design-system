@@ -1,7 +1,16 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 
-export default function Tooltip({ title, children }: TooltipProps) {
+interface TooltipProps {
+  title: string;
+  children: React.ReactElement;
+}
+
+export default function Tooltip({ 
+  title, 
+  children 
+}: TooltipProps) {
+
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
   const tooltipRef = useRef<HTMLDivElement>(null);

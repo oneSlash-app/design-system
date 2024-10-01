@@ -1,5 +1,16 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
+import * as HeroIcons from '@heroicons/react/24/outline';
+
+interface ButtonProps {
+  size: 'large' | 'medium' | 'small';
+  type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
+  state: 'enabled' | 'hovered' | 'selected' | 'focused' | 'disabled';
+  label: string;
+  iconLeftName?: keyof typeof HeroIcons; // Reference to HeroIcons
+  iconRightName?: keyof typeof HeroIcons; // Reference to HeroIcons
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+}
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 

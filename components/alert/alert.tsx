@@ -1,7 +1,20 @@
 'use client';
 import React, { useEffect } from 'react';
 
-export default function Alert({ open, type, message, onClose }: AlertProps) {
+interface AlertProps {
+  open: boolean;
+  type: 'success' | 'warning' | 'error' | 'info';
+  message: string;
+  onClose: () => void;
+}
+
+export default function Alert({ 
+  open, 
+  type, 
+  message, 
+  onClose 
+}: AlertProps) {
+  
   useEffect(() => {
     if (open) {
       const timer = setTimeout(() => {

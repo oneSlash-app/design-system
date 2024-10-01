@@ -1,7 +1,21 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 
-export default function Popover({ anchorEl, open, onClose, children }: PopoverProps) {
+interface PopoverProps {
+  id?: string;
+  anchorEl: HTMLElement | null;
+  open: boolean;
+  onClose: () => void;
+  children: any;
+}
+
+export default function Popover({ 
+  anchorEl, 
+  open, 
+  onClose, 
+  children 
+}: PopoverProps) {
+
   const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
   const popoverRef = useRef<HTMLDivElement>(null);
 

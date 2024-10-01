@@ -1,6 +1,19 @@
 'use client';
 import React, { useState } from 'react';
 
+interface TextFieldProps {
+  id: string;
+  label?: string;
+  value: string;
+  onChange: any;
+  iconLeft?: any;
+  iconRight?: React.ReactNode | React.ComponentType<any>; 
+  multiline?: boolean;
+  maxRows?: number;
+  disabled?: boolean;
+  error?: boolean;
+}
+
 export default function TextField({
   id,
   label,
