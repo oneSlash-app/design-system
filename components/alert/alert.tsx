@@ -1,4 +1,4 @@
-
+'use client';
 import React, { useEffect } from 'react';
 
 export default function Alert({ open, type, message, onClose }: AlertProps) {

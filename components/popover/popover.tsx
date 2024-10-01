@@ -1,4 +1,4 @@
-
+'use client';
 import React, { useState, useRef, useEffect } from 'react';
 
 export default function Popover({ anchorEl, open, onClose, children }: PopoverProps) {

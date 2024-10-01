@@ -1,7 +1,6 @@
 // design tokens definitions
 module.exports = {
   colors: {
-
     // light
     light:{
       text:{

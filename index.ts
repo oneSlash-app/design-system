@@ -1,4 +1,6 @@
-import './index.css';  // or the path to your Tailwind CSS file
+import './index.css';  
+import  Button from './components/button/button'; 
+export { Button };
 
 export * from './components/alert/alert';
 export * from './components/button/button';

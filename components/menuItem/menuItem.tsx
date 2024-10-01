@@ -1,6 +1,6 @@
-
+'use client';
 import React, { useState, useEffect, useCallback } from 'react';
-import Link from 'utils/Link'
+import NextLink from 'next/link';
 
 export default function MenuItem({ 
 	href = '#', 
@@ -36,7 +36,7 @@ export default function MenuItem({
 
 
   return (
-    <Link href={href}>
+    <NextLink href={href}>
       <div 
         className={`
           flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start
@@ -52,6 +52,6 @@ export default function MenuItem({
           {label}
         </span>
       </div>
-    </Link>
+    </NextLink>
   );
 }

@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:css": "postcss index.css -o dist/output.css",
     "start": "next start",
     "lint": "next lint"
   },
@@ -15,15 +16,16 @@
     "react-dom": "^18"
   },
   "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
+    "@types/node": "20.16.10",
+    "@types/react": "18.3.10",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
     "postcss": "^8",
+    "postcss-cli": "^11.0.0",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.1",
-    "typescript": "^5"
+    "typescript": "5.6.2"
   }
 }
