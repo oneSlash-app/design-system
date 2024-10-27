@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+
+import { useState } from 'react';
 
 interface CheckboxProps {
   label?: string;
@@ -12,7 +13,6 @@ export default function Checkbox({
   checked = false, 
   onChange
 }: CheckboxProps) {
-  
   const [isChecked, setIsChecked] = useState(checked);
 
   const handleToggle = () => {

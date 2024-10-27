@@ -27,7 +27,6 @@ export default function Tag({
   onClick,
   color = 'default',
 }: TagProps) {
-
   const [isHovered, setIsHovered] = useState(false);
   const [Icon, setIcon] = useState<IconType | null>(null);
   const [DeleteIcon, setDeleteIcon] = useState<IconType | null>(null);
@@ -103,6 +102,7 @@ export default function Tag({
         >
           {DeleteIcon && <DeleteIcon className="w-4 h-4" />}
         </button>
+        
       )}
     </div>
   );

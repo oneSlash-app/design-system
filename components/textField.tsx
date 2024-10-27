@@ -5,9 +5,13 @@ interface TextFieldProps {
   id: string;
   label?: string;
   value: string;
-  onChange: any;
-  iconLeft?: any;
-  iconRight?: React.ReactNode | React.ComponentType<any>; 
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;// Specify the event type for both input and textarea
+  onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;// Handle blur event for input/textarea
+  onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;// Handle focus event for input/textarea
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void; // Add onKeyDown
+  autoFocus?: boolean;
+  iconLeft?: React.ReactNode;
+  iconRight?: React.ReactNode | React.ComponentType<any>;
   multiline?: boolean;
   maxRows?: number;
   disabled?: boolean;
@@ -19,6 +23,10 @@ export default function TextField({
   label,
   value,
   onChange,
+  onBlur,
+  onFocus,
+  onKeyDown,
+  autoFocus = false, // Accept the autoFocus prop with default value
   iconLeft,
   iconRight,
   multiline = false,
@@ -26,47 +34,31 @@ export default function TextField({
   disabled = false,
   error = false,
 }: TextFieldProps) {
-	
   const [isFocused, setIsFocused] = useState(false);
 
-  // Base styles
   const baseClasses = 'w-full border rounded-[8px] p-2';
-
-  // Background color
   const bgColor = 'bg-light-background-default dark:bg-dark-background-default transition-colors duration-300 ease-in-out';
-
-  // Border color
   const borderColor = 'border-light-outlinedBorder-active dark:border-dark-outlinedBorder-active';
-
-  // State styles
-  const disabledClasses = 'bg-gray-200 cursor-not-allowed';
-  const errorClasses = 'border-red-500 focus:ring-red-500';
-  const focusClasses = 'focus:border-light-accent-main focus:dark:border-dark-accent-main outline-none';
-  const hoverClasses = 'hover:border-light-outlinedBorder-hover';
-  const defaultClasses = 'border-gray-300';
-
-  // Container styles
   const containerClasses = `
     ${bgColor}
     ${borderColor}
     ${baseClasses}
-    ${disabled ? disabledClasses : ''}
-    ${error ? errorClasses : ''}
-    ${isFocused ? focusClasses : ''}
-    ${!disabled && !error ? hoverClasses : ''}
-    ${defaultClasses}
+    ${disabled ? 'bg-gray-200 cursor-not-allowed' : ''}
+    ${error ? 'border-red-500 focus:ring-red-500' : ''}
+    ${isFocused ? 'focus:border-light-accent-main focus:dark:border-dark-accent-main outline-none' : ''}
+    ${!disabled && !error ? 'hover:border-light-outlinedBorder-hover' : ''}
+    border-gray-300
   `;
 
-	// Render iconRight in TextField
-	const renderIconRight = () => {
-		if (React.isValidElement(iconRight)) {
-			return iconRight;
-		}
-		if (typeof iconRight === 'function') {
-			return React.createElement(iconRight); 
-		}
-		return null;
-	};
+  const renderIconRight = () => {
+    if (React.isValidElement(iconRight)) {
+      return iconRight;
+    }
+    if (typeof iconRight === 'function') {
+      return React.createElement(iconRight); 
+    }
+    return null;
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -93,8 +85,16 @@ export default function TextField({
             className={containerClasses}
             value={value}
             onChange={onChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onFocus={(e) => {
+              setIsFocused(true);
+              if (onFocus) onFocus(e);
+            }}
+            onBlur={(e) => {
+              setIsFocused(false);
+              if (onBlur) onBlur(e);
+            }}
+            onKeyDown={onKeyDown}
+            autoFocus={autoFocus} // Pass autoFocus to textarea
             disabled={disabled}
           />
         ) : (
@@ -104,8 +104,16 @@ export default function TextField({
             className={containerClasses}
             value={value}
             onChange={onChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
+            onFocus={(e) => {
+              setIsFocused(true);
+              if (onFocus) onFocus(e);
+            }}
+            onBlur={(e) => {
+              setIsFocused(false);
+              if (onBlur) onBlur(e);
+            }}
+            onKeyDown={onKeyDown}
+            autoFocus={autoFocus} // Pass autoFocus to input
             disabled={disabled}
           />
         )}

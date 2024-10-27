@@ -6,11 +6,7 @@ interface TooltipProps {
   children: React.ReactElement;
 }
 
-export default function Tooltip({ 
-  title, 
-  children 
-}: TooltipProps) {
-
+export default function Tooltip({ title, children }: TooltipProps) {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
   const tooltipRef = useRef<HTMLDivElement>(null);

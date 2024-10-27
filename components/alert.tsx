@@ -5,7 +5,7 @@ interface AlertProps {
   open?: boolean;
   type: 'success' | 'warning' | 'error' | 'info';
   message: string;
-  onClose?: (() => void) | undefined;
+  onClose: () => void;
 }
 
 export default function Alert({ 
