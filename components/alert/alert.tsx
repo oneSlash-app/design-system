@@ -2,10 +2,10 @@
 import React, { useEffect } from 'react';
 
 interface AlertProps {
-  open: boolean;
+  open?: boolean;
   type: 'success' | 'warning' | 'error' | 'info';
   message: string;
-  onClose: () => void;
+  onClose?: (() => void) | undefined;
 }
 
 export default function Alert({ 
