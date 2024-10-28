@@ -1,6 +1,8 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, SVGProps } from 'react';
 import NextLink from 'next/link';
+
+type IconType = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
 interface MenuItemProps {
   href?: string;
