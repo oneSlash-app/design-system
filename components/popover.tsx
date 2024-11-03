@@ -1,29 +1,32 @@
-'use client';
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 interface PopoverProps {
   id?: string;
   anchorEl?: HTMLElement | null;
-  open?: boolean;
-  onClose?: () => void;
-  children: any;
+  open: boolean;
+  onClose: () => void;
+  anchorOrigin?: { vertical: 'top' | 'center' | 'bottom'; horizontal: 'left' | 'center' | 'right' };
+  transformOrigin?: { vertical: 'top' | 'center' | 'bottom'; horizontal: 'left' | 'center' | 'right' };
+  children: React.ReactNode;
 }
 
-export default function Popover({ 
-  anchorEl, 
-  open = false, 
-  onClose, 
-  children 
+export default function Popover({
+  id,
+  anchorEl,
+  open,
+  onClose,
+  anchorOrigin = { vertical: 'bottom', horizontal: 'left' },
+  transformOrigin = { vertical: 'top', horizontal: 'left' },
+  children,
 }: PopoverProps) {
-
-  const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
+  const [positionStyle, setPositionStyle] = useState<React.CSSProperties>({ visibility: 'hidden' });
   const popoverRef = useRef<HTMLDivElement>(null);
 
   // Close popover when clicking outside
-  useLayoutEffect(() => {
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (popoverRef.current && !popoverRef.current.contains(event.target as Node) && anchorEl) {
-        onClose?.(); // Safe call for optional onClose
+        onClose();
       }
     };
     if (open) {
@@ -34,61 +37,46 @@ export default function Popover({
     };
   }, [open, anchorEl, onClose]);
 
-  // Calculate position and handle scroll/resize
-  useLayoutEffect(() => {
-    if (anchorEl && open) {
-      const handlePositioning = () => {
-        const anchorRect = anchorEl.getBoundingClientRect();
-        const popoverRect = popoverRef.current?.getBoundingClientRect();
+  // Calculate position on render
+  useEffect(() => {
+    if (open && anchorEl && popoverRef.current) {
+      const anchorRect = anchorEl.getBoundingClientRect();
+      const popoverRect = popoverRef.current.getBoundingClientRect();
 
-        if (popoverRect) {
-          const spaceBelow = window.innerHeight - anchorRect.bottom;
-          const spaceAbove = anchorRect.top;
-          
-          // Decide whether to place the popover above or below the anchor
-          const shouldPlaceAbove = spaceBelow < popoverRect.height + 8 && spaceAbove > popoverRect.height + 8;
+      let top = anchorRect.top;
+      let left = anchorRect.left;
 
-          // Calculate top and left positions
-          const topPosition = shouldPlaceAbove
-            ? anchorRect.top + window.scrollY - popoverRect.height - 8
-            : anchorRect.bottom + window.scrollY + 8;
-          
-          let leftPosition = anchorRect.left + window.scrollX + (anchorRect.width / 2) - (popoverRect.width / 2);
+      // Adjust based on anchorOrigin
+      if (anchorOrigin.vertical === 'center') top += anchorRect.height / 2;
+      else if (anchorOrigin.vertical === 'bottom') top += anchorRect.height;
 
-          // Ensure the popover doesn't overflow off the left or right of the screen
-          if (leftPosition < 8) {
-            leftPosition = 8; // Prevent overflow on the left
-          } else if (leftPosition + popoverRect.width > window.innerWidth - 8) {
-            leftPosition = window.innerWidth - popoverRect.width - 8; // Prevent overflow on the right
-          }
+      if (anchorOrigin.horizontal === 'center') left += anchorRect.width / 2;
+      else if (anchorOrigin.horizontal === 'right') left += anchorRect.width;
 
-          setPopoverStyle({
-            position: 'absolute',
-            top: `${topPosition}px`,
-            left: `${leftPosition}px`,
-            zIndex: 10000,
-            visibility: 'visible',
-          });
-        }
-      };
+      // Adjust based on transformOrigin
+      if (transformOrigin.vertical === 'center') top -= popoverRect.height / 2;
+      else if (transformOrigin.vertical === 'bottom') top -= popoverRect.height;
 
-      handlePositioning(); // Initial positioning calculation
-      window.addEventListener('resize', handlePositioning);
-      window.addEventListener('scroll', handlePositioning, true);
+      if (transformOrigin.horizontal === 'center') left -= popoverRect.width / 2;
+      else if (transformOrigin.horizontal === 'right') left -= popoverRect.width;
 
-      return () => {
-        window.removeEventListener('resize', handlePositioning);
-        window.removeEventListener('scroll', handlePositioning, true);
-      };
+      setPositionStyle({
+        position: 'absolute',
+        top: `${top}px`,
+        left: `${left}px`,
+        zIndex: 1300,
+        visibility: 'visible',
+      });
     }
-  }, [anchorEl, open]);
+  }, [open, anchorEl, anchorOrigin, transformOrigin]);
 
   if (!open || !anchorEl) return null;
 
   return (
     <div
+      id={id}
       ref={popoverRef}
-      style={popoverStyle}
+      style={positionStyle}
       className="bg-light-background-accent100 dark:bg-dark-background-accent100 rounded-[8px] shadow-lg p-2"
       role="dialog"
     >
