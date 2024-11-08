@@ -1,98 +1,68 @@
-'use client';
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
+import { usePopper } from 'react-popper';
 
 interface PopoverProps {
   id?: string;
   anchorEl?: HTMLElement | null;
-  open?: boolean;
-  onClose?: () => void;
-  children: any;
+  open: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
 }
 
-export default function Popover({ 
-  anchorEl, 
-  open = false, 
-  onClose, 
-  children 
+export default function Popover({
+  id,
+  anchorEl,
+  open,
+  onClose,
+  children,
 }: PopoverProps) {
+  const [popoverElement, setPopoverElement] = useState<HTMLDivElement | null>(null);
+  const [hasMounted, setHasMounted] = useState(false);
 
-  const [popoverStyle, setPopoverStyle] = useState<React.CSSProperties>({});
-  const popoverRef = useRef<HTMLDivElement>(null);
+  // Initialize Popper.js
+  const { styles, attributes } = usePopper(anchorEl, popoverElement, {
+    placement: 'bottom-start', // Default placement, can be customized
+    modifiers: [
+      { name: 'offset', options: { offset: [0, 8] } }, // Offset for spacing between anchor and popover
+    ],
+  });
 
-  // Close popover when clicking outside
-  useLayoutEffect(() => {
+  // Handle outside clicks to close the popover
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (popoverRef.current && !popoverRef.current.contains(event.target as Node) && anchorEl) {
-        onClose?.(); // Safe call for optional onClose
+      if (popoverElement && !popoverElement.contains(event.target as Node) && anchorEl) {
+        onClose();
       }
     };
+
     if (open) {
       document.addEventListener('mousedown', handleClickOutside);
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [open, anchorEl, onClose]);
+  }, [open, anchorEl, popoverElement, onClose]);
 
-  // Calculate position and handle scroll/resize
-  useLayoutEffect(() => {
-    if (anchorEl && open) {
-      const handlePositioning = () => {
-        const anchorRect = anchorEl.getBoundingClientRect();
-        const popoverRect = popoverRef.current?.getBoundingClientRect();
+  // Ensure popover is only rendered after the component mounts
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
-        if (popoverRect) {
-          const spaceBelow = window.innerHeight - anchorRect.bottom;
-          const spaceAbove = anchorRect.top;
-          
-          // Decide whether to place the popover above or below the anchor
-          const shouldPlaceAbove = spaceBelow < popoverRect.height + 8 && spaceAbove > popoverRect.height + 8;
+  if (!open || !hasMounted || !anchorEl) return null;
 
-          // Calculate top and left positions
-          const topPosition = shouldPlaceAbove
-            ? anchorRect.top + window.scrollY - popoverRect.height - 8
-            : anchorRect.bottom + window.scrollY + 8;
-          
-          let leftPosition = anchorRect.left + window.scrollX + (anchorRect.width / 2) - (popoverRect.width / 2);
-
-          // Ensure the popover doesn't overflow off the left or right of the screen
-          if (leftPosition < 8) {
-            leftPosition = 8; // Prevent overflow on the left
-          } else if (leftPosition + popoverRect.width > window.innerWidth - 8) {
-            leftPosition = window.innerWidth - popoverRect.width - 8; // Prevent overflow on the right
-          }
-
-          setPopoverStyle({
-            position: 'absolute',
-            top: `${topPosition}px`,
-            left: `${leftPosition}px`,
-            zIndex: 10000,
-            visibility: 'visible',
-          });
-        }
-      };
-
-      handlePositioning(); // Initial positioning calculation
-      window.addEventListener('resize', handlePositioning);
-      window.addEventListener('scroll', handlePositioning, true);
-
-      return () => {
-        window.removeEventListener('resize', handlePositioning);
-        window.removeEventListener('scroll', handlePositioning, true);
-      };
-    }
-  }, [anchorEl, open]);
-
-  if (!open || !anchorEl) return null;
-
-  return (
+  // Render popover in a portal to prevent layout shifts and positioning issues
+  return createPortal(
     <div
-      ref={popoverRef}
-      style={popoverStyle}
+      id={id}
+      ref={setPopoverElement}
+      style={{ ...styles.popper, display: open ? 'block' : 'none' }}
+      {...attributes.popper}
       className="bg-light-background-accent100 dark:bg-dark-background-accent100 rounded-[8px] shadow-lg p-2"
       role="dialog"
     >
       {children}
-    </div>
+    </div>,
+    document.body // Mounting the popover in the document body for isolation
   );
 }

@@ -52,13 +52,13 @@ export default function MenuItem({
           flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start
           ${isSelected 
             ? 'bg-light-action-selected dark:bg-dark-action-selected' 
-            : 'hover:bg-light-action-hover dark:hover:bg-dark-action-hover'}
+            : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100'}
         `}
         style={{ width: '100%' }}
         onClick={onClick}
       >
-        {Icon && <Icon className="w-5 h-5" />}
-        <span className="whitespace-nowrap text-body1">
+        {Icon && <Icon className="w-6 h-6" />}
+        <span className="whitespace-nowrap text-body1 px-2">
           {label}
         </span>
       </div>
