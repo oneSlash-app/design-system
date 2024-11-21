@@ -111,7 +111,9 @@ export default function Button({
       {IconLeft && (
           <IconLeft className={sizeIcon} />
       )}
-      <div className="whitespace-nowrap px-2">{label}</div>
+      <div className="flex-1 whitespace-nowrap overflow-hidden truncate px-2">
+        {label}
+      </div>
       {IconRight && (
         <div onClick={onClickActionIcon} className="cursor-pointer">
           <IconRight className={sizeIcon} />

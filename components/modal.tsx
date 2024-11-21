@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -17,21 +17,23 @@ export default function Modal({
   actions, 
   size = 'medium', // Default size is medium
 }: ModalProps) {
+  
   if (!isOpen) return null;
 
+  // close modal by clicking elsewhere
   const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose();
     }
   };
 
+  // close modal by esc keypress
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
         onClose();
       }
     };
-
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
@@ -42,6 +44,8 @@ export default function Modal({
   const modalWidth = size === 'large' ? 'w-[1200px]' : 'w-[600px]';
   const maxWidth = size === 'large' ? '1200px' : '600px';
 
+  
+
   return (
     <div 
       className="fixed inset-[-32px] bg-black bg-opacity-50 flex items-center justify-center z-50"
@@ -49,6 +53,7 @@ export default function Modal({
       role="dialog"
       aria-labelledby="modal-title"
       aria-modal="true"
+      tabIndex={-1}
     >
       <div 
         className={`bg-light-background-default dark:bg-dark-background-default p-6 rounded-[8px] space-y-4 ${modalWidth}`}
@@ -56,7 +61,7 @@ export default function Modal({
           maxWidth,
           width: 'calc(100vw - 64px)',
           maxHeight: '800px',
-          height: 'calc(100vh - 64px)',
+          height: 'auto',
           overflowY: 'auto',
         }}
       >
