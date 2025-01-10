@@ -12,7 +12,7 @@ interface MenuItemProps {
   userImgUrl?: string;
   label: string;
   isSelected?: boolean;
-  onClick: any;
+  onClick?: any;
 }
 
 export default function MenuItem({ 
