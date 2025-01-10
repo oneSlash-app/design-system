@@ -64,7 +64,7 @@ export default function Tab({
   return (
     <div
       className={`
-        flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start
+        flex items-center space-x-1 p-1 rounded-[8px] cursor-pointer justify-start 
         ${isSelected 
           ? 'bg-light-primary-main dark:bg-dark-primary-main text-light-text-contrast dark:text-dark-text-contrast' 
           : 'bg-light-action-selected dark:bg-dark-action-selected hover:bg-light-background-default dark:hover:bg-dark-action-hover'}

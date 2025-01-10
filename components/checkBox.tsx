@@ -37,7 +37,7 @@ export default function Checkbox({
         <div
           className={`relative z-10 w-4 h-4 border-2 rounded ${
             isChecked
-              ? 'bg-light-accent-main dark:bg-dark-accent-main border-none'
+              ? 'bg-light-text-primary dark:bg-dark-text-primary border-none'
               : 'border-light-text-secondary dark:border-dark-text-secondary'
           } flex items-center justify-center transition-colors`}
         >
@@ -54,7 +54,7 @@ export default function Checkbox({
           )}
         </div>
       </div>
-      {label && <span className="ml-2">{label}</span>}
+      {label && <span className="ml-2 text-body1 text-light-text-primary dark:text-dark-text-primary">{label}</span>}
     </label>
   );
 }

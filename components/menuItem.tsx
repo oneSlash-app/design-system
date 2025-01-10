@@ -1,12 +1,15 @@
 'use client';
 import React, { useState, useEffect, useCallback, SVGProps } from 'react';
 import NextLink from 'next/link';
+import UserImage from './userImage';
 
 type IconType = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
 interface MenuItemProps {
   href?: string;
   iconName?: string;
+  userHandle?: string;
+  userImgUrl?: string;
   label: string;
   isSelected?: boolean;
   onClick: any;
@@ -14,13 +17,15 @@ interface MenuItemProps {
 
 export default function MenuItem({ 
 	href = '#', 
-	iconName, 
+	iconName,
+  userHandle,
+  userImgUrl,
 	label, 
 	isSelected, 
 	onClick, }
 : MenuItemProps) {
 
-	const [Icon, setIcon] = useState<IconType | null>(null);
+	const [IconLeft, setIconLeft] = useState<IconType | null>(null);
 
   // Import icon dynamically
   const loadIcon = useCallback(async (iconName?: string) => {
@@ -38,7 +43,7 @@ export default function MenuItem({
   useEffect(() => {
     const fetchIcon = async () => {
       if (iconName) {
-        setIcon(await loadIcon(iconName));
+        setIconLeft(await loadIcon(iconName));
       }
     };
     fetchIcon();
@@ -51,14 +56,21 @@ export default function MenuItem({
         className={`
           flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start
           ${isSelected 
-            ? 'bg-light-action-selected dark:bg-dark-action-selected' 
+            ? 'bg-light-background-accent200 dark:bg-dark-background-accent200 hover:bg-light-background-accent300 dark:hover:bg-dark-background-accent300' 
             : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100'}
         `}
         style={{ width: '100%' }}
         onClick={onClick}
       >
-        {Icon && <Icon className="w-6 h-6" />}
-        <span className="whitespace-nowrap text-body1 px-2">
+        {/* render userImage. render dynamic icon if userImage is not available */}
+        {userImgUrl || userHandle ? (
+        <UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl || ''} />
+      ) : (
+        IconLeft && <IconLeft className="w-6 h-6" />
+      )}
+
+        {/* label */}
+        <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
           {label}
         </span>
       </div>

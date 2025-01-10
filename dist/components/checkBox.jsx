@@ -17,13 +17,13 @@ export default function Checkbox(_a) {
         
         {/* Checkbox */}
         <div className={"relative z-10 w-4 h-4 border-2 rounded ".concat(isChecked
-            ? 'bg-light-accent-main dark:bg-dark-accent-main border-none'
+            ? 'bg-light-text-primary dark:bg-dark-text-primary border-none'
             : 'border-light-text-secondary dark:border-dark-text-secondary', " flex items-center justify-center transition-colors")}>
           {isChecked && (<svg className="w-3 h-3 text-light-text-contrast dark:text-dark-text-contrast" fill="none" stroke="currentColor" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg">
               <path strokeWidth="2" d="M1 6l4 3 6-7"/>
             </svg>)}
         </div>
       </div>
-      {label && <span className="ml-2">{label}</span>}
+      {label && <span className="ml-2 text-body1 text-light-text-primary dark:text-dark-text-primary">{label}</span>}
     </label>);
 }

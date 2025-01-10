@@ -85,10 +85,13 @@ export default function MenuItem(_a) {
     }, [iconName, loadIcon]);
     return (<NextLink href={href}>
       <div className={"\n          flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start\n          ".concat(isSelected
-            ? 'bg-light-action-selected dark:bg-dark-action-selected'
+            ? 'bg-light-background-accent200 dark:bg-dark-background-accent200 hover:bg-light-background-accent300 dark:hover:bg-dark-background-accent300'
             : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100', "\n        ")} style={{ width: '100%' }} onClick={onClick}>
-        {Icon && <Icon className="w-6 h-6"/>}
-        <span className="whitespace-nowrap text-body1 px-2">
+        {/* render userImage. render dynamic icon if userImage is not available */}
+        {userImgUrl || userHandle ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl || ''}/>) : (IconLeft && <IconLeft className="w-6 h-6"/>)}
+
+        {/* label */}
+        <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
           {label}
         </span>
       </div>

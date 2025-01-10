@@ -99,9 +99,9 @@ export default function Tab(_a) {
             router.push(href);
         }
     };
-    return (<div className={"\n        flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start\n        ".concat(isSelected
-            ? 'bg-light-primary-main dark:bg-dark-primary-main text-light-text-contrast dark:text-dark-text-contrast'
-            : 'bg-light-action-selected dark:bg-dark-action-selected hover:bg-light-background-default dark:hover:bg-dark-action-hover', "\n      ")} onClick={handleClick}>
+    return (<div className={"\n        flex items-center space-x-1 p-1 rounded-[8px] cursor-pointer justify-start \n        ".concat(isSelected
+            ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
+            : 'bg-transparent dark:bg-transparent hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200', "\n      ")} onClick={handleClick}>
       {IconLeft && <IconLeft className="w-5 h-5"/>}
       <span className="whitespace-nowrap text-body1 px-2">
         {label}

@@ -120,7 +120,7 @@ export default function IconButton(_a) {
             : isHovered
                 ? 'cursor-pointer hover:bg-opacity-75'
                 : 'cursor-pointer';
-    return (<button className={"".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses, " transition-colors duration-300 ease-in-out")} disabled={state === 'disabled'} onMouseEnter={function () { return setIsHovered(true); }} onMouseLeave={function () { return setIsHovered(false); }} onClick={onClick}>
+    return (<button className={"".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses, " ")} disabled={state === 'disabled'} onMouseEnter={function () { return setIsHovered(true); }} onMouseLeave={function () { return setIsHovered(false); }} onClick={onClick}>
         {Icon && <Icon className="size-6"/>}
     </button>);
 }

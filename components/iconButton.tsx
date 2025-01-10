@@ -93,7 +93,7 @@ export default function IconButton({
 
   return (
     <button
-      className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses} transition-colors duration-300 ease-in-out`}
+      className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses} `}
       disabled={state === 'disabled'}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
