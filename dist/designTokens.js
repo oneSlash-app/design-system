@@ -47,10 +47,10 @@ module.exports = {
                 light: '#67C16B',
             },
             background: {
-                default: '#FFFFFF',
-                accent100: '#F6F6F6',
-                accent200: '#E7E7E7',
-                accent300: '#D1D1D1',
+                default: '#F2F2F2',
+                accent100: '#F5F5F5',
+                accent200: '#FAFAFA',
+                accent300: '#FFFFFF',
             },
             action: {
                 active: '#888888',
