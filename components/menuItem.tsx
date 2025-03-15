@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, SVGProps } from 'react';
 import NextLink from 'next/link';
 import UserImage from './userImage';
+import { UserCircleIcon } from '@heroicons/react/24/outline';
 
 type IconType = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
@@ -62,12 +63,16 @@ export default function MenuItem({
         style={{ width: '100%' }}
         onClick={onClick}
       >
-        {/* render userImage. render dynamic icon if userImage is not available */}
-        {userImgUrl || userHandle ? (
-        <UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl || ''} />
-      ) : (
-        IconLeft && <IconLeft className="w-6 h-6" />
-      )}
+        {/* Render UserImage if userImgUrl is defined, otherwise render UserCircleIcon or dynamic IconLeft */}
+        {userImgUrl ? (
+          <UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl} />
+        ) : (
+          IconLeft ? (
+            <IconLeft className="w-6 h-6" />
+          ) : (
+            <UserCircleIcon className="w-6 h-6" />
+          )
+        )}
 
         {/* label */}
         <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
