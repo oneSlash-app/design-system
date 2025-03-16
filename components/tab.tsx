@@ -64,20 +64,20 @@ export default function Tab({
   return (
     <div
       className={`
-        flex items-center space-x-1 p-1 rounded-[8px] cursor-pointer justify-start 
+        flex items-center space-x-1 py-1 px-[6px] rounded-[8px] cursor-pointer justify-start transition-all duration-300 ease-in-out
         ${isSelected 
-          ? 'bg-light-primary-main dark:bg-dark-primary-main text-light-text-contrast dark:text-dark-text-contrast' 
-          : 'bg-light-action-selected dark:bg-dark-action-selected hover:bg-light-background-default dark:hover:bg-dark-action-hover'}
+          ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast' 
+          : 'hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'}
       `}
       onClick={handleClick}
     >
-      {IconLeft && <IconLeft className="w-5 h-5" />}
-      <span className="whitespace-nowrap text-body1 px-2">
+      {IconLeft && <IconLeft className="w-6 h-6" />}
+      <span className="whitespace-nowrap text-body1 px-[6px]">
         {label}
       </span>
       {IconRight && (
         <div onClick={onClickActionIcon} className="cursor-pointer">
-          <IconRight className="w-5 h-5" />
+          <IconRight className="w-6 h-6" />
         </div>
       )}
     </div>
