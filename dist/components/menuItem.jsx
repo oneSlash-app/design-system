@@ -37,10 +37,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 import React, { useState, useEffect, useCallback } from 'react';
 import NextLink from 'next/link';
+import UserImage from './userImage';
 export default function MenuItem(_a) {
     var _this = this;
-    var _b = _a.href, href = _b === void 0 ? '#' : _b, iconName = _a.iconName, label = _a.label, isSelected = _a.isSelected, onClick = _a.onClick;
-    var _c = useState(null), Icon = _c[0], setIcon = _c[1];
+    var _b = _a.href, href = _b === void 0 ? '#' : _b, iconName = _a.iconName, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, isSelected = _a.isSelected, onClick = _a.onClick;
+    var _c = useState(null), IconLeft = _c[0], setIconLeft = _c[1];
     // Import icon dynamically
     var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
         var module_1, IconComponent, error_1;
@@ -72,7 +73,7 @@ export default function MenuItem(_a) {
                 switch (_b.label) {
                     case 0:
                         if (!iconName) return [3 /*break*/, 2];
-                        _a = setIcon;
+                        _a = setIconLeft;
                         return [4 /*yield*/, loadIcon(iconName)];
                     case 1:
                         _a.apply(void 0, [_b.sent()]);
