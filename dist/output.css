@@ -556,6 +556,10 @@ video {
 .flex {
   display: flex;
 }
+.size-5 {
+  width: 1.25rem;
+  height: 1.25rem;
+}
 .size-6 {
   width: 1.5rem;
   height: 1.5rem;
@@ -985,11 +989,6 @@ body {
   background-color: rgb(206 134 2 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-light-action-hover:hover {
-  --tw-bg-opacity: 1;
-  background-color: rgb(243 243 243 / var(--tw-bg-opacity));
-}
-
 .hover\:bg-light-background-accent100:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(245 245 245 / var(--tw-bg-opacity));
@@ -1163,11 +1162,6 @@ body {
   .hover\:dark\:bg-dark-accent-dark:hover {
     --tw-bg-opacity: 1;
     background-color: rgb(206 134 2 / var(--tw-bg-opacity));
-  }
-
-  .hover\:dark\:bg-dark-action-hover:hover {
-    --tw-bg-opacity: 1;
-    background-color: rgb(61 61 61 / var(--tw-bg-opacity));
   }
 
   .hover\:dark\:bg-dark-background-accent100:hover {

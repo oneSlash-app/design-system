@@ -1,84 +1,74 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
-import * as HeroIcons from '@heroicons/react/24/outline';
+import React, { useState } from 'react';
+import * as HeroIcons24 from '@heroicons/react/24/outline';
+import * as HeroIcons20 from '@heroicons/react/20/solid';
 
-interface IconButtonProps{
-  variant: "contained" | "iconOnly";
-  color: "primary" | "secondary";
+interface IconButtonProps {
+  color: "primary" | "secondary" | "tertiary" | "iconOnly";
   state: "enabled" | "selected" | "disabled";
-  iconName: keyof typeof HeroIcons;
+  size: "large" | "medium" | "small";
+  iconName: keyof typeof HeroIcons24 & keyof typeof HeroIcons20;
   onClick?: any;
 }
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
 export default function IconButton({
-  variant,
   color,
   state,
+  size,
   iconName,
-	onClick,
+  onClick,
 }: IconButtonProps) {
-
   const [isHovered, setIsHovered] = useState(false);
-  const [Icon, setIcon] = useState<React.ComponentType<React.SVGProps<SVGSVGElement>> | null>(null);
 
-  // import icon
-  const loadIcon = useCallback(async (iconName?: string) => {
-    if (!iconName) return null;
-    try {
-      const module = await import('@heroicons/react/24/outline');
-      const Icon = module[iconName as keyof typeof module] as IconType;
-      return Icon || null;
-    } catch (error) {
-      console.error(`Failed to load icon ${iconName}:`, error);
-      return null;
-    }
-  }, []);
+  // Select icon based on size
+  const Icon: IconType = size === 'small' 
+    ? HeroIcons20[iconName] 
+    : HeroIcons24[iconName];
 
-  // Load icons on mount and when props change
-  useEffect(() => {
-    const fetchIcons = async () => {
-      if (typeof iconName === 'string') {
-        setIcon(await loadIcon(iconName));
-      }
-    };
-    fetchIcons();
-  }, [iconName, loadIcon]);
+  // Size-based classes
+  const sizeClasses = {
+    large: 'p-2',  // 8px padding
+    medium: 'p-1', // 4px padding
+    small: 'p-1',  // 4px padding
+  };
 
+  const iconSizeClasses = {
+    large: 'size-6',   // 24px
+    medium: 'size-6',  // 24px
+    small: 'size-5',   // 20px
+  };
 
-  // padding, corner
-  const baseClasses = variant === 'contained' 
-    ? 'p-2 rounded-[8px] leading-none ' 
-    : 'p-2 rounded-[8px] leading-none ';
+  // Base classes (padding and corner radius)
+  const baseClasses = `${sizeClasses[size]} rounded-[8px] leading-none`;
 
-  // bg color
-  const bgColor = variant === 'contained'
-    ? color === 'primary' 
-      ? 'bg-light-primary-main dark:bg-dark-primary-main' // contained && primary
-      : 'bg-light-background-accent200 dark:bg-dark-background-accent200' // contained && secondary
-    : color === 'primary' 
-    ? ' ' // textOnly && primary
-    : ' '; // textOnly && secondary
+  // Background color
+  const bgColor = color === 'primary'
+    ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary: accent/main
+    : color === 'secondary'
+    ? 'bg-light-primary-main dark:bg-dark-primary-main' // Secondary: primary/main
+    : color === 'tertiary'
+    ? 'bg-light-background-accent200 dark:bg-dark-background-accent200' // Tertiary: background/accent200
+    : ' '; // iconOnly: none
 
-  // bg color hover
-	const bgColorHover = variant === 'contained'
-  ? color === 'primary' 
-    ? 'hover:bg-light-primary-dark hover:dark:bg-dark-primary-dark'  // contained && primary
-    : 'hover:bg-light-background-accent300 hover:dark:bg-dark-background-accent300'  // contained && secondary
-  : color === 'primary' 
-  ? 'hover:bg-light-action-hover hover:dark:bg-dark-action-hover'  // textOnly && primary
-  : 'hover:bg-light-action-hover hover:dark:bg-dark-action-hover';  // textOnly && secondary
+  // Background hover color
+  const bgColorHover = color === 'primary'
+    ? 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark' // Primary: accent/dark
+    : color === 'secondary'
+    ? 'hover:bg-light-primary-dark hover:dark:bg-dark-primary-dark' // Secondary: primary/dark
+    : color === 'tertiary'
+    ? 'hover:bg-light-background-accent300 hover:dark:bg-dark-background-accent300' // Tertiary: background/accent300
+    : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100'; // iconOnly: background/accent100
 
-  // icon color
-  const iconColor = variant === 'contained'
-    ? color === 'primary' 
-      ? 'text-light-primary-contrast dark:text-dark-primary-contrast' // contained && primary
-      : 'text-light-text-primary dark:text-dark-text-primary' // contained && secondary
-    : color === 'primary'
-    ? ' text-light-text-primary dark:text-dark-text-primary' // textOnly && primary
-    : ' text-light-text-primary dark:text-dark-text-primary'; // textOnly && secondary
-
+  // Icon color
+  const iconColor = color === 'primary'
+    ? 'text-light-text-primary dark:text-dark-text-primary' // Primary: text/primary
+    : color === 'secondary'
+    ? 'text-light-primary-contrast dark:text-dark-primary-contrast' // Secondary: text/contrast
+    : color === 'tertiary'
+    ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary: text/primary
+    : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly: text/primary
 
   // state
   const stateClasses = state === 'disabled'
@@ -89,17 +79,15 @@ export default function IconButton({
     ? 'cursor-pointer hover:bg-opacity-75'
     : 'cursor-pointer';
 
-  
-
   return (
     <button
-      className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses} `}
+      className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses}`}
       disabled={state === 'disabled'}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-			onClick={onClick}
-    	>
-        {Icon && <Icon className="size-6" />}
+      onClick={onClick}
+    >
+      {Icon && <Icon className={iconSizeClasses[size]} />}
     </button>
   );
 }
