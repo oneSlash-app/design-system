@@ -1,15 +1,13 @@
 import React from 'react';
 import * as HeroIcons from '@heroicons/react/24/outline';
 interface TagProps {
-    key?: any;
-    variant: "contained" | "textOnly";
-    size: "medium" | "small";
-    state?: "enabled" | "selected";
-    label: any;
+    variant: 'contained' | 'textOnly';
+    size: 'medium' | 'small';
+    state?: 'enabled' | 'selected';
+    label: string;
     iconName?: keyof typeof HeroIcons;
-    isDeletable?: keyof typeof HeroIcons;
-    onClick?: any;
+    onClick?: React.MouseEventHandler<HTMLDivElement>;
     color?: 'default' | 'info';
 }
-export default function Tag({ key, variant, size, state, label, iconName, isDeletable, onClick, color, }: TagProps): React.JSX.Element;
+export default function Tag({ variant, size, state, label, iconName, onClick, color, }: TagProps): JSX.Element;
 export {};

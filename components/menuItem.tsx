@@ -70,7 +70,7 @@ export default function MenuItem({
           )}
 
         {/* label */}
-        <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
+        <span className="whitespace-nowrap text-body1 px-2 text-light-text-secondary dark:text-dark-text-secondary">
           {label}
         </span>
       </div>

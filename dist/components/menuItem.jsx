@@ -92,7 +92,7 @@ export default function MenuItem(_a) {
         {userImgUrl || userHandle ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl || ''}/>) : (IconLeft && <IconLeft className="w-6 h-6"/>)}
 
         {/* label */}
-        <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
+        <span className="whitespace-nowrap text-body1 px-2 text-light-text-secondary dark:text-dark-text-secondary">
           {label}
         </span>
       </div>

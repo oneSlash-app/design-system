@@ -70,15 +70,15 @@ export default function Button({
   // Define classes for button types
   const baseTypeClasses = {
     primary: 'bg-light-accent-main dark:bg-dark-accent-main text-light-text-primary dark:text-dark-text-contrast',
-    secondary: 'bg-light-primary-main dark:bg-dark-primary-main text-light-text-contrast dark:text-dark-text-contrast',
-    tertiary: 'bg-light-background-accent200 dark:bg-dark-background-accent200 text-light-text-primary dark:text-dark-text-primary',
+    secondary: 'bg-light-secondary-main dark:bg-dark-secondary-main text-light-text-primary dark:text-dark-text-primary',
+    tertiary: 'bg-light-background-accent100 dark:bg-dark-background-accent100 text-light-text-primary dark:text-dark-text-primary',
     textOnly: 'text-light-text-primary dark:text-dark-text-primary',
   }[type];
 
   const hoverTypeClasses = {
     primary: 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark',
-    secondary: 'hover:bg-light-primary-dark dark:hover:bg-dark-primary-dark',
-    tertiary: 'hover:bg-light-background-accent300 hover:dark:bg-dark-background-accent300',
+    secondary: 'hover:bg-light-secondary-dark dark:hover:bg-dark-secondary-dark',
+    tertiary: 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200',
     textOnly: 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100',
   }[type];
 

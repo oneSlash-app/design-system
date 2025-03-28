@@ -47,9 +47,9 @@ module.exports = {
                 light: '#67C16B',
             },
             background: {
-                default: '#F2F2F2',
-                accent100: '#F5F5F5',
-                accent200: '#FAFAFA',
+                default: '#e8e8e8',
+                accent100: '#f1f1f1',
+                accent200: '#f7f7f7',
                 accent300: '#FFFFFF',
             },
             action: {

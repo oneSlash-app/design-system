@@ -45,30 +45,30 @@ export default function IconButton({
 
   // Background color
   const bgColor = color === 'primary'
-    ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary: accent/main
+    ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary
     : color === 'secondary'
-    ? 'bg-light-primary-main dark:bg-dark-primary-main' // Secondary: primary/main
+    ? 'bg-light-secondary-main dark:bg-dark-secondary-main' // Secondary
     : color === 'tertiary'
-    ? 'bg-light-background-accent200 dark:bg-dark-background-accent200' // Tertiary: background/accent200
+    ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' // Tertiary
     : ' '; // iconOnly: none
 
   // Background hover color
   const bgColorHover = color === 'primary'
-    ? 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark' // Primary: accent/dark
+    ? 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark' // Primary
     : color === 'secondary'
-    ? 'hover:bg-light-primary-dark hover:dark:bg-dark-primary-dark' // Secondary: primary/dark
+    ? 'hover:bg-light-secondary-dark hover:dark:bg-dark-secondary-dark' // Secondary
     : color === 'tertiary'
-    ? 'hover:bg-light-background-accent300 hover:dark:bg-dark-background-accent300' // Tertiary: background/accent300
-    : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100'; // iconOnly: background/accent100
+    ? 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200' // Tertiary
+    : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100'; // iconOnly
 
   // Icon color
   const iconColor = color === 'primary'
-    ? 'text-light-text-primary dark:text-dark-text-primary' // Primary: text/primary
+    ? 'text-light-text-primary dark:text-dark-text-contrast' // Primary
     : color === 'secondary'
-    ? 'text-light-primary-contrast dark:text-dark-primary-contrast' // Secondary: text/contrast
+    ? 'text-light-text-primary dark:text-dark-text-primary' // Secondary
     : color === 'tertiary'
-    ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary: text/primary
-    : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly: text/primary
+    ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary
+    : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly
 
   // state
   const stateClasses = state === 'disabled'

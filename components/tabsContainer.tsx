@@ -14,7 +14,7 @@ export default function TabsContainer({
     <div
       className={`
         flex space-x-2 p-1 rounded-[12px]
-        ${tabCount > 0 ? 'bg-light-background-accent200 dark:bg-dark-background-accent200' : 'bg-transparent'}
+        ${tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent'}
       `}
     >
       {children}

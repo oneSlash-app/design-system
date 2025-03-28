@@ -1,109 +1,81 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as HeroIcons from '@heroicons/react/24/outline';
 
-interface TagProps{
-  key?: any;
-  variant: "contained" | "textOnly";
-  size: "medium" | "small";
-  state?: "enabled" | "selected" ;
-  label: any;
+interface TagProps {
+  variant: 'contained' | 'textOnly';
+  size: 'medium' | 'small';
+  state?: 'enabled' | 'selected';
+  label: string;
   iconName?: keyof typeof HeroIcons;
-  isDeletable?: keyof typeof HeroIcons;
-  onClick?: any;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
   color?: 'default' | 'info';
 }
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
 export default function Tag({
-  key,
   variant,
   size,
-  state,
+  state = 'enabled',
   label,
   iconName,
-  isDeletable,
   onClick,
   color = 'default',
-}: TagProps) {
+}: TagProps): JSX.Element {
   const [isHovered, setIsHovered] = useState(false);
   const [Icon, setIcon] = useState<IconType | null>(null);
-  const [DeleteIcon, setDeleteIcon] = useState<IconType | null>(null);
 
-  const loadIcon = useCallback(async (iconName?: string) => {
-    if (!iconName) return null;
-    try {
-      const module = await import('@heroicons/react/24/outline');
-      const Icon = module[iconName as keyof typeof module] as IconType;
-      return Icon || null;
-    } catch (error) {
-      console.error(`Failed to load icon ${iconName}:`, error);
-      return null;
-    }
-  }, []);
-
+  // Load icon directly from HeroIcons
   useEffect(() => {
-    const fetchIcons = async () => {
-      if (typeof iconName === 'string') {
-        setIcon(await loadIcon(iconName));
-      }
-      if (typeof isDeletable === 'string') {
-        setDeleteIcon(await loadIcon(isDeletable));
-      }
-    };
-    fetchIcons();
-  }, [iconName, isDeletable, loadIcon]);
+    if (iconName) {
+      setIcon(HeroIcons[iconName] as IconType);
+    }
+  }, [iconName]);
 
-  // size and padding
+  // Size and padding
   const sizeClasses = size === 'medium' ? 'text-body2 px-2 py-1' : 'text-caption px-2 py-[3px]';
 
-
-    // bg color
+  // Background color
   const bgClasses = variant === 'contained'
     ? (color === 'info'
-      ? 'bg-light-info-main dark:bg-dark-info-main' // info 
-      : 'bg-light-background-accent200 dark:bg-dark-background-accent200') // default 
-    : ''; // textOnly
+        ? 'bg-light-info-main dark:bg-dark-info-main'
+        : 'bg-light-background-accent300 dark:bg-dark-background-accent300')
+    : '';
 
-  // font color
+  // Font color
   const fontClasses = variant === 'textOnly'
     ? (color === 'info'
-        ? 'text-light-info-main dark:text-dark-info-main' // info
-        : 'text-light-text-primary dark:text-dark-text-primary') // default
-    : 'text-light-text-primary dark:text-dark-text-primary'; // contained
+        ? 'text-light-info-main dark:text-dark-info-main'
+        : 'text-light-text-primary dark:text-dark-text-primary')
+    : 'text-light-text-primary dark:text-dark-text-primary';
 
-  // state
-  const stateClasses = state === 'selected' 
-    ? 'bg-light-accent-main dark:bg-dark-accent-main text-white' 
+  // Border for contained variant
+  const borderClasses = variant === 'contained'
+    ? 'border border-light-misc-divider dark:border-dark-misc-divider'
+    : '';
+
+  // State and hover
+  const stateClasses = state === 'selected'
+    ? 'bg-light-accent-main dark:bg-dark-accent-main text-white'
     : 'cursor-pointer';
-
-  // hover
-  const hoverClasses = isHovered ? (variant === 'contained' ? 'hover:bg-dark-background-accent300' : '') : '';
+  const hoverClasses = variant === 'contained' && isHovered
+    ? 'bg-light-background-accent200 dark:bg-dark-background-accent200'
+    : '';
 
   return (
     <div
-      className={`flex items-center space-x-1 rounded-full 
-        ${sizeClasses} ${bgClasses} ${fontClasses} ${stateClasses} ${hoverClasses} 
-        transition-colors duration-300 ease-in-out`}
+      className={`
+        flex items-center space-x-1 rounded-full 
+        ${sizeClasses} ${bgClasses} ${fontClasses} ${borderClasses} ${stateClasses} ${hoverClasses}
+        transition-colors duration-300 ease-in-out
+      `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
     >
       {Icon && <Icon className="w-4 h-4" />}
       <span>{label}</span>
-      {isDeletable && (
-        <button
-          className="ml-2 text-red-500"
-          onClick={(e) => {
-            e.stopPropagation();
-            // Handle delete action
-          }}
-        >
-          {DeleteIcon && <DeleteIcon className="w-4 h-4" />}
-        </button>
-        
-      )}
     </div>
   );
 }
