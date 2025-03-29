@@ -51,7 +51,7 @@ export default function MenuItem({
     <NextLink href={href}>
       <div
         className={`
-          flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start
+          flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out
           ${isSelected
             ? 'bg-light-background-accent200 dark:bg-dark-background-accent200 hover:bg-light-background-accent300 dark:hover:bg-dark-background-accent300'
             : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100'}

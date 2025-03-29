@@ -37,7 +37,7 @@ export default function TextField({
   const [isFocused, setIsFocused] = useState(false);
 
   const baseClasses = 'w-full border rounded-[8px] p-2';
-  const bgColor = 'bg-light-background-default dark:bg-dark-background-default transition-colors duration-300 ease-in-out';
+  const bgColor = 'bg-light-background-default dark:bg-dark-background-default transition-colors duration-200 ease-in-out';
   const borderColor = 'border-light-outlinedBorder-active dark:border-dark-outlinedBorder-active';
   const containerClasses = `
     ${bgColor}

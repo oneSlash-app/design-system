@@ -36,7 +36,7 @@ export default function Tag(_a) {
     var hoverClasses = variant === 'contained' && isHovered
         ? 'bg-light-background-accent200 dark:bg-dark-background-accent200'
         : '';
-    return (<div className={"\n        flex items-center space-x-1 rounded-full \n        ".concat(sizeClasses, " ").concat(bgClasses, " ").concat(fontClasses, " ").concat(borderClasses, " ").concat(stateClasses, " ").concat(hoverClasses, "\n        transition-colors duration-300 ease-in-out\n      ")} onMouseEnter={function () { return setIsHovered(true); }} onMouseLeave={function () { return setIsHovered(false); }} onClick={onClick}>
+    return (<div className={"\n        flex items-center space-x-1 rounded-full \n        ".concat(sizeClasses, " ").concat(bgClasses, " ").concat(fontClasses, " ").concat(borderClasses, " ").concat(stateClasses, " ").concat(hoverClasses, "\n        transition-colors duration-200 ease-in-out\n      ")} onMouseEnter={function () { return setIsHovered(true); }} onMouseLeave={function () { return setIsHovered(false); }} onClick={onClick}>
       {Icon && <Icon className="w-4 h-4"/>}
       <span>{label}</span>
     </div>);

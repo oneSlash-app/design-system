@@ -93,7 +93,7 @@ export default function Button({
 
   // Build the button classes dynamically
   const buttonClasses = `
-    flex flex-row space-x-2 items-center rounded-[8px]
+    flex flex-row space-x-2 items-center rounded-[8px] transition-colors duration-200 ease-in-out
     ${sizeClasses}
     ${state === 'enabled' ? baseTypeClasses : ''}
     ${state === 'focused' ? stateClasses.focused : ''}
@@ -103,7 +103,7 @@ export default function Button({
 
   return (
     <button
-      className={buttonClasses}
+      className={buttonClasses} 
       onMouseEnter={() => { if (state !== 'disabled') setIsHovered(true); }}
       onMouseLeave={() => { if (state !== 'disabled') setIsHovered(false); }}
       onClick={onClickButton} // Button click action

@@ -26,11 +26,11 @@ export default function Checkbox({
     <label className="flex items-center cursor-pointer">
       <div
         onClick={handleToggle}
-        className="relative flex items-center justify-center w-6 h-6 group"
+        className="relative flex items-center justify-center w-6 h-6 group transition-colors duration-200 ease-in-out"
       >
         {/* Circle behind the checkbox */}
         <div
-          className="absolute w-6 h-6 rounded-full group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected transition-all"
+          className="absolute w-6 h-6 rounded-full group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected"
         ></div>
         
         {/* Checkbox */}
@@ -39,7 +39,7 @@ export default function Checkbox({
             isChecked
               ? 'bg-light-text-primary dark:bg-dark-text-primary border-none'
               : 'border-light-text-secondary dark:border-dark-text-secondary'
-          } flex items-center justify-center transition-colors`}
+          } flex items-center justify-center`}
         >
           {isChecked && (
             <svg

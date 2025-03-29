@@ -68,7 +68,7 @@ export default function Tag({
       className={`
         flex items-center space-x-1 rounded-full 
         ${sizeClasses} ${bgClasses} ${fontClasses} ${borderClasses} ${stateClasses} ${hoverClasses}
-        transition-colors duration-300 ease-in-out
+        transition-colors duration-200 ease-in-out
       `}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}

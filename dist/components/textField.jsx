@@ -5,7 +5,7 @@ export default function TextField(_a) {
     iconLeft = _a.iconLeft, iconRight = _a.iconRight, _c = _a.multiline, multiline = _c === void 0 ? false : _c, _d = _a.maxRows, maxRows = _d === void 0 ? 6 : _d, _e = _a.disabled, disabled = _e === void 0 ? false : _e, _f = _a.error, error = _f === void 0 ? false : _f;
     var _g = useState(false), isFocused = _g[0], setIsFocused = _g[1];
     var baseClasses = 'w-full border rounded-[8px] p-2';
-    var bgColor = 'bg-light-background-default dark:bg-dark-background-default transition-colors duration-300 ease-in-out';
+    var bgColor = 'bg-light-background-default dark:bg-dark-background-default transition-colors duration-200 ease-in-out';
     var borderColor = 'border-light-outlinedBorder-active dark:border-dark-outlinedBorder-active';
     var containerClasses = "\n    ".concat(bgColor, "\n    ").concat(borderColor, "\n    ").concat(baseClasses, "\n    ").concat(disabled ? 'bg-gray-200 cursor-not-allowed' : '', "\n    ").concat(error ? 'border-red-500 focus:ring-red-500' : '', "\n    ").concat(isFocused ? 'focus:border-light-accent-main focus:dark:border-dark-accent-main outline-none' : '', "\n    ").concat(!disabled && !error ? 'hover:border-light-outlinedBorder-hover' : '', "\n    border-gray-300\n  ");
     var renderIconRight = function () {
