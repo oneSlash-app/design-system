@@ -78,7 +78,7 @@ module.exports = {
     // dark
     dark:{
       text:{
-        primary: '#FFFFFF',
+        primary: '#eeeeee',
         secondary: '#B0B0B0',
         disabled: '#6D6D6D',
         contrast: '#000000',
