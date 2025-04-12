@@ -1,7 +1,7 @@
 {
   "name": "oneslash-design-system",
   "description": "A design system for the Oneslash projects",
-  "version": "1.1.21",
+  "version": "1.1.25",
   "private": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",

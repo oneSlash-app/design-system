@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import * as HeroIcons24 from '@heroicons/react/24/outline';
 import * as HeroIcons20 from '@heroicons/react/20/solid';
+import { LoadingSmall } from './loadingScreen';
 
 interface IconButtonProps {
   color: "primary" | "secondary" | "tertiary" | "iconOnly";
@@ -9,6 +10,7 @@ interface IconButtonProps {
   size: "large" | "medium" | "small";
   iconName: keyof typeof HeroIcons24 & keyof typeof HeroIcons20;
   onClick?: any;
+  loading?: boolean;
 }
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -19,6 +21,7 @@ export default function IconButton({
   size,
   iconName,
   onClick,
+  loading = false, // Default to false
 }: IconButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -41,7 +44,7 @@ export default function IconButton({
   };
 
   // Base classes (padding and corner radius)
-  const baseClasses = `${sizeClasses[size]} rounded-[8px] leading-none`;
+  const baseClasses = `${sizeClasses[size]} rounded-[8px] leading-none relative`;
 
   // Background color
   const bgColor = color === 'primary'
@@ -70,8 +73,10 @@ export default function IconButton({
     ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary
     : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly
 
-  // state
-  const stateClasses = state === 'disabled'
+  // State classes, including loading
+  const stateClasses = loading
+    ? 'cursor-wait' // Show a waiting cursor during loading
+    : state === 'disabled'
     ? 'cursor-not-allowed opacity-50'
     : state === 'selected'
     ? 'cursor-pointer ring-2 ring-offset-2 ring-blue-500'
@@ -81,13 +86,18 @@ export default function IconButton({
 
   return (
     <button
-      className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses} transition-colors duration-200 ease-in-out`}
-      disabled={state === 'disabled'}
+      className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses} transition-colors duration-200 ease-in-out flex items-center justify-center`}
+      disabled={state === 'disabled' || loading} // Disable button during loading
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
+      aria-label={loading ? 'Loading' : 'Reload'}
     >
-      {Icon && <Icon className={iconSizeClasses[size]} />}
+      {loading ? (
+        <LoadingSmall size={size} /> // Pass the size prop to match the icon
+      ) : (
+        Icon && <Icon className={iconSizeClasses[size]} /> // Show icon when not loading
+      )}
     </button>
   );
 }

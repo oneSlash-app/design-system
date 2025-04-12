@@ -2,9 +2,10 @@
 import React, { useState } from 'react';
 import * as HeroIcons24 from '@heroicons/react/24/outline';
 import * as HeroIcons20 from '@heroicons/react/20/solid';
+import { LoadingSmall } from './loadingScreen';
 export default function IconButton(_a) {
-    var color = _a.color, state = _a.state, size = _a.size, iconName = _a.iconName, onClick = _a.onClick;
-    var _b = useState(false), isHovered = _b[0], setIsHovered = _b[1];
+    var color = _a.color, state = _a.state, size = _a.size, iconName = _a.iconName, onClick = _a.onClick, _b = _a.loading, loading = _b === void 0 ? false : _b;
+    var _c = useState(false), isHovered = _c[0], setIsHovered = _c[1];
     // Select icon based on size
     var Icon = size === 'small'
         ? HeroIcons20[iconName]
@@ -21,7 +22,7 @@ export default function IconButton(_a) {
         small: 'size-5', // 20px
     };
     // Base classes (padding and corner radius)
-    var baseClasses = "".concat(sizeClasses[size], " rounded-[8px] leading-none");
+    var baseClasses = "".concat(sizeClasses[size], " rounded-[8px] leading-none relative");
     // Background color
     var bgColor = color === 'primary'
         ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary
@@ -46,15 +47,20 @@ export default function IconButton(_a) {
             : color === 'tertiary'
                 ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary
                 : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly
-    // state
-    var stateClasses = state === 'disabled'
-        ? 'cursor-not-allowed opacity-50'
-        : state === 'selected'
-            ? 'cursor-pointer ring-2 ring-offset-2 ring-blue-500'
-            : isHovered
-                ? 'cursor-pointer hover:bg-opacity-75'
-                : 'cursor-pointer';
-    return (<button className={"".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses)} disabled={state === 'disabled'} onMouseEnter={function () { return setIsHovered(true); }} onMouseLeave={function () { return setIsHovered(false); }} onClick={onClick}>
-      {Icon && <Icon className={iconSizeClasses[size]}/>}
+    // State classes, including loading
+    var stateClasses = loading
+        ? 'cursor-wait' // Show a waiting cursor during loading
+        : state === 'disabled'
+            ? 'cursor-not-allowed opacity-50'
+            : state === 'selected'
+                ? 'cursor-pointer ring-2 ring-offset-2 ring-blue-500'
+                : isHovered
+                    ? 'cursor-pointer hover:bg-opacity-75'
+                    : 'cursor-pointer';
+    return (<button className={"".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses, " transition-colors duration-200 ease-in-out flex items-center justify-center")} disabled={state === 'disabled' || loading} // Disable button during loading
+     onMouseEnter={function () { return setIsHovered(true); }} onMouseLeave={function () { return setIsHovered(false); }} onClick={onClick} aria-label={loading ? 'Loading' : 'Reload'}>
+      {loading ? (<LoadingSmall size={size}/> // Pass the size prop to match the icon
+        ) : (Icon && <Icon className={iconSizeClasses[size]}/> // Show icon when not loading
+        )}
     </button>);
 }

@@ -4,7 +4,7 @@ interface TagProps {
     variant: 'contained' | 'textOnly';
     size: 'medium' | 'small';
     state?: 'enabled' | 'selected';
-    label: string;
+    label: React.ReactNode;
     iconName?: keyof typeof HeroIcons;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
     color?: 'default' | 'info';

@@ -222,7 +222,7 @@ module.exports = {
       weight: '400',
       size: '12px',
       lineHeight: '150%',
-      letterSpacing: '1.2px',
+      letterSpacing: '0.5px',
     },
     alignments: {
       left: 'left',

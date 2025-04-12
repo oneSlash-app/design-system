@@ -125,7 +125,7 @@ export default function Button(_a) {
             : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',
     };
     // Build the button classes dynamically
-    var buttonClasses = "\n    flex flex-row space-x-2 items-center rounded-[8px]\n    ".concat(sizeClasses, "\n    ").concat(state === 'enabled' ? baseTypeClasses : '', "\n    ").concat(state === 'focused' ? stateClasses.focused : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : baseTypeClasses, "\n    ").concat(state !== 'disabled' && isHovered ? hoverTypeClasses : '', "\n    ");
+    var buttonClasses = "\n    flex flex-row space-x-2 items-center rounded-[8px] transition-colors duration-200 ease-in-out\n    ".concat(sizeClasses, "\n    ").concat(state === 'enabled' ? baseTypeClasses : '', "\n    ").concat(state === 'focused' ? stateClasses.focused : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : baseTypeClasses, "\n    ").concat(state !== 'disabled' && isHovered ? hoverTypeClasses : '', "\n    ");
     return (<button className={buttonClasses} onMouseEnter={function () { if (state !== 'disabled')
         setIsHovered(true); }} onMouseLeave={function () { if (state !== 'disabled')
         setIsHovered(false); }} onClick={onClickButton} // Button click action

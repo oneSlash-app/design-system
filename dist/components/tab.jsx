@@ -99,7 +99,7 @@ export default function Tab(_a) {
             router.push(href);
         }
     };
-    return (<div className={"\n        flex items-center space-x-1 py-1 px-[6px] rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-outh\n        ".concat(isSelected
+    return (<div className={"\n        flex items-center space-x-1 py-1 px-[6px] rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out\n        ".concat(isSelected
             ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
             : 'hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200', "\n      ")} onClick={handleClick}>
       {IconLeft && <IconLeft className="w-6 h-6"/>}

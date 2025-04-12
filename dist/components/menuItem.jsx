@@ -42,7 +42,6 @@ export default function MenuItem(_a) {
     var _this = this;
     var _b = _a.href, href = _b === void 0 ? '#' : _b, iconName = _a.iconName, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, isSelected = _a.isSelected, onClick = _a.onClick;
     var _c = useState(null), IconLeft = _c[0], setIconLeft = _c[1];
-    // Import icon dynamically
     var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
         var module_1, IconComponent, error_1;
         return __generator(this, function (_a) {
@@ -85,14 +84,14 @@ export default function MenuItem(_a) {
         fetchIcon();
     }, [iconName, loadIcon]);
     return (<NextLink href={href}>
-      <div className={"\n          flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start\n          ".concat(isSelected
+      <div className={"\n          flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out\n          ".concat(isSelected
             ? 'bg-light-background-accent200 dark:bg-dark-background-accent200 hover:bg-light-background-accent300 dark:hover:bg-dark-background-accent300'
             : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100', "\n        ")} style={{ width: '100%' }} onClick={onClick}>
-        {/* render userImage. render dynamic icon if userImage is not available */}
-        {userImgUrl || userHandle ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl || ''}/>) : (IconLeft && <IconLeft className="w-6 h-6"/>)}
+        {/* Render UserImage or dynamic icon */}
+        {userImgUrl || userHandle ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl || ''}/>) : (IconLeft && (<IconLeft className="w-6 h-6 text-light-text-secondary dark:text-dark-text-secondary"/>))}
 
-        {/* label */}
-        <span className="whitespace-nowrap text-body1 px-2 text-light-text-secondary dark:text-dark-text-secondary">
+        {/* Label */}
+        <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
           {label}
         </span>
       </div>

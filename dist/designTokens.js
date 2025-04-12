@@ -78,7 +78,7 @@ module.exports = {
         // dark
         dark: {
             text: {
-                primary: '#ebebeb',
+                primary: '#eeeeee',
                 secondary: '#B0B0B0',
                 disabled: '#6D6D6D',
                 contrast: '#000000',
@@ -220,7 +220,7 @@ module.exports = {
             weight: '400',
             size: '12px',
             lineHeight: '150%',
-            letterSpacing: '1.2px',
+            letterSpacing: '0.5px',
         },
         alignments: {
             left: 'left',
