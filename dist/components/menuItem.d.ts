@@ -7,6 +7,7 @@ interface MenuItemProps {
     label: string;
     isSelected?: boolean;
     onClick?: any;
+    className?: string;
 }
-export default function MenuItem({ href, iconName, userHandle, userImgUrl, label, isSelected, onClick, }: MenuItemProps): React.JSX.Element;
+export default function MenuItem({ href, iconName, userHandle, userImgUrl, label, isSelected, onClick, className, }: MenuItemProps): React.JSX.Element;
 export {};

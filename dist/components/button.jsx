@@ -38,11 +38,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import React, { useState, useEffect, useCallback } from 'react';
 export default function Button(_a) {
     var _this = this;
-    var size = _a.size, type = _a.type, state = _a.state, label = _a.label, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon;
-    var _b = useState(false), isHovered = _b[0], setIsHovered = _b[1];
-    var _c = useState(null), IconLeft = _c[0], setIconLeft = _c[1];
-    var _d = useState(null), IconRight = _d[0], setIconRight = _d[1];
-    // Import icon dynamically
+    var size = _a.size, type = _a.type, state = _a.state, label = _a.label, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _b = _a.className, className = _b === void 0 ? '' : _b;
+    var _c = useState(false), isHovered = _c[0], setIsHovered = _c[1];
+    var _d = useState(null), IconLeft = _d[0], setIconLeft = _d[1];
+    var _e = useState(null), IconRight = _e[0], setIconRight = _e[1];
     var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
         var module_1, Icon, error_1;
         return __generator(this, function (_a) {
@@ -91,19 +90,16 @@ export default function Button(_a) {
         }); };
         fetchIcons();
     }, [decoIcon, actionIcon, loadIcon]);
-    // Define classes for size
     var sizeClasses = {
         large: 'text-body1 p-2',
         medium: 'text-body1 p-1',
         small: 'text-body2 p-1',
     }[size];
-    // Define icon size classes
     var sizeIcon = {
         large: 'w-6 h-6',
         medium: 'w-5 h-5',
         small: 'w-4 h-4',
     }[size];
-    // Define classes for button types
     var baseTypeClasses = {
         primary: 'bg-light-accent-main dark:bg-dark-accent-main text-light-text-primary dark:text-dark-text-contrast',
         secondary: 'bg-light-secondary-main dark:bg-dark-secondary-main text-light-text-primary dark:text-dark-text-primary',
@@ -116,7 +112,6 @@ export default function Button(_a) {
         tertiary: 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200',
         textOnly: 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100',
     }[type];
-    // State classes
     var stateClasses = {
         enabled: 'cursor-pointer',
         focused: 'ring-2 ring-offset-4 ring-offset-light-background-default dark:ring-offset-dark-background-default ring-light-accent-main dark:ring-dark-accent-main',
@@ -124,15 +119,14 @@ export default function Button(_a) {
             ? 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-transparent'
             : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',
     };
-    // Build the button classes dynamically
-    var buttonClasses = "\n    flex flex-row space-x-2 items-center rounded-[8px] transition-colors duration-200 ease-in-out\n    ".concat(sizeClasses, "\n    ").concat(state === 'enabled' ? baseTypeClasses : '', "\n    ").concat(state === 'focused' ? stateClasses.focused : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : baseTypeClasses, "\n    ").concat(state !== 'disabled' && isHovered ? hoverTypeClasses : '', "\n    ");
+    var buttonClasses = "\n    flex flex-row items-center rounded-[8px] transition-colors duration-200 ease-in-out justify-between\n    ".concat(sizeClasses, "\n    ").concat(state === 'enabled' ? baseTypeClasses : '', "\n    ").concat(state === 'focused' ? stateClasses.focused : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : baseTypeClasses, "\n    ").concat(state !== 'disabled' && isHovered ? hoverTypeClasses : '', "\n    ").concat(className, "\n  ");
     return (<button className={buttonClasses} onMouseEnter={function () { if (state !== 'disabled')
         setIsHovered(true); }} onMouseLeave={function () { if (state !== 'disabled')
-        setIsHovered(false); }} onClick={onClickButton} // Button click action
-    >
-      {IconLeft && (<IconLeft className={sizeIcon}/>)}
-      <div className="flex-1 whitespace-nowrap overflow-hidden truncate px-2">
-        {label}
+        setIsHovered(false); }} onClick={onClickButton}>
+      {/* Group IconLeft and label in a flex container for left alignment */}
+      <div className="flex items-center space-x-2">
+        {IconLeft && <IconLeft className={sizeIcon}/>}
+        <div className="whitespace-nowrap overflow-hidden truncate">{label}</div>
       </div>
       {IconRight && (<div onClick={onClickActionIcon} className="cursor-pointer">
           <IconRight className={sizeIcon}/>

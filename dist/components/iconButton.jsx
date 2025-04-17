@@ -38,7 +38,7 @@ export default function IconButton(_a) {
             ? 'hover:bg-light-secondary-dark hover:dark:bg-dark-secondary-dark' // Secondary
             : color === 'tertiary'
                 ? 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200' // Tertiary
-                : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100'; // iconOnly
+                : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'; // iconOnly
     // Icon color
     var iconColor = color === 'primary'
         ? 'text-light-text-primary dark:text-dark-text-contrast' // Primary

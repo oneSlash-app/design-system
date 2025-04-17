@@ -40,7 +40,7 @@ import NextLink from 'next/link';
 import UserImage from './userImage';
 export default function MenuItem(_a) {
     var _this = this;
-    var _b = _a.href, href = _b === void 0 ? '#' : _b, iconName = _a.iconName, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, isSelected = _a.isSelected, onClick = _a.onClick;
+    var href = _a.href, iconName = _a.iconName, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, isSelected = _a.isSelected, onClick = _a.onClick, _b = _a.className, className = _b === void 0 ? '' : _b;
     var _c = useState(null), IconLeft = _c[0], setIconLeft = _c[1];
     var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
         var module_1, IconComponent, error_1;
@@ -83,17 +83,13 @@ export default function MenuItem(_a) {
         }); };
         fetchIcon();
     }, [iconName, loadIcon]);
-    return (<NextLink href={href}>
-      <div className={"\n          flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out\n          ".concat(isSelected
-            ? 'bg-light-background-accent200 dark:bg-dark-background-accent200 hover:bg-light-background-accent300 dark:hover:bg-dark-background-accent300'
-            : 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100', "\n        ")} style={{ width: '100%' }} onClick={onClick}>
-        {/* Render UserImage or dynamic icon */}
-        {userImgUrl || userHandle ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl || ''}/>) : (IconLeft && (<IconLeft className="w-6 h-6 text-light-text-secondary dark:text-dark-text-secondary"/>))}
-
-        {/* Label */}
-        <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
-          {label}
-        </span>
-      </div>
-    </NextLink>);
+    var content = (<div className={"\n        flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out\n        ".concat(isSelected
+            ? 'bg-light-background-accent300 dark:bg-dark-background-accent300 hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'
+            : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200', "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick}>
+      {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className="w-6 h-6 text-light-text-secondary dark:text-dark-text-secondary"/>))}
+      <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
+        {label}
+      </span>
+    </div>);
+    return href ? <NextLink href={href}>{content}</NextLink> : content;
 }

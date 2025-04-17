@@ -8,6 +8,7 @@ interface ButtonProps {
     actionIcon?: string;
     onClickButton?: any;
     onClickActionIcon?: () => void;
+    className?: string;
 }
-export default function Button({ size, type, state, label, decoIcon, actionIcon, onClickButton, onClickActionIcon, }: ButtonProps): React.JSX.Element;
+export default function Button({ size, type, state, label, decoIcon, actionIcon, onClickButton, onClickActionIcon, className, }: ButtonProps): React.JSX.Element;
 export {};

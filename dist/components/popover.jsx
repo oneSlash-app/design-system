@@ -45,7 +45,7 @@ export default function Popover(_a) {
     if (!open || !hasMounted || !anchorEl)
         return null;
     // Render popover in a portal to prevent layout shifts and positioning issues
-    return createPortal(<div id={id} ref={setPopoverElement} style={__assign(__assign({}, styles.popper), { display: open ? 'block' : 'none' })} {...attributes.popper} className="bg-light-background-accent100 dark:bg-dark-background-accent100 rounded-[8px] shadow-lg p-2" role="dialog">
+    return createPortal(<div id={id} ref={setPopoverElement} style={__assign(__assign({}, styles.popper), { display: open ? 'block' : 'none' })} {...attributes.popper} className="bg-light-background-accent300 dark:bg-dark-background-accent300 rounded-[8px] shadow-lg p-2" role="dialog">
       {children}
     </div>, document.body // Mounting the popover in the document body for isolation
     );
