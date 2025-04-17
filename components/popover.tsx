@@ -59,7 +59,7 @@ export default function Popover({
       ref={setPopoverElement}
       style={{ ...styles.popper, display: open ? 'block' : 'none' }}
       {...attributes.popper}
-      className="bg-light-background-accent100 dark:bg-dark-background-accent100 rounded-[8px] shadow-lg p-2"
+      className="bg-light-background-accent300 dark:bg-dark-background-accent300 rounded-[8px] shadow-lg p-2"
       role="dialog"
     >
       {children}

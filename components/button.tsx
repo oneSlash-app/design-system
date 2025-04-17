@@ -1,15 +1,16 @@
 'use client';
 import React, { useState, useEffect, useCallback } from 'react';
 
-interface ButtonProps{
+interface ButtonProps {
   size: 'small' | 'medium' | 'large';
   type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
   state: 'enabled' | 'hovered' | 'focused' | 'disabled';
   label: string;
   decoIcon?: string;
   actionIcon?: string;
-  onClickButton?: any; 
+  onClickButton?: any;
   onClickActionIcon?: () => void;
+  className?: string;
 }
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -23,12 +24,12 @@ export default function Button({
   actionIcon,
   onClickButton,
   onClickActionIcon,
+  className = '',
 }: ButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [IconLeft, setIconLeft] = useState<IconType | null>(null);
   const [IconRight, setIconRight] = useState<IconType | null>(null);
 
-  // Import icon dynamically
   const loadIcon = useCallback(async (iconName?: string) => {
     if (!iconName) return null;
     try {
@@ -53,21 +54,18 @@ export default function Button({
     fetchIcons();
   }, [decoIcon, actionIcon, loadIcon]);
 
-  // Define classes for size
   const sizeClasses = {
     large: 'text-body1 p-2',
     medium: 'text-body1 p-1',
     small: 'text-body2 p-1',
   }[size];
 
-  // Define icon size classes
   const sizeIcon = {
     large: 'w-6 h-6',
     medium: 'w-5 h-5',
     small: 'w-4 h-4',
   }[size];
 
-  // Define classes for button types
   const baseTypeClasses = {
     primary: 'bg-light-accent-main dark:bg-dark-accent-main text-light-text-primary dark:text-dark-text-contrast',
     secondary: 'bg-light-secondary-main dark:bg-dark-secondary-main text-light-text-primary dark:text-dark-text-primary',
@@ -82,7 +80,6 @@ export default function Button({
     textOnly: 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100',
   }[type];
 
-  // State classes
   const stateClasses = {
     enabled: 'cursor-pointer',
     focused: 'ring-2 ring-offset-4 ring-offset-light-background-default dark:ring-offset-dark-background-default ring-light-accent-main dark:ring-dark-accent-main',
@@ -91,28 +88,27 @@ export default function Button({
       : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',
   };
 
-  // Build the button classes dynamically
   const buttonClasses = `
-    flex flex-row space-x-2 items-center rounded-[8px] transition-colors duration-200 ease-in-out
+    flex flex-row items-center rounded-[8px] transition-colors duration-200 ease-in-out justify-between
     ${sizeClasses}
     ${state === 'enabled' ? baseTypeClasses : ''}
     ${state === 'focused' ? stateClasses.focused : ''}
     ${state === 'disabled' ? stateClasses.disabled : baseTypeClasses}
     ${state !== 'disabled' && isHovered ? hoverTypeClasses : ''}
-    `;
+    ${className}
+  `;
 
   return (
     <button
-      className={buttonClasses} 
+      className={buttonClasses}
       onMouseEnter={() => { if (state !== 'disabled') setIsHovered(true); }}
       onMouseLeave={() => { if (state !== 'disabled') setIsHovered(false); }}
-      onClick={onClickButton} // Button click action
+      onClick={onClickButton}
     >
-      {IconLeft && (
-          <IconLeft className={sizeIcon} />
-      )}
-      <div className="flex-1 whitespace-nowrap overflow-hidden truncate px-2">
-        {label}
+      {/* Group IconLeft and label in a flex container for left alignment */}
+      <div className="flex items-center space-x-2">
+        {IconLeft && <IconLeft className={sizeIcon} />}
+        <div className="whitespace-nowrap overflow-hidden truncate">{label}</div>
       </div>
       {IconRight && (
         <div onClick={onClickActionIcon} className="cursor-pointer">

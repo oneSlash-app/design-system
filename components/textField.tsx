@@ -16,6 +16,7 @@ interface TextFieldProps {
   maxRows?: number;
   disabled?: boolean;
   error?: boolean;
+  size?: 'large' | 'medium' | 'small';
 }
 
 export default function TextField({
@@ -33,16 +34,25 @@ export default function TextField({
   maxRows = 6,
   disabled = false,
   error = false,
+  size = 'medium',
 }: TextFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
 
-  const baseClasses = 'w-full border rounded-[8px] p-2';
+  // Define classes for size: text size and padding
+  const sizeClasses = {
+    large: 'text-body1 p-[7px] leading-[22px]', // body1 (16px), padding 8px(7 + border 1) height 40
+    medium: 'text-body1 p-[3px] leading-[22px]', // body1 (16px), padding 4px(3 + border 1), height 32
+    small: 'text-body2 p-[3px] leading-[18px]', // body2 (14px), padding 4px(3 + border 1), height 28
+  }[size];
+
+  const baseClasses = 'w-full border rounded-[8px]';
   const bgColor = 'bg-light-background-default dark:bg-dark-background-default transition-colors duration-200 ease-in-out';
   const borderColor = 'border-light-outlinedBorder-active dark:border-dark-outlinedBorder-active';
   const containerClasses = `
     ${bgColor}
     ${borderColor}
     ${baseClasses}
+    ${sizeClasses}
     ${disabled ? 'bg-gray-200 cursor-not-allowed' : ''}
     ${error ? 'border-red-500 focus:ring-red-500' : ''}
     ${isFocused ? 'focus:border-light-accent-main focus:dark:border-dark-accent-main outline-none' : ''}
@@ -96,6 +106,7 @@ export default function TextField({
             onKeyDown={onKeyDown}
             autoFocus={autoFocus} // Pass autoFocus to textarea
             disabled={disabled}
+            autoComplete="off" // Disable browser autocomplete/autofill
           />
         ) : (
           <input
@@ -115,6 +126,7 @@ export default function TextField({
             onKeyDown={onKeyDown}
             autoFocus={autoFocus} // Pass autoFocus to input
             disabled={disabled}
+            autoComplete="off" // Disable browser autocomplete/autofill
           />
         )}
       </div>
