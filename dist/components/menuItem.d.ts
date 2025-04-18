@@ -1,4 +1,4 @@
-import React from 'react';
+import { JSX } from 'react';
 interface MenuItemProps {
     href?: string;
     iconName?: string;
@@ -9,5 +9,5 @@ interface MenuItemProps {
     onClick?: any;
     className?: string;
 }
-export default function MenuItem({ href, iconName, userHandle, userImgUrl, label, isSelected, onClick, className, }: MenuItemProps): React.JSX.Element;
+export default function MenuItem({ href, iconName, userHandle, userImgUrl, label, isSelected, onClick, className, }: MenuItemProps): JSX.Element;
 export {};

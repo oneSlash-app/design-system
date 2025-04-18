@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useEffect, useCallback, SVGProps } from 'react';
+import React, { useState, useEffect, useCallback, SVGProps, JSX } from 'react';
 import NextLink from 'next/link';
 import UserImage from './userImage';
 
