@@ -8,10 +8,8 @@ interface TextFieldProps {
   onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;// Specify the event type for both input and textarea
   onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;// Handle blur event for input/textarea
   onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;// Handle focus event for input/textarea
-  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void; // Add onKeyDown
+  onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   autoFocus?: boolean;
-  iconLeft?: React.ReactNode;
-  iconRight?: React.ReactNode | React.ComponentType<any>;
   multiline?: boolean;
   maxRows?: number;
   disabled?: boolean;
@@ -28,8 +26,6 @@ export default function TextField({
   onFocus,
   onKeyDown,
   autoFocus = false, // Accept the autoFocus prop with default value
-  iconLeft,
-  iconRight,
   multiline = false,
   maxRows = 6,
   disabled = false,
@@ -60,16 +56,6 @@ export default function TextField({
     border-gray-300
   `;
 
-  const renderIconRight = () => {
-    if (React.isValidElement(iconRight)) {
-      return iconRight;
-    }
-    if (typeof iconRight === 'function') {
-      return React.createElement(iconRight); 
-    }
-    return null;
-  };
-
   return (
     <div className="flex flex-col w-full">
       {label && (
@@ -78,16 +64,6 @@ export default function TextField({
         </label>
       )}
       <div className="relative">
-        {iconLeft && (
-          <span className="absolute inset-y-0 left-0 pl-3 flex items-center">
-            {iconLeft}
-          </span>
-        )}
-        {iconRight && (
-          <span className="absolute inset-y-0 right-0 pr-3 flex items-center">
-            {renderIconRight()}
-          </span>
-        )}
         {multiline ? (
           <textarea
             id={id}

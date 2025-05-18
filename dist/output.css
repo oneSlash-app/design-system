@@ -549,16 +549,6 @@ video {
   left: 0px;
   right: 0px;
 }
-.inset-y-0 {
-  top: 0px;
-  bottom: 0px;
-}
-.left-0 {
-  left: 0px;
-}
-.right-0 {
-  right: 0px;
-}
 .top-4 {
   top: 1rem;
 }
@@ -887,12 +877,6 @@ video {
 .py-\[3px\] {
   padding-top: 3px;
   padding-bottom: 3px;
-}
-.pl-3 {
-  padding-left: 0.75rem;
-}
-.pr-3 {
-  padding-right: 0.75rem;
 }
 .text-center {
   text-align: center;

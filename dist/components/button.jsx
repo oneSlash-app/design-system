@@ -124,9 +124,9 @@ export default function Button(_a) {
         setIsHovered(true); }} onMouseLeave={function () { if (state !== 'disabled')
         setIsHovered(false); }} onClick={onClickButton}>
       {/* Group IconLeft and label in a flex container for left alignment */}
-      <div className="flex items-center space-x-2">
+      <div className="flex items-center">
         {IconLeft && <IconLeft className={sizeIcon}/>}
-        <div className="whitespace-nowrap overflow-hidden truncate">{label}</div>
+        <div className="whitespace-nowrap overflow-hidden truncate px-2">{label}</div>
       </div>
       {IconRight && (<div onClick={onClickActionIcon} className="cursor-pointer">
           <IconRight className={sizeIcon}/>
