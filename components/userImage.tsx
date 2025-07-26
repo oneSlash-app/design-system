@@ -6,12 +6,6 @@ interface UserImageProps {
   userImgUrl?: string;
 }
 
-//read initials from userHandle
-function getInitials(userHandle: string): string {
-  const words = userHandle.trim().split(/\s+/);
-  return words.slice(0, 2).map(word => word.charAt(0).toUpperCase()).join('');
-}
-
 function getColorSeed(userHandle: string): string {
   const words = userHandle.trim().split(/\s+/);
   let letters = words.map(word => word.charAt(0).toLowerCase());
@@ -33,19 +27,18 @@ function getHash(str: string): number {
   return hash;
 }
 
-export default function UserImage({ 
-	userHandle, 
-	userImgUrl,
- }: UserImageProps) {
-
+export default function UserImage({
+  userHandle,
+  userImgUrl,
+}: UserImageProps) {
   const displayInitial = userHandle.charAt(0).toUpperCase() || 'A';
   const seed = getColorSeed(userHandle);
   const hue = Math.abs(getHash(seed)) % 360;
 
-  // Light mode: lighter pastel
-  const lightBg = `hsl(${hue}, 20%, 80%)`;
-  // Dark mode: darker variant
-  const darkBg = `hsl(${hue}, 20%, 30%)`;
+  // Light mode: vibrant pastel
+  const lightBg = `hsl(${hue}, 80%, 80%)`;
+  // Dark mode: darker, vibrant variant
+  const darkBg = `hsl(${hue}, 80%, 30%)`;
 
   return (
     <div
@@ -53,9 +46,7 @@ export default function UserImage({
         '--light-bg': lightBg,
         '--dark-bg': darkBg,
       } as React.CSSProperties}
-      className={`flex items-center justify-center w-6 h-6 rounded-full overflow-hidden
-        bg-[var(--light-bg)] dark:bg-[var(--dark-bg)]
-        text-light-text-secondary dark:text-dark-text-secondary`}
+      className="flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-[var(--light-bg)] dark:bg-[var(--dark-bg)] text-light-text-secondary dark:text-dark-text-secondary"
     >
       {userImgUrl ? (
         <img
