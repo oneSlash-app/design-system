@@ -14,7 +14,7 @@ export default function Navigation({
     <nav
       className={`
         bg-light-background-default dark:bg-dark-background-default
-        border-r border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled
+        border-r border-light-misc-divider dark:border-dark-misc-divider
         p-[10px]
         ${className}
       `}
