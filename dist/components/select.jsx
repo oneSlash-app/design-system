@@ -1,0 +1,235 @@
+'use client';
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (g && (g = 0, op[0] && (_ = 0)), _) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import Menu from './menu';
+import MenuItem from './menuItem';
+export default function Select(_a) {
+    var _this = this;
+    var value = _a.value, options = _a.options, onChange = _a.onChange, _b = _a.disabled, disabled = _b === void 0 ? false : _b, _c = _a.placeholder, placeholder = _c === void 0 ? 'Label' : _c, decoIconName = _a.decoIconName, width = _a.width, _d = _a.multiple, multiple = _d === void 0 ? false : _d, _e = _a.className, className = _e === void 0 ? '' : _e;
+    var _f = useState(false), isOpen = _f[0], setIsOpen = _f[1];
+    var _g = useState(false), isFocused = _g[0], setIsFocused = _g[1];
+    var _h = useState(false), isHovered = _h[0], setIsHovered = _h[1];
+    var _j = useState(null), DecoIcon = _j[0], setDecoIcon = _j[1];
+    var _k = useState(false), mounted = _k[0], setMounted = _k[1];
+    var selectRef = useRef(null);
+    var menuRef = useRef(null);
+    // Handle SSR
+    useEffect(function () {
+        setMounted(true);
+    }, []);
+    // Load decoration icon
+    var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
+        var module_1, IconComponent, error_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!iconName)
+                        return [2 /*return*/, null];
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, import('@heroicons/react/24/outline')];
+                case 2:
+                    module_1 = _a.sent();
+                    IconComponent = module_1[iconName];
+                    return [2 /*return*/, IconComponent || null];
+                case 3:
+                    error_1 = _a.sent();
+                    console.error("Failed to load icon ".concat(iconName, ":"), error_1);
+                    return [2 /*return*/, null];
+                case 4: return [2 /*return*/];
+            }
+        });
+    }); }, []);
+    useEffect(function () {
+        var fetchIcon = function () { return __awaiter(_this, void 0, void 0, function () {
+            var _a;
+            return __generator(this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        if (!decoIconName) return [3 /*break*/, 2];
+                        _a = setDecoIcon;
+                        return [4 /*yield*/, loadIcon(decoIconName)];
+                    case 1:
+                        _a.apply(void 0, [_b.sent()]);
+                        _b.label = 2;
+                    case 2: return [2 /*return*/];
+                }
+            });
+        }); };
+        fetchIcon();
+    }, [decoIconName, loadIcon]);
+    // Close menu when clicking outside
+    useEffect(function () {
+        if (!mounted)
+            return;
+        var handleClickOutside = function (event) {
+            if (selectRef.current &&
+                menuRef.current &&
+                !selectRef.current.contains(event.target) &&
+                !menuRef.current.contains(event.target)) {
+                setIsOpen(false);
+                setIsFocused(false);
+            }
+        };
+        if (isOpen) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        return function () {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isOpen, mounted]);
+    var handleToggle = function () {
+        if (disabled)
+            return;
+        setIsOpen(!isOpen);
+        setIsFocused(!isOpen);
+    };
+    var handleSelect = function (optionValue) {
+        if (multiple) {
+            var currentValues = Array.isArray(value) ? value : [];
+            var newValues = currentValues.includes(optionValue)
+                ? currentValues.filter(function (v) { return v !== optionValue; })
+                : __spreadArray(__spreadArray([], currentValues, true), [optionValue], false);
+            onChange === null || onChange === void 0 ? void 0 : onChange(newValues);
+        }
+        else {
+            onChange === null || onChange === void 0 ? void 0 : onChange(optionValue);
+            setIsOpen(false);
+            setIsFocused(false);
+        }
+    };
+    var getDisplayLabel = function () {
+        var _a;
+        if (!value)
+            return placeholder;
+        if (multiple && Array.isArray(value)) {
+            if (value.length === 0)
+                return placeholder;
+            var labels = value
+                .map(function (v) { var _a; return (_a = options.find(function (opt) { return opt.value === v; })) === null || _a === void 0 ? void 0 : _a.label; })
+                .filter(Boolean);
+            return labels.join(', ');
+        }
+        return ((_a = options.find(function (opt) { return opt.value === value; })) === null || _a === void 0 ? void 0 : _a.label) || placeholder;
+    };
+    var isSelected = function (optionValue) {
+        if (multiple && Array.isArray(value)) {
+            return value.includes(optionValue);
+        }
+        return value === optionValue;
+    };
+    // Determine border styles based on state
+    var getBorderStyles = function () {
+        if (disabled) {
+            return 'border border-light-actionOutlinedBorder-disabled dark:border-dark-actionOutlinedBorder-disabled';
+        }
+        if (isFocused || isOpen) {
+            return 'border border-light-accent-main dark:border-dark-accent-main outline outline-1 outline-light-accent-main dark:outline-dark-accent-main outline-offset-0';
+        }
+        if (isHovered) {
+            return 'border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled';
+        }
+        return 'border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled';
+    };
+    // Determine background color
+    var getBackgroundColor = function () {
+        if (isHovered && !isOpen && !disabled) {
+            return 'bg-light-action-hover dark:bg-dark-action-hover';
+        }
+        return 'bg-light-background-default dark:bg-dark-background-default';
+    };
+    // Determine text color
+    var getTextColor = function () {
+        if (disabled) {
+            return 'text-light-text-disabled dark:text-dark-text-disabled';
+        }
+        return 'text-light-text-primary dark:text-dark-text-primary';
+    };
+    // Determine icon color
+    var getIconColor = function () {
+        if (disabled) {
+            return 'text-light-text-disabled dark:text-dark-text-disabled';
+        }
+        return 'text-light-text-secondary dark:text-dark-text-secondary';
+    };
+    return (<div className={"relative ".concat(className)} style={{ width: width || '100%' }}>
+      {/* Select Button */}
+      <div ref={selectRef} className={"\n          rounded-[8px]\n          ".concat(getBorderStyles(), "\n          ").concat(getBackgroundColor(), "\n          ").concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer', "\n          transition-all duration-200 ease-in-out\n          outline-none\n        ")} onClick={handleToggle} onMouseEnter={function () { return !disabled && setIsHovered(true); }} onMouseLeave={function () { return setIsHovered(false); }} tabIndex={disabled ? -1 : 0} onKeyDown={function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                handleToggle();
+            }
+        }}>
+        {/* Inner Content Container with Padding */}
+        <div className={"flex items-center justify-between p-2 ".concat(getTextColor())}>
+          {/* Content Container */}
+          <div className="flex items-center space-x-1 flex-1 overflow-hidden">
+            {/* Optional Decoration Icon */}
+            {DecoIcon && (<DecoIcon className={"w-6 h-6 flex-shrink-0 ".concat(getIconColor())}/>)}
+
+            {/* Display Text */}
+            <span className="text-body1 truncate">
+              {getDisplayLabel()}
+            </span>
+          </div>
+
+          {/* Chevron Icon */}
+          <ChevronDownIcon className={"\n              w-6 h-6 flex-shrink-0 ml-1\n              ".concat(getIconColor(), "\n              transition-transform duration-200\n              ").concat(isOpen ? 'transform rotate-180' : '', "\n            ")}/>
+        </div>
+      </div>
+
+      {/* Dropdown Menu */}
+      {mounted && isOpen && (<div className="absolute z-50 mt-1 left-0" style={{ width: width || '100%' }}>
+          <Menu ref={menuRef} width={width || '100%'}>
+            {options.map(function (option) { return (<MenuItem key={option.value} label={option.label} iconName={option.iconName} isSelected={isSelected(option.value)} onClick={function () { return handleSelect(option.value); }} className="w-full"/>); })}
+          </Menu>
+        </div>)}
+    </div>);
+}
+export { Select };
