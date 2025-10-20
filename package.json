@@ -1,10 +1,13 @@
 {
   "name": "oneslash-design-system",
   "description": "A design system for the Oneslash projects",
-  "version": "1.2.3",
+  "version": "1.2.5",
   "private": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "tsc && postcss index.css -o dist/output.css",
