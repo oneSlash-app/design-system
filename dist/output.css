@@ -530,6 +530,12 @@ video {
     max-width: 1536px;
   }
 }
+.pointer-events-none {
+  pointer-events: none;
+}
+.pointer-events-auto {
+  pointer-events: auto;
+}
 .visible {
   visibility: visible;
 }
@@ -552,8 +558,8 @@ video {
 .left-0 {
   left: 0px;
 }
-.top-4 {
-  top: 1rem;
+.top-0 {
+  top: 0px;
 }
 .z-10 {
   z-index: 10;
@@ -687,6 +693,9 @@ video {
 .flex-col {
   flex-direction: column;
 }
+.items-start {
+  align-items: flex-start;
+}
 .items-center {
   align-items: center;
 }
@@ -698,6 +707,9 @@ video {
 }
 .justify-between {
   justify-content: space-between;
+}
+.gap-2 {
+  gap: 0.5rem;
 }
 .space-x-1 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
@@ -858,6 +870,10 @@ video {
   --tw-bg-opacity: 1;
   background-color: rgb(38 38 38 / var(--tw-bg-opacity));
 }
+.bg-light-secondary-light {
+  --tw-bg-opacity: 1;
+  background-color: rgb(209 209 209 / var(--tw-bg-opacity));
+}
 .bg-light-secondary-main {
   --tw-bg-opacity: 1;
   background-color: rgb(176 176 176 / var(--tw-bg-opacity));
@@ -888,9 +904,6 @@ video {
 }
 .p-2 {
   padding: 0.5rem;
-}
-.p-4 {
-  padding: 1rem;
 }
 .p-6 {
   padding: 1.5rem;
@@ -943,13 +956,6 @@ video {
 .text-h6 {
   font-size: 20px;
 }
-.text-xl {
-  font-size: 1.25rem;
-  line-height: 1.75rem;
-}
-.font-bold {
-  font-weight: 700;
-}
 .leading-\[18px\] {
   line-height: 18px;
 }
@@ -990,6 +996,12 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
+}
+.opacity-0 {
+  opacity: 0;
+}
+.opacity-100 {
+  opacity: 1;
 }
 .opacity-50 {
   opacity: 0.5;
@@ -1054,6 +1066,11 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+.transition-opacity {
+  transition-property: opacity;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
 .transition-transform {
   transition-property: transform;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1064,6 +1081,9 @@ video {
 }
 .ease-in-out {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+.ease-out {
+  transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
 }
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
 
@@ -1194,6 +1214,11 @@ body {
   .dark\:bg-dark-primary-dark {
     --tw-bg-opacity: 1;
     background-color: rgb(233 233 233 / var(--tw-bg-opacity));
+  }
+
+  .dark\:bg-dark-secondary-light {
+    --tw-bg-opacity: 1;
+    background-color: rgb(109 109 109 / var(--tw-bg-opacity));
   }
 
   .dark\:bg-dark-secondary-main {
