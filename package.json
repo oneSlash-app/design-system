@@ -5,6 +5,21 @@
   "private": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.js"
+    },
+    "./tokens": {
+      "types": "./dist/designTokens.d.ts",
+      "default": "./dist/designTokens.js"
+    },
+    "./styles": "./dist/output.css"
+  },
   "files": [
     "dist"
   ],
