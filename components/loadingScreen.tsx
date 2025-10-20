@@ -8,7 +8,7 @@ interface LoadingSmallProps {
 export default function LoadingScreen() {
   return (
     <div className="flex justify-center items-center h-full w-full min-h-[200px]">
-        <div className="w-12 h-12 border-4 border-t-transparent border-light-text-primary dark:border-dark-text-primary rounded-full animate-spin"></div>
+        <div className="w-12 h-12 border-4 border-t-transparent border-light-text-primary dark:border-dark-text-primary dark:border-t-transparent rounded-full animate-spin"></div>
     </div>
   );
 };
@@ -23,7 +23,7 @@ export function LoadingSmall({ size = 'medium' }: LoadingSmallProps) {
   return (
     <div className="flex justify-center items-center">
       <div
-        className={`border-t-transparent border-light-text-primary dark:border-dark-text-primary rounded-full animate-spin ${spinnerSizeClasses[size]}`}
+        className={`border-t-transparent border-light-text-primary dark:border-dark-text-primary dark:border-t-transparent rounded-full animate-spin ${spinnerSizeClasses[size]}`}
       />
     </div>
   );
