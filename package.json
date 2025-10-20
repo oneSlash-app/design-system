@@ -1,7 +1,7 @@
 {
   "name": "oneslash-design-system",
   "description": "A design system for the Oneslash projects",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "private": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -18,10 +18,11 @@
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@popperjs/core": "^2.11.8",
-    "next": "14.2.13",
-    "react": "^18",
-    "react-dom": "^18",
     "react-popper": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react": "^18",
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "20.16.10",
@@ -30,8 +31,11 @@
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
+    "next": "14.2.13",
     "postcss": "^8",
     "postcss-cli": "^11.0.0",
+    "react": "^18",
+    "react-dom": "^18",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.1",
     "typescript": "5.6.2"
