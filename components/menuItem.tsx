@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useCallback, SVGProps, JSX } from 'react';
 import NextLink from 'next/link';
 import UserImage from './userImage';
+import Tag from './tag';
 
 type IconType = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
@@ -14,6 +15,12 @@ interface MenuItemProps {
   isSelected?: boolean;
   onClick?: any;
   className?: string;
+  size?: 'medium' | 'large';
+  tag?: {
+    label: React.ReactNode;
+    iconName?: string;
+  };
+  iconRight?: string;
 }
 
 export default function MenuItem({
@@ -25,8 +32,12 @@ export default function MenuItem({
   isSelected,
   onClick,
   className = '',
+  size = 'medium',
+  tag,
+  iconRight,
 }: MenuItemProps) {
   const [IconLeft, setIconLeft] = useState<IconType | null>(null);
+  const [IconRight, setIconRight] = useState<IconType | null>(null);
 
   const loadIcon = useCallback(async (iconName?: string) => {
     if (!iconName) return null;
@@ -45,14 +56,22 @@ export default function MenuItem({
       if (iconName) {
         setIconLeft(await loadIcon(iconName));
       }
+      if (iconRight) {
+        setIconRight(await loadIcon(iconRight));
+      }
     };
     fetchIcon();
-  }, [iconName, loadIcon]);
+  }, [iconName, iconRight, loadIcon]);
+
+  // Size-based icon and text classes
+  const iconSize = size === 'large' ? 'w-6 h-6' : 'w-5 h-5';
+  const labelClass = size === 'large' ? 'text-body1' : 'text-body2';
+  const tagSize = size === 'large' ? 'medium' : 'small';
 
   const content = (
     <div
       className={`
-        flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out
+        flex items-center p-2 rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out
         ${isSelected
           ? 'bg-light-background-accent300 dark:bg-dark-background-accent300 hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'
           : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'}
@@ -61,18 +80,36 @@ export default function MenuItem({
       style={{ width: '100%' }}
       onClick={onClick}
     >
-      {userImgUrl ? (
-        <UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl} />
-      ) : (
-        IconLeft && (
-          <IconLeft
-            className="w-6 h-6 text-light-text-secondary dark:text-dark-text-secondary"
+      {/* Left group: icon/userImg + label + tag with 8px gap */}
+      <div className="flex items-center gap-1">
+        {userImgUrl ? (
+          <UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl} />
+        ) : (
+          IconLeft && (
+            <IconLeft
+              className={`${iconSize} text-light-text-secondary dark:text-dark-text-secondary`}
+            />
+          )
+        )}
+        <span className={`whitespace-nowrap ${labelClass} text-light-text-primary dark:text-dark-text-primary`}>
+          {label}
+        </span>
+        {tag && (
+          <Tag
+            variant="contained"
+            size={tagSize}
+            label={tag.label}
+            iconName={tag.iconName as any}
           />
-        )
+        )}
+      </div>
+
+      {/* Right icon aligned to the right */}
+      {IconRight && (
+        <IconRight
+          className={`${iconSize} text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0`}
+        />
       )}
-      <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
-        {label}
-      </span>
     </div>
   );
 

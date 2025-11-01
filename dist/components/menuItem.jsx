@@ -38,10 +38,12 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import React, { useState, useEffect, useCallback } from 'react';
 import NextLink from 'next/link';
 import UserImage from './userImage';
+import Tag from './tag';
 export default function MenuItem(_a) {
     var _this = this;
-    var href = _a.href, iconName = _a.iconName, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, isSelected = _a.isSelected, onClick = _a.onClick, _b = _a.className, className = _b === void 0 ? '' : _b;
-    var _c = useState(null), IconLeft = _c[0], setIconLeft = _c[1];
+    var href = _a.href, iconName = _a.iconName, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, isSelected = _a.isSelected, onClick = _a.onClick, _b = _a.className, className = _b === void 0 ? '' : _b, _c = _a.size, size = _c === void 0 ? 'medium' : _c, tag = _a.tag, iconRight = _a.iconRight;
+    var _d = useState(null), IconLeft = _d[0], setIconLeft = _d[1];
+    var _e = useState(null), IconRight = _e[0], setIconRight = _e[1];
     var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
         var module_1, IconComponent, error_1;
         return __generator(this, function (_a) {
@@ -67,29 +69,47 @@ export default function MenuItem(_a) {
     }); }, []);
     useEffect(function () {
         var fetchIcon = function () { return __awaiter(_this, void 0, void 0, function () {
-            var _a;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var _a, _b;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0:
                         if (!iconName) return [3 /*break*/, 2];
                         _a = setIconLeft;
                         return [4 /*yield*/, loadIcon(iconName)];
                     case 1:
-                        _a.apply(void 0, [_b.sent()]);
-                        _b.label = 2;
-                    case 2: return [2 /*return*/];
+                        _a.apply(void 0, [_c.sent()]);
+                        _c.label = 2;
+                    case 2:
+                        if (!iconRight) return [3 /*break*/, 4];
+                        _b = setIconRight;
+                        return [4 /*yield*/, loadIcon(iconRight)];
+                    case 3:
+                        _b.apply(void 0, [_c.sent()]);
+                        _c.label = 4;
+                    case 4: return [2 /*return*/];
                 }
             });
         }); };
         fetchIcon();
-    }, [iconName, loadIcon]);
-    var content = (<div className={"\n        flex items-center space-x-2 p-2 rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out\n        ".concat(isSelected
+    }, [iconName, iconRight, loadIcon]);
+    // Size-based icon and text classes
+    var iconSize = size === 'large' ? 'w-6 h-6' : 'w-5 h-5';
+    var labelClass = size === 'large' ? 'text-body1' : 'text-body2';
+    var tagSize = size === 'large' ? 'medium' : 'small';
+    var content = (<div className={"\n        flex items-center p-2 rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out\n        ".concat(isSelected
             ? 'bg-light-background-accent300 dark:bg-dark-background-accent300 hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'
             : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200', "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick}>
-      {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className="w-6 h-6 text-light-text-secondary dark:text-dark-text-secondary"/>))}
-      <span className="whitespace-nowrap text-body1 px-2 text-light-text-primary dark:text-dark-text-primary">
-        {label}
-      </span>
+      {/* Left group: icon/userImg + label + tag with 8px gap */}
+      <div className="flex items-center gap-1">
+        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " text-light-text-secondary dark:text-dark-text-secondary")}/>))}
+        <span className={"whitespace-nowrap ".concat(labelClass, " text-light-text-primary dark:text-dark-text-primary")}>
+          {label}
+        </span>
+        {tag && (<Tag variant="contained" size={tagSize} label={tag.label} iconName={tag.iconName}/>)}
+      </div>
+
+      {/* Right icon aligned to the right */}
+      {IconRight && (<IconRight className={"".concat(iconSize, " text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0")}/>)}
     </div>);
     return href ? <NextLink href={href}>{content}</NextLink> : content;
 }

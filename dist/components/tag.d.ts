@@ -7,7 +7,6 @@ interface TagProps {
     label: React.ReactNode;
     iconName?: keyof typeof HeroIcons;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
-    color?: 'default' | 'info';
 }
-export default function Tag({ variant, size, state, label, iconName, onClick, color, }: TagProps): JSX.Element;
+export default function Tag({ variant, size, state, label, iconName, onClick, }: TagProps): JSX.Element;
 export {};
