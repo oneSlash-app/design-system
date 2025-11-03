@@ -1,7 +1,7 @@
 {
   "name": "oneslash-design-system",
   "description": "A design system for the Oneslash projects",
-  "version": "1.2.10",
+  "version": "1.2.12",
   "private": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -14,7 +14,7 @@
       "types": "./dist/components/*.d.ts",
       "default": "./dist/components/*.jsx"
     },
-    "./tokens": {
+    "./designTokens": {
       "types": "./dist/designTokens.d.ts",
       "default": "./dist/designTokens.js"
     },
