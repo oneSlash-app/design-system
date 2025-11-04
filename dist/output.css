@@ -944,8 +944,14 @@ video {
   padding-top: 3px;
   padding-bottom: 3px;
 }
+.text-left {
+  text-align: left;
+}
 .text-center {
   text-align: center;
+}
+.text-right {
+  text-align: right;
 }
 .text-body1 {
   font-size: 16px;
