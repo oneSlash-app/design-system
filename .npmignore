@@ -1,0 +1,39 @@
+# Old package tarballs
+*.tgz
+
+# Dependencies
+node_modules
+
+# Source files (only dist/ should be published)
+components
+pages
+public
+app
+
+# Next.js
+.next
+
+# Build configs
+tsconfig.json
+postcss.config.mjs
+tailwind.config.ts
+next.config.mjs
+
+# Git
+.git
+.gitignore
+
+# Environment files
+.env
+.env.local
+
+# IDE
+.vscode
+.idea
+
+# Tests
+__tests__
+*.test.ts
+*.test.tsx
+*.spec.ts
+*.spec.tsx
