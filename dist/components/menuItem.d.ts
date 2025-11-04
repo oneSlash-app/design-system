@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import React, { JSX } from 'react';
 interface MenuItemProps {
     href?: string;
     iconName?: string;
@@ -8,6 +8,12 @@ interface MenuItemProps {
     isSelected?: boolean;
     onClick?: any;
     className?: string;
+    size?: 'medium' | 'large';
+    tag?: {
+        label: React.ReactNode;
+        iconName?: string;
+    };
+    iconRight?: string;
 }
-export default function MenuItem({ href, iconName, userHandle, userImgUrl, label, isSelected, onClick, className, }: MenuItemProps): JSX.Element;
+export default function MenuItem({ href, iconName, userHandle, userImgUrl, label, isSelected, onClick, className, size, tag, iconRight, }: MenuItemProps): JSX.Element;
 export {};
