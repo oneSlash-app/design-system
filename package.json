@@ -5,20 +5,41 @@
   "private": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./components/*": {
+      "types": "./dist/components/*.d.ts",
+      "default": "./dist/components/*.jsx"
+    },
+    "./tokens": {
+      "types": "./dist/designTokens.d.ts",
+      "default": "./dist/designTokens.js"
+    },
+    "./styles": "./dist/output.css",
+    "./dist/*": "./dist/*"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "next dev",
     "build": "tsc && postcss index.css -o dist/output.css",
     "build:css": "postcss index.css -o dist/output.css",
+    "watch": "tsc --watch",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
     "@heroicons/react": "^2.2.0",
     "@popperjs/core": "^2.11.8",
-    "next": "14.2.13",
-    "react": "^18",
-    "react-dom": "^18",
     "react-popper": "^2.3.0"
+  },
+  "peerDependencies": {
+    "react": "^18 || ^19",
+    "react-dom": "^18 || ^19"
   },
   "devDependencies": {
     "@types/node": "20.16.10",
@@ -27,8 +48,11 @@
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
+    "next": "14.2.13",
     "postcss": "^8",
     "postcss-cli": "^11.0.0",
+    "react": "^18",
+    "react-dom": "^18",
     "tailwind-scrollbar": "^3.1.0",
     "tailwindcss": "^3.4.1",
     "typescript": "5.6.2"
