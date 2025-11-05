@@ -81,7 +81,7 @@ export default function MenuItem({
       onClick={onClick}
     >
       {/* Left group: icon/userImg + label + tag with 8px gap */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         {userImgUrl ? (
           <UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl} />
         ) : (

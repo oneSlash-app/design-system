@@ -2,7 +2,7 @@
 import React from 'react';
 export default function LoadingScreen() {
     return (<div className="flex justify-center items-center h-full w-full min-h-[200px]">
-        <div className="w-12 h-12 border-4 border-t-transparent border-light-text-primary dark:border-dark-text-primary dark:border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-12 h-12 rounded-full border-4 border-t-transparent border-r-light-text-primary border-b-light-text-primary border-l-light-text-primary dark:border-t-transparent dark:border-r-dark-text-primary dark:border-b-dark-text-primary dark:border-l-dark-text-primary animate-spin"></div>
     </div>);
 }
 ;
@@ -14,6 +14,6 @@ export function LoadingSmall(_a) {
         small: 'w-5 h-5 border-2', // 20px, slightly thinner border
     };
     return (<div className="flex justify-center items-center">
-      <div className={"border-t-transparent border-light-text-primary dark:border-dark-text-primary dark:border-t-transparent rounded-full animate-spin ".concat(spinnerSizeClasses[size])}/>
+      <div className={"rounded-full border-t-transparent border-r-light-text-primary border-b-light-text-primary border-l-light-text-primary dark:border-t-transparent dark:border-r-dark-text-primary dark:border-b-dark-text-primary dark:border-l-dark-text-primary animate-spin ".concat(spinnerSizeClasses[size])}/>
     </div>);
 }
