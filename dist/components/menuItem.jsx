@@ -100,7 +100,7 @@ export default function MenuItem(_a) {
             ? 'bg-light-background-accent300 dark:bg-dark-background-accent300 hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'
             : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200', "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick}>
       {/* Left group: icon/userImg + label + tag with 8px gap */}
-      <div className="flex items-center gap-1">
+      <div className="flex items-center gap-2">
         {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " text-light-text-secondary dark:text-dark-text-secondary")}/>))}
         <span className={"whitespace-nowrap ".concat(labelClass, " text-light-text-primary dark:text-dark-text-primary")}>
           {label}

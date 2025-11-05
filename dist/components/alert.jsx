@@ -77,7 +77,7 @@ export default function Alert(_a) {
             bgColor = 'bg-light-secondary-light dark:bg-dark-secondary-light';
             break;
     }
-    return (<div className="fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none">
+    return (<div className="fixed top-4 inset-x-0 z-50 flex justify-center pointer-events-none">
       <div className={"flex items-start justify-between w-full max-w-md p-2 rounded-[8px] pointer-events-auto transition-opacity duration-200 ease-out ".concat(bgColor, " ").concat(isVisible
             ? 'opacity-100'
             : 'opacity-0')}>

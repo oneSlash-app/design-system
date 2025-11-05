@@ -103,7 +103,7 @@ export default function Alert({
   }
 
   return (
-    <div className="fixed top-0 inset-x-0 z-50 flex justify-center pointer-events-none">
+    <div className="fixed top-4 inset-x-0 z-50 flex justify-center pointer-events-none">
       <div
         className={`flex items-start justify-between w-full max-w-md p-2 rounded-[8px] pointer-events-auto transition-opacity duration-200 ease-out ${bgColor} ${
           isVisible
