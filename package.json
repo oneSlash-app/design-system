@@ -18,8 +18,7 @@
       "types": "./dist/designTokens.d.ts",
       "default": "./dist/designTokens.js"
     },
-    "./styles": "./dist/output.css",
-    "./dist/*": "./dist/*"
+    "./styles": "./dist/output.css"
   },
   "files": [
     "dist"
