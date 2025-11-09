@@ -4,13 +4,11 @@ import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 export default function EmptyBox(_a) {
     var text = _a.text, size = _a.size;
     var color = 'text-light-text-disabled dark:text-dark-text-disabled';
-    var height = size === 'small'
-        ? 'py-6'
-        : 'h-full';
+    var height = size === 'small' ? 'py-6' : 'h-full';
     var iconSize = 'size-6';
     return (<div className={"flex flex-col space-y-2 justify-center items-center w-full ".concat(height)}>
             <ExclamationCircleIcon className={"".concat(iconSize, " ").concat(color)}/>
-            <p className={"text-body1 ".concat(color)} text-center>
+            <p className={"text-body1 text-center ".concat(color)}>
                 {text}
             </p>
         </div>);
