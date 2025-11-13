@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect, useRef, useCallback, SVGProps, JSX } from 'react';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ChevronDown } from 'lucide-react';
 import Menu from './menu';
 import MenuItem from './menuItem';
 
@@ -53,7 +53,7 @@ export default function Select({
   const loadIcon = useCallback(async (iconName?: string) => {
     if (!iconName) return null;
     try {
-      const module = await import('@heroicons/react/24/outline');
+      const module = await import('lucide-react');
       const IconComponent = module[iconName as keyof typeof module] as IconType;
       return IconComponent || null;
     } catch (error) {
@@ -205,7 +205,7 @@ export default function Select({
           <div className="flex items-center space-x-1 flex-1 overflow-hidden">
             {/* Optional Decoration Icon */}
             {DecoIcon && (
-              <DecoIcon className={`w-6 h-6 flex-shrink-0 ${getIconColor()}`} />
+              <DecoIcon className={`w-6 h-6 flex-shrink-0 ${getIconColor()}`} strokeWidth={2} />
             )}
 
             {/* Display Text */}
@@ -215,13 +215,14 @@ export default function Select({
           </div>
 
           {/* Chevron Icon */}
-          <ChevronDownIcon
+          <ChevronDown
             className={`
               w-6 h-6 flex-shrink-0 ml-1
               ${getIconColor()}
               transition-transform duration-200
               ${isOpen ? 'transform rotate-180' : ''}
             `}
+            strokeWidth={2}
           />
         </div>
       </div>

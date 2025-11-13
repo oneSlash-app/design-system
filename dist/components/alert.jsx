@@ -1,6 +1,6 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { InformationCircleIcon, ExclamationCircleIcon, ExclamationTriangleIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { Info, AlertCircle, AlertTriangle, CheckCircle } from 'lucide-react';
 import IconButton from './iconButton';
 export default function Alert(_a) {
     var open = _a.open, type = _a.type, message = _a.message, onClose = _a.onClose, _b = _a.showCloseButton, showCloseButton = _b === void 0 ? false : _b;
@@ -46,16 +46,16 @@ export default function Alert(_a) {
     var getIcon = function () {
         switch (type) {
             case 'error':
-                return <ExclamationCircleIcon className="w-6 h-6"/>;
+                return <AlertCircle className="w-6 h-6" strokeWidth={2}/>;
             case 'warning':
-                return <ExclamationTriangleIcon className="w-6 h-6"/>;
+                return <AlertTriangle className="w-6 h-6" strokeWidth={2}/>;
             case 'info':
-                return <InformationCircleIcon className="w-6 h-6"/>;
+                return <Info className="w-6 h-6" strokeWidth={2}/>;
             case 'success':
-                return <CheckCircleIcon className="w-6 h-6"/>;
+                return <CheckCircle className="w-6 h-6" strokeWidth={2}/>;
             case 'default':
             default:
-                return <InformationCircleIcon className="w-6 h-6"/>;
+                return <Info className="w-6 h-6" strokeWidth={2}/>;
         }
     };
     var bgColor;
@@ -86,7 +86,7 @@ export default function Alert(_a) {
           <span className="body1">{message}</span>
         </div>
         {showCloseButton && (<div className="ml-4">
-            <IconButton color="iconOnly" state="enabled" size="small" iconName="XMarkIcon" onClick={handleClose}/>
+            <IconButton color="iconOnly" state="enabled" size="small" iconName="X" onClick={handleClose}/>
           </div>)}
       </div>
     </div>);

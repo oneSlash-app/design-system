@@ -33,7 +33,7 @@ export default function Button({
   const loadIcon = useCallback(async (iconName?: string) => {
     if (!iconName) return null;
     try {
-      const module = await import('@heroicons/react/24/outline');
+      const module = await import('lucide-react');
       const Icon = module[iconName as keyof typeof module] as IconType;
       return Icon || null;
     } catch (error) {
@@ -107,12 +107,12 @@ export default function Button({
     >
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className="flex items-center">
-        {IconLeft && <IconLeft className={sizeIcon} />}
+        {IconLeft && <IconLeft className={sizeIcon} strokeWidth={2} />}
         <div className="whitespace-nowrap overflow-hidden truncate px-2">{label}</div>
       </div>
       {IconRight && (
         <div onClick={onClickActionIcon} className="cursor-pointer">
-          <IconRight className={sizeIcon} />
+          <IconRight className={sizeIcon} strokeWidth={2} />
         </div>
       )}
     </button>

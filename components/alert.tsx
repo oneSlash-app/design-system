@@ -1,11 +1,11 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import {
-  InformationCircleIcon,
-  ExclamationCircleIcon,
-  ExclamationTriangleIcon,
-  CheckCircleIcon
-} from '@heroicons/react/24/outline';
+  Info,
+  AlertCircle,
+  AlertTriangle,
+  CheckCircle
+} from 'lucide-react';
 import IconButton from './iconButton';
 
 interface AlertProps {
@@ -69,16 +69,16 @@ export default function Alert({
   const getIcon = () => {
     switch (type) {
       case 'error':
-        return <ExclamationCircleIcon className="w-6 h-6" />;
+        return <AlertCircle className="w-6 h-6" strokeWidth={2} />;
       case 'warning':
-        return <ExclamationTriangleIcon className="w-6 h-6" />;
+        return <AlertTriangle className="w-6 h-6" strokeWidth={2} />;
       case 'info':
-        return <InformationCircleIcon className="w-6 h-6" />;
+        return <Info className="w-6 h-6" strokeWidth={2} />;
       case 'success':
-        return <CheckCircleIcon className="w-6 h-6" />;
+        return <CheckCircle className="w-6 h-6" strokeWidth={2} />;
       case 'default':
       default:
-        return <InformationCircleIcon className="w-6 h-6" />;
+        return <Info className="w-6 h-6" strokeWidth={2} />;
     }
   };
 
@@ -121,7 +121,7 @@ export default function Alert({
               color="iconOnly"
               state="enabled"
               size="small"
-              iconName="XMarkIcon"
+              iconName="X"
               onClick={handleClose}
             />
           </div>

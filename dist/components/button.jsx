@@ -52,7 +52,7 @@ export default function Button(_a) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, import('@heroicons/react/24/outline')];
+                    return [4 /*yield*/, import('lucide-react')];
                 case 2:
                     module_1 = _a.sent();
                     Icon = module_1[iconName];
@@ -125,11 +125,11 @@ export default function Button(_a) {
         setIsHovered(false); }} onClick={onClickButton}>
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className="flex items-center">
-        {IconLeft && <IconLeft className={sizeIcon}/>}
+        {IconLeft && <IconLeft className={sizeIcon} strokeWidth={2}/>}
         <div className="whitespace-nowrap overflow-hidden truncate px-2">{label}</div>
       </div>
       {IconRight && (<div onClick={onClickActionIcon} className="cursor-pointer">
-          <IconRight className={sizeIcon}/>
+          <IconRight className={sizeIcon} strokeWidth={2}/>
         </div>)}
     </button>);
 }

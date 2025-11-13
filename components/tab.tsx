@@ -33,7 +33,7 @@ export default function Tab({
   const loadIcon = useCallback(async (iconName?: string) => {
     if (!iconName) return null;
     try {
-      const module = await import('@heroicons/react/24/outline');
+      const module = await import('lucide-react');
       const Icon = module[iconName as keyof typeof module] as IconType;
       return Icon || null;
     } catch (error) {
@@ -71,13 +71,13 @@ export default function Tab({
       `}
       onClick={handleClick}
     >
-      {IconLeft && <IconLeft className="w-6 h-6" />}
+      {IconLeft && <IconLeft className="w-6 h-6" strokeWidth={2} />}
       <span className="whitespace-nowrap text-body1 px-[6px]">
         {label}
       </span>
       {IconRight && (
         <div onClick={onClickActionIcon} className="cursor-pointer">
-          <IconRight className="w-6 h-6" />
+          <IconRight className="w-6 h-6" strokeWidth={2} />
         </div>
       )}
     </div>

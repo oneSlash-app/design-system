@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { AlertCircle } from 'lucide-react';
 
 interface EmptyBoxProps{
     text: string;
@@ -18,7 +18,7 @@ export default function EmptyBox ({
 
     return (
         <div className={`flex flex-col space-y-2 justify-center items-center w-full ${height}`}>
-            <ExclamationCircleIcon className={`${iconSize} ${color}`}/>
+            <AlertCircle className={`${iconSize} ${color}`} strokeWidth={2} />
             <p className={`text-body1 text-center ${color}`} >
                 {text}
             </p>

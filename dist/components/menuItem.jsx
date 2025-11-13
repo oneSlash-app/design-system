@@ -54,7 +54,7 @@ export default function MenuItem(_a) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, import('@heroicons/react/24/outline')];
+                    return [4 /*yield*/, import('lucide-react')];
                 case 2:
                     module_1 = _a.sent();
                     IconComponent = module_1[iconName];
@@ -101,7 +101,7 @@ export default function MenuItem(_a) {
             : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200', "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick}>
       {/* Left group: icon/userImg + label + tag with 8px gap */}
       <div className="flex items-center gap-2">
-        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " text-light-text-secondary dark:text-dark-text-secondary")}/>))}
+        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " text-light-text-secondary dark:text-dark-text-secondary")} strokeWidth={2}/>))}
         <span className={"whitespace-nowrap ".concat(labelClass, " text-light-text-primary dark:text-dark-text-primary")}>
           {label}
         </span>
@@ -109,7 +109,7 @@ export default function MenuItem(_a) {
       </div>
 
       {/* Right icon aligned to the right */}
-      {IconRight && (<IconRight className={"".concat(iconSize, " text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0")}/>)}
+      {IconRight && (<IconRight className={"".concat(iconSize, " text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0")} strokeWidth={2}/>)}
     </div>);
     return href ? <NextLink href={href}>{content}</NextLink> : content;
 }
