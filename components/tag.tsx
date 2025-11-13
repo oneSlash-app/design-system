@@ -1,13 +1,13 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import * as HeroIcons from '@heroicons/react/24/outline';
+import * as LucideIcons from 'lucide-react';
 
 interface TagProps {
   variant: 'contained' | 'textOnly';
   size: 'medium' | 'small';
   state?: 'enabled' | 'selected';
   label: React.ReactNode;
-  iconName?: keyof typeof HeroIcons;
+  iconName?: keyof typeof LucideIcons;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
@@ -24,10 +24,10 @@ export default function Tag({
   const [isHovered, setIsHovered] = useState(false);
   const [Icon, setIcon] = useState<IconType | null>(null);
 
-  // Load icon directly from HeroIcons
+  // Load icon directly from Lucide
   useEffect(() => {
     if (iconName) {
-      setIcon(HeroIcons[iconName] as IconType);
+      setIcon(LucideIcons[iconName] as IconType);
     }
   }, [iconName]);
 
@@ -74,7 +74,7 @@ export default function Tag({
       onMouseLeave={() => onClick && setIsHovered(false)}
       onClick={onClick}
     >
-      {Icon && <Icon className="w-4 h-4" />}
+      {Icon && <Icon className="w-4 h-4" strokeWidth={2} />}
       <span>{label}</span>
     </div>
   );

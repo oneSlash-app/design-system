@@ -1,11 +1,10 @@
 import React from 'react';
-import * as HeroIcons24 from '@heroicons/react/24/outline';
-import * as HeroIcons20 from '@heroicons/react/20/solid';
+import * as LucideIcons from 'lucide-react';
 interface IconButtonProps {
     color: "primary" | "secondary" | "tertiary" | "iconOnly";
     state: "enabled" | "selected" | "disabled";
     size: "large" | "medium" | "small";
-    iconName: keyof typeof HeroIcons24 & keyof typeof HeroIcons20;
+    iconName: keyof typeof LucideIcons;
     onClick?: any;
     loading?: boolean;
 }

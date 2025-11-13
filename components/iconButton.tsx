@@ -1,14 +1,13 @@
 'use client';
-import React, { useState } from 'react';
-import * as HeroIcons24 from '@heroicons/react/24/outline';
-import * as HeroIcons20 from '@heroicons/react/20/solid';
+import React, { useState, useEffect } from 'react';
+import * as LucideIcons from 'lucide-react';
 import { LoadingSmall } from './loadingScreen';
 
 interface IconButtonProps {
   color: "primary" | "secondary" | "tertiary" | "iconOnly";
   state: "enabled" | "selected" | "disabled";
   size: "large" | "medium" | "small";
-  iconName: keyof typeof HeroIcons24 & keyof typeof HeroIcons20;
+  iconName: keyof typeof LucideIcons;
   onClick?: any;
   loading?: boolean;
 }
@@ -24,11 +23,14 @@ export default function IconButton({
   loading = false, // Default to false
 }: IconButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
+  const [Icon, setIcon] = useState<IconType | null>(null);
 
-  // Select icon based on size
-  const Icon: IconType = size === 'small' 
-    ? HeroIcons20[iconName] 
-    : HeroIcons24[iconName];
+  // Load icon from Lucide
+  useEffect(() => {
+    if (iconName) {
+      setIcon(LucideIcons[iconName] as IconType);
+    }
+  }, [iconName]);
 
   // Size-based classes
   const sizeClasses = {
@@ -94,9 +96,9 @@ export default function IconButton({
       aria-label={loading ? 'Loading' : 'Reload'}
     >
       {loading ? (
-        <LoadingSmall size={size} /> // Pass the size prop to match the icon
+        <LoadingSmall size={size} />
       ) : (
-        Icon && <Icon className={iconSizeClasses[size]} /> // Show icon when not loading
+        Icon && <Icon className={iconSizeClasses[size]} strokeWidth={2} />
       )}
     </button>
   );

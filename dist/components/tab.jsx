@@ -55,7 +55,7 @@ export default function Tab(_a) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, import('@heroicons/react/24/outline')];
+                    return [4 /*yield*/, import('lucide-react')];
                 case 2:
                     module_1 = _a.sent();
                     Icon = module_1[iconName];
@@ -102,12 +102,12 @@ export default function Tab(_a) {
     return (<div className={"\n        flex items-center space-x-1 py-1 px-[6px] rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out\n        ".concat(isSelected
             ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
             : 'hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200', "\n      ")} onClick={handleClick}>
-      {IconLeft && <IconLeft className="w-6 h-6"/>}
+      {IconLeft && <IconLeft className="w-6 h-6" strokeWidth={2}/>}
       <span className="whitespace-nowrap text-body1 px-[6px]">
         {label}
       </span>
       {IconRight && (<div onClick={onClickActionIcon} className="cursor-pointer">
-          <IconRight className="w-6 h-6"/>
+          <IconRight className="w-6 h-6" strokeWidth={2}/>
         </div>)}
     </div>);
 }

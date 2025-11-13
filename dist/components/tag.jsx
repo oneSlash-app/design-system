@@ -1,14 +1,14 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import * as HeroIcons from '@heroicons/react/24/outline';
+import * as LucideIcons from 'lucide-react';
 export default function Tag(_a) {
     var variant = _a.variant, size = _a.size, _b = _a.state, state = _b === void 0 ? 'enabled' : _b, label = _a.label, iconName = _a.iconName, onClick = _a.onClick;
     var _c = useState(false), isHovered = _c[0], setIsHovered = _c[1];
     var _d = useState(null), Icon = _d[0], setIcon = _d[1];
-    // Load icon directly from HeroIcons
+    // Load icon directly from Lucide
     useEffect(function () {
         if (iconName) {
-            setIcon(HeroIcons[iconName]);
+            setIcon(LucideIcons[iconName]);
         }
     }, [iconName]);
     // Size and padding
@@ -37,7 +37,7 @@ export default function Tag(_a) {
         : '';
     var cursorClass = onClick && !isSelected ? 'cursor-pointer' : '';
     return (<div className={"\n        flex items-center space-x-1 rounded-full\n        ".concat(sizeClasses, " ").concat(bgClasses, " ").concat(fontClasses, " ").concat(borderClasses, " ").concat(hoverClasses, " ").concat(cursorClass, "\n        transition-colors duration-200 ease-in-out\n      ")} onMouseEnter={function () { return onClick && setIsHovered(true); }} onMouseLeave={function () { return onClick && setIsHovered(false); }} onClick={onClick}>
-      {Icon && <Icon className="w-4 h-4"/>}
+      {Icon && <Icon className="w-4 h-4" strokeWidth={2}/>}
       <span>{label}</span>
     </div>);
 }

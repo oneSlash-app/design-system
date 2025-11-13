@@ -42,7 +42,7 @@ export default function MenuItem({
   const loadIcon = useCallback(async (iconName?: string) => {
     if (!iconName) return null;
     try {
-      const module = await import('@heroicons/react/24/outline');
+      const module = await import('lucide-react');
       const IconComponent = module[iconName as keyof typeof module] as IconType;
       return IconComponent || null;
     } catch (error) {
@@ -88,6 +88,7 @@ export default function MenuItem({
           IconLeft && (
             <IconLeft
               className={`${iconSize} text-light-text-secondary dark:text-dark-text-secondary`}
+              strokeWidth={2}
             />
           )
         )}
@@ -108,6 +109,7 @@ export default function MenuItem({
       {IconRight && (
         <IconRight
           className={`${iconSize} text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0`}
+          strokeWidth={2}
         />
       )}
     </div>

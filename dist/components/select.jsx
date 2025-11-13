@@ -45,7 +45,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     return to.concat(ar || Array.prototype.slice.call(from));
 };
 import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import { ChevronDown } from 'lucide-react';
 import Menu from './menu';
 import MenuItem from './menuItem';
 export default function Select(_a) {
@@ -73,7 +73,7 @@ export default function Select(_a) {
                     _a.label = 1;
                 case 1:
                     _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, import('@heroicons/react/24/outline')];
+                    return [4 /*yield*/, import('lucide-react')];
                 case 2:
                     module_1 = _a.sent();
                     IconComponent = module_1[iconName];
@@ -211,7 +211,7 @@ export default function Select(_a) {
           {/* Content Container */}
           <div className="flex items-center space-x-1 flex-1 overflow-hidden">
             {/* Optional Decoration Icon */}
-            {DecoIcon && (<DecoIcon className={"w-6 h-6 flex-shrink-0 ".concat(getIconColor())}/>)}
+            {DecoIcon && (<DecoIcon className={"w-6 h-6 flex-shrink-0 ".concat(getIconColor())} strokeWidth={2}/>)}
 
             {/* Display Text */}
             <span className="text-body1 truncate">
@@ -220,7 +220,7 @@ export default function Select(_a) {
           </div>
 
           {/* Chevron Icon */}
-          <ChevronDownIcon className={"\n              w-6 h-6 flex-shrink-0 ml-1\n              ".concat(getIconColor(), "\n              transition-transform duration-200\n              ").concat(isOpen ? 'transform rotate-180' : '', "\n            ")}/>
+          <ChevronDown className={"\n              w-6 h-6 flex-shrink-0 ml-1\n              ".concat(getIconColor(), "\n              transition-transform duration-200\n              ").concat(isOpen ? 'transform rotate-180' : '', "\n            ")} strokeWidth={2}/>
         </div>
       </div>
 
