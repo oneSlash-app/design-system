@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 export default function TimeStamp(_a) {
-    var createdAt = _a.createdAt, dateFormat = _a.dateFormat;
+    var createdAt = _a.createdAt, dateFormat = _a.dateFormat, _b = _a.textSize, textSize = _b === void 0 ? 'small' : _b, _c = _a.textColor, textColor = _c === void 0 ? 'secondary' : _c, _d = _a.data, data = _d === void 0 ? 'date-and-time' : _d;
     // absolute timestamp
     var absoluteTimeStamp = function (createdAt) {
         var date = new Date(createdAt);
@@ -14,7 +14,17 @@ export default function TimeStamp(_a) {
         var formattedMinutes = minutes.toString().padStart(2, '0');
         var daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
         var dayOfWeek = daysOfWeek[date.getDay()];
-        return "".concat(month, "/").concat(day, "/").concat(year, " ").concat(dayOfWeek, " ").concat(formattedHours, ":").concat(formattedMinutes);
+        var dateString = "".concat(month, "/").concat(day, "/").concat(year, " ").concat(dayOfWeek);
+        var timeString = "".concat(formattedHours, ":").concat(formattedMinutes);
+        if (data === 'date') {
+            return dateString;
+        }
+        else if (data === 'time') {
+            return timeString;
+        }
+        else {
+            return "".concat(dateString, " ").concat(timeString);
+        }
     };
     // relative timestamp
     var relativeTimeStamp = function (createdAt) {
@@ -28,6 +38,37 @@ export default function TimeStamp(_a) {
         var weeks = Math.floor(days / 7);
         var months = Math.floor(days / 30);
         var years = Math.floor(days / 365);
+        // Date-based relativity (years, months, weeks, days)
+        if (data === 'date') {
+            if (years > 0) {
+                return "".concat(years, " year").concat(years > 1 ? 's' : '', " ago");
+            }
+            else if (months > 0) {
+                return "".concat(months, " month").concat(months > 1 ? 's' : '', " ago");
+            }
+            else if (weeks > 0) {
+                return "".concat(weeks, " week").concat(weeks > 1 ? 's' : '', " ago");
+            }
+            else if (days > 0) {
+                return "".concat(days, " day").concat(days > 1 ? 's' : '', " ago");
+            }
+            else {
+                return 'today';
+            }
+        }
+        // Time-based relativity (hours, minutes, seconds)
+        if (data === 'time') {
+            if (hours > 0) {
+                return "".concat(hours, " hour").concat(hours > 1 ? 's' : '', " ago");
+            }
+            else if (minutes > 0) {
+                return "".concat(minutes, " minute").concat(minutes > 1 ? 's' : '', " ago");
+            }
+            else {
+                return "".concat(seconds, " second").concat(seconds > 1 ? 's' : '', " ago");
+            }
+        }
+        // Default: date-and-time (full relativity)
         if (years > 0) {
             return "".concat(years, " year").concat(years > 1 ? 's' : '', " ago");
         }
@@ -51,7 +92,13 @@ export default function TimeStamp(_a) {
         }
     };
     var timeStamp = dateFormat === 'absolute' ? absoluteTimeStamp(createdAt) : relativeTimeStamp(createdAt);
-    return (<p className="text-caption text-light-text-secondary dark:text-dark-text-secondary">
+    // Determine text size class
+    var sizeClass = textSize === 'medium' ? 'text-body2' : textSize === 'large' ? 'text-body1' : 'text-caption';
+    // Determine text color classes
+    var colorClass = textColor === 'primary'
+        ? 'text-light-text-primary dark:text-dark-text-primary'
+        : 'text-light-text-secondary dark:text-dark-text-secondary';
+    return (<p className={"".concat(sizeClass, " ").concat(colorClass)}>
             {timeStamp}
         </p>);
 }
