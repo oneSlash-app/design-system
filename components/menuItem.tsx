@@ -73,7 +73,7 @@ export default function MenuItem({
       className={`
         flex items-center p-2 rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out
         ${isSelected
-          ? 'bg-light-primary-dark dark:bg-dark-primary-dark hover:bg-light-primary-dark dark:hover:bg-dark-primary-dark'
+          ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
           : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'}
         ${className}
       `}

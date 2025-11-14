@@ -97,19 +97,19 @@ export default function MenuItem(_a) {
     var labelClass = size === 'large' ? 'text-body1' : 'text-body2';
     var tagSize = size === 'large' ? 'medium' : 'small';
     var content = (<div className={"\n        flex items-center p-2 rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out\n        ".concat(isSelected
-            ? 'bg-light-background-accent300 dark:bg-dark-background-accent300 hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'
+            ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
             : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200', "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick}>
       {/* Left group: icon/userImg + label + tag with 8px gap */}
       <div className="flex items-center gap-2">
-        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " text-light-text-secondary dark:text-dark-text-secondary")} strokeWidth={2}/>))}
-        <span className={"whitespace-nowrap ".concat(labelClass, " text-light-text-primary dark:text-dark-text-primary")}>
+        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary')} strokeWidth={2}/>))}
+        <span className={"whitespace-nowrap ".concat(labelClass, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
           {label}
         </span>
         {tag && (<Tag variant="contained" size={tagSize} label={tag.label} iconName={tag.iconName}/>)}
       </div>
 
       {/* Right icon aligned to the right */}
-      {IconRight && (<IconRight className={"".concat(iconSize, " text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0")} strokeWidth={2}/>)}
+      {IconRight && (<IconRight className={"".concat(iconSize, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary', " flex-shrink-0")} strokeWidth={2}/>)}
     </div>);
     return href ? <NextLink href={href}>{content}</NextLink> : content;
 }
