@@ -73,7 +73,7 @@ export default function MenuItem({
       className={`
         flex items-center p-2 rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out
         ${isSelected
-          ? 'bg-light-background-accent300 dark:bg-dark-background-accent300 hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'
+          ? 'bg-light-primary-dark dark:bg-dark-primary-dark hover:bg-light-primary-dark dark:hover:bg-dark-primary-dark'
           : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'}
         ${className}
       `}
@@ -87,12 +87,12 @@ export default function MenuItem({
         ) : (
           IconLeft && (
             <IconLeft
-              className={`${iconSize} text-light-text-secondary dark:text-dark-text-secondary`}
+              className={`${iconSize} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary'}`}
               strokeWidth={2}
             />
           )
         )}
-        <span className={`whitespace-nowrap ${labelClass} text-light-text-primary dark:text-dark-text-primary`}>
+        <span className={`whitespace-nowrap ${labelClass} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
           {label}
         </span>
         {tag && (
@@ -108,7 +108,7 @@ export default function MenuItem({
       {/* Right icon aligned to the right */}
       {IconRight && (
         <IconRight
-          className={`${iconSize} text-light-text-secondary dark:text-dark-text-secondary flex-shrink-0`}
+          className={`${iconSize} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary'} flex-shrink-0`}
           strokeWidth={2}
         />
       )}
