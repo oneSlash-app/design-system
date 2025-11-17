@@ -5,16 +5,19 @@ interface CheckboxProps {
   label?: string;
   checked?: boolean;
   onChange?: (checked: boolean) => void;
+  disabled?: boolean;
 }
 
 export default function Checkbox({
-  label, 
-  checked = false, 
-  onChange
+  label,
+  checked = false,
+  onChange,
+  disabled = false
 }: CheckboxProps) {
   const [isChecked, setIsChecked] = useState(checked);
 
   const handleToggle = () => {
+    if (disabled) return;
     const newChecked = !isChecked;
     setIsChecked(newChecked);
     if (onChange) {
@@ -23,22 +26,30 @@ export default function Checkbox({
   };
 
   return (
-    <label className="flex items-center cursor-pointer">
+    <label className={`flex items-center ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
       <div
         onClick={handleToggle}
         className="relative flex items-center justify-center w-6 h-6 group transition-colors duration-200 ease-in-out"
       >
         {/* Circle behind the checkbox */}
         <div
-          className="absolute w-6 h-6 rounded-full group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected"
+          className={`absolute w-6 h-6 rounded-full ${
+            disabled
+              ? ''
+              : 'group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected'
+          }`}
         ></div>
-        
+
         {/* Checkbox */}
         <div
           className={`relative z-10 w-4 h-4 border-2 rounded ${
-            isChecked
-              ? 'bg-light-text-primary dark:bg-dark-text-primary border-none'
-              : 'border-light-text-secondary dark:border-dark-text-secondary'
+            disabled
+              ? isChecked
+                ? 'bg-light-text-disabled dark:bg-dark-text-disabled border-none'
+                : 'border-light-text-disabled dark:border-dark-text-disabled'
+              : isChecked
+                ? 'bg-light-text-primary dark:bg-dark-text-primary border-none'
+                : 'border-light-text-secondary dark:border-dark-text-secondary'
           } flex items-center justify-center`}
         >
           {isChecked && (
@@ -54,7 +65,17 @@ export default function Checkbox({
           )}
         </div>
       </div>
-      {label && <span className="ml-2 text-body1 text-light-text-primary dark:text-dark-text-primary">{label}</span>}
+      {label && (
+        <span
+          className={`ml-2 text-body1 ${
+            disabled
+              ? 'text-light-text-disabled dark:text-dark-text-disabled'
+              : 'text-light-text-primary dark:text-dark-text-primary'
+          }`}
+        >
+          {label}
+        </span>
+      )}
     </label>
   );
 }

@@ -26,36 +26,42 @@ export default function IconButton(_a) {
     // Base classes (padding and corner radius)
     var baseClasses = "".concat(sizeClasses[size], " rounded-[8px] leading-none relative");
     // Background color
-    var bgColor = color === 'primary'
-        ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary
-        : color === 'secondary'
-            ? 'bg-light-secondary-main dark:bg-dark-secondary-main' // Secondary
-            : color === 'tertiary'
-                ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' // Tertiary
-                : ' '; // iconOnly: none
+    var bgColor = state === 'selected'
+        ? 'bg-light-primary-dark dark:bg-dark-primary-dark' // Selected state
+        : color === 'primary'
+            ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary
+            : color === 'secondary'
+                ? 'bg-light-secondary-main dark:bg-dark-secondary-main' // Secondary
+                : color === 'tertiary'
+                    ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' // Tertiary
+                    : ' '; // iconOnly: none
     // Background hover color
-    var bgColorHover = color === 'primary'
-        ? 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark' // Primary
-        : color === 'secondary'
-            ? 'hover:bg-light-secondary-dark hover:dark:bg-dark-secondary-dark' // Secondary
-            : color === 'tertiary'
-                ? 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200' // Tertiary
-                : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'; // iconOnly
+    var bgColorHover = state === 'selected'
+        ? '' // No hover effect when selected
+        : color === 'primary'
+            ? 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark' // Primary
+            : color === 'secondary'
+                ? 'hover:bg-light-secondary-dark hover:dark:bg-dark-secondary-dark' // Secondary
+                : color === 'tertiary'
+                    ? 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200' // Tertiary
+                    : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'; // iconOnly
     // Icon color
-    var iconColor = color === 'primary'
-        ? 'text-light-text-primary dark:text-dark-text-contrast' // Primary
-        : color === 'secondary'
-            ? 'text-light-text-primary dark:text-dark-text-primary' // Secondary
-            : color === 'tertiary'
-                ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary
-                : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly
+    var iconColor = state === 'selected'
+        ? 'text-light-text-contrast dark:text-dark-text-contrast' // Selected state
+        : color === 'primary'
+            ? 'text-light-text-primary dark:text-dark-text-contrast' // Primary
+            : color === 'secondary'
+                ? 'text-light-text-primary dark:text-dark-text-primary' // Secondary
+                : color === 'tertiary'
+                    ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary
+                    : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly
     // State classes, including loading
     var stateClasses = loading
         ? 'cursor-wait' // Show a waiting cursor during loading
         : state === 'disabled'
             ? 'cursor-not-allowed opacity-50'
             : state === 'selected'
-                ? 'cursor-pointer ring-2 ring-offset-2 ring-blue-500'
+                ? 'cursor-pointer'
                 : isHovered
                     ? 'cursor-pointer hover:bg-opacity-75'
                     : 'cursor-pointer';
