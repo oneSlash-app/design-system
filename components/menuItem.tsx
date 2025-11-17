@@ -64,9 +64,9 @@ export default function MenuItem({
   }, [iconName, iconRight, loadIcon]);
 
   // Size-based icon and text classes
-  const iconSize = size === 'large' ? 'w-6 h-6' : 'w-5 h-5';
-  const labelClass = size === 'large' ? 'text-body1' : 'text-body2';
-  const tagSize = size === 'large' ? 'medium' : 'small';
+  const iconSize = size === 'large' ? 'w-5 h-5' : 'w-6 h-6';
+  const labelClass = size === 'large' ? 'text-body2' : 'text-body1';
+  const tagSize = size === 'large' ? 'small' : 'medium';
 
   const content = (
     <div

@@ -49,7 +49,9 @@ export default function IconButton({
   const baseClasses = `${sizeClasses[size]} rounded-[8px] leading-none relative`;
 
   // Background color
-  const bgColor = color === 'primary'
+  const bgColor = state === 'selected'
+    ? 'bg-light-primary-dark dark:bg-dark-primary-dark' // Selected state
+    : color === 'primary'
     ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary
     : color === 'secondary'
     ? 'bg-light-secondary-main dark:bg-dark-secondary-main' // Secondary
@@ -58,7 +60,9 @@ export default function IconButton({
     : ' '; // iconOnly: none
 
   // Background hover color
-  const bgColorHover = color === 'primary'
+  const bgColorHover = state === 'selected'
+    ? '' // No hover effect when selected
+    : color === 'primary'
     ? 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark' // Primary
     : color === 'secondary'
     ? 'hover:bg-light-secondary-dark hover:dark:bg-dark-secondary-dark' // Secondary
@@ -67,7 +71,9 @@ export default function IconButton({
     : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'; // iconOnly
 
   // Icon color
-  const iconColor = color === 'primary'
+  const iconColor = state === 'selected'
+    ? 'text-light-text-contrast dark:text-dark-text-contrast' // Selected state
+    : color === 'primary'
     ? 'text-light-text-primary dark:text-dark-text-contrast' // Primary
     : color === 'secondary'
     ? 'text-light-text-primary dark:text-dark-text-primary' // Secondary
@@ -81,7 +87,7 @@ export default function IconButton({
     : state === 'disabled'
     ? 'cursor-not-allowed opacity-50'
     : state === 'selected'
-    ? 'cursor-pointer ring-2 ring-offset-2 ring-blue-500'
+    ? 'cursor-pointer'
     : isHovered
     ? 'cursor-pointer hover:bg-opacity-75'
     : 'cursor-pointer';
