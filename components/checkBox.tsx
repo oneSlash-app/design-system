@@ -3,6 +3,7 @@ import { useState } from 'react';
 
 interface CheckboxProps {
   label?: string;
+  secondLabel?: string;
   checked?: boolean;
   onChange?: (checked: boolean) => void;
   disabled?: boolean;
@@ -10,6 +11,7 @@ interface CheckboxProps {
 
 export default function Checkbox({
   label,
+  secondLabel,
   checked = false,
   onChange,
   disabled = false
@@ -65,16 +67,31 @@ export default function Checkbox({
           )}
         </div>
       </div>
-      {label && (
-        <span
-          className={`ml-2 text-body1 ${
-            disabled
-              ? 'text-light-text-disabled dark:text-dark-text-disabled'
-              : 'text-light-text-primary dark:text-dark-text-primary'
-          }`}
-        >
-          {label}
-        </span>
+      {(label || secondLabel) && (
+        <div className="flex flex-col ml-2">
+          {label && (
+            <span
+              className={`text-body1 ${
+                disabled
+                  ? 'text-light-text-disabled dark:text-dark-text-disabled'
+                  : 'text-light-text-primary dark:text-dark-text-primary'
+              }`}
+            >
+              {label}
+            </span>
+          )}
+          {secondLabel && (
+            <span
+              className={`text-body2 opacity-70 ${
+                disabled
+                  ? 'text-light-text-disabled dark:text-dark-text-disabled'
+                  : 'text-light-text-primary dark:text-dark-text-primary'
+              }`}
+            >
+              {secondLabel}
+            </span>
+          )}
+        </div>
       )}
     </label>
   );

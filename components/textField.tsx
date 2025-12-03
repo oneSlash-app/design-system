@@ -5,55 +5,81 @@ interface TextFieldProps {
   id: string;
   label?: string;
   value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;// Specify the event type for both input and textarea
-  onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;// Handle blur event for input/textarea
-  onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;// Handle focus event for input/textarea
+  type?: 'text' | 'password' | 'email' | 'number' | 'tel' | 'url' | 'search';
+  onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onFocus?: (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+  onSubmit?: () => void; // Triggered on Ctrl+Enter or Cmd+Enter
   autoFocus?: boolean;
   multiline?: boolean;
   maxRows?: number;
   disabled?: boolean;
   error?: boolean;
+  required?: boolean;
   size?: 'large' | 'medium' | 'small';
+  placeholder?: string;
 }
 
 export default function TextField({
   id,
   label,
   value,
+  type = 'text',
   onChange,
   onBlur,
   onFocus,
   onKeyDown,
-  autoFocus = false, // Accept the autoFocus prop with default value
+  onSubmit,
+  autoFocus = false,
   multiline = false,
   maxRows = 6,
   disabled = false,
   error = false,
+  required = false,
   size = 'medium',
+  placeholder,
 }: TextFieldProps) {
   const [isFocused, setIsFocused] = useState(false);
 
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    // Ctrl+Enter or Cmd+Enter to submit
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && onSubmit) {
+      e.preventDefault();
+      onSubmit();
+    }
+    if (onKeyDown) onKeyDown(e);
+  };
+
   // Define classes for size: text size and padding
   const sizeClasses = {
-    large: 'text-body1 p-[7px] leading-[22px]', // body1 (16px), padding 8px(7 + border 1) height 40
-    medium: 'text-body1 p-[3px] leading-[22px]', // body1 (16px), padding 4px(3 + border 1), height 32
-    small: 'text-body2 p-[3px] leading-[18px]', // body2 (14px), padding 4px(3 + border 1), height 28
+    large: 'text-body1 p-2 leading-[22px]', // body1 (16px), padding 8px
+    medium: 'text-body1 p-2 leading-[22px]', // body1 (16px), padding 8px
+    small: 'text-body2 p-2 leading-[18px]', // body2 (14px), padding 8px
   }[size];
 
-  const baseClasses = 'w-full border rounded-[8px]';
+  const baseClasses = 'w-full border rounded-[8px] outline-none';
+  const textColor = 'text-light-text-primary dark:text-dark-text-primary';
   const bgColor = 'bg-light-background-default dark:bg-dark-background-default transition-colors duration-200 ease-in-out';
-  const borderColor = 'border-light-outlinedBorder-active dark:border-dark-outlinedBorder-active';
+
+  // Border color logic: error > focused > default (misc-divider)
+  const getBorderColor = () => {
+    if (error) {
+      return 'border-light-error-main dark:border-dark-error-main';
+    }
+    if (isFocused) {
+      return 'border-light-text-primary dark:border-dark-text-primary';
+    }
+    return 'border-light-text-disabled dark:border-dark-text-disabled';
+  };
+
   const containerClasses = `
     ${bgColor}
-    ${borderColor}
+    ${textColor}
     ${baseClasses}
     ${sizeClasses}
-    ${disabled ? 'bg-gray-200 cursor-not-allowed' : ''}
-    ${error ? 'border-red-500 focus:ring-red-500' : ''}
-    ${isFocused ? 'focus:border-light-accent-main focus:dark:border-dark-accent-main outline-none' : ''}
-    ${!disabled && !error ? 'hover:border-light-outlinedBorder-hover' : ''}
-    border-gray-300
+    ${getBorderColor()}
+    ${disabled ? 'bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled cursor-not-allowed' : ''}
   `;
 
   return (
@@ -79,18 +105,20 @@ export default function TextField({
               setIsFocused(false);
               if (onBlur) onBlur(e);
             }}
-            onKeyDown={onKeyDown}
-            autoFocus={autoFocus} // Pass autoFocus to textarea
+            onKeyDown={handleKeyDown}
+            autoFocus={autoFocus}
             disabled={disabled}
-            autoComplete="off" // Disable browser autocomplete/autofill
+            required={required}
+            autoComplete="off"
           />
         ) : (
           <input
             id={id}
-            type="text"
+            type={type}
             className={containerClasses}
             value={value}
             onChange={onChange}
+            placeholder={placeholder}
             onFocus={(e) => {
               setIsFocused(true);
               if (onFocus) onFocus(e);
@@ -99,10 +127,11 @@ export default function TextField({
               setIsFocused(false);
               if (onBlur) onBlur(e);
             }}
-            onKeyDown={onKeyDown}
-            autoFocus={autoFocus} // Pass autoFocus to input
+            onKeyDown={handleKeyDown}
+            autoFocus={autoFocus}
             disabled={disabled}
-            autoComplete="off" // Disable browser autocomplete/autofill
+            required={required}
+            autoComplete="off"
           />
         )}
       </div>

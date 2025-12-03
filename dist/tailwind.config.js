@@ -1,5 +1,6 @@
 var designTokens = require('./designTokens');
 var config = {
+    darkMode: 'class',
     content: [
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
     ],

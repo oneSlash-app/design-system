@@ -1,0 +1,17 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import Tag from "../components/tag";
+declare const meta: Meta<typeof Tag>;
+export default meta;
+type Story = StoryObj<typeof Tag>;
+export declare const Contained: Story;
+export declare const TextOnly: Story;
+export declare const Selected: Story;
+export declare const WithIcon: Story;
+export declare const Small: Story;
+export declare const Clickable: Story;
+export declare const AllVariants: Story;
+export declare const Success: Story;
+export declare const Warning: Story;
+export declare const Error: Story;
+export declare const Info: Story;
+export declare const AllColors: Story;

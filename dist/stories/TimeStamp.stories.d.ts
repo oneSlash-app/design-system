@@ -1,0 +1,16 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import TimeStamp from "../components/timeStamp";
+declare const meta: Meta<typeof TimeStamp>;
+export default meta;
+type Story = StoryObj<typeof TimeStamp>;
+export declare const AbsoluteDateAndTime: Story;
+export declare const AbsoluteDateOnly: Story;
+export declare const AbsoluteTimeOnly: Story;
+export declare const RelativeRecent: Story;
+export declare const RelativeHours: Story;
+export declare const RelativeDays: Story;
+export declare const RelativeWeeks: Story;
+export declare const RelativeMonths: Story;
+export declare const PrimaryColor: Story;
+export declare const LargeSize: Story;
+export declare const AllFormats: Story;

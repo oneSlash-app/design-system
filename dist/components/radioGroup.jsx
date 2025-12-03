@@ -11,7 +11,10 @@ export default function RadioGroup(_a) {
             {/* Inner circle */}
             {selectedValue === option.value && (<div className='absolute w-2 h-2 rounded-full bg-light-text-primary dark:bg-dark-text-primary'/>)}
           </div>
-          <span className="ml-2 text-body1 text-light-text-primary dark:text-dark-text-primary">{option.label}</span>
+          <div className="flex flex-col ml-2">
+            <span className="text-body1 text-light-text-primary dark:text-dark-text-primary">{option.label}</span>
+            {option.secondLabel && (<span className="text-body2 opacity-70 text-light-text-primary dark:text-dark-text-primary">{option.secondLabel}</span>)}
+          </div>
         </label>); })}
     </div>);
 }

@@ -6,6 +6,7 @@ interface ButtonProps {
   type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
   state: 'enabled' | 'hovered' | 'focused' | 'disabled';
   label: string;
+  secondLabel?: string;
   decoIcon?: string;
   actionIcon?: string;
   onClickButton?: any;
@@ -20,6 +21,7 @@ export default function Button({
   type,
   state,
   label,
+  secondLabel,
   decoIcon,
   actionIcon,
   onClickButton,
@@ -108,7 +110,12 @@ export default function Button({
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className="flex items-center">
         {IconLeft && <IconLeft className={sizeIcon} strokeWidth={2} />}
-        <div className="whitespace-nowrap overflow-hidden truncate px-2">{label}</div>
+        <div className="flex flex-col text-center px-2">
+          <span className="whitespace-nowrap overflow-hidden truncate">{label}</span>
+          {secondLabel && (
+            <span className="whitespace-nowrap overflow-hidden truncate text-body2 opacity-70">{secondLabel}</span>
+          )}
+        </div>
       </div>
       {IconRight && (
         <div onClick={onClickActionIcon} className="cursor-pointer">

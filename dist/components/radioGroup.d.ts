@@ -1,6 +1,7 @@
 import React from 'react';
 interface RadioOption {
     label: string;
+    secondLabel?: string;
     value: string;
 }
 interface RadioGroupProps {

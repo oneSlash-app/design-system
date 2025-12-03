@@ -1,0 +1,12 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import Textarea from "../components/textarea";
+declare const meta: Meta<typeof Textarea>;
+export default meta;
+type Story = StoryObj<typeof Textarea>;
+export declare const Default: Story;
+export declare const WithValue: Story;
+export declare const Disabled: Story;
+export declare const WithError: Story;
+export declare const SmallSize: Story;
+export declare const AutoExpanding: Story;
+export declare const AllSizes: Story;

@@ -1,0 +1,10 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import Link from "../components/link";
+declare const meta: Meta<typeof Link>;
+export default meta;
+type Story = StoryObj<typeof Link>;
+export declare const Info: Story;
+export declare const Error: Story;
+export declare const Warning: Story;
+export declare const Success: Story;
+export declare const AllColors: Story;

@@ -1,0 +1,11 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import MenuItem from "../components/menuItem";
+declare const meta: Meta<typeof MenuItem>;
+export default meta;
+type Story = StoryObj<typeof MenuItem>;
+export declare const Default: Story;
+export declare const Selected: Story;
+export declare const WithRightIcon: Story;
+export declare const WithTag: Story;
+export declare const WithUserImage: Story;
+export declare const LargeSize: Story;

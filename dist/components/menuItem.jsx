@@ -41,7 +41,7 @@ import UserImage from './userImage';
 import Tag from './tag';
 export default function MenuItem(_a) {
     var _this = this;
-    var href = _a.href, iconName = _a.iconName, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, isSelected = _a.isSelected, onClick = _a.onClick, _b = _a.className, className = _b === void 0 ? '' : _b, _c = _a.size, size = _c === void 0 ? 'medium' : _c, tag = _a.tag, iconRight = _a.iconRight;
+    var href = _a.href, iconName = _a.iconName, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, secondLabel = _a.secondLabel, isSelected = _a.isSelected, onClick = _a.onClick, _b = _a.className, className = _b === void 0 ? '' : _b, _c = _a.size, size = _c === void 0 ? 'medium' : _c, tag = _a.tag, iconRight = _a.iconRight;
     var _d = useState(null), IconLeft = _d[0], setIconLeft = _d[1];
     var _e = useState(null), IconRight = _e[0], setIconRight = _e[1];
     var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
@@ -102,9 +102,14 @@ export default function MenuItem(_a) {
       {/* Left group: icon/userImg + label + tag with 8px gap */}
       <div className="flex items-center gap-2">
         {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary')} strokeWidth={2}/>))}
-        <span className={"whitespace-nowrap ".concat(labelClass, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
-          {label}
-        </span>
+        <div className="flex flex-col">
+          <span className={"whitespace-nowrap ".concat(labelClass, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
+            {label}
+          </span>
+          {secondLabel && (<span className={"whitespace-nowrap text-body2 opacity-70 ".concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
+              {secondLabel}
+            </span>)}
+        </div>
         {tag && (<Tag variant="contained" size={tagSize} label={tag.label} iconName={tag.iconName}/>)}
       </div>
 

@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 export default function Checkbox(_a) {
-    var label = _a.label, _b = _a.checked, checked = _b === void 0 ? false : _b, onChange = _a.onChange, _c = _a.disabled, disabled = _c === void 0 ? false : _c;
+    var label = _a.label, secondLabel = _a.secondLabel, _b = _a.checked, checked = _b === void 0 ? false : _b, onChange = _a.onChange, _c = _a.disabled, disabled = _c === void 0 ? false : _c;
     var _d = useState(checked), isChecked = _d[0], setIsChecked = _d[1];
     var handleToggle = function () {
         if (disabled)
@@ -32,10 +32,17 @@ export default function Checkbox(_a) {
             </svg>)}
         </div>
       </div>
-      {label && (<span className={"ml-2 text-body1 ".concat(disabled
-                ? 'text-light-text-disabled dark:text-dark-text-disabled'
-                : 'text-light-text-primary dark:text-dark-text-primary')}>
-          {label}
-        </span>)}
+      {(label || secondLabel) && (<div className="flex flex-col ml-2">
+          {label && (<span className={"text-body1 ".concat(disabled
+                    ? 'text-light-text-disabled dark:text-dark-text-disabled'
+                    : 'text-light-text-primary dark:text-dark-text-primary')}>
+              {label}
+            </span>)}
+          {secondLabel && (<span className={"text-body2 opacity-70 ".concat(disabled
+                    ? 'text-light-text-disabled dark:text-dark-text-disabled'
+                    : 'text-light-text-primary dark:text-dark-text-primary')}>
+              {secondLabel}
+            </span>)}
+        </div>)}
     </label>);
 }

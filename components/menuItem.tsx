@@ -12,6 +12,7 @@ interface MenuItemProps {
   userHandle?: string;
   userImgUrl?: string;
   label: string;
+  secondLabel?: string;
   isSelected?: boolean;
   onClick?: any;
   className?: string;
@@ -29,6 +30,7 @@ export default function MenuItem({
   userHandle,
   userImgUrl,
   label,
+  secondLabel,
   isSelected,
   onClick,
   className = '',
@@ -92,9 +94,16 @@ export default function MenuItem({
             />
           )
         )}
-        <span className={`whitespace-nowrap ${labelClass} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
-          {label}
-        </span>
+        <div className="flex flex-col">
+          <span className={`whitespace-nowrap ${labelClass} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
+            {label}
+          </span>
+          {secondLabel && (
+            <span className={`whitespace-nowrap text-body2 opacity-70 ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
+              {secondLabel}
+            </span>
+          )}
+        </div>
         {tag && (
           <Tag
             variant="contained"
