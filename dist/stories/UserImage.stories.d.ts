@@ -1,0 +1,10 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import UserImage from "../components/userImage";
+declare const meta: Meta<typeof UserImage>;
+export default meta;
+type Story = StoryObj<typeof UserImage>;
+export declare const WithInitial: Story;
+export declare const SingleName: Story;
+export declare const WithImage: Story;
+export declare const DifferentUsers: Story;
+export declare const MixedWithImages: Story;

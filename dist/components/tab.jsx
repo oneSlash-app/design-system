@@ -36,12 +36,9 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 import React, { useState, useEffect, useCallback } from 'react';
-import { useRouter, usePathname } from 'next/navigation';
 export default function Tab(_a) {
     var _this = this;
-    var label = _a.label, href = _a.href, isSelected = _a.isSelected, onClickTab = _a.onClickTab, onClickActionIcon = _a.onClickActionIcon, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon;
-    var router = useRouter();
-    var pathname = usePathname();
+    var label = _a.label, secondLabel = _a.secondLabel, href = _a.href, isSelected = _a.isSelected, onClickTab = _a.onClickTab, onClickActionIcon = _a.onClickActionIcon, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, router = _a.router;
     var _b = useState(null), IconLeft = _b[0], setIconLeft = _b[1];
     var _c = useState(null), IconRight = _c[0], setIconRight = _c[1];
     // Load icon dynamically
@@ -95,17 +92,22 @@ export default function Tab(_a) {
     }, [decoIcon, actionIcon, loadIcon]);
     var handleClick = function () {
         onClickTab();
-        if (href) {
+        if (href && router) {
             router.push(href);
         }
     };
     return (<div className={"\n        flex items-center space-x-1 py-1 px-[6px] rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out\n        ".concat(isSelected
             ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
-            : 'hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200', "\n      ")} onClick={handleClick}>
+            : 'text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200', "\n      ")} onClick={handleClick}>
       {IconLeft && <IconLeft className="w-6 h-6" strokeWidth={2}/>}
-      <span className="whitespace-nowrap text-body1 px-[6px]">
-        {label}
-      </span>
+      <div className="flex flex-col px-[6px] text-center">
+        <span className="whitespace-nowrap text-body1">
+          {label}
+        </span>
+        {secondLabel && (<span className="whitespace-nowrap text-body2 opacity-70">
+            {secondLabel}
+          </span>)}
+      </div>
       {IconRight && (<div onClick={onClickActionIcon} className="cursor-pointer">
           <IconRight className="w-6 h-6" strokeWidth={2}/>
         </div>)}

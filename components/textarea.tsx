@@ -9,11 +9,13 @@ interface TextareaProps {
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onSubmit?: () => void; // Triggered on Ctrl+Enter or Cmd+Enter
   autoFocus?: boolean;
   maxRows?: number;
   disabled?: boolean;
   error?: boolean;
-  size?: 'large' | 'medium' | 'small';
+  size?: 'medium' | 'small';
+  placeholder?: string;
 }
 
 export default function Textarea({
@@ -24,14 +26,25 @@ export default function Textarea({
   onBlur,
   onFocus,
   onKeyDown,
+  onSubmit,
   autoFocus = false,
   maxRows = 6,
   disabled = false,
   error = false,
   size = 'medium',
+  placeholder,
 }: TextareaProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [isFocused, setIsFocused] = useState(false);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Ctrl+Enter or Cmd+Enter to submit
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && onSubmit) {
+      e.preventDefault();
+      onSubmit();
+    }
+    if (onKeyDown) onKeyDown(e);
+  };
 
   useEffect(() => {
     const textarea = textareaRef.current;
@@ -46,8 +59,10 @@ export default function Textarea({
       // Set height to scrollHeight, capped at maxRows, but at least 1 line
       textarea.style.height = `${Math.max(Math.min(scrollHeight, maxHeight), lineHeight)}px`;
 
-      // Enable vertical scroll if content exceeds maxRows
-      textarea.style.overflowY = scrollHeight > maxHeight ? 'auto' : 'hidden';
+      // Enable vertical scroll if content exceeds maxRows (hide scrollbar)
+      textarea.style.overflowY = scrollHeight > maxHeight ? 'scroll' : 'hidden';
+      textarea.style.scrollbarWidth = 'none'; // Firefox
+      (textarea.style as any).msOverflowStyle = 'none'; // IE/Edge
     };
 
     // Set initial rows to 1 for single-line height
@@ -61,24 +76,32 @@ export default function Textarea({
 
   // Define classes for size: text size and padding
   const sizeClasses = {
-    large: 'text-body1 p-[7px] leading-[22px]', // body1 (16px), padding 8px(7 + border 1) height 40
-    medium: 'text-body1 p-[3px] leading-[22px]', // body1 (16px), padding 4px(3 + border 1), height 32
-    small: 'text-body2 p-[3px] leading-[18px]', // body2 (14px), padding 4px(3 + border 1), height 28
+    medium: 'text-body1 p-2 leading-[22px]', // body1 (16px), padding 8px
+    small: 'text-body2 p-2 leading-[18px]', // body2 (14px), padding 8px
   }[size];
 
-  const baseClasses = 'w-full border rounded-[8px]';
+  const baseClasses = 'w-full border rounded-[8px] outline-none [&::-webkit-scrollbar]:hidden';
+  const textColor = 'text-light-text-primary dark:text-dark-text-primary';
   const bgColor = 'bg-light-background-default dark:bg-dark-background-default transition-colors duration-200 ease-in-out';
-  const borderColor = 'border-light-outlinedBorder-active dark:border-dark-outlinedBorder-active';
+
+  // Border color logic: error > focused > default (misc-divider)
+  const getBorderColor = () => {
+    if (error) {
+      return 'border-light-error-main dark:border-dark-error-main';
+    }
+    if (isFocused) {
+      return 'border-light-text-primary dark:border-dark-text-primary';
+    }
+    return 'border-light-text-disabled dark:border-dark-text-disabled';
+  };
+
   const containerClasses = `
     ${bgColor}
-    ${borderColor}
+    ${textColor}
     ${baseClasses}
     ${sizeClasses}
-    ${disabled ? 'bg-gray-200 cursor-not-allowed' : ''}
-    ${error ? 'border-red-500 focus:ring-red-500' : ''}
-    ${isFocused ? 'focus:border-light-accent-main focus:dark:border-dark-accent-main outline-none' : ''}
-    ${!disabled && !error ? 'hover:border-light-outlinedBorder-hover' : ''}
-    border-gray-300
+    ${getBorderColor()}
+    ${disabled ? 'bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled cursor-not-allowed' : ''}
   `;
 
   return (
@@ -96,6 +119,7 @@ export default function Textarea({
           className={containerClasses}
           value={value}
           onChange={onChange}
+          placeholder={placeholder}
           onFocus={(e) => {
             setIsFocused(true);
             if (onFocus) onFocus(e);
@@ -104,7 +128,7 @@ export default function Textarea({
             setIsFocused(false);
             if (onBlur) onBlur(e);
           }}
-          onKeyDown={onKeyDown}
+          onKeyDown={handleKeyDown}
           autoFocus={autoFocus}
           disabled={disabled}
           autoComplete="off"

@@ -4,11 +4,13 @@ import { AlertCircle } from 'lucide-react';
 
 interface EmptyBoxProps{
     text: string;
+    secondText?: string;
     size: "small" | "large";
   }
   
-export default function EmptyBox ({ 
+export default function EmptyBox ({
     text,
+    secondText,
     size,
 }: EmptyBoxProps) {
 
@@ -19,9 +21,16 @@ export default function EmptyBox ({
     return (
         <div className={`flex flex-col space-y-2 justify-center items-center w-full ${height}`}>
             <AlertCircle className={`${iconSize} ${color}`} strokeWidth={2} />
-            <p className={`text-body1 text-center ${color}`} >
-                {text}
-            </p>
+            <div className="flex flex-col text-center">
+                <p className={`text-body1 ${color}`}>
+                    {text}
+                </p>
+                {secondText && (
+                    <p className={`text-body2 opacity-70 ${color}`}>
+                        {secondText}
+                    </p>
+                )}
+            </div>
         </div>
     );
 }

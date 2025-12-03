@@ -3,9 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Info, AlertCircle, AlertTriangle, CheckCircle } from 'lucide-react';
 import IconButton from './iconButton';
 export default function Alert(_a) {
-    var open = _a.open, type = _a.type, message = _a.message, onClose = _a.onClose, _b = _a.showCloseButton, showCloseButton = _b === void 0 ? false : _b;
-    var _c = useState(false), isVisible = _c[0], setIsVisible = _c[1];
-    var _d = useState(false), shouldRender = _d[0], setShouldRender = _d[1];
+    var _b = _a.open, open = _b === void 0 ? true : _b, type = _a.type, message = _a.message, secondMessage = _a.secondMessage, onClose = _a.onClose, _c = _a.showCloseButton, showCloseButton = _c === void 0 ? false : _c, _d = _a.variant, variant = _d === void 0 ? 'toast' : _d;
+    var _e = useState(false), isVisible = _e[0], setIsVisible = _e[1];
+    var _f = useState(false), shouldRender = _f[0], setShouldRender = _f[1];
     useEffect(function () {
         if (open) {
             setShouldRender(true);
@@ -37,7 +37,7 @@ export default function Alert(_a) {
         // Wait for animation to complete before unmounting
         setTimeout(function () {
             setShouldRender(false);
-            onClose();
+            onClose === null || onClose === void 0 ? void 0 : onClose();
         }, 300);
     };
     if (!shouldRender)
@@ -77,17 +77,22 @@ export default function Alert(_a) {
             bgColor = 'bg-light-secondary-light dark:bg-dark-secondary-light';
             break;
     }
-    return (<div className="fixed top-4 inset-x-0 z-50 flex justify-center pointer-events-none">
-      <div className={"flex items-start justify-between w-full max-w-md p-2 rounded-[8px] pointer-events-auto transition-opacity duration-200 ease-out ".concat(bgColor, " ").concat(isVisible
-            ? 'opacity-100'
-            : 'opacity-0')}>
-        <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
-          {getIcon()}
+    var alertContent = (<div className={"flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ".concat(bgColor, " ").concat(isVisible ? 'opacity-100' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
+      <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
+        {getIcon()}
+        <div className="flex flex-col text-center">
           <span className="body1">{message}</span>
+          {secondMessage && (<span className="body2 opacity-70">{secondMessage}</span>)}
         </div>
-        {showCloseButton && (<div className="ml-4">
-            <IconButton color="iconOnly" state="enabled" size="small" iconName="X" onClick={handleClose}/>
-          </div>)}
       </div>
+      {showCloseButton && (<div className="ml-4">
+          <IconButton color="iconOnly" state="enabled" size="small" iconName="X" onClick={handleClose}/>
+        </div>)}
+    </div>);
+    if (variant === 'inline') {
+        return alertContent;
+    }
+    return (<div className="fixed top-4 inset-x-0 z-50 flex justify-center pointer-events-none">
+      {alertContent}
     </div>);
 }

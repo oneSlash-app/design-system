@@ -12,16 +12,20 @@ interface AlertProps {
   open?: boolean;
   type: 'success' | 'warning' | 'error' | 'info' | 'default';
   message: string;
-  onClose: () => void;
+  secondMessage?: string;
+  onClose?: () => void;
   showCloseButton?: boolean;
+  variant?: 'toast' | 'inline';
 }
 
 export default function Alert({
-  open,
+  open = true,
   type,
   message,
+  secondMessage,
   onClose,
-  showCloseButton = false
+  showCloseButton = false,
+  variant = 'toast',
 }: AlertProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
@@ -59,7 +63,7 @@ export default function Alert({
     // Wait for animation to complete before unmounting
     setTimeout(() => {
       setShouldRender(false);
-      onClose();
+      onClose?.();
     }, 300);
   };
 
@@ -102,31 +106,42 @@ export default function Alert({
       break;
   }
 
+  const alertContent = (
+    <div
+      className={`flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ${bgColor} ${
+        isVisible ? 'opacity-100' : 'opacity-0'
+      } ${variant === 'toast' ? 'max-w-md pointer-events-auto' : ''}`}
+    >
+      <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
+        {getIcon()}
+        <div className="flex flex-col text-center">
+          <span className="body1">{message}</span>
+          {secondMessage && (
+            <span className="body2 opacity-70">{secondMessage}</span>
+          )}
+        </div>
+      </div>
+      {showCloseButton && (
+        <div className="ml-4">
+          <IconButton
+            color="iconOnly"
+            state="enabled"
+            size="small"
+            iconName="X"
+            onClick={handleClose}
+          />
+        </div>
+      )}
+    </div>
+  );
+
+  if (variant === 'inline') {
+    return alertContent;
+  }
+
   return (
     <div className="fixed top-4 inset-x-0 z-50 flex justify-center pointer-events-none">
-      <div
-        className={`flex items-start justify-between w-full max-w-md p-2 rounded-[8px] pointer-events-auto transition-opacity duration-200 ease-out ${bgColor} ${
-          isVisible
-            ? 'opacity-100'
-            : 'opacity-0'
-        }`}
-      >
-        <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
-          {getIcon()}
-          <span className="body1">{message}</span>
-        </div>
-        {showCloseButton && (
-          <div className="ml-4">
-            <IconButton
-              color="iconOnly"
-              state="enabled"
-              size="small"
-              iconName="X"
-              onClick={handleClose}
-            />
-          </div>
-        )}
-      </div>
+      {alertContent}
     </div>
   );
 }

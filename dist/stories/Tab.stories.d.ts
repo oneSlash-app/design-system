@@ -1,0 +1,11 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import Tab from "../components/tab";
+declare const meta: Meta<typeof Tab>;
+export default meta;
+type Story = StoryObj<typeof Tab>;
+export declare const Default: Story;
+export declare const Selected: Story;
+export declare const WithDecoIcon: Story;
+export declare const WithActionIcon: Story;
+export declare const WithBothIcons: Story;
+export declare const TabGroup: Story;

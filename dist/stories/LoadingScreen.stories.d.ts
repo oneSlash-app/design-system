@@ -1,0 +1,10 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import LoadingScreen, { LoadingSmall } from "../components/loadingScreen";
+declare const meta: Meta<typeof LoadingScreen>;
+export default meta;
+type Story = StoryObj<typeof LoadingScreen>;
+export declare const Default: Story;
+export declare const Small: StoryObj<typeof LoadingSmall>;
+export declare const Medium: StoryObj<typeof LoadingSmall>;
+export declare const Large: StoryObj<typeof LoadingSmall>;
+export declare const AllSizes: Story;

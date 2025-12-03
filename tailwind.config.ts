@@ -3,6 +3,7 @@ import type { Config } from "tailwindcss";
 const designTokens = require('./designTokens');
 
 const config: Config = {
+  darkMode: 'class',
   content: [
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
   ],

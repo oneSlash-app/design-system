@@ -38,7 +38,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import React, { useState, useEffect, useCallback } from 'react';
 export default function Button(_a) {
     var _this = this;
-    var size = _a.size, type = _a.type, state = _a.state, label = _a.label, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _b = _a.className, className = _b === void 0 ? '' : _b;
+    var size = _a.size, type = _a.type, state = _a.state, label = _a.label, secondLabel = _a.secondLabel, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _b = _a.className, className = _b === void 0 ? '' : _b;
     var _c = useState(false), isHovered = _c[0], setIsHovered = _c[1];
     var _d = useState(null), IconLeft = _d[0], setIconLeft = _d[1];
     var _e = useState(null), IconRight = _e[0], setIconRight = _e[1];
@@ -126,7 +126,10 @@ export default function Button(_a) {
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className="flex items-center">
         {IconLeft && <IconLeft className={sizeIcon} strokeWidth={2}/>}
-        <div className="whitespace-nowrap overflow-hidden truncate px-2">{label}</div>
+        <div className="flex flex-col text-center px-2">
+          <span className="whitespace-nowrap overflow-hidden truncate">{label}</span>
+          {secondLabel && (<span className="whitespace-nowrap overflow-hidden truncate text-body2 opacity-70">{secondLabel}</span>)}
+        </div>
       </div>
       {IconRight && (<div onClick={onClickActionIcon} className="cursor-pointer">
           <IconRight className={sizeIcon} strokeWidth={2}/>

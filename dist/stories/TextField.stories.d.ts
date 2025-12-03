@@ -1,0 +1,13 @@
+import type { Meta, StoryObj } from "@storybook/react";
+import TextField from "../components/textField";
+declare const meta: Meta<typeof TextField>;
+export default meta;
+type Story = StoryObj<typeof TextField>;
+export declare const Default: Story;
+export declare const WithValue: Story;
+export declare const Disabled: Story;
+export declare const WithError: Story;
+export declare const LargeSize: Story;
+export declare const SmallSize: Story;
+export declare const Multiline: Story;
+export declare const AllSizes: Story;
