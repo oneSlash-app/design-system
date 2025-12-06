@@ -53,6 +53,15 @@ export const WithTag: Story = {
   },
 };
 
+export const WithTagColor: Story = {
+  args: {
+    label: "New Feature",
+    iconName: "Sparkles",
+    tag: { label: "New", color: "success" },
+    isSelected: false,
+  },
+};
+
 export const WithUserImage: Story = {
   args: {
     label: "John Doe",

@@ -20,6 +20,8 @@ interface MenuItemProps {
   tag?: {
     label: React.ReactNode;
     iconName?: string;
+    color?: 'default' | 'success' | 'warning' | 'error' | 'info';
+    variant?: 'contained' | 'textOnly' | 'dot';
   };
   iconRight?: string;
 }
@@ -82,45 +84,48 @@ export default function MenuItem({
       style={{ width: '100%' }}
       onClick={onClick}
     >
-      {/* Left group: icon/userImg + label + tag with 8px gap */}
-      <div className="flex items-center gap-2">
+      {/* Left group: icon/userImg + label with 8px gap */}
+      <div className="flex items-center gap-2 min-w-0">
         {userImgUrl ? (
           <UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl} />
         ) : (
           IconLeft && (
             <IconLeft
-              className={`${iconSize} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary'}`}
+              className={`${iconSize} flex-shrink-0 ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary'}`}
               strokeWidth={2}
             />
           )
         )}
-        <div className="flex flex-col">
-          <span className={`whitespace-nowrap ${labelClass} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
+        <div className="flex flex-col min-w-0">
+          <span className={`truncate ${labelClass} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
             {label}
           </span>
           {secondLabel && (
-            <span className={`whitespace-nowrap text-body2 opacity-70 ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
+            <span className={`truncate text-body2 opacity-70 ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
               {secondLabel}
             </span>
           )}
         </div>
+      </div>
+
+      {/* Right group: tag + icon aligned to the right */}
+      <div className="flex items-center gap-2 flex-shrink-0">
         {tag && (
           <Tag
-            variant="contained"
+            variant={tag.variant || 'contained'}
             size={tagSize}
             label={tag.label}
             iconName={tag.iconName as any}
+            color={tag.color}
+          />
+        )}
+        {IconRight && (
+          <IconRight
+            className={`${iconSize} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary'} flex-shrink-0`}
+            strokeWidth={2}
           />
         )}
       </div>
-
-      {/* Right icon aligned to the right */}
-      {IconRight && (
-        <IconRight
-          className={`${iconSize} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary'} flex-shrink-0`}
-          strokeWidth={2}
-        />
-      )}
     </div>
   );
 
