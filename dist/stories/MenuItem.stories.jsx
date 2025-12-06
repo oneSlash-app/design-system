@@ -44,6 +44,14 @@ export var WithTag = {
         isSelected: false,
     },
 };
+export var WithTagColor = {
+    args: {
+        label: "New Feature",
+        iconName: "Sparkles",
+        tag: { label: "New", color: "success" },
+        isSelected: false,
+    },
+};
 export var WithUserImage = {
     args: {
         label: "John Doe",

@@ -15,7 +15,7 @@ const meta: Meta<typeof Button> = {
     },
     state: {
       control: "select",
-      options: ["enabled", "hovered", "focused", "disabled"],
+      options: ["enabled", "hovered", "focused", "disabled", "selected"],
     },
     label: { control: "text" },
     decoIcon: { control: "text" },
@@ -88,5 +88,14 @@ export const Large: Story = {
     type: "primary",
     state: "enabled",
     label: "Large Button",
+  },
+};
+
+export const Selected: Story = {
+  args: {
+    size: "medium",
+    type: "primary",
+    state: "selected",
+    label: "Selected Button",
   },
 };

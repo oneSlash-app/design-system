@@ -671,6 +671,9 @@ video {
 .w-px{
   width: 1px;
 }
+.min-w-0{
+  min-width: 0px;
+}
 .max-w-md{
   max-width: 28rem;
 }

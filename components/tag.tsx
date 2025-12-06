@@ -5,7 +5,7 @@ import { icons } from 'lucide-react';
 type IconName = keyof typeof icons;
 
 interface TagProps {
-  variant: 'contained' | 'textOnly';
+  variant: 'contained' | 'textOnly' | 'dot';
   size: 'medium' | 'small';
   state?: 'enabled' | 'selected';
   color?: 'default' | 'success' | 'warning' | 'error' | 'info';
@@ -21,34 +21,39 @@ const colorConfig = {
     text: 'text-light-text-primary dark:text-dark-text-primary',
     textOnly: 'text-light-text-secondary dark:text-dark-text-secondary',
     border: 'border-light-misc-divider dark:border-dark-misc-divider',
+    dot: 'bg-light-text-secondary dark:bg-dark-text-secondary',
     hasBorderTextOnly: false,
   },
   success: {
     bg: 'bg-light-success-main dark:bg-dark-success-main',
-    text: 'text-light-text-primary dark:text-dark-text-primary',
+    text: 'text-white dark:text-dark-text-primary',
     textOnly: 'text-light-success-main dark:text-dark-success-main',
     border: 'border-light-success-main dark:border-dark-success-main',
+    dot: 'bg-light-success-main dark:bg-dark-success-main',
     hasBorderTextOnly: true,
   },
   warning: {
     bg: 'bg-light-warning-main dark:bg-dark-warning-main',
-    text: 'text-light-text-primary dark:text-dark-text-primary',
+    text: 'text-white dark:text-dark-text-primary',
     textOnly: 'text-light-warning-main dark:text-dark-warning-main',
     border: 'border-light-warning-main dark:border-dark-warning-main',
+    dot: 'bg-light-warning-main dark:bg-dark-warning-main',
     hasBorderTextOnly: true,
   },
   error: {
     bg: 'bg-light-error-main dark:bg-dark-error-main',
-    text: 'text-light-text-primary dark:text-dark-text-primary',
+    text: 'text-white dark:text-dark-text-primary',
     textOnly: 'text-light-error-main dark:text-dark-error-main',
     border: 'border-light-error-main dark:border-dark-error-main',
+    dot: 'bg-light-error-main dark:bg-dark-error-main',
     hasBorderTextOnly: true,
   },
   info: {
     bg: 'bg-light-info-main dark:bg-dark-info-main',
-    text: 'text-light-text-primary dark:text-dark-text-primary',
+    text: 'text-white dark:text-dark-text-primary',
     textOnly: 'text-light-info-main dark:text-dark-info-main',
     border: 'border-light-info-main dark:border-dark-info-main',
+    dot: 'bg-light-info-main dark:bg-dark-info-main',
     hasBorderTextOnly: true,
   },
 };
@@ -79,7 +84,9 @@ export default function Tag({
 
   // Background color
   let bgClasses = '';
-  if (colorStyles) {
+  if (variant === 'dot') {
+    bgClasses = '';
+  } else if (colorStyles) {
     bgClasses = variant === 'contained' ? colorStyles.bg : '';
   } else if (isSelected && variant === 'contained') {
     bgClasses = 'bg-light-accent-main dark:bg-dark-accent-main';
@@ -89,7 +96,9 @@ export default function Tag({
 
   // Font color
   let fontClasses = '';
-  if (colorStyles) {
+  if (variant === 'dot') {
+    fontClasses = 'text-light-text-primary dark:text-dark-text-primary';
+  } else if (colorStyles) {
     fontClasses = variant === 'textOnly' ? colorStyles.textOnly : colorStyles.text;
   } else if (isSelected) {
     fontClasses = 'text-white';
@@ -99,7 +108,9 @@ export default function Tag({
 
   // Border styles
   let borderClasses = '';
-  if (colorStyles) {
+  if (variant === 'dot') {
+    borderClasses = '';
+  } else if (colorStyles) {
     if (variant === 'textOnly' && colorStyles.hasBorderTextOnly) {
       borderClasses = `border ${colorStyles.border}`;
     } else if (variant === 'contained') {
@@ -110,6 +121,9 @@ export default function Tag({
   } else if (variant === 'contained') {
     borderClasses = 'border border-light-misc-divider dark:border-dark-misc-divider';
   }
+
+  // Dot color
+  const dotColor = colorStyles?.dot || colorConfig.default.dot;
 
   // Hover (only when not selected, no color, and onClick is provided)
   const hoverClasses = !isSelected && !color && variant === 'contained' && isHovered && onClick
@@ -127,7 +141,10 @@ export default function Tag({
       onMouseLeave={() => onClick && setIsHovered(false)}
       onClick={onClick}
     >
-      {Icon && <Icon className="w-4 h-4 flex-shrink-0" strokeWidth={2} />}
+      {variant === 'dot' && (
+        <span className={`w-3 h-3 rounded-full flex-shrink-0 ${dotColor}`} />
+      )}
+      {Icon && variant !== 'dot' && <Icon className="w-4 h-4 flex-shrink-0" strokeWidth={2} />}
       <div className="flex flex-col text-center">
         <span>{label}</span>
         {secondLabel && (

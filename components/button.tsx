@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 interface ButtonProps {
   size: 'small' | 'medium' | 'large';
   type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
-  state: 'enabled' | 'hovered' | 'focused' | 'disabled';
+  state: 'enabled' | 'hovered' | 'focused' | 'disabled' | 'selected';
   label: string;
   secondLabel?: string;
   decoIcon?: string;
@@ -88,15 +88,18 @@ export default function Button({
     disabled: type === 'textOnly'
       ? 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-transparent'
       : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',
+    selected: 'cursor-pointer bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast',
   };
 
   const buttonClasses = `
     flex flex-row items-center rounded-[8px] transition-colors duration-200 ease-in-out justify-between
     ${sizeClasses}
+    ${state === 'selected' ? stateClasses.selected : ''}
     ${state === 'enabled' ? baseTypeClasses : ''}
-    ${state === 'focused' ? stateClasses.focused : ''}
-    ${state === 'disabled' ? stateClasses.disabled : baseTypeClasses}
-    ${state !== 'disabled' && isHovered ? hoverTypeClasses : ''}
+    ${state === 'focused' ? `${baseTypeClasses} ${stateClasses.focused}` : ''}
+    ${state === 'disabled' ? stateClasses.disabled : ''}
+    ${state !== 'disabled' && state !== 'selected' && isHovered ? hoverTypeClasses : ''}
+    ${state === 'hovered' ? `${baseTypeClasses} ${hoverTypeClasses}` : ''}
     ${className}
   `;
 
