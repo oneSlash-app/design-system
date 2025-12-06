@@ -2,7 +2,7 @@ import React from 'react';
 import { icons } from 'lucide-react';
 type IconName = keyof typeof icons;
 interface TagProps {
-    variant: 'contained' | 'textOnly';
+    variant: 'contained' | 'textOnly' | 'dot';
     size: 'medium' | 'small';
     state?: 'enabled' | 'selected';
     color?: 'default' | 'success' | 'warning' | 'error' | 'info';

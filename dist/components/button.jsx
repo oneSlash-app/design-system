@@ -118,8 +118,9 @@ export default function Button(_a) {
         disabled: type === 'textOnly'
             ? 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-transparent'
             : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',
+        selected: 'cursor-pointer bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast',
     };
-    var buttonClasses = "\n    flex flex-row items-center rounded-[8px] transition-colors duration-200 ease-in-out justify-between\n    ".concat(sizeClasses, "\n    ").concat(state === 'enabled' ? baseTypeClasses : '', "\n    ").concat(state === 'focused' ? stateClasses.focused : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : baseTypeClasses, "\n    ").concat(state !== 'disabled' && isHovered ? hoverTypeClasses : '', "\n    ").concat(className, "\n  ");
+    var buttonClasses = "\n    flex flex-row items-center rounded-[8px] transition-colors duration-200 ease-in-out justify-between\n    ".concat(sizeClasses, "\n    ").concat(state === 'selected' ? stateClasses.selected : '', "\n    ").concat(state === 'enabled' ? baseTypeClasses : '', "\n    ").concat(state === 'focused' ? "".concat(baseTypeClasses, " ").concat(stateClasses.focused) : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : '', "\n    ").concat(state !== 'disabled' && state !== 'selected' && isHovered ? hoverTypeClasses : '', "\n    ").concat(state === 'hovered' ? "".concat(baseTypeClasses, " ").concat(hoverTypeClasses) : '', "\n    ").concat(className, "\n  ");
     return (<button className={buttonClasses} onMouseEnter={function () { if (state !== 'disabled')
         setIsHovered(true); }} onMouseLeave={function () { if (state !== 'disabled')
         setIsHovered(false); }} onClick={onClickButton}>

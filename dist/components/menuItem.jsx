@@ -114,7 +114,7 @@ export default function MenuItem(_a) {
 
       {/* Right group: tag + icon aligned to the right */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        {tag && (<Tag variant="contained" size={tagSize} label={tag.label} iconName={tag.iconName} color={tag.color}/>)}
+        {tag && (<Tag variant={tag.variant || 'contained'} size={tagSize} label={tag.label} iconName={tag.iconName} color={tag.color}/>)}
         {IconRight && (<IconRight className={"".concat(iconSize, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary', " flex-shrink-0")} strokeWidth={2}/>)}
       </div>
     </div>);

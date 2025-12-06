@@ -2,7 +2,7 @@ import React from 'react';
 interface ButtonProps {
     size: 'small' | 'medium' | 'large';
     type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
-    state: 'enabled' | 'hovered' | 'focused' | 'disabled';
+    state: 'enabled' | 'hovered' | 'focused' | 'disabled' | 'selected';
     label: string;
     secondLabel?: string;
     decoIcon?: string;

@@ -11,7 +11,7 @@ var meta = {
     argTypes: {
         variant: {
             control: "select",
-            options: ["contained", "textOnly"],
+            options: ["contained", "textOnly", "dot"],
         },
         size: {
             control: "select",
@@ -122,7 +122,7 @@ export var Info = {
     },
 };
 export var AllColors = {
-    render: function (args) { return (<div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+    render: function () { return (<div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
       <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
         <span style={{ width: "80px" }}>Contained:</span>
         <Tag variant="contained" size="medium" color="default" label="Default"/>
@@ -139,5 +139,30 @@ export var AllColors = {
         <Tag variant="textOnly" size="medium" color="error" label="Error"/>
         <Tag variant="textOnly" size="medium" color="info" label="Info"/>
       </div>
+      <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <span style={{ width: "80px" }}>Dot:</span>
+        <Tag variant="dot" size="medium" color="default" label="Default"/>
+        <Tag variant="dot" size="medium" color="success" label="Success"/>
+        <Tag variant="dot" size="medium" color="warning" label="Warning"/>
+        <Tag variant="dot" size="medium" color="error" label="Error"/>
+        <Tag variant="dot" size="medium" color="info" label="Info"/>
+      </div>
+    </div>); },
+};
+export var Dot = {
+    args: {
+        variant: "dot",
+        size: "medium",
+        color: "success",
+        label: "Active",
+    },
+};
+export var DotColors = {
+    render: function () { return (<div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+      <Tag variant="dot" size="medium" color="default" label="Default"/>
+      <Tag variant="dot" size="medium" color="success" label="Online"/>
+      <Tag variant="dot" size="medium" color="warning" label="Away"/>
+      <Tag variant="dot" size="medium" color="error" label="Offline"/>
+      <Tag variant="dot" size="medium" color="info" label="Busy"/>
     </div>); },
 };
