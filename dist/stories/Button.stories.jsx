@@ -13,7 +13,7 @@ var meta = {
         },
         state: {
             control: "select",
-            options: ["enabled", "hovered", "focused", "disabled"],
+            options: ["enabled", "hovered", "focused", "disabled", "selected"],
         },
         label: { control: "text" },
         decoIcon: { control: "text" },
@@ -77,5 +77,13 @@ export var Large = {
         type: "primary",
         state: "enabled",
         label: "Large Button",
+    },
+};
+export var Selected = {
+    args: {
+        size: "medium",
+        type: "primary",
+        state: "selected",
+        label: "Selected Button",
     },
 };

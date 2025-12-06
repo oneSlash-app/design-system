@@ -14,6 +14,7 @@ interface MenuItemProps {
         label: React.ReactNode;
         iconName?: string;
         color?: 'default' | 'success' | 'warning' | 'error' | 'info';
+        variant?: 'contained' | 'textOnly' | 'dot';
     };
     iconRight?: string;
 }

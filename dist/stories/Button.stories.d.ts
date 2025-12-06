@@ -10,3 +10,4 @@ export declare const WithIcons: Story;
 export declare const Disabled: Story;
 export declare const Small: Story;
 export declare const Large: Story;
+export declare const Selected: Story;

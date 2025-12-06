@@ -15,3 +15,5 @@ export declare const Warning: Story;
 export declare const Error: Story;
 export declare const Info: Story;
 export declare const AllColors: Story;
+export declare const Dot: Story;
+export declare const DotColors: Story;
