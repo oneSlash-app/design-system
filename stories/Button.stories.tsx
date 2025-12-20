@@ -13,6 +13,10 @@ const meta: Meta<typeof Button> = {
       control: "select",
       options: ["primary", "secondary", "tertiary", "textOnly"],
     },
+    color: {
+      control: "select",
+      options: ["default", "danger"],
+    },
     state: {
       control: "select",
       options: ["enabled", "hovered", "focused", "disabled", "selected"],
@@ -98,4 +102,56 @@ export const Selected: Story = {
     state: "selected",
     label: "Selected Button",
   },
+};
+
+export const DangerPrimary: Story = {
+  args: {
+    size: "medium",
+    type: "primary",
+    color: "danger",
+    state: "enabled",
+    label: "Delete Account",
+    decoIcon: "Trash2",
+  },
+};
+
+export const DangerSecondary: Story = {
+  args: {
+    size: "medium",
+    type: "secondary",
+    color: "danger",
+    state: "enabled",
+    label: "Remove Item",
+  },
+};
+
+export const DangerTertiary: Story = {
+  args: {
+    size: "medium",
+    type: "tertiary",
+    color: "danger",
+    state: "enabled",
+    label: "Cancel",
+  },
+};
+
+export const DangerTextOnly: Story = {
+  args: {
+    size: "medium",
+    type: "textOnly",
+    color: "danger",
+    state: "enabled",
+    label: "Delete",
+  },
+};
+
+export const DangerVariants: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <Button size="medium" type="primary" color="danger" state="enabled" label="Primary" />
+      <Button size="medium" type="secondary" color="danger" state="enabled" label="Secondary" />
+      <Button size="medium" type="tertiary" color="danger" state="enabled" label="Tertiary" />
+      <Button size="medium" type="textOnly" color="danger" state="enabled" label="Text Only" />
+    </div>
+  ),
 };

@@ -31,10 +31,27 @@ export default function TextField(_a) {
         }
         return 'border-light-text-disabled dark:border-dark-text-disabled';
     };
+    // Get inputMode for mobile keyboard optimization
+    var getInputMode = function () {
+        switch (type) {
+            case 'number':
+                return 'numeric';
+            case 'tel':
+                return 'tel';
+            case 'email':
+                return 'email';
+            case 'url':
+                return 'url';
+            case 'search':
+                return 'search';
+            default:
+                return undefined;
+        }
+    };
     var containerClasses = "\n    ".concat(bgColor, "\n    ").concat(textColor, "\n    ").concat(baseClasses, "\n    ").concat(sizeClasses, "\n    ").concat(getBorderColor(), "\n    ").concat(disabled ? 'bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled cursor-not-allowed' : '', "\n  ");
     return (<div className="flex flex-col w-full">
       {label && (<label htmlFor={id} className="mb-1 text-body2 text-light-text-secondary dark:text-dark-text-secondary">
-          {label}
+          {label}{required && <span className="text-light-error-main dark:text-dark-error-main ml-0.5">*</span>}
         </label>)}
       <div className="relative">
         {multiline ? (<textarea id={id} rows={maxRows} className={containerClasses} value={value} onChange={onChange} onFocus={function (e) {
@@ -45,7 +62,7 @@ export default function TextField(_a) {
                 setIsFocused(false);
                 if (onBlur)
                     onBlur(e);
-            }} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} autoComplete="off"/>) : (<input id={id} type={type} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={function (e) {
+            }} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} autoComplete="off"/>) : (<input id={id} type={type} inputMode={getInputMode()} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={function (e) {
                 setIsFocused(true);
                 if (onFocus)
                     onFocus(e);

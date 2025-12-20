@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 interface ButtonProps {
   size: 'small' | 'medium' | 'large';
   type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
+  color?: 'default' | 'danger';
   state: 'enabled' | 'hovered' | 'focused' | 'disabled' | 'selected';
   label: string;
   secondLabel?: string;
@@ -19,6 +20,7 @@ type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 export default function Button({
   size,
   type,
+  color = 'default',
   state,
   label,
   secondLabel,
@@ -69,22 +71,42 @@ export default function Button({
   }[size];
 
   const baseTypeClasses = {
-    primary: 'bg-light-accent-main dark:bg-dark-accent-main text-light-text-primary dark:text-dark-text-contrast',
-    secondary: 'bg-light-secondary-main dark:bg-dark-secondary-main text-light-text-primary dark:text-dark-text-primary',
-    tertiary: 'bg-light-background-accent100 dark:bg-dark-background-accent100 text-light-text-primary dark:text-dark-text-primary',
-    textOnly: 'text-light-text-primary dark:text-dark-text-primary',
-  }[type];
+    default: {
+      primary: 'bg-light-accent-main dark:bg-dark-accent-main text-light-text-primary dark:text-dark-text-contrast',
+      secondary: 'bg-light-secondary-main dark:bg-dark-secondary-main text-light-text-primary dark:text-dark-text-primary',
+      tertiary: 'bg-light-background-accent100 dark:bg-dark-background-accent100 text-light-text-primary dark:text-dark-text-primary',
+      textOnly: 'text-light-text-primary dark:text-dark-text-primary',
+    },
+    danger: {
+      primary: 'bg-light-error-main dark:bg-dark-error-main text-white dark:text-white',
+      secondary: 'bg-light-error-light dark:bg-dark-error-light text-light-error-main dark:text-dark-error-main',
+      tertiary: 'bg-transparent border border-light-error-main dark:border-dark-error-main text-light-error-main dark:text-dark-error-main',
+      textOnly: 'text-light-error-main dark:text-dark-error-main',
+    },
+  }[color][type];
 
   const hoverTypeClasses = {
-    primary: 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark',
-    secondary: 'hover:bg-light-secondary-dark dark:hover:bg-dark-secondary-dark',
-    tertiary: 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200',
-    textOnly: 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100',
-  }[type];
+    default: {
+      primary: 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark',
+      secondary: 'hover:bg-light-secondary-dark dark:hover:bg-dark-secondary-dark',
+      tertiary: 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200',
+      textOnly: 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100',
+    },
+    danger: {
+      primary: 'hover:bg-light-error-dark hover:dark:bg-dark-error-dark',
+      secondary: 'hover:bg-light-error-main/20 dark:hover:bg-dark-error-main/20',
+      tertiary: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
+      textOnly: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
+    },
+  }[color][type];
+
+  const focusRingColor = color === 'danger'
+    ? 'ring-light-error-main dark:ring-dark-error-main'
+    : 'ring-light-accent-main dark:ring-dark-accent-main';
 
   const stateClasses = {
     enabled: 'cursor-pointer',
-    focused: 'ring-2 ring-offset-4 ring-offset-light-background-default dark:ring-offset-dark-background-default ring-light-accent-main dark:ring-dark-accent-main',
+    focused: `ring-2 ring-offset-4 ring-offset-light-background-default dark:ring-offset-dark-background-default ${focusRingColor}`,
     disabled: type === 'textOnly'
       ? 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-transparent'
       : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',

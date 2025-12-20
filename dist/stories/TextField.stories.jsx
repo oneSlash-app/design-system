@@ -7,11 +7,16 @@ var meta = {
         label: { control: "text" },
         disabled: { control: "boolean" },
         error: { control: "boolean" },
+        required: { control: "boolean" },
         multiline: { control: "boolean" },
         maxRows: { control: "number" },
         size: {
             control: "select",
             options: ["large", "medium", "small"],
+        },
+        type: {
+            control: "select",
+            options: ["text", "password", "email", "number", "tel", "url", "search"],
         },
     },
 };
@@ -93,4 +98,48 @@ export var AllSizes = {
       <TextFieldWrapper id="size-medium" label="Medium" size="medium"/>
       <TextFieldWrapper id="size-large" label="Large" size="large"/>
     </div>); },
+};
+export var Email = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "email-textfield",
+        label: "Email",
+        value: "",
+        type: "email",
+        placeholder: "you@example.com",
+        size: "medium",
+    },
+};
+export var Password = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "password-textfield",
+        label: "Password",
+        value: "",
+        type: "password",
+        placeholder: "Enter your password",
+        size: "medium",
+    },
+};
+export var Required = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "required-textfield",
+        label: "Username",
+        value: "",
+        required: true,
+        placeholder: "Required field",
+        size: "medium",
+    },
+};
+export var Number = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "number-textfield",
+        label: "Phone Number",
+        value: "",
+        type: "tel",
+        placeholder: "123-456-7890",
+        size: "medium",
+    },
 };
