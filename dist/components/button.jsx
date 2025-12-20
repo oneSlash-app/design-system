@@ -38,10 +38,10 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 import React, { useState, useEffect, useCallback } from 'react';
 export default function Button(_a) {
     var _this = this;
-    var size = _a.size, type = _a.type, state = _a.state, label = _a.label, secondLabel = _a.secondLabel, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _b = _a.className, className = _b === void 0 ? '' : _b;
-    var _c = useState(false), isHovered = _c[0], setIsHovered = _c[1];
-    var _d = useState(null), IconLeft = _d[0], setIconLeft = _d[1];
-    var _e = useState(null), IconRight = _e[0], setIconRight = _e[1];
+    var size = _a.size, type = _a.type, _b = _a.color, color = _b === void 0 ? 'default' : _b, state = _a.state, label = _a.label, secondLabel = _a.secondLabel, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _c = _a.className, className = _c === void 0 ? '' : _c;
+    var _d = useState(false), isHovered = _d[0], setIsHovered = _d[1];
+    var _e = useState(null), IconLeft = _e[0], setIconLeft = _e[1];
+    var _f = useState(null), IconRight = _f[0], setIconRight = _f[1];
     var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
         var module_1, Icon, error_1;
         return __generator(this, function (_a) {
@@ -101,20 +101,39 @@ export default function Button(_a) {
         small: 'w-4 h-4',
     }[size];
     var baseTypeClasses = {
-        primary: 'bg-light-accent-main dark:bg-dark-accent-main text-light-text-primary dark:text-dark-text-contrast',
-        secondary: 'bg-light-secondary-main dark:bg-dark-secondary-main text-light-text-primary dark:text-dark-text-primary',
-        tertiary: 'bg-light-background-accent100 dark:bg-dark-background-accent100 text-light-text-primary dark:text-dark-text-primary',
-        textOnly: 'text-light-text-primary dark:text-dark-text-primary',
-    }[type];
+        default: {
+            primary: 'bg-light-accent-main dark:bg-dark-accent-main text-light-text-primary dark:text-dark-text-contrast',
+            secondary: 'bg-light-secondary-main dark:bg-dark-secondary-main text-light-text-primary dark:text-dark-text-primary',
+            tertiary: 'bg-light-background-accent100 dark:bg-dark-background-accent100 text-light-text-primary dark:text-dark-text-primary',
+            textOnly: 'text-light-text-primary dark:text-dark-text-primary',
+        },
+        danger: {
+            primary: 'bg-light-error-main dark:bg-dark-error-main text-white dark:text-white',
+            secondary: 'bg-light-error-light dark:bg-dark-error-light text-light-error-main dark:text-dark-error-main',
+            tertiary: 'bg-transparent border border-light-error-main dark:border-dark-error-main text-light-error-main dark:text-dark-error-main',
+            textOnly: 'text-light-error-main dark:text-dark-error-main',
+        },
+    }[color][type];
     var hoverTypeClasses = {
-        primary: 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark',
-        secondary: 'hover:bg-light-secondary-dark dark:hover:bg-dark-secondary-dark',
-        tertiary: 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200',
-        textOnly: 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100',
-    }[type];
+        default: {
+            primary: 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark',
+            secondary: 'hover:bg-light-secondary-dark dark:hover:bg-dark-secondary-dark',
+            tertiary: 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200',
+            textOnly: 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100',
+        },
+        danger: {
+            primary: 'hover:bg-light-error-dark hover:dark:bg-dark-error-dark',
+            secondary: 'hover:bg-light-error-main/20 dark:hover:bg-dark-error-main/20',
+            tertiary: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
+            textOnly: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
+        },
+    }[color][type];
+    var focusRingColor = color === 'danger'
+        ? 'ring-light-error-main dark:ring-dark-error-main'
+        : 'ring-light-accent-main dark:ring-dark-accent-main';
     var stateClasses = {
         enabled: 'cursor-pointer',
-        focused: 'ring-2 ring-offset-4 ring-offset-light-background-default dark:ring-offset-dark-background-default ring-light-accent-main dark:ring-dark-accent-main',
+        focused: "ring-2 ring-offset-4 ring-offset-light-background-default dark:ring-offset-dark-background-default ".concat(focusRingColor),
         disabled: type === 'textOnly'
             ? 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-transparent'
             : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',
