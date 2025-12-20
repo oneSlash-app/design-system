@@ -11,3 +11,7 @@ export declare const LargeSize: Story;
 export declare const SmallSize: Story;
 export declare const Multiline: Story;
 export declare const AllSizes: Story;
+export declare const Email: Story;
+export declare const Password: Story;
+export declare const Required: Story;
+export declare const Number: Story;
