@@ -11,3 +11,8 @@ export declare const Disabled: Story;
 export declare const Small: Story;
 export declare const Large: Story;
 export declare const Selected: Story;
+export declare const DangerPrimary: Story;
+export declare const DangerSecondary: Story;
+export declare const DangerTertiary: Story;
+export declare const DangerTextOnly: Story;
+export declare const DangerVariants: Story;
