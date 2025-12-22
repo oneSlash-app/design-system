@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react";
 import MenuItem from "../components/menuItem";
+import IconButton from "../components/iconButton";
 
 const meta: Meta<typeof MenuItem> = {
   title: "Components/MenuItem",
@@ -77,5 +78,14 @@ export const LargeSize: Story = {
     iconName: "Settings",
     size: "large",
     isSelected: false,
+  },
+};
+
+export const WithRightAction: Story = {
+  args: {
+    label: "Removable Item",
+    iconName: "File",
+    isSelected: false,
+    rightAction: <IconButton iconName="X" size="small" color="tertiary" state="enabled" onClick={() => alert('Remove clicked')} />,
   },
 };
