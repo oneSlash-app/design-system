@@ -1,4 +1,5 @@
 import MenuItem from "../components/menuItem";
+import IconButton from "../components/iconButton";
 var meta = {
     title: "Components/MenuItem",
     component: MenuItem,
@@ -66,5 +67,13 @@ export var LargeSize = {
         iconName: "Settings",
         size: "large",
         isSelected: false,
+    },
+};
+export var WithRightAction = {
+    args: {
+        label: "Removable Item",
+        iconName: "File",
+        isSelected: false,
+        rightAction: <IconButton iconName="X" size="small" color="tertiary" state="enabled" onClick={function () { return alert('Remove clicked'); }}/>,
     },
 };

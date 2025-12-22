@@ -24,6 +24,7 @@ interface MenuItemProps {
     variant?: 'contained' | 'textOnly' | 'dot';
   };
   iconRight?: string;
+  rightAction?: React.ReactNode;
 }
 
 export default function MenuItem({
@@ -39,6 +40,7 @@ export default function MenuItem({
   size = 'medium',
   tag,
   iconRight,
+  rightAction,
 }: MenuItemProps) {
   const [IconLeft, setIconLeft] = useState<IconType | null>(null);
   const [IconRight, setIconRight] = useState<IconType | null>(null);
@@ -124,6 +126,11 @@ export default function MenuItem({
             className={`${iconSize} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary'} flex-shrink-0`}
             strokeWidth={2}
           />
+        )}
+        {rightAction && (
+          <div onClick={(e) => e.stopPropagation()}>
+            {rightAction}
+          </div>
         )}
       </div>
     </div>
