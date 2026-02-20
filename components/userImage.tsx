@@ -4,6 +4,7 @@ import React from 'react';
 interface UserImageProps {
   userHandle: string;
   userImgUrl?: string;
+  grayscale?: boolean;
 }
 
 function getColorSeed(userHandle: string): string {
@@ -30,15 +31,17 @@ function getHash(str: string): number {
 export default function UserImage({
   userHandle,
   userImgUrl,
+  grayscale = false,
 }: UserImageProps) {
   const displayInitial = userHandle.charAt(0).toUpperCase() || 'A';
   const seed = getColorSeed(userHandle);
   const hue = Math.abs(getHash(seed)) % 360;
 
+  const saturation = grayscale ? 0 : 80;
   // Light mode: vibrant pastel
-  const lightBg = `hsl(${hue}, 80%, 80%)`;
+  const lightBg = `hsl(${hue}, ${saturation}%, 80%)`;
   // Dark mode: darker, vibrant variant
-  const darkBg = `hsl(${hue}, 80%, 30%)`;
+  const darkBg = `hsl(${hue}, ${saturation}%, 30%)`;
 
   return (
     <div

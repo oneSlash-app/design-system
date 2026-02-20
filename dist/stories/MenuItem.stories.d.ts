@@ -9,5 +9,5 @@ export declare const WithRightIcon: Story;
 export declare const WithTag: Story;
 export declare const WithTagColor: Story;
 export declare const WithUserImage: Story;
-export declare const LargeSize: Story;
+export declare const SmallSize: Story;
 export declare const WithRightAction: Story;

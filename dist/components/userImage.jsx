@@ -22,14 +22,15 @@ function getHash(str) {
     return hash;
 }
 export default function UserImage(_a) {
-    var userHandle = _a.userHandle, userImgUrl = _a.userImgUrl;
+    var userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, _b = _a.grayscale, grayscale = _b === void 0 ? false : _b;
     var displayInitial = userHandle.charAt(0).toUpperCase() || 'A';
     var seed = getColorSeed(userHandle);
     var hue = Math.abs(getHash(seed)) % 360;
+    var saturation = grayscale ? 0 : 80;
     // Light mode: vibrant pastel
-    var lightBg = "hsl(".concat(hue, ", 80%, 80%)");
+    var lightBg = "hsl(".concat(hue, ", ").concat(saturation, "%, 80%)");
     // Dark mode: darker, vibrant variant
-    var darkBg = "hsl(".concat(hue, ", 80%, 30%)");
+    var darkBg = "hsl(".concat(hue, ", ").concat(saturation, "%, 30%)");
     return (<div style={{
             '--light-bg': lightBg,
             '--dark-bg': darkBg,
