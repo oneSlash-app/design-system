@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import IconButton from './iconButton';
+import useDarkMode from './useDarkMode';
 
 interface AlertProps {
   open?: boolean;
@@ -11,6 +12,16 @@ interface AlertProps {
   showCloseButton?: boolean;
   variant?: 'toast' | 'inline';
 }
+
+const bgColorMap = {
+  error:   { light: '#F2C4C4', dark: '#5C1A1A' },
+  warning: { light: '#F5D5B0', dark: '#5C2E0A' },
+  info:    { light: '#B8D9F0', dark: '#0A3A5C' },
+  success: { light: '#C4E2C5', dark: '#1A4A1D' },
+  default: { light: '#D1D1D1', dark: '#6D6D6D' },
+} as const;
+
+const textColorMap = { light: '#000000', dark: '#eeeeee' } as const;
 
 export default function Alert({
   open = true,
@@ -23,6 +34,7 @@ export default function Alert({
 }: AlertProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
+  const isDark = useDarkMode();
 
   useEffect(() => {
     if (open) {
@@ -63,33 +75,19 @@ export default function Alert({
 
   if (!shouldRender) return null;
 
-  let bgColor;
-  switch (type) {
-    case 'error':
-      bgColor = 'bg-light-error-alertBg dark:bg-dark-error-alertBg';
-      break;
-    case 'warning':
-      bgColor = 'bg-light-warning-alertBg dark:bg-dark-warning-alertBg';
-      break;
-    case 'info':
-      bgColor = 'bg-light-info-alertBg dark:bg-dark-info-alertBg';
-      break;
-    case 'success':
-      bgColor = 'bg-light-success-alertBg dark:bg-dark-success-alertBg';
-      break;
-    case 'default':
-    default:
-      bgColor = 'bg-light-secondary-light dark:bg-dark-secondary-light';
-      break;
-  }
+  const mode = isDark ? 'dark' : 'light';
+  const entry = bgColorMap[type] ?? bgColorMap.default;
+  const backgroundColor = entry[mode];
+  const textColor = textColorMap[mode];
 
   const alertContent = (
     <div
-      className={`flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ${bgColor} ${
+      className={`flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ${
         isVisible ? 'opacity-100' : 'opacity-0'
       } ${variant === 'toast' ? 'max-w-md pointer-events-auto' : ''}`}
+      style={{ backgroundColor }}
     >
-      <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
+      <div className="flex items-start gap-2" style={{ color: textColor }}>
         <div className="flex flex-col text-left">
           <span className="body2">{message}</span>
           {secondMessage && (

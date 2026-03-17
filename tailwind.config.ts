@@ -15,7 +15,7 @@ const config: Config = {
         'light-text-secondary': designTokens.colors.light.text.secondary,
         'light-text-disabled': designTokens.colors.light.text.disabled,
         'light-text-contrast': designTokens.colors.light.text.contrast,
-        
+
         // Dark: text colors
         'dark-text-primary': designTokens.colors.dark.text.primary,
         'dark-text-secondary': designTokens.colors.dark.text.secondary,
@@ -39,7 +39,7 @@ const config: Config = {
         'light-primary-dark': designTokens.colors.light.primary.dark,
         'light-primary-light': designTokens.colors.light.primary.light,
         'light-primary-contrast': designTokens.colors.light.primary.contrast,
-        
+
         // Dark: primary colors
         'dark-primary-main': designTokens.colors.dark.primary.main,
         'dark-primary-dark': designTokens.colors.dark.primary.dark,
@@ -50,12 +50,12 @@ const config: Config = {
         'light-secondary-main': designTokens.colors.light.secondary.main,
         'light-secondary-dark': designTokens.colors.light.secondary.dark,
         'light-secondary-light': designTokens.colors.light.secondary.light,
-        
+
         // dark: secondary colors
         'dark-secondary-main': designTokens.colors.dark.secondary.main,
         'dark-secondary-dark': designTokens.colors.dark.secondary.dark,
         'dark-secondary-light': designTokens.colors.dark.secondary.light,
-        
+
         // light: error colors
         'light-error-main': designTokens.colors.light.error.main,
         'light-error-dark': designTokens.colors.light.error.dark,
@@ -109,7 +109,7 @@ const config: Config = {
         'light-background-accent100': designTokens.colors.light.background.accent100,
         'light-background-accent200': designTokens.colors.light.background.accent200,
         'light-background-accent300': designTokens.colors.light.background.accent300,
-        
+
         // Dark: background colors
         'dark-background-default': designTokens.colors.dark.background.default,
         'dark-background-accent100': designTokens.colors.dark.background.accent100,
@@ -235,7 +235,7 @@ const config: Config = {
     require('tailwindcss'),
     require('autoprefixer'),
     require('tailwind-scrollbar'),
-    
+
   ],
 };
 export default config;
