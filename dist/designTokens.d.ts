@@ -39,6 +39,7 @@ export namespace colors {
             export { dark_3 as dark };
             let light_4: string;
             export { light_4 as light };
+            export let alertBg: string;
         }
         export namespace warning {
             let main_4: string;
@@ -47,6 +48,8 @@ export namespace colors {
             export { dark_4 as dark };
             let light_5: string;
             export { light_5 as light };
+            let alertBg_1: string;
+            export { alertBg_1 as alertBg };
         }
         export namespace info {
             let main_5: string;
@@ -55,6 +58,8 @@ export namespace colors {
             export { dark_5 as dark };
             let light_6: string;
             export { light_6 as light };
+            let alertBg_2: string;
+            export { alertBg_2 as alertBg };
         }
         export namespace success {
             let main_6: string;
@@ -63,6 +68,8 @@ export namespace colors {
             export { dark_6 as dark };
             let light_7: string;
             export { light_7 as light };
+            let alertBg_3: string;
+            export { alertBg_3 as alertBg };
         }
         export namespace background {
             let _default: string;
@@ -149,6 +156,8 @@ export namespace colors {
             export { dark_11 as dark };
             let light_11: string;
             export { light_11 as light };
+            let alertBg_4: string;
+            export { alertBg_4 as alertBg };
         }
         export { error_1 as error };
         export namespace warning_1 {
@@ -158,6 +167,8 @@ export namespace colors {
             export { dark_12 as dark };
             let light_12: string;
             export { light_12 as light };
+            let alertBg_5: string;
+            export { alertBg_5 as alertBg };
         }
         export { warning_1 as warning };
         export namespace info_1 {
@@ -167,6 +178,8 @@ export namespace colors {
             export { dark_13 as dark };
             let light_13: string;
             export { light_13 as light };
+            let alertBg_6: string;
+            export { alertBg_6 as alertBg };
         }
         export { info_1 as info };
         export namespace success_1 {
@@ -176,6 +189,8 @@ export namespace colors {
             export { dark_14 as dark };
             let light_14: string;
             export { light_14 as light };
+            let alertBg_7: string;
+            export { alertBg_7 as alertBg };
         }
         export { success_1 as success };
         export namespace background_1 {

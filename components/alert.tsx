@@ -1,11 +1,5 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import {
-  Info,
-  AlertCircle,
-  AlertTriangle,
-  CheckCircle
-} from 'lucide-react';
 import IconButton from './iconButton';
 
 interface AlertProps {
@@ -69,36 +63,19 @@ export default function Alert({
 
   if (!shouldRender) return null;
 
-  // Get the appropriate icon based on type
-  const getIcon = () => {
-    switch (type) {
-      case 'error':
-        return <AlertCircle className="w-6 h-6" strokeWidth={2} />;
-      case 'warning':
-        return <AlertTriangle className="w-6 h-6" strokeWidth={2} />;
-      case 'info':
-        return <Info className="w-6 h-6" strokeWidth={2} />;
-      case 'success':
-        return <CheckCircle className="w-6 h-6" strokeWidth={2} />;
-      case 'default':
-      default:
-        return <Info className="w-6 h-6" strokeWidth={2} />;
-    }
-  };
-
   let bgColor;
   switch (type) {
     case 'error':
-      bgColor = 'bg-light-error-main dark:bg-dark-error-main';
+      bgColor = 'bg-light-error-alertBg dark:bg-dark-error-alertBg';
       break;
     case 'warning':
-      bgColor = 'bg-light-warning-main dark:bg-dark-warning-main';
+      bgColor = 'bg-light-warning-alertBg dark:bg-dark-warning-alertBg';
       break;
     case 'info':
-      bgColor = 'bg-light-info-main dark:bg-dark-info-main';
+      bgColor = 'bg-light-info-alertBg dark:bg-dark-info-alertBg';
       break;
     case 'success':
-      bgColor = 'bg-light-success-main dark:bg-dark-success-main';
+      bgColor = 'bg-light-success-alertBg dark:bg-dark-success-alertBg';
       break;
     case 'default':
     default:
@@ -113,9 +90,8 @@ export default function Alert({
       } ${variant === 'toast' ? 'max-w-md pointer-events-auto' : ''}`}
     >
       <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
-        {getIcon()}
-        <div className="flex flex-col text-center">
-          <span className="body1">{message}</span>
+        <div className="flex flex-col text-left">
+          <span className="body2">{message}</span>
           {secondMessage && (
             <span className="body2 opacity-70">{secondMessage}</span>
           )}

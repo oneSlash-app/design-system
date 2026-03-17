@@ -60,41 +60,49 @@ const config: Config = {
         'light-error-main': designTokens.colors.light.error.main,
         'light-error-dark': designTokens.colors.light.error.dark,
         'light-error-light': designTokens.colors.light.error.light,
-        
+        'light-error-alertBg': designTokens.colors.light.error.alertBg,
+
         // dark: error colors
         'dark-error-main': designTokens.colors.dark.error.main,
         'dark-error-dark': designTokens.colors.dark.error.dark,
         'dark-error-light': designTokens.colors.dark.error.light,
+        'dark-error-alertBg': designTokens.colors.dark.error.alertBg,
 
         // light: warning colors
         'light-warning-main': designTokens.colors.light.warning.main,
         'light-warning-dark': designTokens.colors.light.warning.dark,
         'light-warning-light': designTokens.colors.light.warning.light,
-        
+        'light-warning-alertBg': designTokens.colors.light.warning.alertBg,
+
         // dark: warning colors
         'dark-warning-main': designTokens.colors.dark.warning.main,
         'dark-warning-dark': designTokens.colors.dark.warning.dark,
         'dark-warning-light': designTokens.colors.dark.warning.light,
+        'dark-warning-alertBg': designTokens.colors.dark.warning.alertBg,
 
         // light: info colors
         'light-info-main': designTokens.colors.light.info.main,
         'light-info-dark': designTokens.colors.light.info.dark,
         'light-info-light': designTokens.colors.light.info.light,
+        'light-info-alertBg': designTokens.colors.light.info.alertBg,
 
         // dark: info colors
         'dark-info-main': designTokens.colors.dark.info.main,
         'dark-info-dark': designTokens.colors.dark.info.dark,
         'dark-info-light': designTokens.colors.dark.info.light,
+        'dark-info-alertBg': designTokens.colors.dark.info.alertBg,
 
         // light: success colors
         'light-success-main': designTokens.colors.light.success.main,
         'light-success-dark': designTokens.colors.light.success.dark,
         'light-success-light': designTokens.colors.light.success.light,
+        'light-success-alertBg': designTokens.colors.light.success.alertBg,
 
         // dark: success colors
         'dark-success-main': designTokens.colors.dark.success.main,
         'dark-success-dark': designTokens.colors.dark.success.dark,
         'dark-success-light': designTokens.colors.dark.success.light,
+        'dark-success-alertBg': designTokens.colors.dark.success.alertBg,
 
         // Light: background colors
         'light-background-default': designTokens.colors.light.background.default,
