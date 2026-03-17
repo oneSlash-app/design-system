@@ -59,8 +59,8 @@ export default function Alert(_a) {
     var alertContent = (<div className={"flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ".concat(isVisible ? 'opacity-100' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')} style={{ backgroundColor: backgroundColor }}>
       <div className="flex items-start gap-2" style={{ color: textColor }}>
         <div className="flex flex-col text-left">
-          <span className="body2">{message}</span>
-          {secondMessage && (<span className="body2 opacity-70">{secondMessage}</span>)}
+          <span className="text-body2">{message}</span>
+          {secondMessage && (<span className="text-body2 opacity-70">{secondMessage}</span>)}
         </div>
       </div>
       {showCloseButton && (<div className="ml-4">

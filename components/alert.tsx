@@ -89,9 +89,9 @@ export default function Alert({
     >
       <div className="flex items-start gap-2" style={{ color: textColor }}>
         <div className="flex flex-col text-left">
-          <span className="body2">{message}</span>
+          <span className="text-body2">{message}</span>
           {secondMessage && (
-            <span className="body2 opacity-70">{secondMessage}</span>
+            <span className="text-body2 opacity-70">{secondMessage}</span>
           )}
         </div>
       </div>
