@@ -7,6 +7,8 @@ interface TextareaProps {
     onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
     onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
     onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+    onCompositionStart?: (e: React.CompositionEvent<HTMLTextAreaElement>) => void;
+    onCompositionEnd?: (e: React.CompositionEvent<HTMLTextAreaElement>) => void;
     onSubmit?: () => void;
     autoFocus?: boolean;
     maxRows?: number;
@@ -15,5 +17,5 @@ interface TextareaProps {
     size?: 'medium' | 'small';
     placeholder?: string;
 }
-export default function Textarea({ id, label, value, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, maxRows, disabled, error, size, placeholder, }: TextareaProps): React.JSX.Element;
+export default function Textarea({ id, label, value, onChange, onBlur, onFocus, onKeyDown, onCompositionStart, onCompositionEnd, onSubmit, autoFocus, maxRows, disabled, error, size, placeholder, }: TextareaProps): React.JSX.Element;
 export {};

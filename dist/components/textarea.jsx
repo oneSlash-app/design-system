@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 export default function Textarea(_a) {
-    var id = _a.id, label = _a.label, value = _a.value, onChange = _a.onChange, onBlur = _a.onBlur, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, onSubmit = _a.onSubmit, _b = _a.autoFocus, autoFocus = _b === void 0 ? false : _b, _c = _a.maxRows, maxRows = _c === void 0 ? 6 : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, _f = _a.size, size = _f === void 0 ? 'medium' : _f, placeholder = _a.placeholder;
+    var id = _a.id, label = _a.label, value = _a.value, onChange = _a.onChange, onBlur = _a.onBlur, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, onCompositionStart = _a.onCompositionStart, onCompositionEnd = _a.onCompositionEnd, onSubmit = _a.onSubmit, _b = _a.autoFocus, autoFocus = _b === void 0 ? false : _b, _c = _a.maxRows, maxRows = _c === void 0 ? 6 : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, _f = _a.size, size = _f === void 0 ? 'medium' : _f, placeholder = _a.placeholder;
     var textareaRef = useRef(null);
     var _g = useState(false), isFocused = _g[0], setIsFocused = _g[1];
     var handleKeyDown = function (e) {
@@ -67,7 +67,7 @@ export default function Textarea(_a) {
             setIsFocused(false);
             if (onBlur)
                 onBlur(e);
-        }} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} autoComplete="off"/>
+        }} onKeyDown={handleKeyDown} onCompositionStart={onCompositionStart} onCompositionEnd={onCompositionEnd} autoFocus={autoFocus} disabled={disabled} autoComplete="off"/>
       </div>
       {error && (<p className="mt-1 text-light-error-main text-body2">
           This field is required
