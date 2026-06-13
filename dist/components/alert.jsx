@@ -1,21 +1,18 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import IconButton from './iconButton';
-import useDarkMode from './useDarkMode';
-var bgColorMap = {
-    error: { light: '#F2C4C4', dark: '#5C1A1A' },
-    warning: { light: '#F5D5B0', dark: '#5C2E0A' },
-    info: { light: '#B8D9F0', dark: '#0A3A5C' },
-    success: { light: '#C4E2C5', dark: '#1A4A1D' },
-    default: { light: '#D1D1D1', dark: '#6D6D6D' },
+var bgClassMap = {
+    error: 'bg-light-error-alertBg dark:bg-dark-error-alertBg',
+    warning: 'bg-light-warning-alertBg dark:bg-dark-warning-alertBg',
+    info: 'bg-light-info-alertBg dark:bg-dark-info-alertBg',
+    success: 'bg-light-success-alertBg dark:bg-dark-success-alertBg',
+    default: 'bg-light-secondary-light dark:bg-dark-secondary-light',
 };
-var textColorMap = { light: '#000000', dark: '#eeeeee' };
 export default function Alert(_a) {
     var _b;
     var _c = _a.open, open = _c === void 0 ? true : _c, type = _a.type, message = _a.message, secondMessage = _a.secondMessage, onClose = _a.onClose, _d = _a.showCloseButton, showCloseButton = _d === void 0 ? false : _d, _e = _a.variant, variant = _e === void 0 ? 'toast' : _e;
     var _f = useState(false), isVisible = _f[0], setIsVisible = _f[1];
     var _g = useState(false), shouldRender = _g[0], setShouldRender = _g[1];
-    var isDark = useDarkMode();
     useEffect(function () {
         if (open) {
             setShouldRender(true);
@@ -52,12 +49,9 @@ export default function Alert(_a) {
     };
     if (!shouldRender)
         return null;
-    var mode = isDark ? 'dark' : 'light';
-    var entry = (_b = bgColorMap[type]) !== null && _b !== void 0 ? _b : bgColorMap.default;
-    var backgroundColor = entry[mode];
-    var textColor = textColorMap[mode];
-    var alertContent = (<div className={"flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ".concat(isVisible ? 'opacity-100' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')} style={{ backgroundColor: backgroundColor }}>
-      <div className="flex items-start gap-2" style={{ color: textColor }}>
+    var bgClasses = (_b = bgClassMap[type]) !== null && _b !== void 0 ? _b : bgClassMap.default;
+    var alertContent = (<div className={"flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ".concat(bgClasses, " ").concat(isVisible ? 'opacity-100' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
+      <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
         <div className="flex flex-col text-left">
           <span className="text-body2">{message}</span>
           {secondMessage && (<span className="text-body2 opacity-70">{secondMessage}</span>)}

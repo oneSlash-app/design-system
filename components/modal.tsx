@@ -53,7 +53,7 @@ export default function Modal({
 
   return (
     <div
-      className="fixed bg-black bg-opacity-50 flex items-center justify-center z-50"
+      className="fixed bg-light-misc-scrim/40 dark:bg-dark-misc-scrim/40 flex items-center justify-center z-50"
       style={{ top: 0, left: 0, right: 0, bottom: 0 }}
       onClick={handleOverlayClick}
       role="dialog"

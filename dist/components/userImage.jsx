@@ -27,6 +27,8 @@ export default function UserImage(_a) {
     var seed = getColorSeed(userHandle);
     var hue = Math.abs(getHash(seed)) % 360;
     var saturation = grayscale ? 0 : 80;
+    // DESIGN-TOKEN EXCEPTION: avatar backgrounds are derived from a hash of the
+    // user handle (per-user identity color), so they cannot map to a static token.
     // Light mode: vibrant pastel
     var lightBg = "hsl(".concat(hue, ", ").concat(saturation, "%, 80%)");
     // Dark mode: darker, vibrant variant

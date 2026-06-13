@@ -40,6 +40,8 @@ export namespace colors {
             let light_4: string;
             export { light_4 as light };
             export let alertBg: string;
+            let contrast_2: string;
+            export { contrast_2 as contrast };
         }
         export namespace warning {
             let main_4: string;
@@ -50,6 +52,8 @@ export namespace colors {
             export { light_5 as light };
             let alertBg_1: string;
             export { alertBg_1 as alertBg };
+            let contrast_3: string;
+            export { contrast_3 as contrast };
         }
         export namespace info {
             let main_5: string;
@@ -60,6 +64,8 @@ export namespace colors {
             export { light_6 as light };
             let alertBg_2: string;
             export { alertBg_2 as alertBg };
+            let contrast_4: string;
+            export { contrast_4 as contrast };
         }
         export namespace success {
             let main_6: string;
@@ -70,6 +76,8 @@ export namespace colors {
             export { light_7 as light };
             let alertBg_3: string;
             export { alertBg_3 as alertBg };
+            let contrast_5: string;
+            export { contrast_5 as contrast };
         }
         export namespace background {
             let _default: string;
@@ -106,6 +114,7 @@ export namespace colors {
         }
         export namespace misc {
             let divider: string;
+            let scrim: string;
         }
     }
     export namespace dark_7 {
@@ -116,8 +125,8 @@ export namespace colors {
             export { secondary_2 as secondary };
             let disabled_4: string;
             export { disabled_4 as disabled };
-            let contrast_2: string;
-            export { contrast_2 as contrast };
+            let contrast_6: string;
+            export { contrast_6 as contrast };
         }
         export { text_1 as text };
         export namespace accent_1 {
@@ -127,8 +136,8 @@ export namespace colors {
             export { dark_8 as dark };
             let light_8: string;
             export { light_8 as light };
-            let contrast_3: string;
-            export { contrast_3 as contrast };
+            let contrast_7: string;
+            export { contrast_7 as contrast };
         }
         export { accent_1 as accent };
         export namespace primary_3 {
@@ -158,6 +167,8 @@ export namespace colors {
             export { light_11 as light };
             let alertBg_4: string;
             export { alertBg_4 as alertBg };
+            let contrast_8: string;
+            export { contrast_8 as contrast };
         }
         export { error_1 as error };
         export namespace warning_1 {
@@ -169,6 +180,8 @@ export namespace colors {
             export { light_12 as light };
             let alertBg_5: string;
             export { alertBg_5 as alertBg };
+            let contrast_9: string;
+            export { contrast_9 as contrast };
         }
         export { warning_1 as warning };
         export namespace info_1 {
@@ -180,6 +193,8 @@ export namespace colors {
             export { light_13 as light };
             let alertBg_6: string;
             export { alertBg_6 as alertBg };
+            let contrast_10: string;
+            export { contrast_10 as contrast };
         }
         export { info_1 as info };
         export namespace success_1 {
@@ -191,6 +206,8 @@ export namespace colors {
             export { light_14 as light };
             let alertBg_7: string;
             export { alertBg_7 as alertBg };
+            let contrast_11: string;
+            export { contrast_11 as contrast };
         }
         export { success_1 as success };
         export namespace background_1 {
@@ -242,6 +259,8 @@ export namespace colors {
         export namespace misc_1 {
             let divider_1: string;
             export { divider_1 as divider };
+            let scrim_1: string;
+            export { scrim_1 as scrim };
         }
         export { misc_1 as misc };
     }
