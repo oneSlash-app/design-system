@@ -1,9 +1,9 @@
 'use client';
 import React, { useState, useRef, useEffect } from 'react';
 export default function Tooltip(_a) {
-    var title = _a.title, children = _a.children;
+    var title = _a.title, children = _a.children, placement = _a.placement;
     var _b = useState(false), visible = _b[0], setVisible = _b[1];
-    var _c = useState('bottom'), position = _c[0], setPosition = _c[1];
+    var _c = useState(placement !== null && placement !== void 0 ? placement : 'bottom'), position = _c[0], setPosition = _c[1];
     var tooltipRef = useRef(null);
     var buttonRef = useRef(null);
     useEffect(function () {
@@ -11,8 +11,11 @@ export default function Tooltip(_a) {
             if (tooltipRef.current && buttonRef.current) {
                 var tooltipRect = tooltipRef.current.getBoundingClientRect();
                 var buttonRect = buttonRef.current.getBoundingClientRect();
-                // Check if there's enough space below; if not, place tooltip above
-                if (window.innerHeight - buttonRect.bottom < tooltipRect.height + 8) {
+                // If placement is forced, skip auto-detection
+                if (placement) {
+                    setPosition(placement);
+                }
+                else if (window.innerHeight - buttonRect.bottom < tooltipRect.height + 8) {
                     setPosition('top');
                 }
                 else {
@@ -23,7 +26,7 @@ export default function Tooltip(_a) {
         if (visible) {
             handlePosition();
         }
-    }, [visible]);
+    }, [visible, placement]);
     var handleClick = function () {
         setVisible(false); // Hide tooltip on click
     };
