@@ -1,11 +1,18 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import { Info, AlertCircle, AlertTriangle, CheckCircle } from 'lucide-react';
 import IconButton from './iconButton';
+var bgClassMap = {
+    error: 'bg-light-error-alertBg dark:bg-dark-error-alertBg',
+    warning: 'bg-light-warning-alertBg dark:bg-dark-warning-alertBg',
+    info: 'bg-light-info-alertBg dark:bg-dark-info-alertBg',
+    success: 'bg-light-success-alertBg dark:bg-dark-success-alertBg',
+    default: 'bg-light-secondary-light dark:bg-dark-secondary-light',
+};
 export default function Alert(_a) {
-    var _b = _a.open, open = _b === void 0 ? true : _b, type = _a.type, message = _a.message, secondMessage = _a.secondMessage, onClose = _a.onClose, _c = _a.showCloseButton, showCloseButton = _c === void 0 ? false : _c, _d = _a.variant, variant = _d === void 0 ? 'toast' : _d;
-    var _e = useState(false), isVisible = _e[0], setIsVisible = _e[1];
-    var _f = useState(false), shouldRender = _f[0], setShouldRender = _f[1];
+    var _b;
+    var _c = _a.open, open = _c === void 0 ? true : _c, type = _a.type, message = _a.message, secondMessage = _a.secondMessage, onClose = _a.onClose, _d = _a.showCloseButton, showCloseButton = _d === void 0 ? false : _d, _e = _a.variant, variant = _e === void 0 ? 'toast' : _e;
+    var _f = useState(false), isVisible = _f[0], setIsVisible = _f[1];
+    var _g = useState(false), shouldRender = _g[0], setShouldRender = _g[1];
     useEffect(function () {
         if (open) {
             setShouldRender(true);
@@ -42,47 +49,12 @@ export default function Alert(_a) {
     };
     if (!shouldRender)
         return null;
-    // Get the appropriate icon based on type
-    var getIcon = function () {
-        switch (type) {
-            case 'error':
-                return <AlertCircle className="w-6 h-6" strokeWidth={2}/>;
-            case 'warning':
-                return <AlertTriangle className="w-6 h-6" strokeWidth={2}/>;
-            case 'info':
-                return <Info className="w-6 h-6" strokeWidth={2}/>;
-            case 'success':
-                return <CheckCircle className="w-6 h-6" strokeWidth={2}/>;
-            case 'default':
-            default:
-                return <Info className="w-6 h-6" strokeWidth={2}/>;
-        }
-    };
-    var bgColor;
-    switch (type) {
-        case 'error':
-            bgColor = 'bg-light-error-main dark:bg-dark-error-main';
-            break;
-        case 'warning':
-            bgColor = 'bg-light-warning-main dark:bg-dark-warning-main';
-            break;
-        case 'info':
-            bgColor = 'bg-light-info-main dark:bg-dark-info-main';
-            break;
-        case 'success':
-            bgColor = 'bg-light-success-main dark:bg-dark-success-main';
-            break;
-        case 'default':
-        default:
-            bgColor = 'bg-light-secondary-light dark:bg-dark-secondary-light';
-            break;
-    }
-    var alertContent = (<div className={"flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ".concat(bgColor, " ").concat(isVisible ? 'opacity-100' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
+    var bgClasses = (_b = bgClassMap[type]) !== null && _b !== void 0 ? _b : bgClassMap.default;
+    var alertContent = (<div className={"flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ".concat(bgClasses, " ").concat(isVisible ? 'opacity-100' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
       <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
-        {getIcon()}
-        <div className="flex flex-col text-center">
-          <span className="body1">{message}</span>
-          {secondMessage && (<span className="body2 opacity-70">{secondMessage}</span>)}
+        <div className="flex flex-col text-left">
+          <span className="text-body2">{message}</span>
+          {secondMessage && (<span className="text-body2 opacity-70">{secondMessage}</span>)}
         </div>
       </div>
       {showCloseButton && (<div className="ml-4">

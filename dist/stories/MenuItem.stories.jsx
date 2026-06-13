@@ -61,11 +61,11 @@ export var WithUserImage = {
         isSelected: false,
     },
 };
-export var LargeSize = {
+export var SmallSize = {
     args: {
-        label: "Large Menu Item",
+        label: "Small Menu Item",
         iconName: "Settings",
-        size: "large",
+        size: "small",
         isSelected: false,
     },
 };

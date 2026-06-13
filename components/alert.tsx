@@ -1,11 +1,5 @@
 'use client';
 import React, { useEffect, useState } from 'react';
-import {
-  Info,
-  AlertCircle,
-  AlertTriangle,
-  CheckCircle
-} from 'lucide-react';
 import IconButton from './iconButton';
 
 interface AlertProps {
@@ -17,6 +11,14 @@ interface AlertProps {
   showCloseButton?: boolean;
   variant?: 'toast' | 'inline';
 }
+
+const bgClassMap = {
+  error:   'bg-light-error-alertBg dark:bg-dark-error-alertBg',
+  warning: 'bg-light-warning-alertBg dark:bg-dark-warning-alertBg',
+  info:    'bg-light-info-alertBg dark:bg-dark-info-alertBg',
+  success: 'bg-light-success-alertBg dark:bg-dark-success-alertBg',
+  default: 'bg-light-secondary-light dark:bg-dark-secondary-light',
+} as const;
 
 export default function Alert({
   open = true,
@@ -69,55 +71,19 @@ export default function Alert({
 
   if (!shouldRender) return null;
 
-  // Get the appropriate icon based on type
-  const getIcon = () => {
-    switch (type) {
-      case 'error':
-        return <AlertCircle className="w-6 h-6" strokeWidth={2} />;
-      case 'warning':
-        return <AlertTriangle className="w-6 h-6" strokeWidth={2} />;
-      case 'info':
-        return <Info className="w-6 h-6" strokeWidth={2} />;
-      case 'success':
-        return <CheckCircle className="w-6 h-6" strokeWidth={2} />;
-      case 'default':
-      default:
-        return <Info className="w-6 h-6" strokeWidth={2} />;
-    }
-  };
-
-  let bgColor;
-  switch (type) {
-    case 'error':
-      bgColor = 'bg-light-error-main dark:bg-dark-error-main';
-      break;
-    case 'warning':
-      bgColor = 'bg-light-warning-main dark:bg-dark-warning-main';
-      break;
-    case 'info':
-      bgColor = 'bg-light-info-main dark:bg-dark-info-main';
-      break;
-    case 'success':
-      bgColor = 'bg-light-success-main dark:bg-dark-success-main';
-      break;
-    case 'default':
-    default:
-      bgColor = 'bg-light-secondary-light dark:bg-dark-secondary-light';
-      break;
-  }
+  const bgClasses = bgClassMap[type] ?? bgClassMap.default;
 
   const alertContent = (
     <div
-      className={`flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ${bgColor} ${
+      className={`flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ${bgClasses} ${
         isVisible ? 'opacity-100' : 'opacity-0'
       } ${variant === 'toast' ? 'max-w-md pointer-events-auto' : ''}`}
     >
       <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
-        {getIcon()}
-        <div className="flex flex-col text-center">
-          <span className="body1">{message}</span>
+        <div className="flex flex-col text-left">
+          <span className="text-body2">{message}</span>
           {secondMessage && (
-            <span className="body2 opacity-70">{secondMessage}</span>
+            <span className="text-body2 opacity-70">{secondMessage}</span>
           )}
         </div>
       </div>

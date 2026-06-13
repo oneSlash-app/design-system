@@ -31,7 +31,7 @@ export default function Modal(_a) {
     };
     if (!isOpen)
         return null;
-    return (<div className="fixed bg-black bg-opacity-50 flex items-center justify-center z-50" style={{ top: 0, left: 0, right: 0, bottom: 0 }} onClick={handleOverlayClick} role="dialog" aria-labelledby="modal-title" aria-modal="true" tabIndex={-1}>
+    return (<div className="fixed bg-light-misc-scrim/40 dark:bg-dark-misc-scrim/40 flex items-center justify-center z-50" style={{ top: 0, left: 0, right: 0, bottom: 0 }} onClick={handleOverlayClick} role="dialog" aria-labelledby="modal-title" aria-modal="true" tabIndex={-1}>
       <div className={"bg-light-background-default dark:bg-dark-background-default rounded-[8px] ".concat(modalWidth, " flex flex-col")} style={{
             maxWidth: maxWidth,
             width: 'calc(100vw - 64px)',

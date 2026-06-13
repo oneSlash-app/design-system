@@ -93,9 +93,9 @@ export default function MenuItem(_a) {
         fetchIcon();
     }, [iconName, iconRight, loadIcon]);
     // Size-based icon and text classes
-    var iconSize = size === 'large' ? 'w-5 h-5' : 'w-6 h-6';
-    var labelClass = size === 'large' ? 'text-body2' : 'text-body1';
-    var tagSize = size === 'large' ? 'small' : 'medium';
+    var iconSize = size === 'small' ? 'w-5 h-5' : 'w-6 h-6';
+    var labelClass = size === 'small' ? 'text-body2' : 'text-body1';
+    var tagSize = size === 'small' ? 'small' : 'medium';
     var content = (<div className={"\n        flex items-center p-2 rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out\n        ".concat(isSelected
             ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
             : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200', "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick}>

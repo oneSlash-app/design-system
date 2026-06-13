@@ -4,11 +4,13 @@ import React, { useState, useRef, useEffect } from 'react';
 interface TooltipProps {
   title: string;
   children: React.ReactElement;
+  /** Force placement. If omitted, auto-detects based on available space. */
+  placement?: 'top' | 'bottom';
 }
 
-export default function Tooltip({ title, children }: TooltipProps) {
+export default function Tooltip({ title, children, placement }: TooltipProps) {
   const [visible, setVisible] = useState(false);
-  const [position, setPosition] = useState<'top' | 'bottom'>('bottom');
+  const [position, setPosition] = useState<'top' | 'bottom'>(placement ?? 'bottom');
   const tooltipRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
 
@@ -17,8 +19,10 @@ export default function Tooltip({ title, children }: TooltipProps) {
       if (tooltipRef.current && buttonRef.current) {
         const tooltipRect = tooltipRef.current.getBoundingClientRect();
         const buttonRect = buttonRef.current.getBoundingClientRect();
-        // Check if there's enough space below; if not, place tooltip above
-        if (window.innerHeight - buttonRect.bottom < tooltipRect.height + 8) {
+        // If placement is forced, skip auto-detection
+        if (placement) {
+          setPosition(placement);
+        } else if (window.innerHeight - buttonRect.bottom < tooltipRect.height + 8) {
           setPosition('top');
         } else {
           setPosition('bottom');
@@ -28,7 +32,7 @@ export default function Tooltip({ title, children }: TooltipProps) {
     if (visible) { 
       handlePosition();
     }
-  }, [visible]);
+  }, [visible, placement]);
 
   const handleClick = () => {
     setVisible(false); // Hide tooltip on click

@@ -12,7 +12,7 @@ var colorConfig = {
     },
     success: {
         bg: 'bg-light-success-main dark:bg-dark-success-main',
-        text: 'text-white dark:text-dark-text-primary',
+        text: 'text-light-success-contrast dark:text-dark-text-primary',
         textOnly: 'text-light-success-main dark:text-dark-success-main',
         border: 'border-light-success-main dark:border-dark-success-main',
         dot: 'bg-light-success-main dark:bg-dark-success-main',
@@ -20,7 +20,7 @@ var colorConfig = {
     },
     warning: {
         bg: 'bg-light-warning-main dark:bg-dark-warning-main',
-        text: 'text-white dark:text-dark-text-primary',
+        text: 'text-light-warning-contrast dark:text-dark-text-primary',
         textOnly: 'text-light-warning-main dark:text-dark-warning-main',
         border: 'border-light-warning-main dark:border-dark-warning-main',
         dot: 'bg-light-warning-main dark:bg-dark-warning-main',
@@ -28,7 +28,7 @@ var colorConfig = {
     },
     error: {
         bg: 'bg-light-error-main dark:bg-dark-error-main',
-        text: 'text-white dark:text-dark-text-primary',
+        text: 'text-light-error-contrast dark:text-dark-text-primary',
         textOnly: 'text-light-error-main dark:text-dark-error-main',
         border: 'border-light-error-main dark:border-dark-error-main',
         dot: 'bg-light-error-main dark:bg-dark-error-main',
@@ -36,7 +36,7 @@ var colorConfig = {
     },
     info: {
         bg: 'bg-light-info-main dark:bg-dark-info-main',
-        text: 'text-white dark:text-dark-text-primary',
+        text: 'text-light-info-contrast dark:text-dark-text-primary',
         textOnly: 'text-light-info-main dark:text-dark-info-main',
         border: 'border-light-info-main dark:border-dark-info-main',
         dot: 'bg-light-info-main dark:bg-dark-info-main',
@@ -77,7 +77,8 @@ export default function Tag(_a) {
         fontClasses = variant === 'textOnly' ? colorStyles.textOnly : colorStyles.text;
     }
     else if (isSelected) {
-        fontClasses = 'text-white';
+        // Selected tags sit on accent-main — use the accent contrast token
+        fontClasses = 'text-light-accent-contrast dark:text-dark-accent-contrast';
     }
     else {
         fontClasses = 'text-light-text-primary dark:text-dark-text-primary';

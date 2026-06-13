@@ -16,7 +16,7 @@ interface MenuItemProps {
   isSelected?: boolean;
   onClick?: any;
   className?: string;
-  size?: 'medium' | 'large';
+  size?: 'small' | 'medium';
   tag?: {
     label: React.ReactNode;
     iconName?: string;
@@ -70,9 +70,9 @@ export default function MenuItem({
   }, [iconName, iconRight, loadIcon]);
 
   // Size-based icon and text classes
-  const iconSize = size === 'large' ? 'w-5 h-5' : 'w-6 h-6';
-  const labelClass = size === 'large' ? 'text-body2' : 'text-body1';
-  const tagSize = size === 'large' ? 'small' : 'medium';
+  const iconSize = size === 'small' ? 'w-5 h-5' : 'w-6 h-6';
+  const labelClass = size === 'small' ? 'text-body2' : 'text-body1';
+  const tagSize = size === 'small' ? 'small' : 'medium';
 
   const content = (
     <div

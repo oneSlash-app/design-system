@@ -9,6 +9,8 @@ interface TextareaProps {
   onBlur?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onFocus?: (e: React.FocusEvent<HTMLTextAreaElement>) => void;
   onKeyDown?: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
+  onCompositionStart?: (e: React.CompositionEvent<HTMLTextAreaElement>) => void;
+  onCompositionEnd?: (e: React.CompositionEvent<HTMLTextAreaElement>) => void;
   onSubmit?: () => void; // Triggered on Ctrl+Enter or Cmd+Enter
   autoFocus?: boolean;
   maxRows?: number;
@@ -26,6 +28,8 @@ export default function Textarea({
   onBlur,
   onFocus,
   onKeyDown,
+  onCompositionStart,
+  onCompositionEnd,
   onSubmit,
   autoFocus = false,
   maxRows = 6,
@@ -129,6 +133,8 @@ export default function Textarea({
             if (onBlur) onBlur(e);
           }}
           onKeyDown={handleKeyDown}
+          onCompositionStart={onCompositionStart}
+          onCompositionEnd={onCompositionEnd}
           autoFocus={autoFocus}
           disabled={disabled}
           autoComplete="off"

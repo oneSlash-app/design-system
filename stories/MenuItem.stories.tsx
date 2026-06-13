@@ -72,11 +72,11 @@ export const WithUserImage: Story = {
   },
 };
 
-export const LargeSize: Story = {
+export const SmallSize: Story = {
   args: {
-    label: "Large Menu Item",
+    label: "Small Menu Item",
     iconName: "Settings",
-    size: "large",
+    size: "small",
     isSelected: false,
   },
 };

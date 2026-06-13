@@ -78,7 +78,7 @@ export default function Button({
       textOnly: 'text-light-text-primary dark:text-dark-text-primary',
     },
     danger: {
-      primary: 'bg-light-error-main dark:bg-dark-error-main text-white dark:text-white',
+      primary: 'bg-light-error-main dark:bg-dark-error-main text-light-error-contrast dark:text-dark-error-contrast',
       secondary: 'bg-light-error-light dark:bg-dark-error-light text-light-error-main dark:text-dark-error-main',
       tertiary: 'bg-transparent border border-light-error-main dark:border-dark-error-main text-light-error-main dark:text-dark-error-main',
       textOnly: 'text-light-error-main dark:text-dark-error-main',
