@@ -41,7 +41,7 @@ import UserImage from './userImage';
 import Tag from './tag';
 export default function MenuItem(_a) {
     var _this = this;
-    var href = _a.href, iconName = _a.iconName, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, secondLabel = _a.secondLabel, isSelected = _a.isSelected, onClick = _a.onClick, _b = _a.className, className = _b === void 0 ? '' : _b, _c = _a.size, size = _c === void 0 ? 'medium' : _c, tag = _a.tag, iconRight = _a.iconRight, rightAction = _a.rightAction;
+    var href = _a.href, iconName = _a.iconName, icon = _a.icon, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, secondLabel = _a.secondLabel, isSelected = _a.isSelected, onClick = _a.onClick, _b = _a.className, className = _b === void 0 ? '' : _b, _c = _a.size, size = _c === void 0 ? 'medium' : _c, tag = _a.tag, iconRight = _a.iconRight, rightAction = _a.rightAction;
     var _d = useState(null), IconLeft = _d[0], setIconLeft = _d[1];
     var _e = useState(null), IconRight = _e[0], setIconRight = _e[1];
     var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
@@ -101,7 +101,7 @@ export default function MenuItem(_a) {
             : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200', "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick}>
       {/* Left group: icon/userImg + label with 8px gap */}
       <div className="flex items-center gap-2 min-w-0">
-        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " flex-shrink-0 ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary')} strokeWidth={2}/>))}
+        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : icon ? (<span className={"".concat(iconSize, " flex-shrink-0 flex items-center justify-center")}>{icon}</span>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " flex-shrink-0 ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary')} strokeWidth={2}/>))}
         <div className="flex flex-col min-w-0">
           <span className={"truncate ".concat(labelClass, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
             {label}

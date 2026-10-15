@@ -2,6 +2,7 @@ import React, { JSX } from 'react';
 interface MenuItemProps {
     href?: string;
     iconName?: string;
+    icon?: React.ReactNode;
     userHandle?: string;
     userImgUrl?: string;
     label: string;
@@ -19,5 +20,5 @@ interface MenuItemProps {
     iconRight?: string;
     rightAction?: React.ReactNode;
 }
-export default function MenuItem({ href, iconName, userHandle, userImgUrl, label, secondLabel, isSelected, onClick, className, size, tag, iconRight, rightAction, }: MenuItemProps): JSX.Element;
+export default function MenuItem({ href, iconName, icon, userHandle, userImgUrl, label, secondLabel, isSelected, onClick, className, size, tag, iconRight, rightAction, }: MenuItemProps): JSX.Element;
 export {};
