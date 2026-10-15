@@ -9,6 +9,7 @@ type IconType = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 interface MenuItemProps {
   href?: string;
   iconName?: string;
+  icon?: React.ReactNode; // Custom left icon (e.g. a brand logo); wins over iconName
   userHandle?: string;
   userImgUrl?: string;
   label: string;
@@ -30,6 +31,7 @@ interface MenuItemProps {
 export default function MenuItem({
   href,
   iconName,
+  icon,
   userHandle,
   userImgUrl,
   label,
@@ -90,6 +92,8 @@ export default function MenuItem({
       <div className="flex items-center gap-2 min-w-0">
         {userImgUrl ? (
           <UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl} />
+        ) : icon ? (
+          <span className={`${iconSize} flex-shrink-0 flex items-center justify-center`}>{icon}</span>
         ) : (
           IconLeft && (
             <IconLeft

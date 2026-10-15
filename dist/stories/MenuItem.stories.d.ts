@@ -11,3 +11,4 @@ export declare const WithTagColor: Story;
 export declare const WithUserImage: Story;
 export declare const SmallSize: Story;
 export declare const WithRightAction: Story;
+export declare const WithCustomIcon: Story;

@@ -1,3 +1,4 @@
+import React from "react";
 import MenuItem from "../components/menuItem";
 import IconButton from "../components/iconButton";
 var meta = {
@@ -75,5 +76,15 @@ export var WithRightAction = {
         iconName: "File",
         isSelected: false,
         rightAction: <IconButton iconName="X" size="small" color="tertiary" state="enabled" onClick={function () { return alert('Remove clicked'); }}/>,
+    },
+};
+export var WithCustomIcon = {
+    args: {
+        label: "Brand Item",
+        icon: (<svg viewBox="0 0 16 16" className="w-4 h-4 fill-current">
+        <rect x="2" y="2" width="12" height="12" rx="3"/>
+      </svg>),
+        size: "small",
+        isSelected: false,
     },
 };
