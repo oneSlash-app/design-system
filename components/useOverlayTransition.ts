@@ -1,0 +1,37 @@
+'use client';
+import { useEffect, useLayoutEffect, useState } from 'react';
+
+// useLayoutEffect warns during server rendering on React 18
+const useIsomorphicLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
+
+const EXIT_MS = 150;
+
+/**
+ * Keeps an overlay mounted while it fades out, and flips `visible` one style
+ * pass after mounting so the enter transition runs. Pair with
+ * overlayTransition / overlayHidden / overlayVisible from sharedStyles.
+ */
+export function useOverlayTransition(open: boolean) {
+  const [mounted, setMounted] = useState(open);
+  const [visible, setVisible] = useState(false);
+
+  useIsomorphicLayoutEffect(() => {
+    if (open) {
+      setMounted(true);
+      return;
+    }
+    setVisible(false);
+    const timer = setTimeout(() => setMounted(false), EXIT_MS);
+    return () => clearTimeout(timer);
+  }, [open]);
+
+  useIsomorphicLayoutEffect(() => {
+    if (open && mounted) {
+      // Commit the hidden styles first so the change to visible animates
+      void document.body.offsetHeight;
+      setVisible(true);
+    }
+  }, [open, mounted]);
+
+  return { mounted, visible };
+}

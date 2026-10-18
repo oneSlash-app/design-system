@@ -1,8 +1,8 @@
 'use client';
 import React from 'react';
 export default function LoadingScreen() {
-    return (<div className="flex justify-center items-center h-full w-full min-h-[200px]">
-        <div className="w-12 h-12 rounded-full border-4 border-t-transparent border-r-light-text-primary border-b-light-text-primary border-l-light-text-primary dark:border-t-transparent dark:border-r-dark-text-primary dark:border-b-dark-text-primary dark:border-l-dark-text-primary animate-spin"></div>
+    return (<div role="status" aria-label="Loading" className="flex justify-center items-center h-full w-full min-h-[200px]">
+        <div className="w-12 h-12 rounded-full border-4 border-current border-t-transparent text-light-text-primary dark:text-dark-text-primary animate-spin"></div>
     </div>);
 }
 ;
@@ -14,7 +14,7 @@ export function LoadingSmall(_a) {
         small: 'w-5 h-5 border-2', // 20px, slightly thinner border
         tiny: 'w-4 h-4 border-2', // 16px
     };
-    return (<div className="flex justify-center items-center">
-      <div className={"rounded-full border-t-transparent border-r-light-text-primary border-b-light-text-primary border-l-light-text-primary dark:border-t-transparent dark:border-r-dark-text-primary dark:border-b-dark-text-primary dark:border-l-dark-text-primary animate-spin ".concat(spinnerSizeClasses[size])}/>
+    return (<div role="status" aria-label="Loading" className="flex justify-center items-center">
+      <div className={"rounded-full border-current border-t-transparent text-light-text-primary dark:text-dark-text-primary animate-spin ".concat(spinnerSizeClasses[size])}/>
     </div>);
 }

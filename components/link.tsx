@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import NextLink from 'next/link';
+import { focusRing } from './sharedStyles';
 
 interface LinkProps {
   href: string;
@@ -20,26 +21,27 @@ export default function Link({
   className = '',
 }: LinkProps) {
   // Color classes based on the color prop
+  // Light mode uses the -dark shade so link text keeps 4.5:1 on light backgrounds
   const colorClasses = {
     info: {
-      default: 'text-light-info-main dark:text-dark-info-main',
-      hover: 'hover:text-light-info-dark hover:dark:text-dark-info-dark',
-      visited: 'visited:text-light-info-light visited:dark:text-dark-info-light',
+      default: 'text-light-info-dark dark:text-dark-info-main',
+      hover: 'hover:underline-offset-[4px] dark:hover:text-dark-info-light',
+      visited: 'visited:text-light-info-dark dark:visited:text-dark-info-light',
     },
     error: {
-      default: 'text-light-error-main dark:text-dark-error-main',
-      hover: 'hover:text-light-error-dark hover:dark:text-dark-error-dark',
-      visited: 'visited:text-light-error-light visited:dark:text-dark-error-light',
+      default: 'text-light-error-dark dark:text-dark-error-main',
+      hover: 'hover:underline-offset-[4px] dark:hover:text-dark-error-light',
+      visited: 'visited:text-light-error-dark dark:visited:text-dark-error-light',
     },
     warning: {
-      default: 'text-light-warning-main dark:text-dark-warning-main',
-      hover: 'hover:text-light-warning-dark hover:dark:text-dark-warning-dark',
-      visited: 'visited:text-light-warning-light visited:dark:text-dark-warning-light',
+      default: 'text-light-warning-dark dark:text-dark-warning-main',
+      hover: 'hover:underline-offset-[4px] dark:hover:text-dark-warning-light',
+      visited: 'visited:text-light-warning-dark dark:visited:text-dark-warning-light',
     },
     success: {
-      default: 'text-light-success-main dark:text-dark-success-main',
-      hover: 'hover:text-light-success-dark hover:dark:text-dark-success-dark',
-      visited: 'visited:text-light-success-light visited:dark:text-dark-success-light',
+      default: 'text-light-success-dark dark:text-dark-success-main',
+      hover: 'hover:underline-offset-[4px] dark:hover:text-dark-success-light',
+      visited: 'visited:text-light-success-dark dark:visited:text-dark-success-light',
     },
   };
 
@@ -51,8 +53,23 @@ export default function Link({
   // Determine if we should open in new tab
   const shouldOpenInNewTab = openInNewTab || isExternal;
 
+  // Literal class names so Tailwind can find them when scanning this file
+  const sizeClass = {
+    h1: 'text-h1',
+    h2: 'text-h2',
+    h3: 'text-h3',
+    h4: 'text-h4',
+    h5: 'text-h5',
+    h6: 'text-h6',
+    subtitle1: 'text-subtitle1',
+    subtitle2: 'text-subtitle2',
+    body1: 'text-body1',
+    body2: 'text-body2',
+    caption: 'text-caption',
+  }[size];
+
   const linkClasses = `
-    text-${size}
+    ${sizeClass}
     ${selectedColorClasses.default}
     ${selectedColorClasses.hover}
     ${selectedColorClasses.visited}
@@ -60,9 +77,12 @@ export default function Link({
     underline-offset-[2px]
     decoration-2
     cursor-pointer
-    transition-colors
-    duration-200
-    ease-in-out
+    rounded-[2px]
+    transition-[color,text-underline-offset]
+    duration-150
+    ease-out
+    motion-reduce:transition-none
+    ${focusRing}
     ${className}
   `.trim().replace(/\s+/g, ' ');
 

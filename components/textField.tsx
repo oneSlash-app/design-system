@@ -1,5 +1,6 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
+import { stateTransition } from './sharedStyles';
 
 interface TextFieldProps {
   id: string;
@@ -16,6 +17,8 @@ interface TextFieldProps {
   maxRows?: number;
   disabled?: boolean;
   error?: boolean;
+  /** Message shown under the field when `error` is true */
+  errorText?: string;
   required?: boolean;
   size?: 'large' | 'medium' | 'small' | 'tiny';
   placeholder?: string;
@@ -36,12 +39,11 @@ export default function TextField({
   maxRows = 6,
   disabled = false,
   error = false,
+  errorText = 'This field is required',
   required = false,
   size = 'medium',
   placeholder,
 }: TextFieldProps) {
-  const [isFocused, setIsFocused] = useState(false);
-
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     // Ctrl+Enter or Cmd+Enter to submit
     if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && onSubmit) {
@@ -53,26 +55,35 @@ export default function TextField({
 
   // Define classes for size: text size and padding
   const sizeClasses = {
-    large: 'text-body1 p-2 leading-[22px]', // body1 (16px), padding 8px
+    large: 'text-body1 p-3 leading-[22px]', // body1 (16px), padding 12px
     medium: 'text-body1 p-2 leading-[22px]', // body1 (16px), padding 8px
     small: 'text-body2 p-2 leading-[18px]', // body2 (14px), padding 8px
     tiny: 'text-caption p-1 leading-[16px]', // caption (12px), padding 4px
   }[size];
 
-  const baseClasses = 'w-full border rounded-[8px] outline-none';
-  const textColor = 'text-light-text-primary dark:text-dark-text-primary';
-  const bgColor = 'bg-light-background-default dark:bg-dark-background-default transition-colors duration-200 ease-in-out';
+  const baseClasses = `w-full border rounded-[8px] outline-none ${stateTransition}
+    placeholder:text-light-text-disabled dark:placeholder:text-dark-text-disabled`;
 
-  // Border color logic: error > focused > default (misc-divider)
+  // One background and text color per state, so disabled can't be overridden by the enabled ones
+  const colorClasses = disabled
+    ? 'bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled text-light-text-disabled dark:text-dark-text-disabled cursor-not-allowed'
+    : 'bg-light-background-default dark:bg-dark-background-default text-light-text-primary dark:text-dark-text-primary';
+
+  // Border: error > focus (accent border plus outline, as Select) > hover > default
   const getBorderColor = () => {
     if (error) {
-      return 'border-light-error-main dark:border-dark-error-main';
+      return 'border-light-error-main dark:border-dark-error-main focus:outline focus:outline-1 focus:outline-light-error-main dark:focus:outline-dark-error-main';
     }
-    if (isFocused) {
-      return 'border-light-text-primary dark:border-dark-text-primary';
+    if (disabled) {
+      return 'border-light-text-disabled dark:border-dark-text-disabled';
     }
-    return 'border-light-text-disabled dark:border-dark-text-disabled';
+    return `border-light-text-disabled dark:border-dark-text-disabled
+      hover:border-light-text-secondary dark:hover:border-dark-text-secondary
+      focus:border-light-accent-main dark:focus:border-dark-accent-main
+      focus:outline focus:outline-1 focus:outline-light-accent-main dark:focus:outline-dark-accent-main`;
   };
+
+  const errorId = `${id}-error`;
 
   // Get inputMode for mobile keyboard optimization
   const getInputMode = (): React.HTMLAttributes<HTMLInputElement>['inputMode'] => {
@@ -93,13 +104,16 @@ export default function TextField({
   };
 
   const containerClasses = `
-    ${bgColor}
-    ${textColor}
+    ${colorClasses}
     ${baseClasses}
     ${sizeClasses}
     ${getBorderColor()}
-    ${disabled ? 'bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled cursor-not-allowed' : ''}
   `;
+
+  const errorProps = {
+    'aria-invalid': error || undefined,
+    'aria-describedby': error ? errorId : undefined,
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -116,19 +130,15 @@ export default function TextField({
             className={containerClasses}
             value={value}
             onChange={onChange}
-            onFocus={(e) => {
-              setIsFocused(true);
-              if (onFocus) onFocus(e);
-            }}
-            onBlur={(e) => {
-              setIsFocused(false);
-              if (onBlur) onBlur(e);
-            }}
+            placeholder={placeholder}
+            onFocus={onFocus}
+            onBlur={onBlur}
             onKeyDown={handleKeyDown}
             autoFocus={autoFocus}
             disabled={disabled}
             required={required}
             autoComplete="off"
+            {...errorProps}
           />
         ) : (
           <input
@@ -139,25 +149,20 @@ export default function TextField({
             value={value}
             onChange={onChange}
             placeholder={placeholder}
-            onFocus={(e) => {
-              setIsFocused(true);
-              if (onFocus) onFocus(e);
-            }}
-            onBlur={(e) => {
-              setIsFocused(false);
-              if (onBlur) onBlur(e);
-            }}
+            onFocus={onFocus}
+            onBlur={onBlur}
             onKeyDown={handleKeyDown}
             autoFocus={autoFocus}
             disabled={disabled}
             required={required}
             autoComplete="off"
+            {...errorProps}
           />
         )}
       </div>
       {error && (
-        <p className="mt-1 text-light-error-main text-body2">
-          This field is required
+        <p id={errorId} className="mt-1 text-light-error-main dark:text-dark-error-main text-body2">
+          {errorText}
         </p>
       )}
     </div>

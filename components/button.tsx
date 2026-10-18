@@ -1,5 +1,7 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
+import * as LucideIcons from 'lucide-react';
+import { focusRing, focusRingDanger, pressFeedback, stateTransition } from './sharedStyles';
 
 interface ButtonProps {
   size: 'tiny' | 'small' | 'medium' | 'large';
@@ -30,39 +32,16 @@ export default function Button({
   onClickActionIcon,
   className = '',
 }: ButtonProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [IconLeft, setIconLeft] = useState<IconType | null>(null);
-  const [IconRight, setIconRight] = useState<IconType | null>(null);
+  // Synchronous lookup so icons render on the first paint
+  const IconLeft = decoIcon ? (LucideIcons[decoIcon as keyof typeof LucideIcons] as IconType) : null;
+  const IconRight = actionIcon ? (LucideIcons[actionIcon as keyof typeof LucideIcons] as IconType) : null;
 
-  const loadIcon = useCallback(async (iconName?: string) => {
-    if (!iconName) return null;
-    try {
-      const module = await import('lucide-react');
-      const Icon = module[iconName as keyof typeof module] as IconType;
-      return Icon || null;
-    } catch (error) {
-      console.error(`Failed to load icon ${iconName}:`, error);
-      return null;
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchIcons = async () => {
-      if (decoIcon) {
-        setIconLeft(await loadIcon(decoIcon));
-      }
-      if (actionIcon) {
-        setIconRight(await loadIcon(actionIcon));
-      }
-    };
-    fetchIcons();
-  }, [decoIcon, actionIcon, loadIcon]);
-
+  // Horizontal padding sits on the button so an icon and the label are inset equally
   const sizeClasses = {
-    large: 'text-body1 p-2',
-    medium: 'text-body1 p-1',
-    small: 'text-body2 p-1',
-    tiny: 'text-caption px-1 py-px',
+    large: 'text-body1 py-2 px-3 gap-1',
+    medium: 'text-body1 py-1 px-2 gap-1',
+    small: 'text-body2 py-1 px-2 gap-1',
+    tiny: 'text-caption py-px px-1 gap-0.5',
   }[size];
 
   const sizeIcon = {
@@ -82,20 +61,21 @@ export default function Button({
     danger: {
       primary: 'bg-light-error-main dark:bg-dark-error-main text-light-error-contrast dark:text-dark-error-contrast',
       secondary: 'bg-light-error-alertBg dark:bg-dark-error-alertBg text-light-error-dark dark:text-dark-error-light',
-      tertiary: 'bg-transparent border border-light-error-main dark:border-dark-error-main text-light-error-main dark:text-dark-error-main',
+      // Inset ring instead of a border so it adds no height
+      tertiary: 'bg-transparent ring-1 ring-inset ring-light-error-main dark:ring-dark-error-main text-light-error-main dark:text-dark-error-main',
       textOnly: 'text-light-error-main dark:text-dark-error-main',
     },
   }[color][type];
 
   const hoverTypeClasses = {
     default: {
-      primary: 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark',
+      primary: 'hover:bg-light-accent-dark dark:hover:bg-dark-accent-dark',
       secondary: 'hover:bg-light-secondary-dark dark:hover:bg-dark-secondary-dark',
-      tertiary: 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200',
-      textOnly: 'hover:bg-light-background-accent100 hover:dark:bg-dark-background-accent100',
+      tertiary: 'hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200',
+      textOnly: 'hover:bg-light-background-accent100 dark:hover:bg-dark-background-accent100',
     },
     danger: {
-      primary: 'hover:bg-light-error-dark hover:dark:bg-dark-error-dark',
+      primary: 'hover:bg-light-error-dark dark:hover:bg-dark-error-dark',
       secondary: 'hover:bg-light-error-light/60 dark:hover:bg-dark-error-dark/60',
       tertiary: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
       textOnly: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
@@ -115,29 +95,29 @@ export default function Button({
     selected: 'cursor-pointer bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast',
   };
 
+  // Hover is pure CSS; `state="hovered"` and `state="focused"` only exist to show those states in docs
   const buttonClasses = `
-    flex flex-row items-center rounded-[8px] transition-colors duration-200 ease-in-out justify-between
+    flex flex-row items-center rounded-[8px] justify-between ${stateTransition} ${pressFeedback}
+    ${color === 'danger' ? focusRingDanger : focusRing}
     ${sizeClasses}
     ${state === 'selected' ? stateClasses.selected : ''}
-    ${state === 'enabled' ? baseTypeClasses : ''}
-    ${state === 'focused' ? `${baseTypeClasses} ${stateClasses.focused}` : ''}
+    ${state === 'enabled' || state === 'hovered' ? `${stateClasses.enabled} ${baseTypeClasses} ${hoverTypeClasses}` : ''}
+    ${state === 'focused' ? `${baseTypeClasses} ${hoverTypeClasses} ${stateClasses.focused}` : ''}
     ${state === 'disabled' ? stateClasses.disabled : ''}
-    ${state !== 'disabled' && state !== 'selected' && isHovered ? hoverTypeClasses : ''}
-    ${state === 'hovered' ? `${baseTypeClasses} ${hoverTypeClasses}` : ''}
     ${className}
   `;
 
   return (
     <button
+      type="button"
       className={buttonClasses}
-      onMouseEnter={() => { if (state !== 'disabled') setIsHovered(true); }}
-      onMouseLeave={() => { if (state !== 'disabled') setIsHovered(false); }}
+      disabled={state === 'disabled'}
       onClick={onClickButton}
     >
       {/* Group IconLeft and label in a flex container for left alignment */}
-      <div className="flex items-center">
-        {IconLeft && <IconLeft className={sizeIcon} strokeWidth={2} />}
-        <div className={`flex flex-col text-center ${size === 'tiny' ? 'px-1' : 'px-2'}`}>
+      <div className={`flex items-center ${size === 'tiny' ? 'gap-0.5' : 'gap-1'}`}>
+        {IconLeft && <IconLeft className={`${sizeIcon} flex-shrink-0`} strokeWidth={2} />}
+        <div className={`flex flex-col text-center px-1`}>
           <span className="whitespace-nowrap overflow-hidden truncate">{label}</span>
           {secondLabel && (
             <span className={`whitespace-nowrap overflow-hidden truncate ${size === 'tiny' ? 'text-caption' : 'text-body2'} opacity-70`}>{secondLabel}</span>
@@ -145,9 +125,16 @@ export default function Button({
         </div>
       </div>
       {IconRight && (
-        <div onClick={onClickActionIcon} className="cursor-pointer">
-          <IconRight className={sizeIcon} strokeWidth={2} />
-        </div>
+        <span
+          onClick={(e) => {
+            // Don't also trigger the button's own click
+            e.stopPropagation();
+            onClickActionIcon?.();
+          }}
+          className="cursor-pointer"
+        >
+          <IconRight className={`${sizeIcon} flex-shrink-0`} strokeWidth={2} />
+        </span>
       )}
     </button>
   );

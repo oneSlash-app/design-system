@@ -77,7 +77,7 @@ export default function TimeStamp({
             } else if (minutes > 0) {
                 return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
             } else {
-                return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+                return 'just now';
             }
         }
 
@@ -95,7 +95,7 @@ export default function TimeStamp({
         } else if (minutes > 0) {
             return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
         } else {
-            return `${seconds} second${seconds > 1 ? 's' : ''} ago`;
+            return 'just now';
         }
     };
     
@@ -110,8 +110,9 @@ export default function TimeStamp({
         : 'text-light-text-secondary dark:text-dark-text-secondary';
 
     return (
-        <p className={`${sizeClass} ${colorClass}`}>
+        // Relative times differ between server and client render, which is expected
+        <time dateTime={isNaN(new Date(createdAt).getTime()) ? undefined : new Date(createdAt).toISOString()} className={`block ${sizeClass} ${colorClass}`} suppressHydrationWarning>
             {timeStamp}
-        </p>
+        </time>
     );
 };

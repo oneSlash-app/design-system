@@ -8,7 +8,7 @@ interface TableHeaderProps{
 export default function TableHeader({children}: TableHeaderProps) {
 
 		return (
-				<div className="py-2 bg-light-background-default dark:bg-dark-background-default">
+				<div role="rowgroup" className="bg-light-background-default dark:bg-dark-background-default">
 						{children}
 				</div>
 		);

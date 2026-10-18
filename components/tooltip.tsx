@@ -1,85 +1,130 @@
 'use client';
-import React, { useState, useRef, useLayoutEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect, useEffect, useId } from 'react';
+import { createPortal } from 'react-dom';
+import { useOverlayTransition } from './useOverlayTransition';
 
 interface TooltipProps {
   title: string;
   children: React.ReactElement;
-  /** Force placement. If omitted, auto-detects based on available space. */
+  /** Force placement. If omitted, picks the side with room. */
   placement?: 'top' | 'bottom';
 }
 
 const VIEWPORT_MARGIN = 8;
+const OFFSET = 4;
+// Hover delay so tooltips don't flash while the pointer passes over
+const OPEN_DELAY_MS = 300;
 
 export default function Tooltip({ title, children, placement }: TooltipProps) {
-  const [visible, setVisible] = useState(false);
-  const [position, setPosition] = useState<'top' | 'bottom'>(placement ?? 'bottom');
-  const [shiftX, setShiftX] = useState(0);
+  const [open, setOpen] = useState(false);
+  const { mounted, visible } = useOverlayTransition(open);
+  // Viewport coordinates; null until measured so the first frame never shows in the wrong place
+  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const openTimer = useRef<ReturnType<typeof setTimeout>>();
   const tooltipRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLDivElement>(null);
+  const triggerRef = useRef<HTMLDivElement>(null);
+  const tooltipId = useId();
 
+  // Measure the trigger and the tooltip, then place the tooltip where it fits entirely on screen
   useLayoutEffect(() => {
-    if (!visible) return;
-    const handlePosition = () => {
-      if (tooltipRef.current && buttonRef.current) {
-        const tooltipRect = tooltipRef.current.getBoundingClientRect();
-        const buttonRect = buttonRef.current.getBoundingClientRect();
-        // If placement is forced, skip auto-detection
-        if (placement) {
-          setPosition(placement);
-        } else {
-          const spaceBelow = window.innerHeight - buttonRect.bottom;
-          const fitsBelow = spaceBelow >= tooltipRect.height + VIEWPORT_MARGIN;
-          const fitsAbove = buttonRect.top >= tooltipRect.height + VIEWPORT_MARGIN;
-          setPosition(!fitsBelow && fitsAbove ? 'top' : 'bottom');
-        }
-        // Keep the tooltip inside the viewport horizontally
-        const centerX = buttonRect.left + buttonRect.width / 2;
-        const half = tooltipRect.width / 2;
-        const minCenter = VIEWPORT_MARGIN + half;
-        const maxCenter = window.innerWidth - VIEWPORT_MARGIN - half;
-        setShiftX(Math.min(Math.max(centerX, minCenter), maxCenter) - centerX);
-      }
-    };
-    handlePosition();
-    window.addEventListener('resize', handlePosition);
-    window.addEventListener('scroll', handlePosition, true);
-    return () => {
-      window.removeEventListener('resize', handlePosition);
-      window.removeEventListener('scroll', handlePosition, true);
-    };
-  }, [visible, placement, title]);
+    if (!mounted) {
+      setCoords(null);
+      return;
+    }
+    const position = () => {
+      const tooltip = tooltipRef.current;
+      const trigger = triggerRef.current;
+      if (!tooltip || !trigger) return;
+      const tip = tooltip.getBoundingClientRect();
+      const anchor = trigger.getBoundingClientRect();
+      const viewportWidth = document.documentElement.clientWidth;
+      const viewportHeight = document.documentElement.clientHeight;
 
-  const handleClick = () => {
-    setVisible(false); // Hide tooltip on click
+      const spaceBelow = viewportHeight - anchor.bottom - OFFSET - VIEWPORT_MARGIN;
+      const spaceAbove = anchor.top - OFFSET - VIEWPORT_MARGIN;
+      const side = placement
+        ?? (spaceBelow >= tip.height ? 'bottom'
+          : spaceAbove >= tip.height ? 'top'
+          : spaceBelow >= spaceAbove ? 'bottom' : 'top');
+
+      const preferredTop = side === 'bottom' ? anchor.bottom + OFFSET : anchor.top - OFFSET - tip.height;
+      const preferredLeft = anchor.left + anchor.width / 2 - tip.width / 2;
+      const clamp = (value: number, max: number) => Math.max(VIEWPORT_MARGIN, Math.min(value, max - VIEWPORT_MARGIN));
+
+      setCoords({
+        top: clamp(preferredTop, viewportHeight - tip.height),
+        left: clamp(preferredLeft, viewportWidth - tip.width),
+      });
+    };
+    position();
+    window.addEventListener('resize', position);
+    window.addEventListener('scroll', position, true);
+    return () => {
+      window.removeEventListener('resize', position);
+      window.removeEventListener('scroll', position, true);
+    };
+  }, [mounted, placement, title]);
+
+  const show = (delay: number) => {
+    clearTimeout(openTimer.current);
+    openTimer.current = setTimeout(() => setOpen(true), delay);
   };
+
+  const hide = () => {
+    clearTimeout(openTimer.current);
+    setOpen(false);
+  };
+
+  useEffect(() => () => clearTimeout(openTimer.current), []);
+
+  // Link the focusable trigger to the tooltip text for screen readers. Set on the
+  // DOM node because child components don't all forward aria props.
+  useEffect(() => {
+    const target = triggerRef.current?.querySelector<HTMLElement>('a[href], button, input, select, textarea, [tabindex]')
+      ?? triggerRef.current;
+    if (!target || !mounted) return;
+    target.setAttribute('aria-describedby', tooltipId);
+    return () => target.removeAttribute('aria-describedby');
+  }, [mounted, tooltipId]);
+
+  // Escape dismisses an open tooltip
+  useEffect(() => {
+    if (!open) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') hide();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [open]);
 
   return (
     <div
-      ref={buttonRef}
-      onMouseEnter={() => setVisible(true)}
-      onMouseLeave={() => setVisible(false)}
-      onClick={handleClick}
+      ref={triggerRef}
+      onMouseEnter={() => show(OPEN_DELAY_MS)}
+      onMouseLeave={hide}
+      // Keyboard focus shows it right away
+      onFocus={() => show(0)}
+      onBlur={hide}
+      onClick={hide}
       className="relative inline-block"
     >
       {children}
-      {visible && (
-          <div
-            ref={tooltipRef}
-            className={`absolute whitespace-nowrap text-caption rounded-[8px] py-1 px-2 z-50
-              dark:bg-light-background-accent300 bg-dark-background-accent300 
-              dark:text-light-text-primary text-dark-text-primary
-							${position === 'bottom' ? 'mt-1' : 'mb-1'}`}
-            style={{
-              bottom: position === 'top' ? '100%' : undefined,
-              top: position === 'bottom' ? '100%' : undefined,
-              left: '50%',
-              transform: `translateX(calc(-50% + ${shiftX}px))`,
-            }}
-          >
-            {title}
-          </div>
-        )
-      }
+      {/* Rendered in <body> so no parent's overflow or stacking context can clip or cover it */}
+      {mounted && createPortal(
+        <div
+          ref={tooltipRef}
+          id={tooltipId}
+          role="tooltip"
+          className={`fixed z-[1000] w-max max-w-[min(320px,calc(100vw-16px))] break-words text-caption rounded-[8px] py-1 px-2 pointer-events-none
+            dark:bg-light-background-accent300 bg-dark-background-accent300
+            dark:text-light-text-primary text-dark-text-primary
+            transition-opacity duration-150 ease-out motion-reduce:transition-none ${visible && coords ? 'opacity-100' : 'opacity-0'}`}
+          style={{ top: coords?.top ?? 0, left: coords?.left ?? 0 }}
+        >
+          {title}
+        </div>,
+        document.body
+      )}
     </div>
   );
 }

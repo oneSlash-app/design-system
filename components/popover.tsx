@@ -2,6 +2,8 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
+import { overlayHidden, overlayTransition, overlayVisible } from './sharedStyles';
+import { useOverlayTransition } from './useOverlayTransition';
 
 interface PopoverProps {
   id?: string;
@@ -20,28 +22,36 @@ export default function Popover({
 }: PopoverProps) {
   const [popoverElement, setPopoverElement] = useState<HTMLDivElement | null>(null);
   const [hasMounted, setHasMounted] = useState(false);
+  const { mounted, visible } = useOverlayTransition(open);
 
   // Initialize Popper.js
   const { styles, attributes } = usePopper(anchorEl, popoverElement, {
     placement: 'bottom-start', // Default placement, can be customized
     modifiers: [
-      { name: 'offset', options: { offset: [0, 8] } }, // Offset for spacing between anchor and popover
+      { name: 'offset', options: { offset: [0, 4] } }, // Same 4px gap as the Select menu and Tooltip
     ],
   });
 
-  // Handle outside clicks to close the popover
+  // Close on outside clicks and Escape. Clicks on the anchor are left to the
+  // anchor's own toggle, otherwise the popover would close and reopen.
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (popoverElement && !popoverElement.contains(event.target as Node) && anchorEl) {
+      const target = event.target as Node;
+      if (popoverElement && !popoverElement.contains(target) && anchorEl && !anchorEl.contains(target)) {
         onClose();
       }
+    };
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose();
     };
 
     if (open) {
       document.addEventListener('mousedown', handleClickOutside);
+      document.addEventListener('keydown', handleKeyDown);
     }
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener('keydown', handleKeyDown);
     };
   }, [open, anchorEl, popoverElement, onClose]);
 
@@ -50,19 +60,25 @@ export default function Popover({
     setHasMounted(true);
   }, []);
 
-  if (!open || !hasMounted || !anchorEl) return null;
+  if (!mounted || !hasMounted || !anchorEl) return null;
 
   // Render popover in a portal to prevent layout shifts and positioning issues
   return createPortal(
     <div
       id={id}
       ref={setPopoverElement}
-      style={{ ...styles.popper, display: open ? 'block' : 'none' }}
+      style={styles.popper}
       {...attributes.popper}
-      className="bg-light-background-accent300 dark:bg-dark-background-accent300 rounded-[8px] shadow-lg p-2"
+      className="z-50"
       role="dialog"
     >
-      {children}
+      {/* Popper owns the outer transform, so the fade and scale go on this inner panel */}
+      <div
+        className={`bg-light-background-accent300 dark:bg-dark-background-accent300 dark:ring-1 dark:ring-dark-misc-divider rounded-[8px] shadow-lg p-2 origin-top-left
+          ${overlayTransition} ${visible ? overlayVisible : overlayHidden}`}
+      >
+        {children}
+      </div>
     </div>,
     document.body // Mounting the popover in the document body for isolation
   );

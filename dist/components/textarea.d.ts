@@ -14,8 +14,10 @@ interface TextareaProps {
     maxRows?: number;
     disabled?: boolean;
     error?: boolean;
+    /** Message shown under the field when `error` is true */
+    errorText?: string;
     size?: 'medium' | 'small' | 'tiny';
     placeholder?: string;
 }
-export default function Textarea({ id, label, value, onChange, onBlur, onFocus, onKeyDown, onCompositionStart, onCompositionEnd, onSubmit, autoFocus, maxRows, disabled, error, size, placeholder, }: TextareaProps): React.JSX.Element;
+export default function Textarea({ id, label, value, onChange, onBlur, onFocus, onKeyDown, onCompositionStart, onCompositionEnd, onSubmit, autoFocus, maxRows, disabled, error, errorText, size, placeholder, }: TextareaProps): React.JSX.Element;
 export {};

@@ -1,5 +1,6 @@
 'use client';
-import { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { popTransition, stateTransition } from './sharedStyles';
 
 interface CheckboxProps {
   label?: string;
@@ -18,57 +19,59 @@ export default function Checkbox({
 }: CheckboxProps) {
   const [isChecked, setIsChecked] = useState(checked);
 
-  const handleToggle = () => {
+  // Follow the parent when it changes `checked` (e.g. resetting a form)
+  useEffect(() => {
+    setIsChecked(checked);
+  }, [checked]);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (disabled) return;
-    const newChecked = !isChecked;
-    setIsChecked(newChecked);
-    if (onChange) {
-      onChange(newChecked);
-    }
+    setIsChecked(event.target.checked);
+    onChange?.(event.target.checked);
   };
 
   return (
-    <label className={`flex items-center ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
-      <div
-        onClick={handleToggle}
-        className="relative flex items-center justify-center w-6 h-6 group transition-colors duration-200 ease-in-out"
+    <label className={`group flex items-start ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+      {/* Native input keeps keyboard focus, Space to toggle and screen-reader semantics */}
+      <input
+        type="checkbox"
+        className="peer sr-only"
+        checked={isChecked}
+        disabled={disabled}
+        onChange={handleChange}
+      />
+      <span
+        className={`relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full ${stateTransition}
+          peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-light-accent-main dark:peer-focus-visible:outline-dark-accent-main
+          ${disabled ? '' : 'group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected'}`}
       >
-        {/* Circle behind the checkbox */}
-        <div
-          className={`absolute w-6 h-6 rounded-full ${
-            disabled
-              ? ''
-              : 'group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected'
-          }`}
-        ></div>
-
         {/* Checkbox */}
-        <div
-          className={`relative z-10 w-4 h-4 border-2 rounded ${
+        <span
+          className={`relative w-4 h-4 border-2 rounded ${stateTransition} ${
             disabled
               ? isChecked
-                ? 'bg-light-text-disabled dark:bg-dark-text-disabled border-none'
+                ? 'bg-light-text-disabled dark:bg-dark-text-disabled border-transparent'
                 : 'border-light-text-disabled dark:border-dark-text-disabled'
               : isChecked
-                ? 'bg-light-text-primary dark:bg-dark-text-primary border-none'
+                ? 'bg-light-text-primary dark:bg-dark-text-primary border-transparent'
                 : 'border-light-text-secondary dark:border-dark-text-secondary'
           } flex items-center justify-center`}
         >
-          {isChecked && (
-            <svg
-              className="w-3 h-3 text-light-text-contrast dark:text-dark-text-contrast"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 12 12"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeWidth="2" d="M1 6l4 3 6-7" />
-            </svg>
-          )}
-        </div>
-      </div>
+          {/* Always rendered so the tick can scale in and out */}
+          <svg
+            className={`w-3 h-3 text-light-text-contrast dark:text-dark-text-contrast ${popTransition} ${isChecked ? 'scale-100' : 'scale-0'}`}
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 12 12"
+            xmlns="http://www.w3.org/2000/svg"
+            aria-hidden
+          >
+            <path strokeWidth="2" d="M1 6l4 3 6-7" />
+          </svg>
+        </span>
+      </span>
       {(label || secondLabel) && (
-        <div className="flex flex-col ml-2">
+        <span className="flex flex-col ml-2">
           {label && (
             <span
               className={`text-body1 ${
@@ -91,7 +94,7 @@ export default function Checkbox({
               {secondLabel}
             </span>
           )}
-        </div>
+        </span>
       )}
     </label>
   );

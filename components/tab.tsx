@@ -1,6 +1,8 @@
 'use client';
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useContext } from 'react';
+import * as LucideIcons from 'lucide-react';
 import { TabsContainerContext } from './tabsContainer';
+import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 
 type RouterLike = {
   push: (url: string) => void;
@@ -35,33 +37,9 @@ export default function Tab({
 }: TabProps) {
   const inContainer = useContext(TabsContainerContext);
   
-  const [IconLeft, setIconLeft] = useState<IconType | null>(null);
-  const [IconRight, setIconRight] = useState<IconType | null>(null);
-
-  // Load icon dynamically
-  const loadIcon = useCallback(async (iconName?: string) => {
-    if (!iconName) return null;
-    try {
-      const module = await import('lucide-react');
-      const Icon = module[iconName as keyof typeof module] as IconType;
-      return Icon || null;
-    } catch (error) {
-      console.error(`Failed to load icon ${iconName}:`, error);
-      return null;
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchIcons = async () => {
-      if (decoIcon) {
-        setIconLeft(await loadIcon(decoIcon));
-      }
-      if (actionIcon) {
-        setIconRight(await loadIcon(actionIcon));
-      }
-    };
-    fetchIcons();
-  }, [decoIcon, actionIcon, loadIcon]);
+  // Synchronous lookup so icons render on the first paint
+  const IconLeft = decoIcon ? (LucideIcons[decoIcon as keyof typeof LucideIcons] as IconType) : null;
+  const IconRight = actionIcon ? (LucideIcons[actionIcon as keyof typeof LucideIcons] as IconType) : null;
 
   const handleClick = () => {
     onClickTab();
@@ -84,8 +62,18 @@ export default function Tab({
   return (
     <div
       data-tab-selected={isSelected}
+      role="tab"
+      aria-selected={isSelected}
+      // Inside a container only the selected tab is in the Tab order; arrow keys move between tabs
+      tabIndex={inContainer && !isSelected ? -1 : 0}
+      onKeyDown={(e) => {
+        if (e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          handleClick();
+        }
+      }}
       className={`
-        relative flex items-center space-x-1 rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out
+        relative flex items-center space-x-1 rounded-[8px] cursor-pointer justify-start ${stateTransition} ${pressFeedbackAny} ${focusRing}
         ${sizeClasses.tab}
         ${isSelected
           ? selectedClasses
@@ -105,9 +93,16 @@ export default function Tab({
         )}
       </div>
       {IconRight && (
-        <div onClick={onClickActionIcon} className="cursor-pointer">
+        <span
+          onClick={(e) => {
+            // Don't also select the tab
+            e.stopPropagation();
+            onClickActionIcon?.(e);
+          }}
+          className="cursor-pointer"
+        >
           <IconRight className={sizeClasses.icon} strokeWidth={2} />
-        </div>
+        </span>
       )}
     </div>
   );

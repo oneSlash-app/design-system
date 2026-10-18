@@ -1,8 +1,11 @@
 'use client';
-import React, { useState, useEffect, useRef, useCallback, SVGProps, JSX } from 'react';
+import React, { useState, useEffect, useRef, useId, SVGProps, JSX } from 'react';
+import * as LucideIcons from 'lucide-react';
 import { ChevronDown } from 'lucide-react';
 import Menu from './menu';
 import MenuItem from './menuItem';
+import { focusRing, overlayHidden, overlayTransition, overlayVisible, stateTransition } from './sharedStyles';
+import { useOverlayTransition } from './useOverlayTransition';
 
 type IconType = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
@@ -36,54 +39,27 @@ export default function Select({
   className = '',
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isFocused, setIsFocused] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-  const [DecoIcon, setDecoIcon] = useState<IconType | null>(null);
-  const [mounted, setMounted] = useState(false);
+  // Option highlighted by the keyboard; focus itself stays on the trigger
+  const [activeIndex, setActiveIndex] = useState(-1);
+  const { mounted: menuMounted, visible: menuVisible } = useOverlayTransition(isOpen);
 
   const selectRef = useRef<HTMLDivElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const listboxId = useId();
+  const optionId = (index: number) => `${listboxId}-option-${index}`;
 
-  // Handle SSR
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Load decoration icon
-  const loadIcon = useCallback(async (iconName?: string) => {
-    if (!iconName) return null;
-    try {
-      const module = await import('lucide-react');
-      const IconComponent = module[iconName as keyof typeof module] as IconType;
-      return IconComponent || null;
-    } catch (error) {
-      console.error(`Failed to load icon ${iconName}:`, error);
-      return null;
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchIcon = async () => {
-      if (decoIconName) {
-        setDecoIcon(await loadIcon(decoIconName));
-      }
-    };
-    fetchIcon();
-  }, [decoIconName, loadIcon]);
+  // Synchronous lookup so the icon renders on the first paint
+  const DecoIcon = decoIconName ? (LucideIcons[decoIconName as keyof typeof LucideIcons] as IconType) : null;
 
   // Close menu when clicking outside
   useEffect(() => {
-    if (!mounted) return;
-
     const handleClickOutside = (event: MouseEvent) => {
       if (
         selectRef.current &&
-        menuRef.current &&
         !selectRef.current.contains(event.target as Node) &&
-        !menuRef.current.contains(event.target as Node)
+        !menuRef.current?.contains(event.target as Node)
       ) {
         setIsOpen(false);
-        setIsFocused(false);
       }
     };
 
@@ -94,12 +70,34 @@ export default function Select({
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [isOpen, mounted]);
+  }, [isOpen]);
+
+  const isSelected = (optionValue: string) => {
+    if (multiple && Array.isArray(value)) {
+      return value.includes(optionValue);
+    }
+    return value === optionValue;
+  };
+
+  const openMenu = () => {
+    if (disabled) return;
+    const selectedIndex = options.findIndex((option) => isSelected(option.value));
+    setActiveIndex(selectedIndex >= 0 ? selectedIndex : 0);
+    setIsOpen(true);
+  };
+
+  const closeMenu = () => {
+    setIsOpen(false);
+    selectRef.current?.focus();
+  };
 
   const handleToggle = () => {
     if (disabled) return;
-    setIsOpen(!isOpen);
-    setIsFocused(!isOpen);
+    if (isOpen) {
+      setIsOpen(false);
+    } else {
+      openMenu();
+    }
   };
 
   const handleSelect = (optionValue: string) => {
@@ -111,10 +109,57 @@ export default function Select({
       onChange?.(newValues);
     } else {
       onChange?.(optionValue);
-      setIsOpen(false);
-      setIsFocused(false);
+      closeMenu();
     }
   };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (disabled) return;
+    if (!isOpen) {
+      if (['Enter', ' ', 'ArrowDown', 'ArrowUp'].includes(e.key)) {
+        e.preventDefault();
+        openMenu();
+      }
+      return;
+    }
+    switch (e.key) {
+      case 'ArrowDown':
+        e.preventDefault();
+        setActiveIndex((index) => Math.min(index + 1, options.length - 1));
+        break;
+      case 'ArrowUp':
+        e.preventDefault();
+        setActiveIndex((index) => Math.max(index - 1, 0));
+        break;
+      case 'Home':
+        e.preventDefault();
+        setActiveIndex(0);
+        break;
+      case 'End':
+        e.preventDefault();
+        setActiveIndex(options.length - 1);
+        break;
+      case 'Enter':
+      case ' ':
+        e.preventDefault();
+        if (options[activeIndex]) handleSelect(options[activeIndex].value);
+        break;
+      case 'Escape':
+        e.preventDefault();
+        closeMenu();
+        break;
+      case 'Tab':
+        setIsOpen(false);
+        break;
+    }
+  };
+
+  // Keep the highlighted option scrolled into view
+  useEffect(() => {
+    if (isOpen && activeIndex >= 0) {
+      document.getElementById(optionId(activeIndex))?.scrollIntoView({ block: 'nearest' });
+    }
+  }, [isOpen, activeIndex]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const getDisplayLabel = () => {
     if (!value) return placeholder;
@@ -130,33 +175,16 @@ export default function Select({
     return options.find(opt => opt.value === value)?.label || placeholder;
   };
 
-  const isSelected = (optionValue: string) => {
-    if (multiple && Array.isArray(value)) {
-      return value.includes(optionValue);
-    }
-    return value === optionValue;
-  };
-
-  // Determine border styles based on state
-  const getBorderStyles = () => {
+  // Determine border and background styles based on state
+  const getStateStyles = () => {
     if (disabled) {
-      return 'border border-light-actionOutlinedBorder-disabled dark:border-dark-actionOutlinedBorder-disabled';
+      return 'border border-light-actionOutlinedBorder-disabled dark:border-dark-actionOutlinedBorder-disabled bg-light-background-default dark:bg-dark-background-default';
     }
-    if (isFocused || isOpen) {
-      return 'border border-light-accent-main dark:border-dark-accent-main outline outline-1 outline-light-accent-main dark:outline-dark-accent-main outline-offset-0';
+    if (isOpen) {
+      return 'border border-light-accent-main dark:border-dark-accent-main outline outline-1 outline-light-accent-main dark:outline-dark-accent-main outline-offset-0 bg-light-background-default dark:bg-dark-background-default';
     }
-    if (isHovered) {
-      return 'border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled';
-    }
-    return 'border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled';
-  };
-
-  // Determine background color
-  const getBackgroundColor = () => {
-    if (isHovered && !isOpen && !disabled) {
-      return 'bg-light-action-hover dark:bg-dark-action-hover';
-    }
-    return 'bg-light-background-default dark:bg-dark-background-default';
+    return `border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled bg-light-background-default dark:bg-dark-background-default
+      hover:border-light-text-secondary dark:hover:border-dark-text-secondary hover:bg-light-action-hover dark:hover:bg-dark-action-hover`;
   };
 
   // Determine text color
@@ -180,29 +208,27 @@ export default function Select({
       {/* Select Button */}
       <div
         ref={selectRef}
+        role="combobox"
+        aria-haspopup="listbox"
+        aria-expanded={isOpen}
+        aria-controls={listboxId}
+        aria-activedescendant={isOpen && activeIndex >= 0 ? optionId(activeIndex) : undefined}
+        aria-disabled={disabled || undefined}
         className={`
           rounded-[8px]
-          ${getBorderStyles()}
-          ${getBackgroundColor()}
+          ${getStateStyles()}
           ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
-          transition-all duration-200 ease-in-out
-          outline-none
+          ${stateTransition}
+          ${focusRing}
         `}
         onClick={handleToggle}
-        onMouseEnter={() => !disabled && setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
         tabIndex={disabled ? -1 : 0}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            handleToggle();
-          }
-        }}
+        onKeyDown={handleKeyDown}
       >
-        {/* Inner Content Container with Padding */}
-        <div className={`flex items-center justify-between p-2 ${getTextColor()}`}>
+        {/* Inner Content Container; 7px vertical padding makes the control 40px like Button and TextField */}
+        <div className={`flex items-center justify-between px-2 py-[7px] ${getTextColor()}`}>
           {/* Content Container */}
-          <div className="flex items-center space-x-1 flex-1 overflow-hidden">
+          <div className="flex items-center gap-2 flex-1 overflow-hidden">
             {/* Optional Decoration Icon */}
             {DecoIcon && (
               <DecoIcon className={`w-6 h-6 flex-shrink-0 ${getIconColor()}`} strokeWidth={2} />
@@ -219,24 +245,32 @@ export default function Select({
             className={`
               w-6 h-6 flex-shrink-0 ml-1
               ${getIconColor()}
-              transition-transform duration-200
+              transition-transform duration-150 ease-out motion-reduce:transition-none
               ${isOpen ? 'transform rotate-180' : ''}
             `}
             strokeWidth={2}
+            aria-hidden
           />
         </div>
       </div>
 
       {/* Dropdown Menu */}
-      {mounted && isOpen && (
+      {menuMounted && (
         <div
-          className="absolute z-50 mt-1 left-0"
+          id={listboxId}
+          role="listbox"
+          aria-multiselectable={multiple || undefined}
+          className={`absolute z-50 mt-1 left-0 origin-top ${overlayTransition} ${menuVisible ? overlayVisible : overlayHidden}`}
           style={{ width: width || '100%' }}
         >
-          <Menu ref={menuRef} width={width || '100%'}>
-            {options.map((option) => (
+          <Menu ref={menuRef} width={width || '100%'} className="max-h-[320px] overflow-y-auto">
+            {options.map((option, index) => (
               <MenuItem
                 key={option.value}
+                id={optionId(index)}
+                role="option"
+                tabIndex={-1}
+                isActive={index === activeIndex}
                 label={option.label}
                 iconName={option.iconName}
                 isSelected={isSelected(option.value)}

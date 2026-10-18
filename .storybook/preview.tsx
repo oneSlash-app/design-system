@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import type { Preview } from "@storybook/react";
-import "../dist/output.css";
+// Compile the source CSS so Tailwind regenerates classes as components change
+import "../index.css";
 
 // Design token background colors
 const backgrounds = {

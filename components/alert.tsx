@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import IconButton from './iconButton';
 
 interface AlertProps {
@@ -20,6 +20,15 @@ const bgClassMap = {
   default: 'bg-light-secondary-light dark:bg-dark-secondary-light',
 } as const;
 
+const AUTO_DISMISS_MS = 5000;
+const EXIT_MS = 150;
+
+// Toasts pop in with a slight overshoot and leave quickly
+const motionClasses = {
+  enter: 'duration-[220ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+  exit: 'duration-150 ease-in',
+};
+
 export default function Alert({
   open = true,
   type,
@@ -31,34 +40,37 @@ export default function Alert({
 }: AlertProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
+  // Auto-dismiss pauses while the toast is hovered or focused
+  const [isPaused, setIsPaused] = useState(false);
+  const remainingMs = useRef(AUTO_DISMISS_MS);
 
   useEffect(() => {
     if (open) {
       setShouldRender(true);
+      remainingMs.current = AUTO_DISMISS_MS;
       // Small delay to trigger the animation
       const showTimer = setTimeout(() => setIsVisible(true), 10);
-
-      // Only auto-dismiss if there's no close button
-      if (!showCloseButton) {
-        const dismissTimer = setTimeout(() => {
-          handleClose();
-        }, 5000);
-        return () => {
-          clearTimeout(showTimer);
-          clearTimeout(dismissTimer);
-        };
-      }
-
       return () => clearTimeout(showTimer);
     } else if (shouldRender) {
       // When open becomes false, trigger fade out
       setIsVisible(false);
       const hideTimer = setTimeout(() => {
         setShouldRender(false);
-      }, 300);
+      }, EXIT_MS);
       return () => clearTimeout(hideTimer);
     }
   }, [open, showCloseButton, shouldRender]);
+
+  // Only auto-dismiss if there's no close button
+  useEffect(() => {
+    if (!open || !shouldRender || showCloseButton || isPaused) return;
+    const startedAt = Date.now();
+    const dismissTimer = setTimeout(() => handleClose(), remainingMs.current);
+    return () => {
+      clearTimeout(dismissTimer);
+      remainingMs.current -= Date.now() - startedAt;
+    };
+  }, [open, shouldRender, showCloseButton, isPaused]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClose = () => {
     setIsVisible(false);
@@ -66,7 +78,7 @@ export default function Alert({
     setTimeout(() => {
       setShouldRender(false);
       onClose?.();
-    }, 300);
+    }, EXIT_MS);
   };
 
   if (!shouldRender) return null;
@@ -75,12 +87,19 @@ export default function Alert({
 
   const alertContent = (
     <div
-      className={`flex items-start justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${bgClasses} ${
-        isVisible ? 'opacity-100 translate-y-0 scale-100' : variant === 'toast' ? 'opacity-0 -translate-y-3 scale-95' : 'opacity-0'
+      // Errors interrupt screen readers; everything else is announced politely
+      role={type === 'error' ? 'alert' : 'status'}
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onFocus={() => setIsPaused(true)}
+      onBlur={() => setIsPaused(false)}
+      className={`flex ${secondMessage ? 'items-start' : 'items-center'} justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] ${isVisible ? motionClasses.enter : motionClasses.exit} motion-reduce:transition-none ${bgClasses} ${
+        isVisible ? 'opacity-100 translate-y-0 scale-100' : variant === 'toast' ? 'opacity-0 -translate-y-2 scale-90' : 'opacity-0'
       } ${variant === 'toast' ? 'max-w-md pointer-events-auto' : ''}`}
     >
       <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
-        <div className="flex flex-col text-left">
+        {/* With two lines, nudge the text so its first line centers on the close button */}
+        <div className={`flex flex-col text-left ${secondMessage && showCloseButton ? 'pt-[3px]' : ''}`}>
           <span className="text-body2">{message}</span>
           {secondMessage && (
             <span className="text-body2 opacity-70">{secondMessage}</span>
@@ -94,6 +113,7 @@ export default function Alert({
             state="enabled"
             size="small"
             iconName="X"
+            ariaLabel="Dismiss"
             onClick={handleClose}
           />
         </div>

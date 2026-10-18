@@ -65,7 +65,7 @@ export default function TimeStamp(_a) {
                 return "".concat(minutes, " minute").concat(minutes > 1 ? 's' : '', " ago");
             }
             else {
-                return "".concat(seconds, " second").concat(seconds > 1 ? 's' : '', " ago");
+                return 'just now';
             }
         }
         // Default: date-and-time (full relativity)
@@ -88,7 +88,7 @@ export default function TimeStamp(_a) {
             return "".concat(minutes, " minute").concat(minutes > 1 ? 's' : '', " ago");
         }
         else {
-            return "".concat(seconds, " second").concat(seconds > 1 ? 's' : '', " ago");
+            return 'just now';
         }
     };
     var timeStamp = dateFormat === 'absolute' ? absoluteTimeStamp(createdAt) : relativeTimeStamp(createdAt);
@@ -98,8 +98,10 @@ export default function TimeStamp(_a) {
     var colorClass = textColor === 'primary'
         ? 'text-light-text-primary dark:text-dark-text-primary'
         : 'text-light-text-secondary dark:text-dark-text-secondary';
-    return (<p className={"".concat(sizeClass, " ").concat(colorClass)}>
+    return (
+    // Relative times differ between server and client render, which is expected
+    <time dateTime={isNaN(new Date(createdAt).getTime()) ? undefined : new Date(createdAt).toISOString()} className={"block ".concat(sizeClass, " ").concat(colorClass)} suppressHydrationWarning>
             {timeStamp}
-        </p>);
+        </time>);
 }
 ;

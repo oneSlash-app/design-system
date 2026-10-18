@@ -1,8 +1,10 @@
 'use client';
-import React, { useState, useEffect, useCallback, SVGProps, JSX } from 'react';
+import React, { SVGProps, JSX } from 'react';
+import * as LucideIcons from 'lucide-react';
 import NextLink from 'next/link';
 import UserImage from './userImage';
 import Tag from './tag';
+import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 
 type IconType = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
@@ -26,6 +28,13 @@ interface MenuItemProps {
   };
   iconRight?: string;
   rightAction?: React.ReactNode;
+  /** ARIA role; Select passes 'option'. Defaults to 'menuitem'. */
+  role?: string;
+  id?: string;
+  /** Keyboard highlight used by Select's listbox */
+  isActive?: boolean;
+  /** Select keeps focus on its trigger and passes -1 */
+  tabIndex?: number;
 }
 
 export default function MenuItem({
@@ -43,52 +52,45 @@ export default function MenuItem({
   tag,
   iconRight,
   rightAction,
+  role = 'menuitem',
+  id,
+  isActive = false,
+  tabIndex = 0,
 }: MenuItemProps) {
-  const [IconLeft, setIconLeft] = useState<IconType | null>(null);
-  const [IconRight, setIconRight] = useState<IconType | null>(null);
-
-  const loadIcon = useCallback(async (iconName?: string) => {
-    if (!iconName) return null;
-    try {
-      const module = await import('lucide-react');
-      const IconComponent = module[iconName as keyof typeof module] as IconType;
-      return IconComponent || null;
-    } catch (error) {
-      console.error(`Failed to load icon ${iconName}:`, error);
-      return null;
-    }
-  }, []);
-
-  useEffect(() => {
-    const fetchIcon = async () => {
-      if (iconName) {
-        setIconLeft(await loadIcon(iconName));
-      }
-      if (iconRight) {
-        setIconRight(await loadIcon(iconRight));
-      }
-    };
-    fetchIcon();
-  }, [iconName, iconRight, loadIcon]);
+  // Synchronous lookup so icons render on the first paint
+  const IconLeft = iconName ? (LucideIcons[iconName as keyof typeof LucideIcons] as IconType) : null;
+  const IconRight = iconRight ? (LucideIcons[iconRight as keyof typeof LucideIcons] as IconType) : null;
 
   // Size-based icon and text classes
   const iconSize = { tiny: 'w-4 h-4', small: 'w-5 h-5', medium: 'w-6 h-6' }[size];
   const labelClass = { tiny: 'text-caption', small: 'text-body2', medium: 'text-body1' }[size];
   const secondLabelClass = size === 'tiny' ? 'text-caption' : 'text-body2';
-  const tagSize = { tiny: 'tiny', small: 'small', medium: 'medium' }[size] as 'tiny' | 'small' | 'medium';
+  // One step smaller than the row so a tag never makes its row taller
+  const tagSize = { tiny: 'tiny', small: 'tiny', medium: 'small' }[size] as 'tiny' | 'small';
   const paddingClass = size === 'tiny' ? 'p-1' : 'p-2';
 
   const content = (
     <div
+      id={id}
+      role={href ? undefined : role}
+      // A link wrapper is already focusable; otherwise the row itself takes focus
+      tabIndex={href ? undefined : tabIndex}
+      aria-selected={role === 'option' ? !!isSelected : undefined}
       className={`
-        flex items-center ${paddingClass} rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out
+        flex items-center ${paddingClass} rounded-[8px] cursor-pointer justify-between text-left ${stateTransition} ${pressFeedbackAny} ${focusRing}
         ${isSelected
           ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
-          : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'}
+          : `hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200 ${isActive ? 'bg-light-background-accent200 dark:bg-dark-background-accent200' : ''}`}
         ${className}
       `}
       style={{ width: '100%' }}
       onClick={onClick}
+      onKeyDown={(e) => {
+        if (!href && e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
+          e.preventDefault();
+          e.currentTarget.click();
+        }
+      }}
     >
       {/* Left group: icon/userImg + label with 8px gap */}
       <div className="flex items-center gap-2 min-w-0">
@@ -124,7 +126,8 @@ export default function MenuItem({
             size={tagSize}
             label={tag.label}
             iconName={tag.iconName as any}
-            color={tag.color}
+            // 'default' has a fill that stays visible on the menu background
+            color={tag.color ?? 'default'}
           />
         )}
         {IconRight && (
@@ -142,5 +145,5 @@ export default function MenuItem({
     </div>
   );
 
-  return href ? <NextLink href={href}>{content}</NextLink> : content;
+  return href ? <NextLink href={href} className={`block rounded-[8px] ${focusRing}`}>{content}</NextLink> : content;
 }

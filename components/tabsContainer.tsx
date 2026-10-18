@@ -73,6 +73,23 @@ export default function TabsContainer({
     <TabsContainerContext.Provider value={true}>
       <div
         ref={containerRef}
+        role="tablist"
+        onKeyDown={(e) => {
+          // Arrow keys move focus to the next tab and select it
+          const tabs = Array.from(containerRef.current?.querySelectorAll<HTMLElement>('[role="tab"]') ?? []);
+          const current = tabs.indexOf(document.activeElement as HTMLElement);
+          if (current === -1) return;
+          const next = {
+            ArrowRight: Math.min(current + 1, tabs.length - 1),
+            ArrowLeft: Math.max(current - 1, 0),
+            Home: 0,
+            End: tabs.length - 1,
+          }[e.key];
+          if (next === undefined) return;
+          e.preventDefault();
+          tabs[next].focus();
+          tabs[next].click();
+        }}
         className={`
           relative flex gap-2 p-1 rounded-[12px] overflow-x-auto
           ${tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent'}
@@ -86,7 +103,7 @@ export default function TabsContainer({
           <span
             aria-hidden
             className={`absolute rounded-[8px] pointer-events-none bg-light-primary-dark dark:bg-dark-primary-dark
-              ${indicator.animate ? 'transition-[transform,width,height] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none' : ''}`}
+              ${indicator.animate ? 'transition-[transform,width,height] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none' : ''}`}
             style={{
               top: 0,
               left: 0,
