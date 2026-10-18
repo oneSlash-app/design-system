@@ -10,7 +10,7 @@ var meta = {
         maxRows: { control: "number" },
         size: {
             control: "select",
-            options: ["medium", "small"],
+            options: ["medium", "small", "tiny"],
         },
     },
 };

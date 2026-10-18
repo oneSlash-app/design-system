@@ -11,7 +11,7 @@ const meta: Meta<typeof TabsContainer> = {
 export default meta;
 type Story = StoryObj<typeof TabsContainer>;
 
-const TabsWrapper = ({ tabs }: { tabs: string[] }) => {
+const TabsWrapper = ({ tabs, size }: { tabs: string[]; size?: "medium" | "small" | "tiny" }) => {
   const [selected, setSelected] = useState(0);
 
   return (
@@ -20,6 +20,7 @@ const TabsWrapper = ({ tabs }: { tabs: string[] }) => {
         <Tab
           key={tab}
           label={tab}
+          size={size}
           isSelected={selected === index}
           onClickTab={() => setSelected(index)}
         />
@@ -96,4 +97,22 @@ const TabsWithSecondLabelWrapper = () => {
 
 export const WithSecondLabel: Story = {
   render: () => <TabsWithSecondLabelWrapper />,
+};
+
+export const AllSizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px", alignItems: "flex-start" }}>
+      <TabsWrapper tabs={["Overview", "Analytics", "Reports"]} size="medium" />
+      <TabsWrapper tabs={["Overview", "Analytics", "Reports"]} size="small" />
+      <TabsWrapper tabs={["Overview", "Analytics", "Reports"]} size="tiny" />
+    </div>
+  ),
+};
+
+export const Overflowing: Story = {
+  render: () => (
+    <div style={{ width: "260px" }}>
+      <TabsWrapper tabs={["Overview", "Analytics", "Reports", "Settings", "Users", "Billing"]} />
+    </div>
+  ),
 };

@@ -93,10 +93,12 @@ export default function MenuItem(_a) {
         fetchIcon();
     }, [iconName, iconRight, loadIcon]);
     // Size-based icon and text classes
-    var iconSize = size === 'small' ? 'w-5 h-5' : 'w-6 h-6';
-    var labelClass = size === 'small' ? 'text-body2' : 'text-body1';
-    var tagSize = size === 'small' ? 'small' : 'medium';
-    var content = (<div className={"\n        flex items-center p-2 rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out\n        ".concat(isSelected
+    var iconSize = { tiny: 'w-4 h-4', small: 'w-5 h-5', medium: 'w-6 h-6' }[size];
+    var labelClass = { tiny: 'text-caption', small: 'text-body2', medium: 'text-body1' }[size];
+    var secondLabelClass = size === 'tiny' ? 'text-caption' : 'text-body2';
+    var tagSize = { tiny: 'tiny', small: 'small', medium: 'medium' }[size];
+    var paddingClass = size === 'tiny' ? 'p-1' : 'p-2';
+    var content = (<div className={"\n        flex items-center ".concat(paddingClass, " rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out\n        ").concat(isSelected
             ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
             : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200', "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick}>
       {/* Left group: icon/userImg + label with 8px gap */}
@@ -106,7 +108,7 @@ export default function MenuItem(_a) {
           <span className={"truncate ".concat(labelClass, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
             {label}
           </span>
-          {secondLabel && (<span className={"truncate text-body2 opacity-70 ".concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
+          {secondLabel && (<span className={"truncate ".concat(secondLabelClass, " opacity-70 ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
               {secondLabel}
             </span>)}
         </div>

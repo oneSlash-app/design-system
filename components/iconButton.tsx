@@ -22,7 +22,6 @@ export default function IconButton({
   onClick,
   loading = false, // Default to false
 }: IconButtonProps) {
-  const [isHovered, setIsHovered] = useState(false);
   const [Icon, setIcon] = useState<IconType | null>(null);
 
   // Load icon from Lucide
@@ -65,12 +64,12 @@ export default function IconButton({
   const bgColorHover = state === 'selected'
     ? '' // No hover effect when selected
     : color === 'primary'
-    ? 'hover:bg-light-accent-dark hover:dark:bg-dark-accent-dark' // Primary
+    ? 'hover:bg-light-accent-dark/75 hover:dark:bg-dark-accent-dark/75' // Primary
     : color === 'secondary'
-    ? 'hover:bg-light-secondary-dark hover:dark:bg-dark-secondary-dark' // Secondary
+    ? 'hover:bg-light-secondary-dark/75 hover:dark:bg-dark-secondary-dark/75' // Secondary
     : color === 'tertiary'
-    ? 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200' // Tertiary
-    : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'; // iconOnly
+    ? 'hover:bg-light-background-accent200/75 hover:dark:bg-dark-background-accent200/75' // Tertiary
+    : 'hover:bg-light-background-accent200/75 hover:dark:bg-dark-background-accent200/75'; // iconOnly
 
   // Icon color
   const iconColor = state === 'selected'
@@ -90,16 +89,12 @@ export default function IconButton({
     ? 'cursor-not-allowed opacity-50'
     : state === 'selected'
     ? 'cursor-pointer'
-    : isHovered
-    ? 'cursor-pointer hover:bg-opacity-75'
     : 'cursor-pointer';
 
   return (
     <button
       className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses} transition-colors duration-200 ease-in-out flex items-center justify-center`}
       disabled={state === 'disabled' || loading} // Disable button during loading
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
       aria-label={loading ? 'Loading' : 'Reload'}
     >

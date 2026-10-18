@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400&display=swap');
 
 *, ::before, ::after{
   --tw-border-spacing-x: 0;
@@ -506,10 +506,17 @@ video {
   scrollbar-color: initial;
   scrollbar-width: initial;
 }
+.\!container{
+  width: 100% !important;
+}
 .container{
   width: 100%;
 }
 @media (min-width: 640px){
+
+  .\!container{
+    max-width: 640px !important;
+  }
 
   .container{
     max-width: 640px;
@@ -517,11 +524,19 @@ video {
 }
 @media (min-width: 768px){
 
+  .\!container{
+    max-width: 768px !important;
+  }
+
   .container{
     max-width: 768px;
   }
 }
 @media (min-width: 1024px){
+
+  .\!container{
+    max-width: 1024px !important;
+  }
 
   .container{
     max-width: 1024px;
@@ -529,11 +544,19 @@ video {
 }
 @media (min-width: 1280px){
 
+  .\!container{
+    max-width: 1280px !important;
+  }
+
   .container{
     max-width: 1280px;
   }
 }
 @media (min-width: 1536px){
+
+  .\!container{
+    max-width: 1536px !important;
+  }
 
   .container{
     max-width: 1536px;
@@ -633,6 +656,9 @@ video {
 .h-3{
   height: 0.75rem;
 }
+.h-3\.5{
+  height: 0.875rem;
+}
 .h-4{
   height: 1rem;
 }
@@ -659,6 +685,9 @@ video {
 }
 .w-3{
   width: 0.75rem;
+}
+.w-3\.5{
+  width: 0.875rem;
 }
 .w-4{
   width: 1rem;
@@ -1019,6 +1048,14 @@ video {
 .p-\[10px\]{
   padding: 10px;
 }
+.px-1{
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
+}
+.px-1\.5{
+  padding-left: 0.375rem;
+  padding-right: 0.375rem;
+}
 .px-2{
   padding-left: 0.5rem;
   padding-right: 0.5rem;
@@ -1030,6 +1067,14 @@ video {
 .px-\[6px\]{
   padding-left: 6px;
   padding-right: 6px;
+}
+.py-0{
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
+.py-0\.5{
+  padding-top: 0.125rem;
+  padding-bottom: 0.125rem;
 }
 .py-1{
   padding-top: 0.25rem;
@@ -1051,6 +1096,10 @@ video {
   padding-top: 3px;
   padding-bottom: 3px;
 }
+.py-px{
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
 .text-left{
   text-align: left;
 }
@@ -1071,6 +1120,9 @@ video {
 }
 .text-h5{
   font-size: 24px;
+}
+.leading-\[16px\]{
+  line-height: 16px;
 }
 .leading-\[18px\]{
   line-height: 18px;
@@ -1218,6 +1270,11 @@ video {
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
+.transition-\[transform\2c width\2c height\]{
+  transition-property: transform,width,height;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
 .transition-all{
   transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -1315,6 +1372,10 @@ body {
   background-color: rgb(206 134 2 / var(--tw-bg-opacity));
 }
 
+.hover\:bg-light-accent-dark\/75:hover{
+  background-color: rgb(206 134 2 / 0.75);
+}
+
 .hover\:bg-light-background-accent100:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(241 241 241 / var(--tw-bg-opacity));
@@ -1323,6 +1384,10 @@ body {
 .hover\:bg-light-background-accent200:hover{
   --tw-bg-opacity: 1;
   background-color: rgb(247 247 247 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-light-background-accent200\/75:hover{
+  background-color: rgb(247 247 247 / 0.75);
 }
 
 .hover\:bg-light-error-dark:hover{
@@ -1343,8 +1408,8 @@ body {
   background-color: rgb(136 136 136 / var(--tw-bg-opacity));
 }
 
-.hover\:bg-opacity-75:hover{
-  --tw-bg-opacity: 0.75;
+.hover\:bg-light-secondary-dark\/75:hover{
+  background-color: rgb(136 136 136 / 0.75);
 }
 
 .hover\:text-light-error-dark:hover{
@@ -1698,6 +1763,10 @@ body {
   background-color: rgb(206 134 2 / var(--tw-bg-opacity));
 }
 
+.hover\:dark\:bg-dark-accent-dark\/75:is(.dark *):hover{
+  background-color: rgb(206 134 2 / 0.75);
+}
+
 .hover\:dark\:bg-dark-background-accent100:is(.dark *):hover{
   --tw-bg-opacity: 1;
   background-color: rgb(51 51 51 / var(--tw-bg-opacity));
@@ -1708,14 +1777,17 @@ body {
   background-color: rgb(69 69 69 / var(--tw-bg-opacity));
 }
 
+.hover\:dark\:bg-dark-background-accent200\/75:is(.dark *):hover{
+  background-color: rgb(69 69 69 / 0.75);
+}
+
 .hover\:dark\:bg-dark-error-dark:is(.dark *):hover{
   --tw-bg-opacity: 1;
   background-color: rgb(178 35 35 / var(--tw-bg-opacity));
 }
 
-.hover\:dark\:bg-dark-secondary-dark:is(.dark *):hover{
-  --tw-bg-opacity: 1;
-  background-color: rgb(69 69 69 / var(--tw-bg-opacity));
+.hover\:dark\:bg-dark-secondary-dark\/75:is(.dark *):hover{
+  background-color: rgb(69 69 69 / 0.75);
 }
 
 .hover\:dark\:text-dark-error-dark:is(.dark *):hover{

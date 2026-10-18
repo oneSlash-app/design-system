@@ -1,5 +1,6 @@
 'use client';
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { TabsContainerContext } from './tabsContainer';
 
 type RouterLike = {
   push: (url: string) => void;
@@ -15,6 +16,7 @@ type TabProps = {
   decoIcon?: string;
   actionIcon?: string;
   router?: RouterLike;
+  size?: 'medium' | 'small' | 'tiny';
 };
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -28,8 +30,10 @@ export default function Tab({
   onClickActionIcon,
   decoIcon,
   actionIcon,
-  router
+  router,
+  size = 'medium',
 }: TabProps) {
+  const inContainer = useContext(TabsContainerContext);
   
   const [IconLeft, setIconLeft] = useState<IconType | null>(null);
   const [IconRight, setIconRight] = useState<IconType | null>(null);
@@ -66,30 +70,43 @@ export default function Tab({
     }
   };
 
+  const sizeClasses = {
+    medium: { tab: 'py-1 px-[6px]', label: 'px-[6px] text-body1', secondLabel: 'text-body2', icon: 'w-6 h-6' },
+    small: { tab: 'py-1 px-[6px]', label: 'px-1 text-body2', secondLabel: 'text-caption', icon: 'w-5 h-5' },
+    tiny: { tab: 'py-0.5 px-1', label: 'px-1 text-caption', secondLabel: 'text-caption', icon: 'w-4 h-4' },
+  }[size];
+
+  // Inside a TabsContainer the container's sliding pill is the selected background
+  const selectedClasses = inContainer
+    ? 'text-light-text-contrast dark:text-dark-text-contrast'
+    : 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast';
+
   return (
     <div
+      data-tab-selected={isSelected}
       className={`
-        flex items-center space-x-1 py-1 px-[6px] rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out
+        relative flex items-center space-x-1 rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out
+        ${sizeClasses.tab}
         ${isSelected
-          ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
+          ? selectedClasses
           : 'text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'}
       `}
       onClick={handleClick}
     >
-      {IconLeft && <IconLeft className="w-6 h-6" strokeWidth={2} />}
-      <div className="flex flex-col px-[6px] text-center">
-        <span className="whitespace-nowrap text-body1">
+      {IconLeft && <IconLeft className={sizeClasses.icon} strokeWidth={2} />}
+      <div className={`flex flex-col text-center ${sizeClasses.label}`}>
+        <span className="whitespace-nowrap">
           {label}
         </span>
         {secondLabel && (
-          <span className="whitespace-nowrap text-body2 opacity-70">
+          <span className={`whitespace-nowrap opacity-70 ${sizeClasses.secondLabel}`}>
             {secondLabel}
           </span>
         )}
       </div>
       {IconRight && (
         <div onClick={onClickActionIcon} className="cursor-pointer">
-          <IconRight className="w-6 h-6" strokeWidth={2} />
+          <IconRight className={sizeClasses.icon} strokeWidth={2} />
         </div>
       )}
     </div>

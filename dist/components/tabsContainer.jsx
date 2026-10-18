@@ -1,12 +1,76 @@
 'use client';
-import React from 'react';
+import React, { createContext, useLayoutEffect, useRef, useState } from 'react';
+// Lets a Tab know a container draws its selected background (the sliding pill)
+export var TabsContainerContext = createContext(false);
 export default function TabsContainer(_a) {
     var children = _a.children;
     var tabCount = React.Children.count(children);
-    return (<div className={"\n        flex space-x-2 p-1 rounded-[12px] overflow-x-auto\n        ".concat(tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent', "\n      ")} style={{
+    var containerRef = useRef(null);
+    var selectedRef = useRef(null);
+    var _b = useState(null), indicator = _b[0], setIndicator = _b[1];
+    useLayoutEffect(function () {
+        var _a;
+        var container = containerRef.current;
+        if (!container)
+            return;
+        var update = function () {
+            var selected = container.querySelector('[data-tab-selected="true"]');
+            if (!selected) {
+                selectedRef.current = null;
+                setIndicator(null);
+                return;
+            }
+            setIndicator(function (prev) { return ({
+                animate: prev !== null,
+                x: selected.offsetLeft,
+                y: selected.offsetTop,
+                width: selected.offsetWidth,
+                height: selected.offsetHeight,
+            }); });
+            // Tabs scroll horizontally instead of wrapping; keep a newly selected tab in view
+            if (selected !== selectedRef.current) {
+                selectedRef.current = selected;
+                var left = selected.offsetLeft;
+                var right = left + selected.offsetWidth;
+                if (left < container.scrollLeft) {
+                    container.scrollTo({ left: left - 4, behavior: 'smooth' });
+                }
+                else if (right > container.scrollLeft + container.clientWidth) {
+                    container.scrollTo({ left: right - container.clientWidth + 4, behavior: 'smooth' });
+                }
+            }
+        };
+        update();
+        // Tab widths change once web fonts load
+        (_a = document.fonts) === null || _a === void 0 ? void 0 : _a.ready.then(update);
+        var resizeObserver = new ResizeObserver(update);
+        resizeObserver.observe(container);
+        Array.from(container.children).forEach(function (child) { return resizeObserver.observe(child); });
+        var mutationObserver = new MutationObserver(update);
+        mutationObserver.observe(container, {
+            subtree: true,
+            childList: true,
+            attributes: true,
+            attributeFilter: ['data-tab-selected'],
+        });
+        return function () {
+            resizeObserver.disconnect();
+            mutationObserver.disconnect();
+        };
+    }, [children]);
+    return (<TabsContainerContext.Provider value={true}>
+      <div ref={containerRef} className={"\n          relative flex gap-2 p-1 rounded-[12px] overflow-x-auto\n          ".concat(tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent', "\n        ")} style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
         }}>
-      {children}
-    </div>);
+        {indicator && (<span aria-hidden className={"absolute rounded-[8px] pointer-events-none bg-light-primary-dark dark:bg-dark-primary-dark\n              ".concat(indicator.animate ? 'transition-[transform,width,height] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none' : '')} style={{
+                top: 0,
+                left: 0,
+                transform: "translate(".concat(indicator.x, "px, ").concat(indicator.y, "px)"),
+                width: indicator.width,
+                height: indicator.height,
+            }}/>)}
+        {children}
+      </div>
+    </TabsContainerContext.Provider>);
 }

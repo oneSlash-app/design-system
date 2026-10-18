@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
 interface ButtonProps {
-  size: 'small' | 'medium' | 'large';
+  size: 'tiny' | 'small' | 'medium' | 'large';
   type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
   color?: 'default' | 'danger';
   state: 'enabled' | 'hovered' | 'focused' | 'disabled' | 'selected';
@@ -62,12 +62,14 @@ export default function Button({
     large: 'text-body1 p-2',
     medium: 'text-body1 p-1',
     small: 'text-body2 p-1',
+    tiny: 'text-caption px-1 py-px',
   }[size];
 
   const sizeIcon = {
     large: 'w-6 h-6',
     medium: 'w-5 h-5',
     small: 'w-4 h-4',
+    tiny: 'w-3.5 h-3.5',
   }[size];
 
   const baseTypeClasses = {
@@ -135,10 +137,10 @@ export default function Button({
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className="flex items-center">
         {IconLeft && <IconLeft className={sizeIcon} strokeWidth={2} />}
-        <div className="flex flex-col text-center px-2">
+        <div className={`flex flex-col text-center ${size === 'tiny' ? 'px-1' : 'px-2'}`}>
           <span className="whitespace-nowrap overflow-hidden truncate">{label}</span>
           {secondLabel && (
-            <span className="whitespace-nowrap overflow-hidden truncate text-body2 opacity-70">{secondLabel}</span>
+            <span className={`whitespace-nowrap overflow-hidden truncate ${size === 'tiny' ? 'text-caption' : 'text-body2'} opacity-70`}>{secondLabel}</span>
           )}
         </div>
       </div>

@@ -6,7 +6,7 @@ var meta = {
     argTypes: {
         size: {
             control: "select",
-            options: ["small", "medium", "large"],
+            options: ["tiny", "small", "medium", "large"],
         },
         type: {
             control: "select",

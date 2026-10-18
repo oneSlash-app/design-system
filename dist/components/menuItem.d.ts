@@ -10,7 +10,7 @@ interface MenuItemProps {
     isSelected?: boolean;
     onClick?: any;
     className?: string;
-    size?: 'small' | 'medium';
+    size?: 'tiny' | 'small' | 'medium';
     tag?: {
         label: React.ReactNode;
         iconName?: string;
