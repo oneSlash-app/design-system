@@ -50,7 +50,7 @@ export default function Alert(_a) {
     if (!shouldRender)
         return null;
     var bgClasses = (_b = bgClassMap[type]) !== null && _b !== void 0 ? _b : bgClassMap.default;
-    var alertContent = (<div className={"flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ".concat(bgClasses, " ").concat(isVisible ? 'opacity-100' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
+    var alertContent = (<div className={"flex items-start justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ".concat(bgClasses, " ").concat(isVisible ? 'opacity-100 translate-y-0 scale-100' : variant === 'toast' ? 'opacity-0 -translate-y-3 scale-95' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
       <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
         <div className="flex flex-col text-left">
           <span className="text-body2">{message}</span>

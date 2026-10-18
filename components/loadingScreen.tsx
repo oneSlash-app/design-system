@@ -2,7 +2,7 @@
 import React from 'react';
 
 interface LoadingSmallProps {
-  size?: 'large' | 'medium' | 'small'; // Match IconButton sizes
+  size?: 'large' | 'medium' | 'small' | 'tiny'; // Match IconButton sizes
 }
 
 export default function LoadingScreen() {
@@ -18,6 +18,7 @@ export function LoadingSmall({ size = 'medium' }: LoadingSmallProps) {
     large: 'w-6 h-6 border-2',  // 24px, border-2 for proportional thickness
     medium: 'w-6 h-6 border-2', // 24px, border-2
     small: 'w-5 h-5 border-2', // 20px, slightly thinner border
+    tiny: 'w-4 h-4 border-2', // 16px
   };
 
   return (

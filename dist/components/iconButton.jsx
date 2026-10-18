@@ -17,11 +17,13 @@ export default function IconButton(_a) {
         large: 'p-2', // 8px padding
         medium: 'p-1', // 4px padding
         small: 'p-1', // 4px padding
+        tiny: 'p-0.5', // 2px padding
     };
     var iconSizeClasses = {
         large: 'size-6', // 24px
         medium: 'size-6', // 24px
         small: 'size-5', // 20px
+        tiny: 'size-4', // 16px
     };
     // Base classes (padding and corner radius)
     var baseClasses = "".concat(sizeClasses[size], " rounded-[8px] leading-none relative");

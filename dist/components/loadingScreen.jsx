@@ -12,6 +12,7 @@ export function LoadingSmall(_a) {
         large: 'w-6 h-6 border-2', // 24px, border-2 for proportional thickness
         medium: 'w-6 h-6 border-2', // 24px, border-2
         small: 'w-5 h-5 border-2', // 20px, slightly thinner border
+        tiny: 'w-4 h-4 border-2', // 16px
     };
     return (<div className="flex justify-center items-center">
       <div className={"rounded-full border-t-transparent border-r-light-text-primary border-b-light-text-primary border-l-light-text-primary dark:border-t-transparent dark:border-r-dark-text-primary dark:border-b-dark-text-primary dark:border-l-dark-text-primary animate-spin ".concat(spinnerSizeClasses[size])}/>

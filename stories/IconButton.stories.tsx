@@ -16,7 +16,7 @@ const meta: Meta<typeof IconButton> = {
     },
     size: {
       control: "select",
-      options: ["large", "medium", "small"],
+      options: ["large", "medium", "small", "tiny"],
     },
     iconName: { control: "text" },
     loading: { control: "boolean" },
@@ -93,6 +93,7 @@ export const Loading: Story = {
 export const AllSizes: Story = {
   render: () => (
     <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <IconButton color="primary" state="enabled" size="tiny" iconName="Star" />
       <IconButton color="primary" state="enabled" size="small" iconName="Star" />
       <IconButton color="primary" state="enabled" size="medium" iconName="Star" />
       <IconButton color="primary" state="enabled" size="large" iconName="Star" />
