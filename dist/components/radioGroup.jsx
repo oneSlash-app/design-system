@@ -11,7 +11,7 @@ export default function RadioGroup(_a) {
             return (<label key={option.value} className="group flex items-start cursor-pointer">
             <input type="radio" name={groupName} value={option.value} checked={isSelected} onChange={function () { return onChange(option.value); }} className="peer sr-only"/>
             {/* Hover halo and hit area, same as Checkbox */}
-            <span className={"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full ".concat(stateTransition, "\n                group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected\n                peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-light-accent-main dark:peer-focus-visible:outline-dark-accent-main")}>
+            <span className={"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full ".concat(stateTransition, "\n                group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected\n                peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-light-text-primary dark:peer-focus-visible:outline-dark-text-primary")}>
               {/* outer circle */}
               <span className={"relative flex justify-center items-center w-4 h-4 rounded-full border-2 ".concat(stateTransition, "\n                  ").concat(isSelected
                     ? 'border-light-text-primary dark:border-dark-text-primary'

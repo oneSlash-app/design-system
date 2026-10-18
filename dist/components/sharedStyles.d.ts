@@ -1,4 +1,4 @@
-export declare const focusRing = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-accent-main dark:focus-visible:outline-dark-accent-main";
+export declare const focusRing = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-text-primary dark:focus-visible:outline-dark-text-primary";
 export declare const focusRingDanger = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-error-main dark:focus-visible:outline-dark-error-main";
 export declare const stateTransition = "transition duration-150 ease-out motion-reduce:transition-none";
 export declare const pressFeedback = "enabled:active:scale-[0.97]";

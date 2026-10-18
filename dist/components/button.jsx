@@ -51,7 +51,7 @@ export default function Button(_a) {
     }[color][type];
     var focusRingColor = color === 'danger'
         ? 'ring-light-error-main dark:ring-dark-error-main'
-        : 'ring-light-accent-main dark:ring-dark-accent-main';
+        : 'ring-light-text-primary dark:ring-dark-text-primary';
     var stateClasses = {
         enabled: 'cursor-pointer',
         focused: "ring-2 ring-offset-4 ring-offset-light-background-default dark:ring-offset-dark-background-default ".concat(focusRingColor),

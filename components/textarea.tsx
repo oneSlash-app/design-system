@@ -105,8 +105,8 @@ export default function Textarea({
     }
     return `border-light-text-disabled dark:border-dark-text-disabled
       hover:border-light-text-secondary dark:hover:border-dark-text-secondary
-      focus:border-light-accent-main dark:focus:border-dark-accent-main
-      focus:outline focus:outline-1 focus:outline-light-accent-main dark:focus:outline-dark-accent-main`;
+      focus:border-light-text-primary dark:focus:border-dark-text-primary
+      focus:outline focus:outline-1 focus:outline-light-text-primary dark:focus:outline-dark-text-primary`;
   };
 
   const containerClasses = `
