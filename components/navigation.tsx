@@ -15,7 +15,7 @@ export default function Navigation({
       className={`
         bg-light-background-default dark:bg-dark-background-default
         border-r border-light-misc-divider dark:border-dark-misc-divider
-        p-[10px]
+        p-2
         ${className}
       `}
     >

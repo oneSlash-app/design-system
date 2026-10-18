@@ -14,9 +14,11 @@ interface TextFieldProps {
     maxRows?: number;
     disabled?: boolean;
     error?: boolean;
+    /** Message shown under the field when `error` is true */
+    errorText?: string;
     required?: boolean;
     size?: 'large' | 'medium' | 'small' | 'tiny';
     placeholder?: string;
 }
-export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, error, required, size, placeholder, }: TextFieldProps): React.JSX.Element;
+export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, error, errorText, required, size, placeholder, }: TextFieldProps): React.JSX.Element;
 export {};

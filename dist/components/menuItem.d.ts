@@ -19,6 +19,13 @@ interface MenuItemProps {
     };
     iconRight?: string;
     rightAction?: React.ReactNode;
+    /** ARIA role; Select passes 'option'. Defaults to 'menuitem'. */
+    role?: string;
+    id?: string;
+    /** Keyboard highlight used by Select's listbox */
+    isActive?: boolean;
+    /** Select keeps focus on its trigger and passes -1 */
+    tabIndex?: number;
 }
-export default function MenuItem({ href, iconName, icon, userHandle, userImgUrl, label, secondLabel, isSelected, onClick, className, size, tag, iconRight, rightAction, }: MenuItemProps): JSX.Element;
+export default function MenuItem({ href, iconName, icon, userHandle, userImgUrl, label, secondLabel, isSelected, onClick, className, size, tag, iconRight, rightAction, role, id, isActive, tabIndex, }: MenuItemProps): JSX.Element;
 export {};

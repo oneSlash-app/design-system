@@ -14,14 +14,16 @@ const Menu = forwardRef<HTMLDivElement, MenuProps>(
         ref={ref}
         className={`
           bg-light-background-accent300 dark:bg-dark-background-accent300
-          rounded-[8px]
+          rounded-[12px]
           shadow-lg
+          dark:ring-1 dark:ring-dark-misc-divider
           overflow-hidden
           ${className}
         `}
         style={{ width: width || 'auto' }}
       >
-        <div className="p-[10px]">
+        {/* 4px padding keeps the 8px item corners concentric with the 12px menu corners */}
+        <div className="p-1">
           {children}
         </div>
       </div>

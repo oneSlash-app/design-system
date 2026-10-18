@@ -1,3 +1,4 @@
+import React from 'react';
 interface CheckboxProps {
     label?: string;
     secondLabel?: string;
@@ -5,5 +6,5 @@ interface CheckboxProps {
     onChange?: (checked: boolean) => void;
     disabled?: boolean;
 }
-export default function Checkbox({ label, secondLabel, checked, onChange, disabled }: CheckboxProps): import("react").JSX.Element;
+export default function Checkbox({ label, secondLabel, checked, onChange, disabled }: CheckboxProps): React.JSX.Element;
 export {};

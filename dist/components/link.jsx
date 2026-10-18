@@ -12,29 +12,31 @@ var __assign = (this && this.__assign) || function () {
 };
 import React from 'react';
 import NextLink from 'next/link';
+import { focusRing } from './sharedStyles';
 export default function Link(_a) {
     var href = _a.href, children = _a.children, _b = _a.color, color = _b === void 0 ? 'info' : _b, _c = _a.size, size = _c === void 0 ? 'body1' : _c, _d = _a.openInNewTab, openInNewTab = _d === void 0 ? false : _d, _e = _a.className, className = _e === void 0 ? '' : _e;
     // Color classes based on the color prop
+    // Light mode uses the -dark shade so link text keeps 4.5:1 on light backgrounds
     var colorClasses = {
         info: {
-            default: 'text-light-info-main dark:text-dark-info-main',
-            hover: 'hover:text-light-info-dark hover:dark:text-dark-info-dark',
-            visited: 'visited:text-light-info-light visited:dark:text-dark-info-light',
+            default: 'text-light-info-dark dark:text-dark-info-main',
+            hover: 'hover:underline-offset-[4px] dark:hover:text-dark-info-light',
+            visited: 'visited:text-light-info-dark dark:visited:text-dark-info-light',
         },
         error: {
-            default: 'text-light-error-main dark:text-dark-error-main',
-            hover: 'hover:text-light-error-dark hover:dark:text-dark-error-dark',
-            visited: 'visited:text-light-error-light visited:dark:text-dark-error-light',
+            default: 'text-light-error-dark dark:text-dark-error-main',
+            hover: 'hover:underline-offset-[4px] dark:hover:text-dark-error-light',
+            visited: 'visited:text-light-error-dark dark:visited:text-dark-error-light',
         },
         warning: {
-            default: 'text-light-warning-main dark:text-dark-warning-main',
-            hover: 'hover:text-light-warning-dark hover:dark:text-dark-warning-dark',
-            visited: 'visited:text-light-warning-light visited:dark:text-dark-warning-light',
+            default: 'text-light-warning-dark dark:text-dark-warning-main',
+            hover: 'hover:underline-offset-[4px] dark:hover:text-dark-warning-light',
+            visited: 'visited:text-light-warning-dark dark:visited:text-dark-warning-light',
         },
         success: {
-            default: 'text-light-success-main dark:text-dark-success-main',
-            hover: 'hover:text-light-success-dark hover:dark:text-dark-success-dark',
-            visited: 'visited:text-light-success-light visited:dark:text-dark-success-light',
+            default: 'text-light-success-dark dark:text-dark-success-main',
+            hover: 'hover:underline-offset-[4px] dark:hover:text-dark-success-light',
+            visited: 'visited:text-light-success-dark dark:visited:text-dark-success-light',
         },
     };
     var selectedColorClasses = colorClasses[color];
@@ -42,7 +44,21 @@ export default function Link(_a) {
     var isExternal = href.startsWith('http://') || href.startsWith('https://');
     // Determine if we should open in new tab
     var shouldOpenInNewTab = openInNewTab || isExternal;
-    var linkClasses = "\n    text-".concat(size, "\n    ").concat(selectedColorClasses.default, "\n    ").concat(selectedColorClasses.hover, "\n    ").concat(selectedColorClasses.visited, "\n    underline\n    underline-offset-[2px]\n    decoration-2\n    cursor-pointer\n    transition-colors\n    duration-200\n    ease-in-out\n    ").concat(className, "\n  ").trim().replace(/\s+/g, ' ');
+    // Literal class names so Tailwind can find them when scanning this file
+    var sizeClass = {
+        h1: 'text-h1',
+        h2: 'text-h2',
+        h3: 'text-h3',
+        h4: 'text-h4',
+        h5: 'text-h5',
+        h6: 'text-h6',
+        subtitle1: 'text-subtitle1',
+        subtitle2: 'text-subtitle2',
+        body1: 'text-body1',
+        body2: 'text-body2',
+        caption: 'text-caption',
+    }[size];
+    var linkClasses = "\n    ".concat(sizeClass, "\n    ").concat(selectedColorClasses.default, "\n    ").concat(selectedColorClasses.hover, "\n    ").concat(selectedColorClasses.visited, "\n    underline\n    underline-offset-[2px]\n    decoration-2\n    cursor-pointer\n    rounded-[2px]\n    transition-[color,text-underline-offset]\n    duration-150\n    ease-out\n    motion-reduce:transition-none\n    ").concat(focusRing, "\n    ").concat(className, "\n  ").trim().replace(/\s+/g, ' ');
     var commonProps = __assign({ className: linkClasses }, (shouldOpenInNewTab && {
         target: '_blank',
         rel: 'noopener noreferrer',

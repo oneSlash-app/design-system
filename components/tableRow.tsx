@@ -8,7 +8,7 @@ interface TableRowProps{
 export default function TableRow({children}: TableRowProps) {
 
 		return (
-				<div className="flex w-full">
+				<div role="row" className="flex w-full">
 						{children}
 				</div>
 		);

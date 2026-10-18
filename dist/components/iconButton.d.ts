@@ -7,6 +7,9 @@ interface IconButtonProps {
     iconName: keyof typeof LucideIcons;
     onClick?: any;
     loading?: boolean;
+    /** Screen-reader label. Defaults to the icon name, e.g. "Settings". */
+    ariaLabel?: string;
 }
-export default function IconButton({ color, state, size, iconName, onClick, loading, }: IconButtonProps): React.JSX.Element;
+export default function IconButton({ color, state, size, iconName, onClick, loading, // Default to false
+ariaLabel, }: IconButtonProps): React.JSX.Element;
 export {};

@@ -1,7 +1,8 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import * as LucideIcons from 'lucide-react';
 import { LoadingSmall } from './loadingScreen';
+import { focusRing, pressFeedback, stateTransition } from './sharedStyles';
 
 interface IconButtonProps {
   color: "primary" | "secondary" | "tertiary" | "iconOnly";
@@ -10,6 +11,8 @@ interface IconButtonProps {
   iconName: keyof typeof LucideIcons;
   onClick?: any;
   loading?: boolean;
+  /** Screen-reader label. Defaults to the icon name, e.g. "Settings". */
+  ariaLabel?: string;
 }
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -21,15 +24,12 @@ export default function IconButton({
   iconName,
   onClick,
   loading = false, // Default to false
+  ariaLabel,
 }: IconButtonProps) {
-  const [Icon, setIcon] = useState<IconType | null>(null);
-
-  // Load icon from Lucide
-  useEffect(() => {
-    if (iconName) {
-      setIcon(LucideIcons[iconName] as IconType);
-    }
-  }, [iconName]);
+  const Icon = LucideIcons[iconName] as IconType | undefined;
+  // "ChevronDown" -> "Chevron Down"
+  const label = ariaLabel ?? String(iconName).replace(/([a-z])([A-Z0-9])/g, '$1 $2');
+  const isDisabled = state === 'disabled';
 
   // Size-based classes
   const sizeClasses = {
@@ -50,7 +50,9 @@ export default function IconButton({
   const baseClasses = `${sizeClasses[size]} rounded-[8px] leading-none relative`;
 
   // Background color
-  const bgColor = state === 'selected'
+  const bgColor = isDisabled
+    ? (color === 'iconOnly' ? '' : 'bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled')
+    : state === 'selected'
     ? 'bg-light-primary-dark dark:bg-dark-primary-dark' // Selected state
     : color === 'primary'
     ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary
@@ -60,19 +62,21 @@ export default function IconButton({
     ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' // Tertiary
     : ' '; // iconOnly: none
 
-  // Background hover color
+  // Background hover color; `enabled:` skips it while disabled or loading
   const bgColorHover = state === 'selected'
     ? '' // No hover effect when selected
     : color === 'primary'
-    ? 'hover:bg-light-accent-dark/75 hover:dark:bg-dark-accent-dark/75' // Primary
+    ? 'enabled:hover:bg-light-accent-dark/75 dark:enabled:hover:bg-dark-accent-dark/75' // Primary
     : color === 'secondary'
-    ? 'hover:bg-light-secondary-dark/75 hover:dark:bg-dark-secondary-dark/75' // Secondary
+    ? 'enabled:hover:bg-light-secondary-dark/75 dark:enabled:hover:bg-dark-secondary-dark/75' // Secondary
     : color === 'tertiary'
-    ? 'hover:bg-light-background-accent200/75 hover:dark:bg-dark-background-accent200/75' // Tertiary
-    : 'hover:bg-light-background-accent200/75 hover:dark:bg-dark-background-accent200/75'; // iconOnly
+    ? 'enabled:hover:bg-light-background-accent200/75 dark:enabled:hover:bg-dark-background-accent200/75' // Tertiary
+    : 'enabled:hover:bg-light-background-accent200/75 dark:enabled:hover:bg-dark-background-accent200/75'; // iconOnly
 
   // Icon color
-  const iconColor = state === 'selected'
+  const iconColor = isDisabled
+    ? 'text-light-text-disabled dark:text-dark-text-disabled'
+    : state === 'selected'
     ? 'text-light-text-contrast dark:text-dark-text-contrast' // Selected state
     : color === 'primary'
     ? 'text-light-text-primary dark:text-dark-text-contrast' // Primary
@@ -85,18 +89,19 @@ export default function IconButton({
   // State classes, including loading
   const stateClasses = loading
     ? 'cursor-wait' // Show a waiting cursor during loading
-    : state === 'disabled'
-    ? 'cursor-not-allowed opacity-50'
+    : isDisabled
+    ? 'cursor-not-allowed'
     : state === 'selected'
     ? 'cursor-pointer'
     : 'cursor-pointer';
 
   return (
     <button
-      className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses} transition-colors duration-200 ease-in-out flex items-center justify-center`}
-      disabled={state === 'disabled' || loading} // Disable button during loading
+      type="button"
+      className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses} ${stateTransition} ${pressFeedback} ${focusRing} flex items-center justify-center`}
+      disabled={isDisabled || loading} // Disable button during loading
       onClick={onClick}
-      aria-label={loading ? 'Loading' : 'Reload'}
+      aria-label={loading ? 'Loading' : label}
     >
       {loading ? (
         <LoadingSmall size={size} />

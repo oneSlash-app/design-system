@@ -14,19 +14,21 @@ export default function EmptyBox ({
     size,
 }: EmptyBoxProps) {
 
-    const color = 'text-light-text-disabled dark:text-dark-text-disabled';
+    // The icon can be faint; the text needs readable contrast
+    const iconColor = 'text-light-text-disabled dark:text-dark-text-disabled';
+    const textColor = 'text-light-text-secondary dark:text-dark-text-secondary';
     const height = size === 'small' ? 'py-6' : 'h-full';
     const iconSize = 'size-6' ;
 
     return (
         <div className={`flex flex-col space-y-2 justify-center items-center w-full ${height}`}>
-            <AlertCircle className={`${iconSize} ${color}`} strokeWidth={2} />
+            <AlertCircle className={`${iconSize} ${iconColor}`} strokeWidth={2} aria-hidden />
             <div className="flex flex-col text-center">
-                <p className={`text-body1 ${color}`}>
+                <p className={`text-body1 ${textColor}`}>
                     {text}
                 </p>
                 {secondText && (
-                    <p className={`text-body2 opacity-70 ${color}`}>
+                    <p className={`text-body2 ${textColor}`}>
                         {secondText}
                     </p>
                 )}

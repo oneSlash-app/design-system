@@ -59,11 +59,29 @@ export default function TabsContainer(_a) {
         };
     }, [children]);
     return (<TabsContainerContext.Provider value={true}>
-      <div ref={containerRef} className={"\n          relative flex gap-2 p-1 rounded-[12px] overflow-x-auto\n          ".concat(tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent', "\n        ")} style={{
+      <div ref={containerRef} role="tablist" onKeyDown={function (e) {
+            var _a, _b;
+            // Arrow keys move focus to the next tab and select it
+            var tabs = Array.from((_b = (_a = containerRef.current) === null || _a === void 0 ? void 0 : _a.querySelectorAll('[role="tab"]')) !== null && _b !== void 0 ? _b : []);
+            var current = tabs.indexOf(document.activeElement);
+            if (current === -1)
+                return;
+            var next = {
+                ArrowRight: Math.min(current + 1, tabs.length - 1),
+                ArrowLeft: Math.max(current - 1, 0),
+                Home: 0,
+                End: tabs.length - 1,
+            }[e.key];
+            if (next === undefined)
+                return;
+            e.preventDefault();
+            tabs[next].focus();
+            tabs[next].click();
+        }} className={"\n          relative flex gap-2 p-1 rounded-[12px] overflow-x-auto\n          ".concat(tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent', "\n        ")} style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
         }}>
-        {indicator && (<span aria-hidden className={"absolute rounded-[8px] pointer-events-none bg-light-primary-dark dark:bg-dark-primary-dark\n              ".concat(indicator.animate ? 'transition-[transform,width,height] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none' : '')} style={{
+        {indicator && (<span aria-hidden className={"absolute rounded-[8px] pointer-events-none bg-light-primary-dark dark:bg-dark-primary-dark\n              ".concat(indicator.animate ? 'transition-[transform,width,height] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none' : '')} style={{
                 top: 0,
                 left: 0,
                 transform: "translate(".concat(indicator.x, "px, ").concat(indicator.y, "px)"),

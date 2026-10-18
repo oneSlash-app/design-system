@@ -1,16 +1,15 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import * as LucideIcons from 'lucide-react';
 import { LoadingSmall } from './loadingScreen';
+import { focusRing, pressFeedback, stateTransition } from './sharedStyles';
 export default function IconButton(_a) {
-    var color = _a.color, state = _a.state, size = _a.size, iconName = _a.iconName, onClick = _a.onClick, _b = _a.loading, loading = _b === void 0 ? false : _b;
-    var _c = useState(null), Icon = _c[0], setIcon = _c[1];
-    // Load icon from Lucide
-    useEffect(function () {
-        if (iconName) {
-            setIcon(LucideIcons[iconName]);
-        }
-    }, [iconName]);
+    var color = _a.color, state = _a.state, size = _a.size, iconName = _a.iconName, onClick = _a.onClick, _b = _a.loading, loading = _b === void 0 ? false : _b, // Default to false
+    ariaLabel = _a.ariaLabel;
+    var Icon = LucideIcons[iconName];
+    // "ChevronDown" -> "Chevron Down"
+    var label = ariaLabel !== null && ariaLabel !== void 0 ? ariaLabel : String(iconName).replace(/([a-z])([A-Z0-9])/g, '$1 $2');
+    var isDisabled = state === 'disabled';
     // Size-based classes
     var sizeClasses = {
         large: 'p-2', // 8px padding
@@ -27,45 +26,49 @@ export default function IconButton(_a) {
     // Base classes (padding and corner radius)
     var baseClasses = "".concat(sizeClasses[size], " rounded-[8px] leading-none relative");
     // Background color
-    var bgColor = state === 'selected'
-        ? 'bg-light-primary-dark dark:bg-dark-primary-dark' // Selected state
-        : color === 'primary'
-            ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary
-            : color === 'secondary'
-                ? 'bg-light-secondary-main dark:bg-dark-secondary-main' // Secondary
-                : color === 'tertiary'
-                    ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' // Tertiary
-                    : ' '; // iconOnly: none
-    // Background hover color
+    var bgColor = isDisabled
+        ? (color === 'iconOnly' ? '' : 'bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled')
+        : state === 'selected'
+            ? 'bg-light-primary-dark dark:bg-dark-primary-dark' // Selected state
+            : color === 'primary'
+                ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary
+                : color === 'secondary'
+                    ? 'bg-light-secondary-main dark:bg-dark-secondary-main' // Secondary
+                    : color === 'tertiary'
+                        ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' // Tertiary
+                        : ' '; // iconOnly: none
+    // Background hover color; `enabled:` skips it while disabled or loading
     var bgColorHover = state === 'selected'
         ? '' // No hover effect when selected
         : color === 'primary'
-            ? 'hover:bg-light-accent-dark/75 hover:dark:bg-dark-accent-dark/75' // Primary
+            ? 'enabled:hover:bg-light-accent-dark/75 dark:enabled:hover:bg-dark-accent-dark/75' // Primary
             : color === 'secondary'
-                ? 'hover:bg-light-secondary-dark/75 hover:dark:bg-dark-secondary-dark/75' // Secondary
+                ? 'enabled:hover:bg-light-secondary-dark/75 dark:enabled:hover:bg-dark-secondary-dark/75' // Secondary
                 : color === 'tertiary'
-                    ? 'hover:bg-light-background-accent200/75 hover:dark:bg-dark-background-accent200/75' // Tertiary
-                    : 'hover:bg-light-background-accent200/75 hover:dark:bg-dark-background-accent200/75'; // iconOnly
+                    ? 'enabled:hover:bg-light-background-accent200/75 dark:enabled:hover:bg-dark-background-accent200/75' // Tertiary
+                    : 'enabled:hover:bg-light-background-accent200/75 dark:enabled:hover:bg-dark-background-accent200/75'; // iconOnly
     // Icon color
-    var iconColor = state === 'selected'
-        ? 'text-light-text-contrast dark:text-dark-text-contrast' // Selected state
-        : color === 'primary'
-            ? 'text-light-text-primary dark:text-dark-text-contrast' // Primary
-            : color === 'secondary'
-                ? 'text-light-text-primary dark:text-dark-text-primary' // Secondary
-                : color === 'tertiary'
-                    ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary
-                    : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly
+    var iconColor = isDisabled
+        ? 'text-light-text-disabled dark:text-dark-text-disabled'
+        : state === 'selected'
+            ? 'text-light-text-contrast dark:text-dark-text-contrast' // Selected state
+            : color === 'primary'
+                ? 'text-light-text-primary dark:text-dark-text-contrast' // Primary
+                : color === 'secondary'
+                    ? 'text-light-text-primary dark:text-dark-text-primary' // Secondary
+                    : color === 'tertiary'
+                        ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary
+                        : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly
     // State classes, including loading
     var stateClasses = loading
         ? 'cursor-wait' // Show a waiting cursor during loading
-        : state === 'disabled'
-            ? 'cursor-not-allowed opacity-50'
+        : isDisabled
+            ? 'cursor-not-allowed'
             : state === 'selected'
                 ? 'cursor-pointer'
                 : 'cursor-pointer';
-    return (<button className={"".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses, " transition-colors duration-200 ease-in-out flex items-center justify-center")} disabled={state === 'disabled' || loading} // Disable button during loading
-     onClick={onClick} aria-label={loading ? 'Loading' : 'Reload'}>
+    return (<button type="button" className={"".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses, " ").concat(stateTransition, " ").concat(pressFeedback, " ").concat(focusRing, " flex items-center justify-center")} disabled={isDisabled || loading} // Disable button during loading
+     onClick={onClick} aria-label={loading ? 'Loading' : label}>
       {loading ? (<LoadingSmall size={size}/>) : (Icon && <Icon className={iconSizeClasses[size]} strokeWidth={2}/>)}
     </button>);
 }

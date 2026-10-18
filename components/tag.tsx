@@ -1,6 +1,7 @@
 'use client';
-import React, { useState } from 'react';
+import React from 'react';
 import { icons } from 'lucide-react';
+import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 
 type IconName = keyof typeof icons;
 
@@ -15,6 +16,8 @@ interface TagProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
+// Light: the -dark shade with white text; dark: the -main shade with black text.
+// Both keep text at 4.4:1 or better.
 const colorConfig = {
   default: {
     bg: 'bg-light-secondary-light dark:bg-dark-secondary-light',
@@ -25,34 +28,34 @@ const colorConfig = {
     hasBorderTextOnly: false,
   },
   success: {
-    bg: 'bg-light-success-main dark:bg-dark-success-main',
-    text: 'text-light-success-contrast dark:text-dark-text-primary',
-    textOnly: 'text-light-success-main dark:text-dark-success-main',
-    border: 'border-light-success-main dark:border-dark-success-main',
+    bg: 'bg-light-success-dark dark:bg-dark-success-main',
+    text: 'text-light-text-contrast dark:text-dark-text-contrast',
+    textOnly: 'text-light-success-dark dark:text-dark-success-main',
+    border: 'border-light-success-dark dark:border-dark-success-main',
     dot: 'bg-light-success-main dark:bg-dark-success-main',
     hasBorderTextOnly: true,
   },
   warning: {
-    bg: 'bg-light-warning-main dark:bg-dark-warning-main',
-    text: 'text-light-warning-contrast dark:text-dark-text-primary',
-    textOnly: 'text-light-warning-main dark:text-dark-warning-main',
-    border: 'border-light-warning-main dark:border-dark-warning-main',
+    bg: 'bg-light-warning-dark dark:bg-dark-warning-main',
+    text: 'text-light-text-contrast dark:text-dark-text-contrast',
+    textOnly: 'text-light-warning-dark dark:text-dark-warning-main',
+    border: 'border-light-warning-dark dark:border-dark-warning-main',
     dot: 'bg-light-warning-main dark:bg-dark-warning-main',
     hasBorderTextOnly: true,
   },
   error: {
-    bg: 'bg-light-error-main dark:bg-dark-error-main',
-    text: 'text-light-error-contrast dark:text-dark-text-primary',
-    textOnly: 'text-light-error-main dark:text-dark-error-main',
-    border: 'border-light-error-main dark:border-dark-error-main',
+    bg: 'bg-light-error-dark dark:bg-dark-error-main',
+    text: 'text-light-text-contrast dark:text-dark-text-contrast',
+    textOnly: 'text-light-error-dark dark:text-dark-error-light',
+    border: 'border-light-error-dark dark:border-dark-error-main',
     dot: 'bg-light-error-main dark:bg-dark-error-main',
     hasBorderTextOnly: true,
   },
   info: {
-    bg: 'bg-light-info-main dark:bg-dark-info-main',
-    text: 'text-light-info-contrast dark:text-dark-text-primary',
-    textOnly: 'text-light-info-main dark:text-dark-info-main',
-    border: 'border-light-info-main dark:border-dark-info-main',
+    bg: 'bg-light-info-dark dark:bg-dark-info-main',
+    text: 'text-light-text-contrast dark:text-dark-text-contrast',
+    textOnly: 'text-light-info-dark dark:text-dark-info-main',
+    border: 'border-light-info-dark dark:border-dark-info-main',
     dot: 'bg-light-info-main dark:bg-dark-info-main',
     hasBorderTextOnly: true,
   },
@@ -68,15 +71,13 @@ export default function Tag({
   iconName,
   onClick,
 }: TagProps): JSX.Element {
-  const [isHovered, setIsHovered] = useState(false);
-
   // Get icon directly from icons map
   const Icon = iconName ? icons[iconName] : null;
 
   // Size and padding
   const sizeClasses = {
     medium: 'text-body2 px-2 py-1',
-    small: 'text-caption px-2 py-[3px]',
+    small: 'text-caption px-2 py-0.5',
     tiny: 'text-caption px-1.5 py-0',
   }[size];
 
@@ -111,10 +112,10 @@ export default function Tag({
     fontClasses = 'text-light-text-primary dark:text-dark-text-primary';
   }
 
-  // Border styles
-  let borderClasses = '';
+  // Border styles. Every tag has a 1px border (transparent when hidden) so all variants share a height
+  let borderClasses = 'border border-transparent';
   if (variant === 'dot') {
-    borderClasses = '';
+    borderClasses = 'border border-transparent';
   } else if (colorStyles) {
     if (variant === 'textOnly' && colorStyles.hasBorderTextOnly) {
       borderClasses = `border ${colorStyles.border}`;
@@ -131,20 +132,34 @@ export default function Tag({
   const dotColor = colorStyles?.dot || colorConfig.default.dot;
 
   // Hover (only when not selected, no color, and onClick is provided)
-  const hoverClasses = !isSelected && !color && variant === 'contained' && isHovered && onClick
-    ? 'bg-light-background-accent200 dark:bg-dark-background-accent200'
+  const hoverClasses = !isSelected && !color && variant === 'contained' && onClick
+    ? 'hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'
     : '';
 
   const cursorClass = onClick && !isSelected ? 'cursor-pointer' : '';
 
-  const baseClasses = 'flex space-x-2 items-center gap-1 rounded-full whitespace-nowrap transition-colors duration-200 ease-in-out';
+  const baseClasses = `flex items-center gap-1 rounded-full whitespace-nowrap ${stateTransition}`;
+
+  // A clickable tag is a keyboard-reachable toggle button
+  const interactiveProps = onClick
+    ? {
+        role: 'button',
+        tabIndex: 0,
+        'aria-pressed': isSelected,
+        onClick,
+        onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            e.currentTarget.click();
+          }
+        },
+      }
+    : {};
 
   return (
     <div
-      className={`${baseClasses} ${sizeClasses} ${bgClasses} ${fontClasses} ${borderClasses} ${hoverClasses} ${cursorClass}`}
-      onMouseEnter={() => onClick && setIsHovered(true)}
-      onMouseLeave={() => onClick && setIsHovered(false)}
-      onClick={onClick}
+      className={`${baseClasses} ${sizeClasses} ${bgClasses} ${fontClasses} ${borderClasses} ${hoverClasses} ${cursorClass} ${onClick ? `${focusRing} ${pressFeedbackAny}` : ''}`}
+      {...interactiveProps}
     >
       {variant === 'dot' && (
         <span className={`w-3 h-3 rounded-full flex-shrink-0 ${dotColor}`} />

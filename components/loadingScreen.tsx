@@ -7,8 +7,8 @@ interface LoadingSmallProps {
 
 export default function LoadingScreen() {
   return (
-    <div className="flex justify-center items-center h-full w-full min-h-[200px]">
-        <div className="w-12 h-12 rounded-full border-4 border-t-transparent border-r-light-text-primary border-b-light-text-primary border-l-light-text-primary dark:border-t-transparent dark:border-r-dark-text-primary dark:border-b-dark-text-primary dark:border-l-dark-text-primary animate-spin"></div>
+    <div role="status" aria-label="Loading" className="flex justify-center items-center h-full w-full min-h-[200px]">
+        <div className="w-12 h-12 rounded-full border-4 border-current border-t-transparent text-light-text-primary dark:text-dark-text-primary animate-spin"></div>
     </div>
   );
 };
@@ -22,9 +22,9 @@ export function LoadingSmall({ size = 'medium' }: LoadingSmallProps) {
   };
 
   return (
-    <div className="flex justify-center items-center">
+    <div role="status" aria-label="Loading" className="flex justify-center items-center">
       <div
-        className={`rounded-full border-t-transparent border-r-light-text-primary border-b-light-text-primary border-l-light-text-primary dark:border-t-transparent dark:border-r-dark-text-primary dark:border-b-dark-text-primary dark:border-l-dark-text-primary animate-spin ${spinnerSizeClasses[size]}`}
+        className={`rounded-full border-current border-t-transparent text-light-text-primary dark:text-dark-text-primary animate-spin ${spinnerSizeClasses[size]}`}
       />
     </div>
   );

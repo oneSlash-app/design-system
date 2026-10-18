@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import IconButton from './iconButton';
 var bgClassMap = {
     error: 'bg-light-error-alertBg dark:bg-dark-error-alertBg',
@@ -8,26 +8,27 @@ var bgClassMap = {
     success: 'bg-light-success-alertBg dark:bg-dark-success-alertBg',
     default: 'bg-light-secondary-light dark:bg-dark-secondary-light',
 };
+var AUTO_DISMISS_MS = 5000;
+var EXIT_MS = 150;
+// Toasts pop in with a slight overshoot and leave quickly
+var motionClasses = {
+    enter: 'duration-[220ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]',
+    exit: 'duration-150 ease-in',
+};
 export default function Alert(_a) {
     var _b;
     var _c = _a.open, open = _c === void 0 ? true : _c, type = _a.type, message = _a.message, secondMessage = _a.secondMessage, onClose = _a.onClose, _d = _a.showCloseButton, showCloseButton = _d === void 0 ? false : _d, _e = _a.variant, variant = _e === void 0 ? 'toast' : _e;
     var _f = useState(false), isVisible = _f[0], setIsVisible = _f[1];
     var _g = useState(false), shouldRender = _g[0], setShouldRender = _g[1];
+    // Auto-dismiss pauses while the toast is hovered or focused
+    var _h = useState(false), isPaused = _h[0], setIsPaused = _h[1];
+    var remainingMs = useRef(AUTO_DISMISS_MS);
     useEffect(function () {
         if (open) {
             setShouldRender(true);
+            remainingMs.current = AUTO_DISMISS_MS;
             // Small delay to trigger the animation
             var showTimer_1 = setTimeout(function () { return setIsVisible(true); }, 10);
-            // Only auto-dismiss if there's no close button
-            if (!showCloseButton) {
-                var dismissTimer_1 = setTimeout(function () {
-                    handleClose();
-                }, 5000);
-                return function () {
-                    clearTimeout(showTimer_1);
-                    clearTimeout(dismissTimer_1);
-                };
-            }
             return function () { return clearTimeout(showTimer_1); };
         }
         else if (shouldRender) {
@@ -35,30 +36,44 @@ export default function Alert(_a) {
             setIsVisible(false);
             var hideTimer_1 = setTimeout(function () {
                 setShouldRender(false);
-            }, 300);
+            }, EXIT_MS);
             return function () { return clearTimeout(hideTimer_1); };
         }
     }, [open, showCloseButton, shouldRender]);
+    // Only auto-dismiss if there's no close button
+    useEffect(function () {
+        if (!open || !shouldRender || showCloseButton || isPaused)
+            return;
+        var startedAt = Date.now();
+        var dismissTimer = setTimeout(function () { return handleClose(); }, remainingMs.current);
+        return function () {
+            clearTimeout(dismissTimer);
+            remainingMs.current -= Date.now() - startedAt;
+        };
+    }, [open, shouldRender, showCloseButton, isPaused]); // eslint-disable-line react-hooks/exhaustive-deps
     var handleClose = function () {
         setIsVisible(false);
         // Wait for animation to complete before unmounting
         setTimeout(function () {
             setShouldRender(false);
             onClose === null || onClose === void 0 ? void 0 : onClose();
-        }, 300);
+        }, EXIT_MS);
     };
     if (!shouldRender)
         return null;
     var bgClasses = (_b = bgClassMap[type]) !== null && _b !== void 0 ? _b : bgClassMap.default;
-    var alertContent = (<div className={"flex items-start justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ".concat(bgClasses, " ").concat(isVisible ? 'opacity-100 translate-y-0 scale-100' : variant === 'toast' ? 'opacity-0 -translate-y-3 scale-95' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
+    var alertContent = (<div 
+    // Errors interrupt screen readers; everything else is announced politely
+    role={type === 'error' ? 'alert' : 'status'} onMouseEnter={function () { return setIsPaused(true); }} onMouseLeave={function () { return setIsPaused(false); }} onFocus={function () { return setIsPaused(true); }} onBlur={function () { return setIsPaused(false); }} className={"flex ".concat(secondMessage ? 'items-start' : 'items-center', " justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] ").concat(isVisible ? motionClasses.enter : motionClasses.exit, " motion-reduce:transition-none ").concat(bgClasses, " ").concat(isVisible ? 'opacity-100 translate-y-0 scale-100' : variant === 'toast' ? 'opacity-0 -translate-y-2 scale-90' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
       <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
-        <div className="flex flex-col text-left">
+        {/* With two lines, nudge the text so its first line centers on the close button */}
+        <div className={"flex flex-col text-left ".concat(secondMessage && showCloseButton ? 'pt-[3px]' : '')}>
           <span className="text-body2">{message}</span>
           {secondMessage && (<span className="text-body2 opacity-70">{secondMessage}</span>)}
         </div>
       </div>
       {showCloseButton && (<div className="ml-4">
-          <IconButton color="iconOnly" state="enabled" size="small" iconName="X" onClick={handleClose}/>
+          <IconButton color="iconOnly" state="enabled" size="small" iconName="X" ariaLabel="Dismiss" onClick={handleClose}/>
         </div>)}
     </div>);
     if (variant === 'inline') {

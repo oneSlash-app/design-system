@@ -1,106 +1,33 @@
 'use client';
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
-var __generator = (this && this.__generator) || function (thisArg, body) {
-    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
-    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
-    function verb(n) { return function (v) { return step([n, v]); }; }
-    function step(op) {
-        if (f) throw new TypeError("Generator is already executing.");
-        while (g && (g = 0, op[0] && (_ = 0)), _) try {
-            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
-            if (y = 0, t) op = [op[0] & 2, t.value];
-            switch (op[0]) {
-                case 0: case 1: t = op; break;
-                case 4: _.label++; return { value: op[1], done: false };
-                case 5: _.label++; y = op[1]; op = [0]; continue;
-                case 7: op = _.ops.pop(); _.trys.pop(); continue;
-                default:
-                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
-                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
-                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
-                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
-                    if (t[2]) _.ops.pop();
-                    _.trys.pop(); continue;
-            }
-            op = body.call(thisArg, _);
-        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
-        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
-    }
-};
-import React, { useState, useEffect, useCallback } from 'react';
+import React from 'react';
+import * as LucideIcons from 'lucide-react';
 import NextLink from 'next/link';
 import UserImage from './userImage';
 import Tag from './tag';
+import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 export default function MenuItem(_a) {
-    var _this = this;
-    var href = _a.href, iconName = _a.iconName, icon = _a.icon, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, secondLabel = _a.secondLabel, isSelected = _a.isSelected, onClick = _a.onClick, _b = _a.className, className = _b === void 0 ? '' : _b, _c = _a.size, size = _c === void 0 ? 'medium' : _c, tag = _a.tag, iconRight = _a.iconRight, rightAction = _a.rightAction;
-    var _d = useState(null), IconLeft = _d[0], setIconLeft = _d[1];
-    var _e = useState(null), IconRight = _e[0], setIconRight = _e[1];
-    var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
-        var module_1, IconComponent, error_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    if (!iconName)
-                        return [2 /*return*/, null];
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, import('lucide-react')];
-                case 2:
-                    module_1 = _a.sent();
-                    IconComponent = module_1[iconName];
-                    return [2 /*return*/, IconComponent || null];
-                case 3:
-                    error_1 = _a.sent();
-                    console.error("Failed to load icon ".concat(iconName, ":"), error_1);
-                    return [2 /*return*/, null];
-                case 4: return [2 /*return*/];
-            }
-        });
-    }); }, []);
-    useEffect(function () {
-        var fetchIcon = function () { return __awaiter(_this, void 0, void 0, function () {
-            var _a, _b;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0:
-                        if (!iconName) return [3 /*break*/, 2];
-                        _a = setIconLeft;
-                        return [4 /*yield*/, loadIcon(iconName)];
-                    case 1:
-                        _a.apply(void 0, [_c.sent()]);
-                        _c.label = 2;
-                    case 2:
-                        if (!iconRight) return [3 /*break*/, 4];
-                        _b = setIconRight;
-                        return [4 /*yield*/, loadIcon(iconRight)];
-                    case 3:
-                        _b.apply(void 0, [_c.sent()]);
-                        _c.label = 4;
-                    case 4: return [2 /*return*/];
-                }
-            });
-        }); };
-        fetchIcon();
-    }, [iconName, iconRight, loadIcon]);
+    var _b;
+    var href = _a.href, iconName = _a.iconName, icon = _a.icon, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, secondLabel = _a.secondLabel, isSelected = _a.isSelected, onClick = _a.onClick, _c = _a.className, className = _c === void 0 ? '' : _c, _d = _a.size, size = _d === void 0 ? 'medium' : _d, tag = _a.tag, iconRight = _a.iconRight, rightAction = _a.rightAction, _e = _a.role, role = _e === void 0 ? 'menuitem' : _e, id = _a.id, _f = _a.isActive, isActive = _f === void 0 ? false : _f, _g = _a.tabIndex, tabIndex = _g === void 0 ? 0 : _g;
+    // Synchronous lookup so icons render on the first paint
+    var IconLeft = iconName ? LucideIcons[iconName] : null;
+    var IconRight = iconRight ? LucideIcons[iconRight] : null;
     // Size-based icon and text classes
     var iconSize = { tiny: 'w-4 h-4', small: 'w-5 h-5', medium: 'w-6 h-6' }[size];
     var labelClass = { tiny: 'text-caption', small: 'text-body2', medium: 'text-body1' }[size];
     var secondLabelClass = size === 'tiny' ? 'text-caption' : 'text-body2';
-    var tagSize = { tiny: 'tiny', small: 'small', medium: 'medium' }[size];
+    // One step smaller than the row so a tag never makes its row taller
+    var tagSize = { tiny: 'tiny', small: 'tiny', medium: 'small' }[size];
     var paddingClass = size === 'tiny' ? 'p-1' : 'p-2';
-    var content = (<div className={"\n        flex items-center ".concat(paddingClass, " rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out\n        ").concat(isSelected
+    var content = (<div id={id} role={href ? undefined : role} 
+    // A link wrapper is already focusable; otherwise the row itself takes focus
+    tabIndex={href ? undefined : tabIndex} aria-selected={role === 'option' ? !!isSelected : undefined} className={"\n        flex items-center ".concat(paddingClass, " rounded-[8px] cursor-pointer justify-between text-left ").concat(stateTransition, " ").concat(pressFeedbackAny, " ").concat(focusRing, "\n        ").concat(isSelected
             ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
-            : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200', "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick}>
+            : "hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200 ".concat(isActive ? 'bg-light-background-accent200 dark:bg-dark-background-accent200' : ''), "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick} onKeyDown={function (e) {
+            if (!href && e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
+                e.preventDefault();
+                e.currentTarget.click();
+            }
+        }}>
       {/* Left group: icon/userImg + label with 8px gap */}
       <div className="flex items-center gap-2 min-w-0">
         {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : icon ? (<span className={"".concat(iconSize, " flex-shrink-0 flex items-center justify-center")}>{icon}</span>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " flex-shrink-0 ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary')} strokeWidth={2}/>))}
@@ -116,12 +43,14 @@ export default function MenuItem(_a) {
 
       {/* Right group: tag + icon aligned to the right */}
       <div className="flex items-center gap-2 flex-shrink-0">
-        {tag && (<Tag variant={tag.variant || 'contained'} size={tagSize} label={tag.label} iconName={tag.iconName} color={tag.color}/>)}
+        {tag && (<Tag variant={tag.variant || 'contained'} size={tagSize} label={tag.label} iconName={tag.iconName} 
+        // 'default' has a fill that stays visible on the menu background
+        color={(_b = tag.color) !== null && _b !== void 0 ? _b : 'default'}/>)}
         {IconRight && (<IconRight className={"".concat(iconSize, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary', " flex-shrink-0")} strokeWidth={2}/>)}
         {rightAction && (<div onClick={function (e) { return e.stopPropagation(); }}>
             {rightAction}
           </div>)}
       </div>
     </div>);
-    return href ? <NextLink href={href}>{content}</NextLink> : content;
+    return href ? <NextLink href={href} className={"block rounded-[8px] ".concat(focusRing)}>{content}</NextLink> : content;
 }
