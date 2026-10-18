@@ -98,8 +98,10 @@ module.exports = {
 };
 ```
 
-Color token names are unchanged except two additions: `light.primary.contrast`
-(`#ffffff`, which Scindo had to add itself) and nothing else. The forest set is
+Color token names are unchanged except for additions: `primary.contrast`
+(`#ffffff` light, `#000000` dark; Scindo had to add the light one itself) and
+the semantic status tokens in section 1a. Every name must exist in both modes
+of every theme; the generator fails otherwise. The forest set is
 the one extracted from `scindo/apps/web/src/app/globals.css` on 2026-10-18
 (29 values differ from default: `text`, `accent`, `secondary` and
 `background` in both modes; `warning.dark` light takes the 1.7.1 value
@@ -108,6 +110,17 @@ the one extracted from `scindo/apps/web/src/app/globals.css` on 2026-10-18
 The radius, shadow, z-index and motion values above are the ones the
 components already use, so the default theme does not change visually.
 
+### 1a. Semantic tokens for the asymmetric pairs
+
+About fifteen class pairs in 1.x don't mirror each other between modes, so
+they can't collapse to one name with today's tokens. Examples: the primary
+Button label is `text-light-text-primary dark:text-dark-text-contrast`; Link
+colors use `info.dark` in light and `info.main` in dark; status Tags use the
+`-dark` fill in light and `-main` in dark. Rather than keep `dark:` variants
+inside components (which would let a theme's variables and the utility
+disagree), 2.0 adds semantic tokens whose per-mode values reproduce the
+current rendering exactly. [Names pending the user's answer; see hand-over.]
+
 Everything below is **generated from this file** by a build script. No
 hand-maintained CSS.
 
@@ -115,17 +128,23 @@ hand-maintained CSS.
 
 ```
 dist/
-  themes/default.css     one theme = one file an app imports
+  themes/default.css       one theme = one file an app imports; dark via .dark
+  themes/default-auto.css  same, plus OS dark mode when no class is set
   themes/forest.css
-  tokens.css             non-color tokens (radius, shadow, z-index, motion,
-                         spacing, type scale); imported by every theme file
-  theme.css              Tailwind v4: @theme mapping utility names to the vars
-  tailwind-preset.js     Tailwind v3: preset doing the same
+  themes/forest-auto.css
+  tokens.css               non-color tokens (radius, shadow, z-index, motion,
+                           spacing); imported by every theme file
+  theme.css                Tailwind v4: @theme mapping color and non-color
+                           utility names to the variables
+  typography.css           Tailwind v4: the text-h1 … text-caption scale,
+                           separate so apps with their own scale skip it
+  tailwind-preset.js       Tailwind v3: preset doing both
   components/*.jsx       as today
   designTokens.js        as today, plus the new groups
 ```
 
-Package exports add `./themes/*`, `./tokens.css`, `./theme.css`, `./tailwind`.
+Package exports add `./themes/*`, `./tokens.css`, `./theme.css`,
+`./typography.css`, `./tailwind`. The unused `./styles` export is dropped.
 
 ### 3. The variables
 
@@ -145,16 +164,23 @@ used by IconButton) work on both v3 and v4:
   --os-color-text-primary: 238 238 238;
   …
 }
-/* OS dark mode applies when the app sets no explicit class */
-@media (prefers-color-scheme: dark) {
-  :root:not(.light) { …same values as .dark… }
-}
 ```
 
-`.dark` forces dark, `.light` forces light, neither follows the OS. This keeps
-oneslash-homepage and the portfolio (which follow the OS today) working, and
-keeps `.dark`-driven apps working. `useDarkMode` learns to report the
-effective mode (class, else media query).
+Two entry points per theme, because the consumers disagree on how "light" is
+expressed. commentify, commentify-website and design-system-docs have a
+toggle where light means "remove `.dark`"; oneslash-homepage and the portfolio
+have no toggle and follow the OS. One file can't serve both without one group
+changing code, so:
+
+- `themes/default.css`: dark values under `.dark` only. For apps with a toggle.
+- `themes/default-auto.css`: the same, plus the dark values under
+  `@media (prefers-color-scheme: dark) { :root:not(.light) { … } }`. For apps
+  that follow the OS. `.light` opts out if such an app ever adds a toggle.
+
+Each app picks one line in its CSS; no app changes markup or JS. The
+migration guide says which file each kind of app wants. `useDarkMode` learns
+to report the effective mode (class, else media query) so it's right under
+both files.
 
 Non-color tokens live in `tokens.css` on `:root` as plain values
 (`--os-radius-control: 8px`). Themes don't override them in 2.0.
@@ -196,22 +222,34 @@ and keeps its own `content` glob for the package's `dist`.
 
 v4 (`oneslash-design-system/theme.css`): an `@theme inline` block with
 `--color-accent-main: rgb(var(--os-color-accent-main))` and the equivalents for
-the other groups and the type scale. An app's CSS becomes:
+the other color groups, radius, shadow, z-index and motion. The type scale is
+a separate `typography.css`, so an app with its own `@utility text-h1 …`
+definitions (Scindo) imports only `theme.css` and never has two definitions of
+the same utility. An app's CSS becomes:
 
 ```css
 @import "tailwindcss";
-@import "oneslash-design-system/themes/forest.css";
+@import "oneslash-design-system/themes/forest.css";   /* or default-auto.css */
 @import "oneslash-design-system/theme.css";
+@import "oneslash-design-system/typography.css";      /* skip if you own the scale */
 @source "../../node_modules/oneslash-design-system/dist/**/*.jsx";
 ```
 
 ### 6. Components
 
-Every component moves to the new names and the new tokens. This is a
-mechanical pass with no behavior change: remove each `dark:` color twin, swap
-hardcoded radius/shadow/z-index/motion for the token utilities, swap the
-`sharedStyles` constants to the token utilities. `sharedStyles.tsx` keeps the
-same exports.
+Every component moves to the new names and the new tokens: remove each
+`dark:` color twin (using the section 1a tokens where the pair was
+asymmetric), swap hardcoded radius/shadow/z-index/motion for the token
+utilities, swap the `sharedStyles` constants to the token utilities.
+`sharedStyles.tsx` keeps the same exports. No visual change in the default
+theme; the pixel-identical check in section 9 is the test.
+
+One deliberate change: labels that sit on the accent fill (primary Button,
+selected Tag) and on the selected fill (Tab, MenuItem, selected Button) use
+the fill's `contrast` token rather than `text.primary`/`text.contrast`. In the
+default theme those are the same colors, so nothing moves; in forest it is
+what makes the primary Button's cream-on-green label come from the theme
+instead of from Scindo's CSS hacks (section 7).
 
 Storybook gets a **theme toolbar** (default / forest) next to the existing
 light/dark one, by swapping which theme file is loaded. Storybook keeps
@@ -222,11 +260,17 @@ Storybook uses the preset).
 ### 7. Scindo
 
 `scindo/apps/web/src/app/globals.css` and the marketing app replace their
-`--color-*` override block with the two imports above (forest + theme.css).
-Scindo's own additions stay: its fonts (`--font-heading`, `--font-body`,
-`--font-mono`), its bespoke type scale, and any site-only tokens. The
-acceptance test is a before/after comparison of computed colors on the main
-screens: zero differences expected except `warning.dark` in light mode.
+`--color-*` override block with `forest.css` + `theme.css` (not
+`typography.css`: Scindo owns its scale). Scindo's own additions stay: its
+fonts, its bespoke type scale, and site-only tokens. Three more things change
+in that PR: the ~15 `var(--color-light-*)`/`var(--color-dark-*)` references in
+Scindo's plain CSS (body, editor, scrim) move to `var(--os-color-*)`; the
+selector hacks keyed on 1.x class combinations (`.bg-light-accent-main.text-light-text-primary { … }`,
+the selected-Tab rule) are deleted, since the section 6 change makes them
+unnecessary; and `.dark` handling stays as it is (`ThemeHydration` toggles the
+class, so Scindo wants the non-auto file). The acceptance test is a
+before/after comparison of computed colors on the main screens: zero
+differences expected except `warning.dark` in light mode.
 
 This is part of 2.0's verification but lands as a Scindo PR after 2.0.0 is on
 npm, like any other consumer upgrade.
@@ -240,9 +284,15 @@ npm, like any other consumer upgrade.
   how to write a theme (copy `themes/default.css`, change values, run the
   contrast check).
 - `README.md` "Using the design system in an app" updated to the new setup.
-- design-system-docs: the colors page lists both themes and reads them from
-  `designTokens.themes`; the Tailwind config there moves to the preset. The
-  generated props tables need nothing.
+- design-system-docs: its Tailwind config moves to the preset and the colors
+  page lists both themes from `designTokens.themes`. **Order matters**: the
+  docs repo auto-installs every release and auto-merges when `next build`
+  passes, and a build with unknown class names still passes, so a 2.0.0
+  release would auto-merge an unstyled docs site. The docs PR therefore lands
+  **before** the 2.0.0 bump, written to work on both versions: use the preset
+  when `require('oneslash-design-system/tailwind')` resolves, else today's
+  mapping; read `designTokens.themes ?? {}`. Then the automatic bump to 2.0.0
+  lands styled. The generated props tables need nothing.
 - `CHANGELOG.md` gets a 2.0.0 entry.
 
 ### 9. Verification
@@ -258,19 +308,23 @@ npm, like any other consumer upgrade.
   the known `text-disabled` cases, which are the 3:1 tier.
 - **Default theme is pixel-identical**: Storybook screenshots of every story
   in light and dark before and after, compared. Any difference is a bug.
-- **Alias layer**: build one v3 consumer (commentify-website) and one v4
-  consumer (oneslash-homepage) against the packed 2.0 tarball (`npm pack`)
-  with no markup changes; both must build and render the same as on 1.7.2.
-  These builds are local checks; the apps' own upgrade PRs are follow-ups.
+- **Alias layer**: build one v3 consumer (commentify-admin: on 1.7.1, its own
+  Tailwind config, uses Button, Modal, MenuItem, Popover) and one v4 consumer
+  (oneslash-homepage) against the packed 2.0 tarball (`npm pack`) with no
+  markup changes beyond the theme import; both must build and render the same
+  as on 1.7.x. These builds are local checks; the apps' own upgrade PRs are
+  follow-ups. (Every live app's clone is on 1.7.1 as of 2026-10-18; older
+  states seen on feature branches are not baselines.)
 - **Forest**: Scindo web built against the tarball with its override replaced
   by the forest import; computed-color diff as in section 7.
 - `tsc` and `npm run build` clean; Storybook runs with both themes.
 
 ### 10. Release
 
-Version `2.0.0`, shipped by the existing workflow. Because consumers pin
-`^1.x`, nothing updates until each app's own PR. The order after release:
-Scindo (forest, the reason for 2.0), then the rest as separate rollout work.
+Version `2.0.0`, shipped by the existing workflow, after the docs-site
+compatibility PR (section 8) is merged. Because consumers pin `^1.x`, nothing
+else updates until each app's own PR. The order after release: Scindo (forest,
+the reason for 2.0), then the rest as separate rollout work.
 
 ## Left to the builder
 
@@ -281,7 +335,5 @@ Scindo (forest, the reason for 2.0), then the rest as separate rollout work.
 - The contrast script's output format and exact pair list beyond the ones
   named above.
 - Wording and structure of the migration guide.
-- Whether `useDarkMode` grows a sibling for the effective theme name (not
-  needed by anything today; skip unless it falls out for free).
 - Branching: this is one PR or a short series, builder's call, as long as
   `main` never has a half-migrated state that would release.
