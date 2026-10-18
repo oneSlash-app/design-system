@@ -34,7 +34,7 @@ module.exports = {
       },
       warning:{
         main: '#EF6C00',
-        dark: '#CC5302',
+        dark: '#A84600', // 4.8:1 on background.default, 5.9:1 on white
         light: '#FFA732',
         alertBg: '#F5D5B0',
         contrast: '#FFFFFF',
