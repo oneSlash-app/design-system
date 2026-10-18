@@ -19,7 +19,7 @@ const meta: Meta<typeof Tag> = {
     },
     size: {
       control: "select",
-      options: ["medium", "small"],
+      options: ["medium", "small", "tiny"],
     },
     state: {
       control: "select",

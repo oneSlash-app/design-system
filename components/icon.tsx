@@ -6,13 +6,14 @@ type IconName = keyof typeof icons;
 
 interface IconProps {
   name: IconName;
-  size?: 'small' | 'medium' | 'large' | number;
+  size?: 'tiny' | 'small' | 'medium' | 'large' | number;
   color?: 'primary' | 'secondary' | 'disabled' | 'error' | 'warning' | 'success' | 'info' | 'accent' | 'inherit';
   strokeWidth?: number;
   className?: string;
 }
 
 const sizeMap = {
+  tiny: 12,
   small: 16,
   medium: 24,
   large: 32,

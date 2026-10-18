@@ -12,7 +12,7 @@ const meta: Meta<typeof Icon> = {
     },
     size: {
       control: "select",
-      options: ["small", "medium", "large"],
+      options: ["tiny", "small", "medium", "large"],
     },
     color: {
       control: "select",

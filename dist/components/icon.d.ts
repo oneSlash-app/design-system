@@ -3,7 +3,7 @@ import { icons } from 'lucide-react';
 type IconName = keyof typeof icons;
 interface IconProps {
     name: IconName;
-    size?: 'small' | 'medium' | 'large' | number;
+    size?: 'tiny' | 'small' | 'medium' | 'large' | number;
     color?: 'primary' | 'secondary' | 'disabled' | 'error' | 'warning' | 'success' | 'info' | 'accent' | 'inherit';
     strokeWidth?: number;
     className?: string;

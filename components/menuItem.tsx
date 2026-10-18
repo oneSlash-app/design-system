@@ -17,7 +17,7 @@ interface MenuItemProps {
   isSelected?: boolean;
   onClick?: any;
   className?: string;
-  size?: 'small' | 'medium';
+  size?: 'tiny' | 'small' | 'medium';
   tag?: {
     label: React.ReactNode;
     iconName?: string;
@@ -72,14 +72,16 @@ export default function MenuItem({
   }, [iconName, iconRight, loadIcon]);
 
   // Size-based icon and text classes
-  const iconSize = size === 'small' ? 'w-5 h-5' : 'w-6 h-6';
-  const labelClass = size === 'small' ? 'text-body2' : 'text-body1';
-  const tagSize = size === 'small' ? 'small' : 'medium';
+  const iconSize = { tiny: 'w-4 h-4', small: 'w-5 h-5', medium: 'w-6 h-6' }[size];
+  const labelClass = { tiny: 'text-caption', small: 'text-body2', medium: 'text-body1' }[size];
+  const secondLabelClass = size === 'tiny' ? 'text-caption' : 'text-body2';
+  const tagSize = { tiny: 'tiny', small: 'small', medium: 'medium' }[size] as 'tiny' | 'small' | 'medium';
+  const paddingClass = size === 'tiny' ? 'p-1' : 'p-2';
 
   const content = (
     <div
       className={`
-        flex items-center p-2 rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out
+        flex items-center ${paddingClass} rounded-[8px] cursor-pointer justify-between transition-colors duration-200 ease-in-out
         ${isSelected
           ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
           : 'hover:bg-light-background-accent200 hover:dark:bg-dark-background-accent200'}
@@ -107,7 +109,7 @@ export default function MenuItem({
             {label}
           </span>
           {secondLabel && (
-            <span className={`truncate text-body2 opacity-70 ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
+            <span className={`truncate ${secondLabelClass} opacity-70 ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
               {secondLabel}
             </span>
           )}

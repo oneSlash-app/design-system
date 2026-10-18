@@ -12,6 +12,7 @@ type TabProps = {
     decoIcon?: string;
     actionIcon?: string;
     router?: RouterLike;
+    size?: 'medium' | 'small' | 'tiny';
 };
-export default function Tab({ label, secondLabel, href, isSelected, onClickTab, onClickActionIcon, decoIcon, actionIcon, router }: TabProps): React.JSX.Element;
+export default function Tab({ label, secondLabel, href, isSelected, onClickTab, onClickActionIcon, decoIcon, actionIcon, router, size, }: TabProps): React.JSX.Element;
 export {};

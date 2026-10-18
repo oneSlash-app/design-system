@@ -15,7 +15,7 @@ interface TextFieldProps {
     disabled?: boolean;
     error?: boolean;
     required?: boolean;
-    size?: 'large' | 'medium' | 'small';
+    size?: 'large' | 'medium' | 'small' | 'tiny';
     placeholder?: string;
 }
 export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, error, required, size, placeholder, }: TextFieldProps): React.JSX.Element;

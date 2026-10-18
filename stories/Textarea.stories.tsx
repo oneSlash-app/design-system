@@ -12,7 +12,7 @@ const meta: Meta<typeof Textarea> = {
     maxRows: { control: "number" },
     size: {
       control: "select",
-      options: ["medium", "small"],
+      options: ["medium", "small", "tiny"],
     },
   },
 };

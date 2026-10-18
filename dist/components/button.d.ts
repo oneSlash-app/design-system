@@ -1,6 +1,6 @@
 import React from 'react';
 interface ButtonProps {
-    size: 'small' | 'medium' | 'large';
+    size: 'tiny' | 'small' | 'medium' | 'large';
     type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
     color?: 'default' | 'danger';
     state: 'enabled' | 'hovered' | 'focused' | 'disabled' | 'selected';

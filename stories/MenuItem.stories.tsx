@@ -12,7 +12,7 @@ const meta: Meta<typeof MenuItem> = {
     isSelected: { control: "boolean" },
     size: {
       control: "select",
-      options: ["medium", "large"],
+      options: ["tiny", "small", "medium"],
     },
     iconRight: { control: "text" },
   },

@@ -16,7 +16,7 @@ interface TextareaProps {
   maxRows?: number;
   disabled?: boolean;
   error?: boolean;
-  size?: 'medium' | 'small';
+  size?: 'medium' | 'small' | 'tiny';
   placeholder?: string;
 }
 
@@ -82,6 +82,7 @@ export default function Textarea({
   const sizeClasses = {
     medium: 'text-body1 p-2 leading-[22px]', // body1 (16px), padding 8px
     small: 'text-body2 p-2 leading-[18px]', // body2 (14px), padding 8px
+    tiny: 'text-caption p-1 leading-[16px]', // caption (12px), padding 4px
   }[size];
 
   const baseClasses = 'w-full border rounded-[8px] outline-none [&::-webkit-scrollbar]:hidden';

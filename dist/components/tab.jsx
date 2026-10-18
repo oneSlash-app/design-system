@@ -35,12 +35,14 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
+import { TabsContainerContext } from './tabsContainer';
 export default function Tab(_a) {
     var _this = this;
-    var label = _a.label, secondLabel = _a.secondLabel, href = _a.href, isSelected = _a.isSelected, onClickTab = _a.onClickTab, onClickActionIcon = _a.onClickActionIcon, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, router = _a.router;
-    var _b = useState(null), IconLeft = _b[0], setIconLeft = _b[1];
-    var _c = useState(null), IconRight = _c[0], setIconRight = _c[1];
+    var label = _a.label, secondLabel = _a.secondLabel, href = _a.href, isSelected = _a.isSelected, onClickTab = _a.onClickTab, onClickActionIcon = _a.onClickActionIcon, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, router = _a.router, _b = _a.size, size = _b === void 0 ? 'medium' : _b;
+    var inContainer = useContext(TabsContainerContext);
+    var _c = useState(null), IconLeft = _c[0], setIconLeft = _c[1];
+    var _d = useState(null), IconRight = _d[0], setIconRight = _d[1];
     // Load icon dynamically
     var loadIcon = useCallback(function (iconName) { return __awaiter(_this, void 0, void 0, function () {
         var module_1, Icon, error_1;
@@ -96,20 +98,29 @@ export default function Tab(_a) {
             router.push(href);
         }
     };
-    return (<div className={"\n        flex items-center space-x-1 py-1 px-[6px] rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out\n        ".concat(isSelected
-            ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
+    var sizeClasses = {
+        medium: { tab: 'py-1 px-[6px]', label: 'px-[6px] text-body1', secondLabel: 'text-body2', icon: 'w-6 h-6' },
+        small: { tab: 'py-1 px-[6px]', label: 'px-1 text-body2', secondLabel: 'text-caption', icon: 'w-5 h-5' },
+        tiny: { tab: 'py-0.5 px-1', label: 'px-1 text-caption', secondLabel: 'text-caption', icon: 'w-4 h-4' },
+    }[size];
+    // Inside a TabsContainer the container's sliding pill is the selected background
+    var selectedClasses = inContainer
+        ? 'text-light-text-contrast dark:text-dark-text-contrast'
+        : 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast';
+    return (<div data-tab-selected={isSelected} className={"\n        relative flex items-center space-x-1 rounded-[8px] cursor-pointer justify-start transition-colors duration-200 ease-in-out\n        ".concat(sizeClasses.tab, "\n        ").concat(isSelected
+            ? selectedClasses
             : 'text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200', "\n      ")} onClick={handleClick}>
-      {IconLeft && <IconLeft className="w-6 h-6" strokeWidth={2}/>}
-      <div className="flex flex-col px-[6px] text-center">
-        <span className="whitespace-nowrap text-body1">
+      {IconLeft && <IconLeft className={sizeClasses.icon} strokeWidth={2}/>}
+      <div className={"flex flex-col text-center ".concat(sizeClasses.label)}>
+        <span className="whitespace-nowrap">
           {label}
         </span>
-        {secondLabel && (<span className="whitespace-nowrap text-body2 opacity-70">
+        {secondLabel && (<span className={"whitespace-nowrap opacity-70 ".concat(sizeClasses.secondLabel)}>
             {secondLabel}
           </span>)}
       </div>
       {IconRight && (<div onClick={onClickActionIcon} className="cursor-pointer">
-          <IconRight className="w-6 h-6" strokeWidth={2}/>
+          <IconRight className={sizeClasses.icon} strokeWidth={2}/>
         </div>)}
     </div>);
 }

@@ -15,7 +15,7 @@ var meta = {
         },
         size: {
             control: "select",
-            options: ["medium", "small"],
+            options: ["medium", "small", "tiny"],
         },
         state: {
             control: "select",

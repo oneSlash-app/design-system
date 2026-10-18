@@ -14,7 +14,7 @@ const meta: Meta<typeof TextField> = {
     maxRows: { control: "number" },
     size: {
       control: "select",
-      options: ["large", "medium", "small"],
+      options: ["large", "medium", "small", "tiny"],
     },
     type: {
       control: "select",

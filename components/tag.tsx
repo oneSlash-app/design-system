@@ -6,7 +6,7 @@ type IconName = keyof typeof icons;
 
 interface TagProps {
   variant: 'contained' | 'textOnly' | 'dot';
-  size: 'medium' | 'small';
+  size: 'medium' | 'small' | 'tiny';
   state?: 'enabled' | 'selected';
   color?: 'default' | 'success' | 'warning' | 'error' | 'info';
   label: React.ReactNode;
@@ -74,7 +74,11 @@ export default function Tag({
   const Icon = iconName ? icons[iconName] : null;
 
   // Size and padding
-  const sizeClasses = size === 'medium' ? 'text-body2 px-2 py-1' : 'text-caption px-2 py-[3px]';
+  const sizeClasses = {
+    medium: 'text-body2 px-2 py-1',
+    small: 'text-caption px-2 py-[3px]',
+    tiny: 'text-caption px-1.5 py-0',
+  }[size];
 
   // Selected state styles
   const isSelected = state === 'selected';
@@ -145,7 +149,7 @@ export default function Tag({
       {variant === 'dot' && (
         <span className={`w-3 h-3 rounded-full flex-shrink-0 ${dotColor}`} />
       )}
-      {Icon && variant !== 'dot' && <Icon className="w-4 h-4 flex-shrink-0" strokeWidth={2} />}
+      {Icon && variant !== 'dot' && <Icon className={`${size === 'tiny' ? 'w-3 h-3' : 'w-4 h-4'} flex-shrink-0`} strokeWidth={2} />}
       <div className="flex flex-col text-center">
         <span>{label}</span>
         {secondLabel && (

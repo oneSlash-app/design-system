@@ -49,7 +49,11 @@ export default function Tag(_a) {
     // Get icon directly from icons map
     var Icon = iconName ? icons[iconName] : null;
     // Size and padding
-    var sizeClasses = size === 'medium' ? 'text-body2 px-2 py-1' : 'text-caption px-2 py-[3px]';
+    var sizeClasses = {
+        medium: 'text-body2 px-2 py-1',
+        small: 'text-caption px-2 py-[3px]',
+        tiny: 'text-caption px-1.5 py-0',
+    }[size];
     // Selected state styles
     var isSelected = state === 'selected';
     // When color is provided, use color-based styling
@@ -112,7 +116,7 @@ export default function Tag(_a) {
     var baseClasses = 'flex space-x-2 items-center gap-1 rounded-full whitespace-nowrap transition-colors duration-200 ease-in-out';
     return (<div className={"".concat(baseClasses, " ").concat(sizeClasses, " ").concat(bgClasses, " ").concat(fontClasses, " ").concat(borderClasses, " ").concat(hoverClasses, " ").concat(cursorClass)} onMouseEnter={function () { return onClick && setIsHovered(true); }} onMouseLeave={function () { return onClick && setIsHovered(false); }} onClick={onClick}>
       {variant === 'dot' && (<span className={"w-3 h-3 rounded-full flex-shrink-0 ".concat(dotColor)}/>)}
-      {Icon && variant !== 'dot' && <Icon className="w-4 h-4 flex-shrink-0" strokeWidth={2}/>}
+      {Icon && variant !== 'dot' && <Icon className={"".concat(size === 'tiny' ? 'w-3 h-3' : 'w-4 h-4', " flex-shrink-0")} strokeWidth={2}/>}
       <div className="flex flex-col text-center">
         <span>{label}</span>
         {secondLabel && (<span className="text-caption opacity-70">{secondLabel}</span>)}

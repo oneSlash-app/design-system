@@ -175,13 +175,13 @@ module.exports = {
     typography: {
         family: 'Inter, sans-serif',
         h1: {
-            weight: '300',
+            weight: '400',
             size: '96px',
             lineHeight: '120%',
             letterSpacing: '-1.5px',
         },
         h2: {
-            weight: '300',
+            weight: '400',
             size: '60px',
             lineHeight: '120%',
             letterSpacing: '-0.5px',
@@ -205,19 +205,19 @@ module.exports = {
             letterSpacing: '0px',
         },
         h6: {
-            weight: '500',
+            weight: '400',
             size: '20px',
             lineHeight: '150%',
             letterSpacing: '0.2px',
         },
         subtitle1: {
-            weight: '500',
+            weight: '400',
             size: '16px',
             lineHeight: '150%',
             letterSpacing: '0.2px',
         },
         subtitle2: {
-            weight: '500',
+            weight: '400',
             size: '14px',
             lineHeight: '150%',
             letterSpacing: '0.1px',

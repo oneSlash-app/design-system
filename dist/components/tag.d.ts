@@ -3,7 +3,7 @@ import { icons } from 'lucide-react';
 type IconName = keyof typeof icons;
 interface TagProps {
     variant: 'contained' | 'textOnly' | 'dot';
-    size: 'medium' | 'small';
+    size: 'medium' | 'small' | 'tiny';
     state?: 'enabled' | 'selected';
     color?: 'default' | 'success' | 'warning' | 'error' | 'info';
     label: React.ReactNode;

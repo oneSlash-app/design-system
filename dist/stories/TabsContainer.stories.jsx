@@ -7,10 +7,10 @@ var meta = {
 };
 export default meta;
 var TabsWrapper = function (_a) {
-    var tabs = _a.tabs;
+    var tabs = _a.tabs, size = _a.size;
     var _b = useState(0), selected = _b[0], setSelected = _b[1];
     return (<TabsContainer>
-      {tabs.map(function (tab, index) { return (<Tab key={tab} label={tab} isSelected={selected === index} onClickTab={function () { return setSelected(index); }}/>); })}
+      {tabs.map(function (tab, index) { return (<Tab key={tab} label={tab} size={size} isSelected={selected === index} onClickTab={function () { return setSelected(index); }}/>); })}
     </TabsContainer>);
 };
 export var Default = {
@@ -49,4 +49,16 @@ var TabsWithSecondLabelWrapper = function () {
 };
 export var WithSecondLabel = {
     render: function () { return <TabsWithSecondLabelWrapper />; },
+};
+export var AllSizes = {
+    render: function () { return (<div style={{ display: "flex", flexDirection: "column", gap: "16px", alignItems: "flex-start" }}>
+      <TabsWrapper tabs={["Overview", "Analytics", "Reports"]} size="medium"/>
+      <TabsWrapper tabs={["Overview", "Analytics", "Reports"]} size="small"/>
+      <TabsWrapper tabs={["Overview", "Analytics", "Reports"]} size="tiny"/>
+    </div>); },
+};
+export var Overflowing = {
+    render: function () { return (<div style={{ width: "260px" }}>
+      <TabsWrapper tabs={["Overview", "Analytics", "Reports", "Settings", "Users", "Billing"]}/>
+    </div>); },
 };

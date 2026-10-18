@@ -2,6 +2,7 @@
 import React from 'react';
 import { icons } from 'lucide-react';
 var sizeMap = {
+    tiny: 12,
     small: 16,
     medium: 24,
     large: 32,
