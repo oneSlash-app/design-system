@@ -1350,8 +1350,8 @@ video {
 .outline-offset-0{
   outline-offset: 0px;
 }
-.outline-light-accent-main{
-  outline-color: #EEAE03;
+.outline-light-text-primary{
+  outline-color: #000000;
 }
 .ring{
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
@@ -1371,13 +1371,13 @@ video {
 .ring-inset{
   --tw-ring-inset: inset;
 }
-.ring-light-accent-main{
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(238 174 3 / var(--tw-ring-opacity));
-}
 .ring-light-error-main{
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(211 47 47 / var(--tw-ring-opacity));
+}
+.ring-light-text-primary{
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(0 0 0 / var(--tw-ring-opacity));
 }
 .ring-offset-4{
   --tw-ring-offset-width: 4px;
@@ -1525,8 +1525,8 @@ body {
   outline-offset: 0px;
 }
 
-.peer:focus-visible ~ .peer-focus-visible\:outline-light-accent-main{
-  outline-color: #EEAE03;
+.peer:focus-visible ~ .peer-focus-visible\:outline-light-text-primary{
+  outline-color: #000000;
 }
 
 .hover\:border-light-text-secondary:hover{
@@ -1576,9 +1576,9 @@ body {
   text-underline-offset: 4px;
 }
 
-.focus\:border-light-accent-main:focus{
+.focus\:border-light-text-primary:focus{
   --tw-border-opacity: 1;
-  border-color: rgb(238 174 3 / var(--tw-border-opacity));
+  border-color: rgb(0 0 0 / var(--tw-border-opacity));
 }
 
 .focus\:outline:focus{
@@ -1589,12 +1589,12 @@ body {
   outline-width: 1px;
 }
 
-.focus\:outline-light-accent-main:focus{
-  outline-color: #EEAE03;
-}
-
 .focus\:outline-light-error-main:focus{
   outline-color: #D32F2F;
+}
+
+.focus\:outline-light-text-primary:focus{
+  outline-color: #000000;
 }
 
 .focus-visible\:outline:focus-visible{
@@ -1609,12 +1609,12 @@ body {
   outline-offset: 2px;
 }
 
-.focus-visible\:outline-light-accent-main:focus-visible{
-  outline-color: #EEAE03;
-}
-
 .focus-visible\:outline-light-error-main:focus-visible{
   outline-color: #D32F2F;
+}
+
+.focus-visible\:outline-light-text-primary:focus-visible{
+  outline-color: #000000;
 }
 
 .active\:scale-\[0\.97\]:active{
@@ -1886,19 +1886,14 @@ body {
   color: rgb(0 0 0 / var(--tw-text-opacity));
 }
 
-.dark\:outline-dark-accent-main:is(.dark *){
-  outline-color: #FFCD29;
+.dark\:outline-dark-text-primary:is(.dark *){
+  outline-color: #eeeeee;
 }
 
 .dark\:ring-1:is(.dark *){
   --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
   --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color);
   box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-}
-
-.dark\:ring-dark-accent-main:is(.dark *){
-  --tw-ring-opacity: 1;
-  --tw-ring-color: rgb(255 205 41 / var(--tw-ring-opacity));
 }
 
 .dark\:ring-dark-error-main:is(.dark *){
@@ -1909,6 +1904,11 @@ body {
 .dark\:ring-dark-misc-divider:is(.dark *){
   --tw-ring-opacity: 1;
   --tw-ring-color: rgb(64 64 64 / var(--tw-ring-opacity));
+}
+
+.dark\:ring-dark-text-primary:is(.dark *){
+  --tw-ring-opacity: 1;
+  --tw-ring-color: rgb(238 238 238 / var(--tw-ring-opacity));
 }
 
 .dark\:ring-offset-dark-background-default:is(.dark *){
@@ -1941,8 +1941,8 @@ body {
   background-color: rgb(78 78 78 / var(--tw-bg-opacity));
 }
 
-.peer:focus-visible ~ .dark\:peer-focus-visible\:outline-dark-accent-main:is(.dark *){
-  outline-color: #FFCD29;
+.peer:focus-visible ~ .dark\:peer-focus-visible\:outline-dark-text-primary:is(.dark *){
+  outline-color: #eeeeee;
 }
 
 .dark\:hover\:border-dark-text-secondary:hover:is(.dark *){
@@ -2008,25 +2008,25 @@ body {
   color: rgb(255 167 50 / var(--tw-text-opacity));
 }
 
-.dark\:focus\:border-dark-accent-main:focus:is(.dark *){
+.dark\:focus\:border-dark-text-primary:focus:is(.dark *){
   --tw-border-opacity: 1;
-  border-color: rgb(255 205 41 / var(--tw-border-opacity));
-}
-
-.dark\:focus\:outline-dark-accent-main:focus:is(.dark *){
-  outline-color: #FFCD29;
+  border-color: rgb(238 238 238 / var(--tw-border-opacity));
 }
 
 .dark\:focus\:outline-dark-error-main:focus:is(.dark *){
   outline-color: #E74C4C;
 }
 
-.dark\:focus-visible\:outline-dark-accent-main:focus-visible:is(.dark *){
-  outline-color: #FFCD29;
+.dark\:focus\:outline-dark-text-primary:focus:is(.dark *){
+  outline-color: #eeeeee;
 }
 
 .dark\:focus-visible\:outline-dark-error-main:focus-visible:is(.dark *){
   outline-color: #E74C4C;
+}
+
+.dark\:focus-visible\:outline-dark-text-primary:focus-visible:is(.dark *){
+  outline-color: #eeeeee;
 }
 
 .dark\:enabled\:hover\:bg-dark-accent-dark\/75:hover:enabled:is(.dark *){

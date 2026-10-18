@@ -1,9 +1,11 @@
 // Class strings shared across components. Kept in a .tsx file so it compiles
 // to dist/components/*.jsx, which consuming apps' Tailwind configs scan.
 
-// Keyboard focus indicator for every interactive element
+// Keyboard focus indicator for every interactive element. Uses the primary text
+// color (black in light, near-white in dark): the accent yellow is 1.9:1 on the
+// light background and too faint to see.
 export const focusRing =
-  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-accent-main dark:focus-visible:outline-dark-accent-main';
+  'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-text-primary dark:focus-visible:outline-dark-text-primary';
 
 export const focusRingDanger =
   'focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-error-main dark:focus-visible:outline-dark-error-main';

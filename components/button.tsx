@@ -84,7 +84,7 @@ export default function Button({
 
   const focusRingColor = color === 'danger'
     ? 'ring-light-error-main dark:ring-dark-error-main'
-    : 'ring-light-accent-main dark:ring-dark-accent-main';
+    : 'ring-light-text-primary dark:ring-dark-text-primary';
 
   const stateClasses = {
     enabled: 'cursor-pointer',

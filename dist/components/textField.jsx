@@ -32,7 +32,7 @@ export default function TextField(_a) {
         if (disabled) {
             return 'border-light-text-disabled dark:border-dark-text-disabled';
         }
-        return "border-light-text-disabled dark:border-dark-text-disabled\n      hover:border-light-text-secondary dark:hover:border-dark-text-secondary\n      focus:border-light-accent-main dark:focus:border-dark-accent-main\n      focus:outline focus:outline-1 focus:outline-light-accent-main dark:focus:outline-dark-accent-main";
+        return "border-light-text-disabled dark:border-dark-text-disabled\n      hover:border-light-text-secondary dark:hover:border-dark-text-secondary\n      focus:border-light-text-primary dark:focus:border-dark-text-primary\n      focus:outline focus:outline-1 focus:outline-light-text-primary dark:focus:outline-dark-text-primary";
     };
     var errorId = "".concat(id, "-error");
     // Get inputMode for mobile keyboard optimization

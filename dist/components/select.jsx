@@ -154,7 +154,7 @@ export default function Select(_a) {
             return 'border border-light-actionOutlinedBorder-disabled dark:border-dark-actionOutlinedBorder-disabled bg-light-background-default dark:bg-dark-background-default';
         }
         if (isOpen) {
-            return 'border border-light-accent-main dark:border-dark-accent-main outline outline-1 outline-light-accent-main dark:outline-dark-accent-main outline-offset-0 bg-light-background-default dark:bg-dark-background-default';
+            return 'border border-light-text-primary dark:border-dark-text-primary outline outline-1 outline-light-text-primary dark:outline-dark-text-primary outline-offset-0 bg-light-background-default dark:bg-dark-background-default';
         }
         return "border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled bg-light-background-default dark:bg-dark-background-default\n      hover:border-light-text-secondary dark:hover:border-dark-text-secondary hover:bg-light-action-hover dark:hover:bg-dark-action-hover";
     };

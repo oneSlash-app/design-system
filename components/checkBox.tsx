@@ -42,7 +42,7 @@ export default function Checkbox({
       />
       <span
         className={`relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full ${stateTransition}
-          peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-light-accent-main dark:peer-focus-visible:outline-dark-accent-main
+          peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-light-text-primary dark:peer-focus-visible:outline-dark-text-primary
           ${disabled ? '' : 'group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected'}`}
       >
         {/* Checkbox */}
