@@ -79,7 +79,7 @@ export default function Button({
     },
     danger: {
       primary: 'bg-light-error-main dark:bg-dark-error-main text-light-error-contrast dark:text-dark-error-contrast',
-      secondary: 'bg-light-error-light dark:bg-dark-error-light text-light-error-main dark:text-dark-error-main',
+      secondary: 'bg-light-error-alertBg dark:bg-dark-error-alertBg text-light-error-dark dark:text-dark-error-light',
       tertiary: 'bg-transparent border border-light-error-main dark:border-dark-error-main text-light-error-main dark:text-dark-error-main',
       textOnly: 'text-light-error-main dark:text-dark-error-main',
     },
@@ -94,7 +94,7 @@ export default function Button({
     },
     danger: {
       primary: 'hover:bg-light-error-dark hover:dark:bg-dark-error-dark',
-      secondary: 'hover:bg-light-error-main/20 dark:hover:bg-dark-error-main/20',
+      secondary: 'hover:bg-light-error-light/60 dark:hover:bg-dark-error-dark/60',
       tertiary: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
       textOnly: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
     },

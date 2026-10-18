@@ -14,7 +14,7 @@ var meta = {
         },
         size: {
             control: "select",
-            options: ["large", "medium", "small"],
+            options: ["large", "medium", "small", "tiny"],
         },
         iconName: { control: "text" },
         loading: { control: "boolean" },
@@ -80,6 +80,7 @@ export var Loading = {
 };
 export var AllSizes = {
     render: function () { return (<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <IconButton color="primary" state="enabled" size="tiny" iconName="Star"/>
       <IconButton color="primary" state="enabled" size="small" iconName="Star"/>
       <IconButton color="primary" state="enabled" size="medium" iconName="Star"/>
       <IconButton color="primary" state="enabled" size="large" iconName="Star"/>

@@ -3,7 +3,7 @@ import * as LucideIcons from 'lucide-react';
 interface IconButtonProps {
     color: "primary" | "secondary" | "tertiary" | "iconOnly";
     state: "enabled" | "selected" | "disabled";
-    size: "large" | "medium" | "small";
+    size: "large" | "medium" | "small" | "tiny";
     iconName: keyof typeof LucideIcons;
     onClick?: any;
     loading?: boolean;

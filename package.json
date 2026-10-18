@@ -1,7 +1,7 @@
 {
   "name": "oneslash-design-system",
   "description": "A design system for the Oneslash projects",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "private": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "lucide-react": "^0.553.0",
+    "lucide-react": "^0.577.0",
     "react-popper": "^2.3.0"
   },
   "peerDependencies": {

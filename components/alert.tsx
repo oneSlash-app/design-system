@@ -75,8 +75,8 @@ export default function Alert({
 
   const alertContent = (
     <div
-      className={`flex items-start justify-between w-full p-2 rounded-[8px] transition-opacity duration-200 ease-out ${bgClasses} ${
-        isVisible ? 'opacity-100' : 'opacity-0'
+      className={`flex items-start justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${bgClasses} ${
+        isVisible ? 'opacity-100 translate-y-0 scale-100' : variant === 'toast' ? 'opacity-0 -translate-y-3 scale-95' : 'opacity-0'
       } ${variant === 'toast' ? 'max-w-md pointer-events-auto' : ''}`}
     >
       <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">

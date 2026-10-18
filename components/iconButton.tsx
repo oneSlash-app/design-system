@@ -6,7 +6,7 @@ import { LoadingSmall } from './loadingScreen';
 interface IconButtonProps {
   color: "primary" | "secondary" | "tertiary" | "iconOnly";
   state: "enabled" | "selected" | "disabled";
-  size: "large" | "medium" | "small";
+  size: "large" | "medium" | "small" | "tiny";
   iconName: keyof typeof LucideIcons;
   onClick?: any;
   loading?: boolean;
@@ -37,12 +37,14 @@ export default function IconButton({
     large: 'p-2',  // 8px padding
     medium: 'p-1', // 4px padding
     small: 'p-1',  // 4px padding
+    tiny: 'p-0.5', // 2px padding
   };
 
   const iconSizeClasses = {
     large: 'size-6',   // 24px
     medium: 'size-6',  // 24px
     small: 'size-5',   // 20px
+    tiny: 'size-4',    // 16px
   };
 
   // Base classes (padding and corner radius)

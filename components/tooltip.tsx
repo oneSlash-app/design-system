@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useLayoutEffect } from 'react';
 
 interface TooltipProps {
   title: string;
@@ -8,13 +8,17 @@ interface TooltipProps {
   placement?: 'top' | 'bottom';
 }
 
+const VIEWPORT_MARGIN = 8;
+
 export default function Tooltip({ title, children, placement }: TooltipProps) {
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState<'top' | 'bottom'>(placement ?? 'bottom');
+  const [shiftX, setShiftX] = useState(0);
   const tooltipRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    if (!visible) return;
     const handlePosition = () => {
       if (tooltipRef.current && buttonRef.current) {
         const tooltipRect = tooltipRef.current.getBoundingClientRect();
@@ -22,17 +26,28 @@ export default function Tooltip({ title, children, placement }: TooltipProps) {
         // If placement is forced, skip auto-detection
         if (placement) {
           setPosition(placement);
-        } else if (window.innerHeight - buttonRect.bottom < tooltipRect.height + 8) {
-          setPosition('top');
         } else {
-          setPosition('bottom');
+          const spaceBelow = window.innerHeight - buttonRect.bottom;
+          const fitsBelow = spaceBelow >= tooltipRect.height + VIEWPORT_MARGIN;
+          const fitsAbove = buttonRect.top >= tooltipRect.height + VIEWPORT_MARGIN;
+          setPosition(!fitsBelow && fitsAbove ? 'top' : 'bottom');
         }
+        // Keep the tooltip inside the viewport horizontally
+        const centerX = buttonRect.left + buttonRect.width / 2;
+        const half = tooltipRect.width / 2;
+        const minCenter = VIEWPORT_MARGIN + half;
+        const maxCenter = window.innerWidth - VIEWPORT_MARGIN - half;
+        setShiftX(Math.min(Math.max(centerX, minCenter), maxCenter) - centerX);
       }
     };
-    if (visible) { 
-      handlePosition();
-    }
-  }, [visible, placement]);
+    handlePosition();
+    window.addEventListener('resize', handlePosition);
+    window.addEventListener('scroll', handlePosition, true);
+    return () => {
+      window.removeEventListener('resize', handlePosition);
+      window.removeEventListener('scroll', handlePosition, true);
+    };
+  }, [visible, placement, title]);
 
   const handleClick = () => {
     setVisible(false); // Hide tooltip on click
@@ -58,7 +73,7 @@ export default function Tooltip({ title, children, placement }: TooltipProps) {
               bottom: position === 'top' ? '100%' : undefined,
               top: position === 'bottom' ? '100%' : undefined,
               left: '50%',
-              transform: 'translateX(-50%)',
+              transform: `translateX(calc(-50% + ${shiftX}px))`,
             }}
           >
             {title}
