@@ -1,8 +1,11 @@
-# Publishes to npm when a GitHub Release is published, then tells the docs
-# repo (oneSlash-app/design-system-docs) to bump to the new version.
+# Releases a new version when package.json's version changes on main:
+# publishes to npm, creates tag v<version> plus a GitHub Release with notes
+# generated from the PRs merged since the previous release, then tells the
+# docs repo (oneSlash-app/design-system-docs) to bump to the new version.
 #
 # To release: bump "version" in package.json, run `npm run build`, merge to
-# main, then create a GitHub Release with tag v<version> (e.g. v1.5.0).
+# main. Run it by hand from the Actions tab to (re)try an untagged version.
+# Nothing happens if tag v<version> already exists.
 #
 # Secrets:
 #   NPM_TOKEN            npm automation token with publish rights (omit if
@@ -12,40 +15,46 @@
 name: Release
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [main]
+    paths: [package.json]
+  workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write # create tag and GitHub Release
   id-token: write # npm provenance / trusted publishing
 
+concurrency:
+  group: release
+  cancel-in-progress: false
+
 jobs:
-  publish:
+  release:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.release.tag_name }}
 
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
 
-      - name: Check tag matches package.json
+      - name: Check for a new version
         id: version
         run: |
           version=$(node -p "require('./package.json').version")
-          tag="${{ github.event.release.tag_name }}"
-          if [ "v$version" != "$tag" ]; then
-            echo "::error::Release tag $tag does not match package.json version $version"
-            exit 1
-          fi
           echo "version=$version" >> "$GITHUB_OUTPUT"
+          if git ls-remote --exit-code --tags origin "refs/tags/v$version" >/dev/null; then
+            echo "Tag v$version already exists, nothing to release."
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          fi
 
-      - run: npm ci
+      - if: steps.version.outputs.skip != 'true'
+        run: npm ci
 
       - name: Build and check committed dist is up to date
+        if: steps.version.outputs.skip != 'true'
         run: |
           npm run build
           if [ -n "$(git status --porcelain dist)" ]; then
@@ -55,6 +64,7 @@ jobs:
           fi
 
       - name: Publish to npm
+        if: steps.version.outputs.skip != 'true'
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
@@ -64,7 +74,18 @@ jobs:
             npm publish --provenance --access public
           fi
 
+      - name: Create tag and GitHub Release
+        if: steps.version.outputs.skip != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "v${{ steps.version.outputs.version }}" \
+            --target "$GITHUB_SHA" \
+            --title "v${{ steps.version.outputs.version }}" \
+            --generate-notes
+
       - name: Notify docs repo
+        if: steps.version.outputs.skip != 'true'
         env:
           GH_TOKEN: ${{ secrets.DOCS_DISPATCH_TOKEN }}
         run: |
