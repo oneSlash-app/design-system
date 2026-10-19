@@ -181,7 +181,8 @@ export default function Select({
       return 'border border-light-actionOutlinedBorder-disabled dark:border-dark-actionOutlinedBorder-disabled bg-light-background-default dark:bg-dark-background-default';
     }
     if (isOpen) {
-      return 'border border-light-text-primary dark:border-dark-text-primary outline outline-1 outline-light-text-primary dark:outline-dark-text-primary outline-offset-0 bg-light-background-default dark:bg-dark-background-default';
+      // Same 2px offset outline as focus and Button
+      return 'border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled outline outline-2 outline-offset-2 outline-light-text-primary dark:outline-dark-text-primary bg-light-background-default dark:bg-dark-background-default';
     }
     return `border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled bg-light-background-default dark:bg-dark-background-default
       hover:border-light-text-secondary dark:hover:border-dark-text-secondary hover:bg-light-action-hover dark:hover:bg-dark-action-hover`;

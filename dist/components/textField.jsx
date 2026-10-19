@@ -22,17 +22,17 @@ export default function TextField(_a) {
     var baseClasses = "w-full border rounded-[8px] outline-none ".concat(stateTransition, "\n    placeholder:text-light-text-disabled dark:placeholder:text-dark-text-disabled");
     // One background and text color per state, so disabled can't be overridden by the enabled ones
     var colorClasses = disabled
-        ? 'bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled text-light-text-disabled dark:text-dark-text-disabled cursor-not-allowed'
+        ? 'bg-transparent text-light-text-disabled dark:text-dark-text-disabled cursor-not-allowed'
         : 'bg-light-background-default dark:bg-dark-background-default text-light-text-primary dark:text-dark-text-primary';
-    // Border: error > focus (accent border plus outline, as Select) > hover > default
+    // Border: error > focus (2px offset outline, the same weight as Button) > hover > default
     var getBorderColor = function () {
         if (error) {
-            return 'border-light-error-main dark:border-dark-error-main focus:outline focus:outline-1 focus:outline-light-error-main dark:focus:outline-dark-error-main';
+            return 'border-light-error-main dark:border-dark-error-main focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-light-error-main dark:focus:outline-dark-error-main';
         }
         if (disabled) {
             return 'border-light-text-disabled dark:border-dark-text-disabled';
         }
-        return "border-light-text-disabled dark:border-dark-text-disabled\n      hover:border-light-text-secondary dark:hover:border-dark-text-secondary\n      focus:border-light-text-primary dark:focus:border-dark-text-primary\n      focus:outline focus:outline-1 focus:outline-light-text-primary dark:focus:outline-dark-text-primary";
+        return "border-light-text-disabled dark:border-dark-text-disabled\n      hover:border-light-text-secondary dark:hover:border-dark-text-secondary\n      focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-light-text-primary dark:focus:outline-dark-text-primary";
     };
     var errorId = "".concat(id, "-error");
     // Get inputMode for mobile keyboard optimization

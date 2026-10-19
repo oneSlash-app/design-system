@@ -23,7 +23,7 @@ const Menu = forwardRef<HTMLDivElement, MenuProps>(
         style={{ width: width || 'auto' }}
       >
         {/* 4px padding keeps the 8px item corners concentric with the 12px menu corners */}
-        <div className="p-1">
+        <div className="p-1 flex flex-col gap-0.5">
           {children}
         </div>
       </div>
