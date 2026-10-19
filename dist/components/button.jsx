@@ -1,9 +1,10 @@
 'use client';
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
+import { LoadingSmall } from './loadingScreen';
 import { focusRing, focusRingDanger, pressFeedback, stateTransition } from './sharedStyles';
 export default function Button(_a) {
-    var size = _a.size, type = _a.type, _b = _a.color, color = _b === void 0 ? 'default' : _b, state = _a.state, label = _a.label, secondLabel = _a.secondLabel, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _c = _a.className, className = _c === void 0 ? '' : _c;
+    var size = _a.size, type = _a.type, _b = _a.color, color = _b === void 0 ? 'default' : _b, state = _a.state, label = _a.label, secondLabel = _a.secondLabel, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _c = _a.className, className = _c === void 0 ? '' : _c, _d = _a.loading, loading = _d === void 0 ? false : _d;
     // Synchronous lookup so icons render on the first paint
     var IconLeft = decoIcon ? LucideIcons[decoIcon] : null;
     var IconRight = actionIcon ? LucideIcons[actionIcon] : null;
@@ -20,6 +21,8 @@ export default function Button(_a) {
         small: 'w-4 h-4',
         tiny: 'w-3.5 h-3.5',
     }[size];
+    // LoadingSmall sizes are 24/20/16px; pick the one closest to this size's icon
+    var spinnerSize = { large: 'large', medium: 'small', small: 'tiny', tiny: 'tiny' }[size];
     var baseTypeClasses = {
         default: {
             primary: 'bg-light-accent-main dark:bg-dark-accent-main text-light-text-primary dark:text-dark-text-contrast',
@@ -49,23 +52,25 @@ export default function Button(_a) {
             textOnly: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
         },
     }[color][type];
-    var focusRingColor = color === 'danger'
-        ? 'ring-light-error-main dark:ring-dark-error-main'
-        : 'ring-light-text-primary dark:ring-dark-text-primary';
+    // Same outline as real keyboard focus (focusRing), so the demo state matches it and
+    // paints no box behind a transparent textOnly button
+    var focusedOutline = color === 'danger'
+        ? 'outline outline-2 outline-offset-2 outline-light-error-main dark:outline-dark-error-main'
+        : 'outline outline-2 outline-offset-2 outline-light-text-primary dark:outline-dark-text-primary';
     var stateClasses = {
         enabled: 'cursor-pointer',
-        focused: "ring-2 ring-offset-4 ring-offset-light-background-default dark:ring-offset-dark-background-default ".concat(focusRingColor),
+        focused: focusedOutline,
         disabled: type === 'textOnly'
             ? 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-transparent'
             : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',
         selected: 'cursor-pointer bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast',
     };
     // Hover is pure CSS; `state="hovered"` and `state="focused"` only exist to show those states in docs
-    var buttonClasses = "\n    flex flex-row items-center rounded-[8px] justify-between ".concat(stateTransition, " ").concat(pressFeedback, "\n    ").concat(color === 'danger' ? focusRingDanger : focusRing, "\n    ").concat(sizeClasses, "\n    ").concat(state === 'selected' ? stateClasses.selected : '', "\n    ").concat(state === 'enabled' || state === 'hovered' ? "".concat(stateClasses.enabled, " ").concat(baseTypeClasses, " ").concat(hoverTypeClasses) : '', "\n    ").concat(state === 'focused' ? "".concat(baseTypeClasses, " ").concat(hoverTypeClasses, " ").concat(stateClasses.focused) : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : '', "\n    ").concat(className, "\n  ");
-    return (<button type="button" className={buttonClasses} disabled={state === 'disabled'} onClick={onClickButton}>
+    var buttonClasses = "\n    flex flex-row items-center rounded-[8px] justify-between ".concat(stateTransition, " ").concat(pressFeedback, "\n    ").concat(color === 'danger' ? focusRingDanger : focusRing, "\n    ").concat(sizeClasses, "\n    ").concat(state === 'selected' ? stateClasses.selected : '', "\n    ").concat(state === 'enabled' || state === 'hovered' ? "".concat(baseTypeClasses, " ").concat(loading ? 'cursor-wait' : "".concat(stateClasses.enabled, " ").concat(hoverTypeClasses)) : '', "\n    ").concat(state === 'focused' ? "".concat(baseTypeClasses, " ").concat(hoverTypeClasses, " ").concat(stateClasses.focused) : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : '', "\n    ").concat(className, "\n  ");
+    return (<button type="button" className={buttonClasses} disabled={state === 'disabled' || loading} aria-busy={loading || undefined} onClick={onClickButton}>
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className={"flex items-center ".concat(size === 'tiny' ? 'gap-0.5' : 'gap-1')}>
-        {IconLeft && <IconLeft className={"".concat(sizeIcon, " flex-shrink-0")} strokeWidth={2}/>}
+        {loading ? (<LoadingSmall size={spinnerSize}/>) : (IconLeft && <IconLeft className={"".concat(sizeIcon, " flex-shrink-0")} strokeWidth={2}/>)}
         <div className={"flex flex-col text-center px-1"}>
           <span className="whitespace-nowrap overflow-hidden truncate">{label}</span>
           {secondLabel && (<span className={"whitespace-nowrap overflow-hidden truncate ".concat(size === 'tiny' ? 'text-caption' : 'text-body2', " opacity-70")}>{secondLabel}</span>)}
