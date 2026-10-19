@@ -287,7 +287,8 @@ var base = {
 // Adds the semantic keys that are derived from a set's own groups, so the
 // rule lives once and applies to every set (default and themes, light and dark).
 /**
- * @param {typeof base.colors.light} set
+ * @template {typeof base.colors.light} S
+ * @param {S} set
  * @param {'light' | 'dark'} mode
  */
 function withSemanticKeys(set, mode) {
