@@ -336,12 +336,17 @@ var forestDark = override(baseColors.dark, {
  * @returns {S}
  */
 var withForestInfoText = function (set) { return (__assign(__assign({}, set), { info: __assign(__assign({}, set.info), { text: '#0068A3', textHover: '#0068A3' }) })); };
-module.exports = __assign(__assign({}, base), { colors: {
-        light: withSemanticKeys(baseColors.light, 'light'),
-        dark: withSemanticKeys(baseColors.dark, 'dark'),
-    }, themes: {
-        forest: {
-            light: withForestInfoText(withSemanticKeys(forestLight, 'light')),
-            dark: withSemanticKeys(forestDark, 'dark'),
-        },
-    } });
+// Tooltips are inverted surfaces: each mode takes the other mode's accent300 and text.primary of the same theme.
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} light
+ * @param {S} dark
+ * @returns {{ light: S, dark: S }}
+ */
+var withTooltips = function (light, dark) { return ({
+    light: __assign(__assign({}, light), { misc: __assign(__assign({}, light.misc), { tooltipBg: dark.background.accent300, tooltipText: dark.text.primary }) }),
+    dark: __assign(__assign({}, dark), { misc: __assign(__assign({}, dark.misc), { tooltipBg: light.background.accent300, tooltipText: light.text.primary }) }),
+}); };
+var defaultSets = withTooltips(withSemanticKeys(baseColors.light, 'light'), withSemanticKeys(baseColors.dark, 'dark'));
+var forestSets = withTooltips(withForestInfoText(withSemanticKeys(forestLight, 'light')), withSemanticKeys(forestDark, 'dark'));
+module.exports = __assign(__assign({}, base), { colors: defaultSets, themes: { forest: forestSets } });

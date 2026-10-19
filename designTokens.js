@@ -354,16 +354,26 @@ const forestDark = override(baseColors.dark, {
  */
 const withForestInfoText = (set) => ({ ...set, info: { ...set.info, text: '#0068A3', textHover: '#0068A3' } });
 
+// Tooltips are inverted surfaces: each mode takes the other mode's accent300 and text.primary of the same theme.
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} light
+ * @param {S} dark
+ * @returns {{ light: S, dark: S }}
+ */
+const withTooltips = (light, dark) => ({
+  light: { ...light, misc: { ...light.misc, tooltipBg: dark.background.accent300, tooltipText: dark.text.primary } },
+  dark: { ...dark, misc: { ...dark.misc, tooltipBg: light.background.accent300, tooltipText: light.text.primary } },
+});
+
+const defaultSets = withTooltips(withSemanticKeys(baseColors.light, 'light'), withSemanticKeys(baseColors.dark, 'dark'));
+const forestSets = withTooltips(
+  withForestInfoText(withSemanticKeys(forestLight, 'light')),
+  withSemanticKeys(forestDark, 'dark'),
+);
+
 module.exports = {
   ...base,
-  colors: {
-    light: withSemanticKeys(baseColors.light, 'light'),
-    dark: withSemanticKeys(baseColors.dark, 'dark'),
-  },
-  themes: {
-    forest: {
-      light: withForestInfoText(withSemanticKeys(forestLight, 'light')),
-      dark: withSemanticKeys(forestDark, 'dark'),
-    },
-  },
+  colors: defaultSets,
+  themes: { forest: forestSets },
 };
