@@ -46,12 +46,14 @@ export default function UserImage({
   const darkBg = `hsl(${hue}, ${saturation}%, 30%)`;
 
   return (
+    // Per-user hue computed in JS, not a theme token, so the dark: variant stays here (one of the two documented
+    // `dark:` exemptions, see the overlay rings in Menu/Popover/Modal). The dark: variant follows whatever dark variant the app's preset/@theme defines (class-only or OS-aware).
     <div
       style={{
         '--light-bg': lightBg,
         '--dark-bg': darkBg,
       } as React.CSSProperties}
-      className="flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-[var(--light-bg)] dark:bg-[var(--dark-bg)] text-light-text-primary dark:text-dark-text-primary"
+      className="flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-[var(--light-bg)] dark:bg-[var(--dark-bg)] text-fg-primary"
     >
       {userImgUrl ? (
         <img
@@ -60,7 +62,7 @@ export default function UserImage({
           className="w-full h-full object-cover rounded-full"
         />
       ) : (
-        <span className="text-body1 text-light-text-primary dark:text-dark-text-primary">
+        <span className="text-body1 text-fg-primary">
           {displayInitial}
         </span>
       )}

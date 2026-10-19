@@ -53,6 +53,10 @@ jobs:
       - if: steps.version.outputs.skip != 'true'
         run: npm ci
 
+      - name: Test and check contrast
+        if: steps.version.outputs.skip != 'true'
+        run: npm test && npm run check:contrast
+
       - name: Build and check committed dist is up to date
         if: steps.version.outputs.skip != 'true'
         run: |

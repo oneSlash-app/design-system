@@ -1,6 +1,17 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 // design tokens definitions
-module.exports = {
+var base = {
     colors: {
         // light
         light: {
@@ -82,6 +93,8 @@ module.exports = {
             misc: {
                 divider: '#D1D1D1',
                 scrim: '#000000',
+                tooltipBg: '#4F4F4F',
+                tooltipText: '#EEEEEE',
             },
         },
         // dark
@@ -164,6 +177,8 @@ module.exports = {
             misc: {
                 divider: '#404040',
                 scrim: '#000000',
+                tooltipBg: '#FFFFFF',
+                tooltipText: '#000000',
             },
         },
     },
@@ -247,4 +262,91 @@ module.exports = {
             justify: 'justify',
         },
     },
+    radius: {
+        inline: '2px',
+        control: '8px',
+        container: '12px',
+        full: '9999px',
+    },
+    shadow: {
+        overlay: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+    },
+    zIndex: {
+        overlay: '50',
+        tooltip: '1000',
+    },
+    motion: {
+        duration: {
+            fast: '150ms',
+            slide: '200ms',
+            pop: '220ms',
+        },
+        easing: {
+            out: 'cubic-bezier(0, 0, 0.2, 1)',
+            emphasized: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        },
+    },
 };
+// Adds the semantic keys that are derived from a set's own groups, so the
+// rule lives once and applies to every set (default and themes, light and dark).
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} set
+ * @param {'light' | 'dark'} mode
+ */
+function withSemanticKeys(set, mode) {
+    var isLight = mode === 'light';
+    /** @param {typeof set.error} g @param {boolean} isError */
+    var status = function (g, isError) { return (__assign(__assign({}, g), { fill: isLight ? g.dark : g.main, onFill: isLight ? '#FFFFFF' : '#000000', text: isLight ? g.dark : isError ? g.light : g.main, textHover: isLight ? g.dark : g.light, tint: isLight ? g.light : g.dark })); };
+    return __assign(__assign({}, set), { primary: __assign(__assign({}, set.primary), { contrast: isLight ? '#ffffff' : '#000000' }), background: __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100 }), error: status(set.error, true), warning: status(set.warning, false), info: status(set.info, false), success: status(set.success, false) });
+}
+// Forest: the default set with these values replaced (group by group).
+/**
+ * @template T
+ * @param {T} set
+ * @param {{ [K in keyof T]?: Partial<T[K]> }} changes
+ * @returns {T}
+ */
+function override(set, changes) {
+    var out = __assign({}, set);
+    for (var _i = 0, /** @type {(keyof T)[]} */ _a = (Object.keys(changes)); _i < _a.length; _i++) {
+        var group = _a[_i];
+        out[group] = __assign(__assign({}, set[group]), changes[group]);
+    }
+    return out;
+}
+var baseColors = base.colors;
+var forestLight = override(baseColors.light, {
+    text: { primary: '#1C2213', secondary: '#515E3C', disabled: '#8A9670' },
+    accent: { main: '#1C2213', dark: '#2A331E', light: '#3A472B', contrast: '#E7ECDA' },
+    secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+    background: { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC' },
+});
+var forestDark = override(baseColors.dark, {
+    text: { primary: '#D9E5C7', secondary: '#9DAA85', disabled: '#6D7956' },
+    accent: { main: '#E7ECDA', dark: '#D6DEC3', light: '#F2F5EA', contrast: '#1C2213' },
+    secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+    background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
+});
+// The derived light info.text (#006BAB) is 4.33:1 on forest's background; #0068A3 is the lightest step that reaches 4.5.
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} set
+ * @returns {S}
+ */
+var withForestInfoText = function (set) { return (__assign(__assign({}, set), { info: __assign(__assign({}, set.info), { text: '#0068A3', textHover: '#0068A3' }) })); };
+// Tooltips are inverted surfaces: each mode takes the other mode's accent300 and text.primary of the same theme.
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} light
+ * @param {S} dark
+ * @returns {{ light: S, dark: S }}
+ */
+var withTooltips = function (light, dark) { return ({
+    light: __assign(__assign({}, light), { misc: __assign(__assign({}, light.misc), { tooltipBg: dark.background.accent300, tooltipText: dark.text.primary }) }),
+    dark: __assign(__assign({}, dark), { misc: __assign(__assign({}, dark.misc), { tooltipBg: light.background.accent300, tooltipText: light.text.primary }) }),
+}); };
+var defaultSets = withTooltips(withSemanticKeys(baseColors.light, 'light'), withSemanticKeys(baseColors.dark, 'dark'));
+var forestSets = withTooltips(withForestInfoText(withSemanticKeys(forestLight, 'light')), withSemanticKeys(forestDark, 'dark'));
+module.exports = __assign(__assign({}, base), { colors: defaultSets, themes: { forest: forestSets } });

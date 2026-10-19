@@ -77,10 +77,10 @@ export default function MenuItem({
       tabIndex={href ? undefined : tabIndex}
       aria-selected={role === 'option' ? !!isSelected : undefined}
       className={`
-        flex items-center ${paddingClass} rounded-[8px] cursor-pointer justify-between text-left ${stateTransition} ${pressFeedbackAny} ${focusRing}
+        flex items-center ${paddingClass} rounded-control cursor-pointer justify-between text-left ${stateTransition} ${pressFeedbackAny} ${focusRing}
         ${isSelected
-          ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
-          : `hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200 ${isActive ? 'bg-light-background-accent200 dark:bg-dark-background-accent200' : ''}`}
+          ? 'bg-primary-dark text-primary-contrast'
+          : `hover:bg-background-accent200 ${isActive ? 'bg-background-accent200' : ''}`}
         ${className}
       `}
       style={{ width: '100%' }}
@@ -101,17 +101,17 @@ export default function MenuItem({
         ) : (
           IconLeft && (
             <IconLeft
-              className={`${iconSize} flex-shrink-0 ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary'}`}
+              className={`${iconSize} flex-shrink-0 ${isSelected ? 'text-primary-contrast' : 'text-fg-secondary'}`}
               strokeWidth={2}
             />
           )
         )}
         <div className="flex flex-col min-w-0">
-          <span className={`truncate ${labelClass} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
+          <span className={`truncate ${labelClass} ${isSelected ? 'text-primary-contrast' : 'text-fg-primary'}`}>
             {label}
           </span>
           {secondLabel && (
-            <span className={`truncate ${secondLabelClass} opacity-70 ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary'}`}>
+            <span className={`truncate ${secondLabelClass} opacity-70 ${isSelected ? 'text-primary-contrast' : 'text-fg-primary'}`}>
               {secondLabel}
             </span>
           )}
@@ -132,7 +132,7 @@ export default function MenuItem({
         )}
         {IconRight && (
           <IconRight
-            className={`${iconSize} ${isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary'} flex-shrink-0`}
+            className={`${iconSize} ${isSelected ? 'text-primary-contrast' : 'text-fg-secondary'} flex-shrink-0`}
             strokeWidth={2}
           />
         )}
@@ -145,5 +145,5 @@ export default function MenuItem({
     </div>
   );
 
-  return href ? <NextLink href={href} className={`block rounded-[8px] ${focusRing}`}>{content}</NextLink> : content;
+  return href ? <NextLink href={href} className={`block rounded-control ${focusRing}`}>{content}</NextLink> : content;
 }

@@ -10,7 +10,7 @@ export default function Line({
   direction = 'horizontal',
   className = '',
 }: LineProps) {
-  const baseClasses = 'bg-light-misc-divider dark:bg-dark-misc-divider';
+  const baseClasses = 'bg-misc-divider';
 
   if (direction === 'vertical') {
     return (

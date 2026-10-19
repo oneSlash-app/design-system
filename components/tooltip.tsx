@@ -115,10 +115,10 @@ export default function Tooltip({ title, children, placement }: TooltipProps) {
           ref={tooltipRef}
           id={tooltipId}
           role="tooltip"
-          className={`fixed z-[1000] w-max max-w-[min(320px,calc(100vw-16px))] break-words text-caption rounded-[8px] py-1 px-2 pointer-events-none
-            dark:bg-light-background-accent300 bg-dark-background-accent300
-            dark:text-light-text-primary text-dark-text-primary
-            transition-opacity duration-150 ease-out motion-reduce:transition-none ${visible && coords ? 'opacity-100' : 'opacity-0'}`}
+          className={`fixed z-[var(--os-z-tooltip)] w-max max-w-[min(320px,calc(100vw-16px))] break-words text-caption rounded-control py-1 px-2 pointer-events-none
+            bg-misc-tooltipBg
+            text-misc-tooltipText
+            transition-opacity duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none ${visible && coords ? 'opacity-100' : 'opacity-0'}`}
           style={{ top: coords?.top ?? 0, left: coords?.left ?? 0 }}
         >
           {title}

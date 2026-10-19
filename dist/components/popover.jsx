@@ -45,9 +45,10 @@ export default function Popover(_a) {
     if (!mounted || !hasMounted || !anchorEl)
         return null;
     // Render popover in a portal to prevent layout shifts and positioning issues
-    return createPortal(<div id={id} ref={setPopoverElement} style={styles.popper} {...attributes.popper} className="z-50" role="dialog">
+    // dark-only edge: a ring only in dark mode, so it keeps a dark: variant (it follows whatever dark variant the app's preset/@theme defines, class-only or OS-aware)
+    return createPortal(<div id={id} ref={setPopoverElement} style={styles.popper} {...attributes.popper} className="z-[var(--os-z-overlay)]" role="dialog">
       {/* Popper owns the outer transform, so the fade and scale go on this inner panel */}
-      <div className={"bg-light-background-accent300 dark:bg-dark-background-accent100 dark:ring-1 dark:ring-dark-misc-divider rounded-[8px] shadow-lg p-2 origin-top-left\n          ".concat(overlayTransition, " ").concat(visible ? overlayVisible : overlayHidden)}>
+      <div className={"bg-background-overlay dark:ring-1 dark:ring-misc-divider rounded-control shadow-overlay p-2 origin-top-left\n          ".concat(overlayTransition, " ").concat(visible ? overlayVisible : overlayHidden)}>
         {children}
       </div>
     </div>, document.body // Mounting the popover in the document body for isolation

@@ -43,31 +43,31 @@ export default function Textarea(_a) {
         small: 'text-body2 p-2 leading-[18px]', // body2 (14px), padding 8px
         tiny: 'text-caption p-1 leading-[16px]', // caption (12px), padding 4px
     }[size];
-    var baseClasses = "block w-full border rounded-[8px] outline-none resize-none [&::-webkit-scrollbar]:hidden ".concat(stateTransition, "\n    placeholder:text-light-text-disabled dark:placeholder:text-dark-text-disabled");
+    var baseClasses = "block w-full border rounded-control outline-none resize-none [&::-webkit-scrollbar]:hidden ".concat(stateTransition, "\n    placeholder:text-fg-disabled");
     // One background and text color per state, so disabled can't be overridden by the enabled ones
     var colorClasses = disabled
-        ? 'bg-transparent text-light-text-disabled dark:text-dark-text-disabled cursor-not-allowed'
-        : 'bg-light-background-default dark:bg-dark-background-default text-light-text-primary dark:text-dark-text-primary';
+        ? 'bg-transparent text-fg-disabled cursor-not-allowed'
+        : 'bg-background-default text-fg-primary';
     // Border: error > focus (2px offset outline, the same weight as Button) > hover > default
     var getBorderColor = function () {
         if (error) {
-            return 'border-light-error-main dark:border-dark-error-main focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-light-error-main dark:focus:outline-dark-error-main';
+            return 'border-error-main focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-error-main';
         }
         if (disabled) {
-            return 'border-light-text-disabled dark:border-dark-text-disabled';
+            return 'border-fg-disabled';
         }
-        return "border-light-text-disabled dark:border-dark-text-disabled\n      hover:border-light-text-secondary dark:hover:border-dark-text-secondary\n      focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-light-text-primary dark:focus:outline-dark-text-primary";
+        return "border-fg-disabled\n      hover:border-fg-secondary\n      focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-fg-primary";
     };
     var containerClasses = "\n    ".concat(colorClasses, "\n    ").concat(baseClasses, "\n    ").concat(sizeClasses, "\n    ").concat(getBorderColor(), "\n  ");
     var errorId = "".concat(id, "-error");
     return (<div className="flex flex-col w-full">
-      {label && (<label htmlFor={id} className="mb-1 text-body2 text-light-text-secondary dark:text-dark-text-secondary">
+      {label && (<label htmlFor={id} className="mb-1 text-body2 text-fg-secondary">
           {label}
         </label>)}
       <div className="relative">
         <textarea ref={textareaRef} id={id} rows={1} className={containerClasses} value={value} onChange={onChange} onInput={adjustHeight} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} onCompositionStart={onCompositionStart} onCompositionEnd={onCompositionEnd} autoFocus={autoFocus} disabled={disabled} autoComplete="off" aria-invalid={error || undefined} aria-describedby={error ? errorId : undefined}/>
       </div>
-      {error && (<p id={errorId} className="mt-1 text-light-error-main dark:text-dark-error-main text-body2">
+      {error && (<p id={errorId} className="mt-1 text-error-main text-body2">
           {errorText}
         </p>)}
     </div>);

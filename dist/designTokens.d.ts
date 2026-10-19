@@ -1,277 +1,601 @@
-export namespace colors {
-    export namespace light {
-        export namespace text {
-            let primary: string;
-            let secondary: string;
-            let disabled: string;
-            let contrast: string;
-        }
-        export namespace accent {
-            export let main: string;
-            export let dark: string;
-            let light_1: string;
-            export { light_1 as light };
-            let contrast_1: string;
-            export { contrast_1 as contrast };
-        }
-        export namespace primary_1 {
-            let main_1: string;
-            export { main_1 as main };
-            let dark_1: string;
-            export { dark_1 as dark };
-            let light_2: string;
-            export { light_2 as light };
-        }
-        export { primary_1 as primary };
-        export namespace secondary_1 {
-            let main_2: string;
-            export { main_2 as main };
-            let dark_2: string;
-            export { dark_2 as dark };
-            let light_3: string;
-            export { light_3 as light };
-        }
-        export { secondary_1 as secondary };
-        export namespace error {
-            let main_3: string;
-            export { main_3 as main };
-            let dark_3: string;
-            export { dark_3 as dark };
-            let light_4: string;
-            export { light_4 as light };
-            export let alertBg: string;
-            let contrast_2: string;
-            export { contrast_2 as contrast };
-        }
-        export namespace warning {
-            let main_4: string;
-            export { main_4 as main };
-            let dark_4: string;
-            export { dark_4 as dark };
-            let light_5: string;
-            export { light_5 as light };
-            let alertBg_1: string;
-            export { alertBg_1 as alertBg };
-            let contrast_3: string;
-            export { contrast_3 as contrast };
-        }
-        export namespace info {
-            let main_5: string;
-            export { main_5 as main };
-            let dark_5: string;
-            export { dark_5 as dark };
-            let light_6: string;
-            export { light_6 as light };
-            let alertBg_2: string;
-            export { alertBg_2 as alertBg };
-            let contrast_4: string;
-            export { contrast_4 as contrast };
-        }
-        export namespace success {
-            let main_6: string;
-            export { main_6 as main };
-            let dark_6: string;
-            export { dark_6 as dark };
-            let light_7: string;
-            export { light_7 as light };
-            let alertBg_3: string;
-            export { alertBg_3 as alertBg };
-            let contrast_5: string;
-            export { contrast_5 as contrast };
-        }
-        export namespace background {
-            let _default: string;
-            export { _default as default };
-            export let accent100: string;
-            export let accent200: string;
-            export let accent300: string;
-        }
-        export namespace action {
-            export let active: string;
-            export let hover: string;
-            export let selected: string;
-            export let disabledBackground: string;
-            let disabled_1: string;
-            export { disabled_1 as disabled };
-        }
-        export namespace actionBackground {
-            export let enabled: string;
-            export let hovered: string;
-            let selected_1: string;
-            export { selected_1 as selected };
-            let disabled_2: string;
-            export { disabled_2 as disabled };
-        }
-        export namespace actionOutlinedBorder {
-            let enabled_1: string;
-            export { enabled_1 as enabled };
-            let hovered_1: string;
-            export { hovered_1 as hovered };
-            let selected_2: string;
-            export { selected_2 as selected };
-            let disabled_3: string;
-            export { disabled_3 as disabled };
-        }
-        export namespace misc {
-            let divider: string;
-            let scrim: string;
-        }
-    }
-    export namespace dark_7 {
-        export namespace text_1 {
-            let primary_2: string;
-            export { primary_2 as primary };
-            let secondary_2: string;
-            export { secondary_2 as secondary };
-            let disabled_4: string;
-            export { disabled_4 as disabled };
-            let contrast_6: string;
-            export { contrast_6 as contrast };
-        }
-        export { text_1 as text };
-        export namespace accent_1 {
-            let main_7: string;
-            export { main_7 as main };
-            let dark_8: string;
-            export { dark_8 as dark };
-            let light_8: string;
-            export { light_8 as light };
-            let contrast_7: string;
-            export { contrast_7 as contrast };
-        }
-        export { accent_1 as accent };
-        export namespace primary_3 {
-            let main_8: string;
-            export { main_8 as main };
-            let dark_9: string;
-            export { dark_9 as dark };
-            let light_9: string;
-            export { light_9 as light };
-        }
-        export { primary_3 as primary };
-        export namespace secondary_3 {
-            let main_9: string;
-            export { main_9 as main };
-            let dark_10: string;
-            export { dark_10 as dark };
-            let light_10: string;
-            export { light_10 as light };
-        }
-        export { secondary_3 as secondary };
-        export namespace error_1 {
-            let main_10: string;
-            export { main_10 as main };
-            let dark_11: string;
-            export { dark_11 as dark };
-            let light_11: string;
-            export { light_11 as light };
-            let alertBg_4: string;
-            export { alertBg_4 as alertBg };
-            let contrast_8: string;
-            export { contrast_8 as contrast };
-        }
-        export { error_1 as error };
-        export namespace warning_1 {
-            let main_11: string;
-            export { main_11 as main };
-            let dark_12: string;
-            export { dark_12 as dark };
-            let light_12: string;
-            export { light_12 as light };
-            let alertBg_5: string;
-            export { alertBg_5 as alertBg };
-            let contrast_9: string;
-            export { contrast_9 as contrast };
-        }
-        export { warning_1 as warning };
-        export namespace info_1 {
-            let main_12: string;
-            export { main_12 as main };
-            let dark_13: string;
-            export { dark_13 as dark };
-            let light_13: string;
-            export { light_13 as light };
-            let alertBg_6: string;
-            export { alertBg_6 as alertBg };
-            let contrast_10: string;
-            export { contrast_10 as contrast };
-        }
-        export { info_1 as info };
-        export namespace success_1 {
-            let main_13: string;
-            export { main_13 as main };
-            let dark_14: string;
-            export { dark_14 as dark };
-            let light_14: string;
-            export { light_14 as light };
-            let alertBg_7: string;
-            export { alertBg_7 as alertBg };
-            let contrast_11: string;
-            export { contrast_11 as contrast };
-        }
-        export { success_1 as success };
-        export namespace background_1 {
-            let _default_1: string;
-            export { _default_1 as default };
-            let accent100_1: string;
-            export { accent100_1 as accent100 };
-            let accent200_1: string;
-            export { accent200_1 as accent200 };
-            let accent300_1: string;
-            export { accent300_1 as accent300 };
-        }
-        export { background_1 as background };
-        export namespace action_1 {
-            let active_1: string;
-            export { active_1 as active };
-            let hover_1: string;
-            export { hover_1 as hover };
-            let selected_3: string;
-            export { selected_3 as selected };
-            let disabledBackground_1: string;
-            export { disabledBackground_1 as disabledBackground };
-            let disabled_5: string;
-            export { disabled_5 as disabled };
-        }
-        export { action_1 as action };
-        export namespace actionBackground_1 {
-            let enabled_2: string;
-            export { enabled_2 as enabled };
-            let hovered_2: string;
-            export { hovered_2 as hovered };
-            let selected_4: string;
-            export { selected_4 as selected };
-            let disabled_6: string;
-            export { disabled_6 as disabled };
-        }
-        export { actionBackground_1 as actionBackground };
-        export namespace actionOutlinedBorder_1 {
-            let enabled_3: string;
-            export { enabled_3 as enabled };
-            let hovered_3: string;
-            export { hovered_3 as hovered };
-            let selected_5: string;
-            export { selected_5 as selected };
-            let disabled_7: string;
-            export { disabled_7 as disabled };
-        }
-        export { actionOutlinedBorder_1 as actionOutlinedBorder };
-        export namespace misc_1 {
-            let divider_1: string;
-            export { divider_1 as divider };
-            let scrim_1: string;
-            export { scrim_1 as scrim };
-        }
-        export { misc_1 as misc };
-    }
-    export { dark_7 as dark };
+declare const defaultSets: {
+    light: {
+        text: {
+            primary: string;
+            secondary: string;
+            disabled: string;
+            contrast: string;
+        };
+        accent: {
+            main: string;
+            dark: string;
+            light: string;
+            contrast: string;
+        };
+        primary: {
+            main: string;
+            dark: string;
+            light: string;
+        };
+        secondary: {
+            main: string;
+            dark: string;
+            light: string;
+        };
+        error: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        warning: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        info: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        success: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        background: {
+            default: string;
+            accent100: string;
+            accent200: string;
+            accent300: string;
+        };
+        action: {
+            active: string;
+            hover: string;
+            selected: string;
+            disabledBackground: string;
+            disabled: string;
+        };
+        actionBackground: {
+            enabled: string;
+            hovered: string;
+            selected: string;
+            disabled: string;
+        };
+        actionOutlinedBorder: {
+            enabled: string;
+            hovered: string;
+            selected: string;
+            disabled: string;
+        };
+        misc: {
+            divider: string;
+            scrim: string;
+            tooltipBg: string;
+            tooltipText: string;
+        };
+    } & {
+        primary: {
+            contrast: string;
+            main: string;
+            dark: string;
+            light: string;
+        };
+        background: {
+            elevated: string;
+            overlay: string;
+            default: string;
+            accent100: string;
+            accent200: string;
+            accent300: string;
+        };
+        error: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        warning: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        info: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        success: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+    };
+    dark: {
+        text: {
+            primary: string;
+            secondary: string;
+            disabled: string;
+            contrast: string;
+        };
+        accent: {
+            main: string;
+            dark: string;
+            light: string;
+            contrast: string;
+        };
+        primary: {
+            main: string;
+            dark: string;
+            light: string;
+        };
+        secondary: {
+            main: string;
+            dark: string;
+            light: string;
+        };
+        error: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        warning: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        info: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        success: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        background: {
+            default: string;
+            accent100: string;
+            accent200: string;
+            accent300: string;
+        };
+        action: {
+            active: string;
+            hover: string;
+            selected: string;
+            disabledBackground: string;
+            disabled: string;
+        };
+        actionBackground: {
+            enabled: string;
+            hovered: string;
+            selected: string;
+            disabled: string;
+        };
+        actionOutlinedBorder: {
+            enabled: string;
+            hovered: string;
+            selected: string;
+            disabled: string;
+        };
+        misc: {
+            divider: string;
+            scrim: string;
+            tooltipBg: string;
+            tooltipText: string;
+        };
+    } & {
+        primary: {
+            contrast: string;
+            main: string;
+            dark: string;
+            light: string;
+        };
+        background: {
+            elevated: string;
+            overlay: string;
+            default: string;
+            accent100: string;
+            accent200: string;
+            accent300: string;
+        };
+        error: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        warning: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        info: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        success: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+    };
+};
+declare const forestSets: {
+    light: {
+        text: {
+            primary: string;
+            secondary: string;
+            disabled: string;
+            contrast: string;
+        };
+        accent: {
+            main: string;
+            dark: string;
+            light: string;
+            contrast: string;
+        };
+        primary: {
+            main: string;
+            dark: string;
+            light: string;
+        };
+        secondary: {
+            main: string;
+            dark: string;
+            light: string;
+        };
+        error: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        warning: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        info: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        success: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        background: {
+            default: string;
+            accent100: string;
+            accent200: string;
+            accent300: string;
+        };
+        action: {
+            active: string;
+            hover: string;
+            selected: string;
+            disabledBackground: string;
+            disabled: string;
+        };
+        actionBackground: {
+            enabled: string;
+            hovered: string;
+            selected: string;
+            disabled: string;
+        };
+        actionOutlinedBorder: {
+            enabled: string;
+            hovered: string;
+            selected: string;
+            disabled: string;
+        };
+        misc: {
+            divider: string;
+            scrim: string;
+            tooltipBg: string;
+            tooltipText: string;
+        };
+    } & {
+        primary: {
+            contrast: string;
+            main: string;
+            dark: string;
+            light: string;
+        };
+        background: {
+            elevated: string;
+            overlay: string;
+            default: string;
+            accent100: string;
+            accent200: string;
+            accent300: string;
+        };
+        error: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        warning: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        info: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        success: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+    };
+    dark: {
+        text: {
+            primary: string;
+            secondary: string;
+            disabled: string;
+            contrast: string;
+        };
+        accent: {
+            main: string;
+            dark: string;
+            light: string;
+            contrast: string;
+        };
+        primary: {
+            main: string;
+            dark: string;
+            light: string;
+        };
+        secondary: {
+            main: string;
+            dark: string;
+            light: string;
+        };
+        error: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        warning: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        info: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        success: {
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        background: {
+            default: string;
+            accent100: string;
+            accent200: string;
+            accent300: string;
+        };
+        action: {
+            active: string;
+            hover: string;
+            selected: string;
+            disabledBackground: string;
+            disabled: string;
+        };
+        actionBackground: {
+            enabled: string;
+            hovered: string;
+            selected: string;
+            disabled: string;
+        };
+        actionOutlinedBorder: {
+            enabled: string;
+            hovered: string;
+            selected: string;
+            disabled: string;
+        };
+        misc: {
+            divider: string;
+            scrim: string;
+            tooltipBg: string;
+            tooltipText: string;
+        };
+    } & {
+        primary: {
+            contrast: string;
+            main: string;
+            dark: string;
+            light: string;
+        };
+        background: {
+            elevated: string;
+            overlay: string;
+            default: string;
+            accent100: string;
+            accent200: string;
+            accent300: string;
+        };
+        error: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        warning: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        info: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+        success: {
+            fill: string;
+            onFill: string;
+            text: string;
+            textHover: string;
+            tint: string;
+            main: string;
+            dark: string;
+            light: string;
+            alertBg: string;
+            contrast: string;
+        };
+    };
+};
+export { defaultSets as colors };
+export declare namespace themes {
+    export { forestSets as forest };
 }
-export namespace spacing {
+export declare namespace spacing {
     let small: string;
     let medium: string;
     let large: string;
 }
-export namespace typography {
+export declare namespace typography {
     let family: string;
     namespace h1 {
         let weight: string;
@@ -384,5 +708,31 @@ export namespace typography {
         let center: string;
         let right: string;
         let justify: string;
+    }
+}
+export declare namespace radius {
+    let inline: string;
+    let control: string;
+    let container: string;
+    let full: string;
+}
+export declare namespace shadow {
+    let overlay: string;
+}
+export declare namespace zIndex {
+    let overlay_1: string;
+    export { overlay_1 as overlay };
+    export let tooltip: string;
+}
+export declare namespace motion {
+    namespace duration {
+        let fast: string;
+        let slide: string;
+        let pop: string;
+    }
+    namespace easing {
+        let out: string;
+        let emphasized: string;
+        let spring: string;
     }
 }

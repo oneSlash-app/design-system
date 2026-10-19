@@ -16,47 +16,47 @@ interface TagProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-// Light: the -dark shade with white text; dark: the -main shade with black text.
-// Both keep text at 4.4:1 or better.
+// Filled tags use the status `fill` with `onFill` text; text-only tags use the status `text` token.
+// Each pair is checked at 4.5:1 by `npm run check:contrast`.
 const colorConfig = {
   default: {
-    bg: 'bg-light-secondary-light dark:bg-dark-secondary-light',
-    text: 'text-light-text-primary dark:text-dark-text-primary',
-    textOnly: 'text-light-text-secondary dark:text-dark-text-secondary',
-    border: 'border-light-misc-divider dark:border-dark-misc-divider',
-    dot: 'bg-light-text-secondary dark:bg-dark-text-secondary',
+    bg: 'bg-secondary-light',
+    text: 'text-fg-primary',
+    textOnly: 'text-fg-secondary',
+    border: 'border-misc-divider',
+    dot: 'bg-fg-secondary',
     hasBorderTextOnly: false,
   },
   success: {
-    bg: 'bg-light-success-dark dark:bg-dark-success-main',
-    text: 'text-light-text-contrast dark:text-dark-text-contrast',
-    textOnly: 'text-light-success-dark dark:text-dark-success-main',
-    border: 'border-light-success-dark dark:border-dark-success-main',
-    dot: 'bg-light-success-main dark:bg-dark-success-main',
+    bg: 'bg-success-fill',
+    text: 'text-success-onFill',
+    textOnly: 'text-success-text',
+    border: 'border-success-fill',
+    dot: 'bg-success-main',
     hasBorderTextOnly: true,
   },
   warning: {
-    bg: 'bg-light-warning-dark dark:bg-dark-warning-main',
-    text: 'text-light-text-contrast dark:text-dark-text-contrast',
-    textOnly: 'text-light-warning-dark dark:text-dark-warning-main',
-    border: 'border-light-warning-dark dark:border-dark-warning-main',
-    dot: 'bg-light-warning-main dark:bg-dark-warning-main',
+    bg: 'bg-warning-fill',
+    text: 'text-warning-onFill',
+    textOnly: 'text-warning-text',
+    border: 'border-warning-fill',
+    dot: 'bg-warning-main',
     hasBorderTextOnly: true,
   },
   error: {
-    bg: 'bg-light-error-dark dark:bg-dark-error-main',
-    text: 'text-light-text-contrast dark:text-dark-text-contrast',
-    textOnly: 'text-light-error-dark dark:text-dark-error-light',
-    border: 'border-light-error-dark dark:border-dark-error-main',
-    dot: 'bg-light-error-main dark:bg-dark-error-main',
+    bg: 'bg-error-fill',
+    text: 'text-error-onFill',
+    textOnly: 'text-error-text',
+    border: 'border-error-fill',
+    dot: 'bg-error-main',
     hasBorderTextOnly: true,
   },
   info: {
-    bg: 'bg-light-info-dark dark:bg-dark-info-main',
-    text: 'text-light-text-contrast dark:text-dark-text-contrast',
-    textOnly: 'text-light-info-dark dark:text-dark-info-main',
-    border: 'border-light-info-dark dark:border-dark-info-main',
-    dot: 'bg-light-info-main dark:bg-dark-info-main',
+    bg: 'bg-info-fill',
+    text: 'text-info-onFill',
+    textOnly: 'text-info-text',
+    border: 'border-info-fill',
+    dot: 'bg-info-main',
     hasBorderTextOnly: true,
   },
 };
@@ -94,25 +94,25 @@ export default function Tag({
   } else if (colorStyles) {
     bgClasses = variant === 'contained' ? colorStyles.bg : '';
   } else if (isSelected && variant === 'contained') {
-    bgClasses = 'bg-light-accent-main dark:bg-dark-accent-main';
+    bgClasses = 'bg-accent-main';
   } else if (variant === 'contained') {
-    bgClasses = 'bg-light-background-accent300 dark:bg-dark-background-accent300';
+    bgClasses = 'bg-background-accent300';
   }
 
   // Font color
   let fontClasses = '';
   if (variant === 'dot') {
-    fontClasses = 'text-light-text-primary dark:text-dark-text-primary';
+    fontClasses = 'text-fg-primary';
   } else if (colorStyles) {
     fontClasses = variant === 'textOnly' ? colorStyles.textOnly : colorStyles.text;
   } else if (isSelected && variant === 'contained') {
     // Selected contained tags sit on accent-main — use the accent contrast token
-    fontClasses = 'text-light-accent-contrast dark:text-dark-accent-contrast';
+    fontClasses = 'text-accent-contrast';
   } else if (isSelected) {
     // No fill behind the text: the accent border marks the selection
-    fontClasses = 'text-light-text-primary dark:text-dark-text-primary';
+    fontClasses = 'text-fg-primary';
   } else {
-    fontClasses = 'text-light-text-primary dark:text-dark-text-primary';
+    fontClasses = 'text-fg-primary';
   }
 
   // Border styles. Every tag has a 1px border (transparent when hidden) so all variants share a height
@@ -126,9 +126,9 @@ export default function Tag({
       borderClasses = `border ${colorStyles.border}`;
     }
   } else if (isSelected && variant === 'textOnly') {
-    borderClasses = 'border border-light-accent-main dark:border-dark-accent-main';
+    borderClasses = 'border border-accent-main';
   } else if (variant === 'contained') {
-    borderClasses = 'border border-light-misc-divider dark:border-dark-misc-divider';
+    borderClasses = 'border border-misc-divider';
   }
 
   // Dot color
@@ -136,7 +136,7 @@ export default function Tag({
 
   // Hover (only when not selected, no color, and onClick is provided)
   const hoverClasses = !isSelected && !color && variant === 'contained' && onClick
-    ? 'hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'
+    ? 'hover:bg-background-accent200'
     : '';
 
   const cursorClass = onClick && !isSelected ? 'cursor-pointer' : '';

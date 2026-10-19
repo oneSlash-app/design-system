@@ -92,10 +92,11 @@ export default function Modal({
 
   if (!mounted) return null;
 
+  // dark-only edge: a ring only in dark mode, so it keeps a dark: variant (it follows whatever dark variant the app's preset/@theme defines, class-only or OS-aware)
   return (
     <div
-      className={`fixed bg-light-misc-scrim/40 dark:bg-dark-misc-scrim/40 flex items-center justify-center z-50
-        transition-opacity duration-150 ease-out motion-reduce:transition-none ${visible ? 'opacity-100' : 'opacity-0'}`}
+      className={`fixed bg-misc-scrim/40 flex items-center justify-center z-[var(--os-z-overlay)]
+        transition-opacity duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none ${visible ? 'opacity-100' : 'opacity-0'}`}
       style={{ top: 0, left: 0, right: 0, bottom: 0 }}
       onClick={handleOverlayClick}
     >
@@ -105,7 +106,7 @@ export default function Modal({
         aria-modal="true"
         aria-labelledby={title ? titleId : undefined}
         tabIndex={-1}
-        className={`bg-light-background-default dark:bg-dark-background-accent100 dark:ring-1 dark:ring-dark-misc-divider rounded-[8px] ${modalWidth} flex flex-col outline-none
+        className={`bg-background-elevated dark:ring-1 dark:ring-misc-divider rounded-control ${modalWidth} flex flex-col outline-none
           ${overlayTransition} ${visible ? overlayVisible : overlayHidden}`}
         style={{
           maxWidth,
@@ -115,14 +116,14 @@ export default function Modal({
         }}
       >
         {(title || actions) && (
-          <div className="px-6 py-3 border-b border-light-misc-divider dark:border-dark-misc-divider flex justify-between items-start" style={{ flexShrink: 0 }}>
+          <div className="px-6 py-3 border-b border-misc-divider flex justify-between items-start" style={{ flexShrink: 0 }}>
             {title && (
               <div className="flex flex-col">
-                <h2 id={titleId} className="text-h5 text-light-text-primary dark:text-dark-text-primary">
+                <h2 id={titleId} className="text-h5 text-fg-primary">
                   {title}
                 </h2>
                 {secondTitle && (
-                  <span className="text-body2 opacity-70 text-light-text-primary dark:text-dark-text-primary">
+                  <span className="text-body2 opacity-70 text-fg-primary">
                     {secondTitle}
                   </span>
                 )}
@@ -137,7 +138,7 @@ export default function Modal({
         )}
 
         <div
-          className="text-body1 space-y-4 text-light-text-primary dark:text-dark-text-primary p-6"
+          className="text-body1 space-y-4 text-fg-primary p-6"
           style={{
             overflowY: 'auto',
             flexGrow: 1,

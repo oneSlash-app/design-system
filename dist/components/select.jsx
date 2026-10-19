@@ -151,31 +151,31 @@ export default function Select(_a) {
     // Determine border and background styles based on state
     var getStateStyles = function () {
         if (disabled) {
-            return 'border border-light-actionOutlinedBorder-disabled dark:border-dark-actionOutlinedBorder-disabled bg-light-background-default dark:bg-dark-background-default';
+            return 'border border-actionOutlinedBorder-disabled bg-background-default';
         }
         if (isOpen) {
             // Same 2px offset outline as focus and Button
-            return 'border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled outline outline-2 outline-offset-2 outline-light-text-primary dark:outline-dark-text-primary bg-light-background-default dark:bg-dark-background-default';
+            return 'border border-actionOutlinedBorder-enabled outline outline-2 outline-offset-2 outline-fg-primary bg-background-default';
         }
-        return "border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled bg-light-background-default dark:bg-dark-background-default\n      hover:border-light-text-secondary dark:hover:border-dark-text-secondary hover:bg-light-action-hover dark:hover:bg-dark-action-hover";
+        return "border border-actionOutlinedBorder-enabled bg-background-default\n      hover:border-fg-secondary hover:bg-action-hover";
     };
     // Determine text color
     var getTextColor = function () {
         if (disabled) {
-            return 'text-light-text-disabled dark:text-dark-text-disabled';
+            return 'text-fg-disabled';
         }
-        return 'text-light-text-primary dark:text-dark-text-primary';
+        return 'text-fg-primary';
     };
     // Determine icon color
     var getIconColor = function () {
         if (disabled) {
-            return 'text-light-text-disabled dark:text-dark-text-disabled';
+            return 'text-fg-disabled';
         }
-        return 'text-light-text-secondary dark:text-dark-text-secondary';
+        return 'text-fg-secondary';
     };
     return (<div className={"relative ".concat(className)} style={{ width: width || '100%' }}>
       {/* Select Button */}
-      <div ref={selectRef} role="combobox" aria-haspopup="listbox" aria-expanded={isOpen} aria-controls={listboxId} aria-activedescendant={isOpen && activeIndex >= 0 ? optionId(activeIndex) : undefined} aria-disabled={disabled || undefined} className={"\n          rounded-[8px]\n          ".concat(getStateStyles(), "\n          ").concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer', "\n          ").concat(stateTransition, "\n          ").concat(focusRing, "\n        ")} onClick={handleToggle} tabIndex={disabled ? -1 : 0} onKeyDown={handleKeyDown}>
+      <div ref={selectRef} role="combobox" aria-haspopup="listbox" aria-expanded={isOpen} aria-controls={listboxId} aria-activedescendant={isOpen && activeIndex >= 0 ? optionId(activeIndex) : undefined} aria-disabled={disabled || undefined} className={"\n          rounded-control\n          ".concat(getStateStyles(), "\n          ").concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer', "\n          ").concat(stateTransition, "\n          ").concat(focusRing, "\n        ")} onClick={handleToggle} tabIndex={disabled ? -1 : 0} onKeyDown={handleKeyDown}>
         {/* Inner Content Container; 7px vertical padding makes the control 40px like Button and TextField */}
         <div className={"flex items-center justify-between px-2 py-[7px] ".concat(getTextColor())}>
           {/* Content Container */}
@@ -190,12 +190,12 @@ export default function Select(_a) {
           </div>
 
           {/* Chevron Icon */}
-          <ChevronDown className={"\n              w-6 h-6 flex-shrink-0 ml-1\n              ".concat(getIconColor(), "\n              transition-transform duration-150 ease-out motion-reduce:transition-none\n              ").concat(isOpen ? 'transform rotate-180' : '', "\n            ")} strokeWidth={2} aria-hidden/>
+          <ChevronDown className={"\n              w-6 h-6 flex-shrink-0 ml-1\n              ".concat(getIconColor(), "\n              transition-transform duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n              ").concat(isOpen ? 'transform rotate-180' : '', "\n            ")} strokeWidth={2} aria-hidden/>
         </div>
       </div>
 
       {/* Dropdown Menu */}
-      {menuMounted && (<div id={listboxId} role="listbox" aria-multiselectable={multiple || undefined} className={"absolute z-50 mt-1 left-0 origin-top ".concat(overlayTransition, " ").concat(menuVisible ? overlayVisible : overlayHidden)} style={{ width: width || '100%' }}>
+      {menuMounted && (<div id={listboxId} role="listbox" aria-multiselectable={multiple || undefined} className={"absolute z-[var(--os-z-overlay)] mt-1 left-0 origin-top ".concat(overlayTransition, " ").concat(menuVisible ? overlayVisible : overlayHidden)} style={{ width: width || '100%' }}>
           <Menu ref={menuRef} width={width || '100%'} className="max-h-[320px] overflow-y-auto">
             {options.map(function (option, index) { return (<MenuItem key={option.value} id={optionId(index)} role="option" tabIndex={-1} isActive={index === activeIndex} label={option.label} iconName={option.iconName} isSelected={isSelected(option.value)} onClick={function () { return handleSelect(option.value); }} className="w-full"/>); })}
           </Menu>

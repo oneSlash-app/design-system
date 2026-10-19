@@ -33,11 +33,14 @@ export default function UserImage(_a) {
     var lightBg = "hsl(".concat(hue, ", ").concat(saturation, "%, 80%)");
     // Dark mode: darker, vibrant variant
     var darkBg = "hsl(".concat(hue, ", ").concat(saturation, "%, 30%)");
-    return (<div style={{
+    return (
+    // Per-user hue computed in JS, not a theme token, so the dark: variant stays here (one of the two documented
+    // `dark:` exemptions, see the overlay rings in Menu/Popover/Modal). The dark: variant follows whatever dark variant the app's preset/@theme defines (class-only or OS-aware).
+    <div style={{
             '--light-bg': lightBg,
             '--dark-bg': darkBg,
-        }} className="flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-[var(--light-bg)] dark:bg-[var(--dark-bg)] text-light-text-primary dark:text-dark-text-primary">
-      {userImgUrl ? (<img src={userImgUrl} alt={userHandle} className="w-full h-full object-cover rounded-full"/>) : (<span className="text-body1 text-light-text-primary dark:text-dark-text-primary">
+        }} className="flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-[var(--light-bg)] dark:bg-[var(--dark-bg)] text-fg-primary">
+      {userImgUrl ? (<img src={userImgUrl} alt={userHandle} className="w-full h-full object-cover rounded-full"/>) : (<span className="text-body1 text-fg-primary">
           {displayInitial}
         </span>)}
     </div>);

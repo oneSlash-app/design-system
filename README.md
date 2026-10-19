@@ -4,17 +4,31 @@ React components and design tokens for oneSlash apps.
 
 ## Using the design system in an app
 
-The package ships Tailwind class names, not compiled CSS, and its components are untranspiled `.jsx`. Each app compiles both itself:
+The package ships Tailwind class names, CSS variables and untranspiled `.jsx`. Each app compiles the components itself and picks a theme. Full steps and class renames are in [MIGRATION_GUIDE.md](./MIGRATION_GUIDE.md).
 
-1. **Next.js:** add `transpilePackages: ["oneslash-design-system"]` to `next.config`.
-2. **Tailwind v3:** add `./node_modules/oneslash-design-system/dist/**/*.{js,jsx}` to `content`, and build `theme.extend.colors` and `fontSize` from `require("oneslash-design-system/tokens")`.
-3. **Tailwind v4:** add `@source "../node_modules/oneslash-design-system/dist/**/*.jsx";` to your CSS. For the tokens, point `@config` at a JS config that builds them from `oneslash-design-system/tokens` (see oneslash-homepage's `tailwind.config.ts`).
+1. **Import one theme file** (it includes `tokens.css`):
+   - light/dark toggle that sets `.dark` on `<html>`: `oneslash-design-system/themes/default.css`
+   - follows the OS: `oneslash-design-system/themes/default-auto.css` (`.light` opts out of OS dark)
+   - Scindo: `themes/forest.css` / `themes/forest-auto.css`
+2. **Tailwind v3:** `presets: [require("oneslash-design-system/tailwind")]` (toggle) or `oneslash-design-system/tailwind-auto` (OS). Without the preset the components render unstyled.
+3. **Tailwind v4:** import `oneslash-design-system/theme.css` (toggle) or `theme-auto.css` (OS), plus `typography.css` if you want the type scale.
+4. **Next.js:** `transpilePackages: ["oneslash-design-system"]` in `next.config`.
+5. **Scan the components:** v3 `content` gets `./node_modules/oneslash-design-system/dist/**/*.{js,jsx}`; v4 CSS gets `@source "../node_modules/oneslash-design-system/dist/**/*.jsx";`.
+
+```css
+/* Tailwind v4, OS-driven dark mode */
+@import "tailwindcss";
+@import "oneslash-design-system/themes/default-auto.css";
+@import "oneslash-design-system/theme-auto.css";
+@import "oneslash-design-system/typography.css";
+@source "../node_modules/oneslash-design-system/dist/**/*.jsx";
+```
 
 Use class names that mean the same thing in Tailwind v3 and v4 inside components, since apps on both versions compile them.
 
 ## Releasing
 
-Bump `version` in `package.json`, run `npm run build`, and merge to `main`. The Release workflow publishes to npm, creates the tag and GitHub Release with notes from the merged PR titles, and updates the docs site.
+Bump `version` in `package.json`, run `npm run build`, and merge to `main`. The Release workflow runs the tests and `npm run check:contrast`, then publishes to npm, creates the tag and GitHub Release with notes from the merged PR titles, and updates the docs site.
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 

@@ -20,14 +20,14 @@ const sizeMap = {
 };
 
 const colorMap = {
-  primary: 'text-light-text-primary dark:text-dark-text-primary',
-  secondary: 'text-light-text-secondary dark:text-dark-text-secondary',
-  disabled: 'text-light-text-disabled dark:text-dark-text-disabled',
-  error: 'text-light-error-main dark:text-dark-error-main',
-  warning: 'text-light-warning-main dark:text-dark-warning-main',
-  success: 'text-light-success-main dark:text-dark-success-main',
-  info: 'text-light-info-main dark:text-dark-info-main',
-  accent: 'text-light-accent-main dark:text-dark-accent-main',
+  primary: 'text-fg-primary',
+  secondary: 'text-fg-secondary',
+  disabled: 'text-fg-disabled',
+  error: 'text-error-main',
+  warning: 'text-warning-main',
+  success: 'text-success-main',
+  info: 'text-info-main',
+  accent: 'text-accent-main',
   inherit: '',
 };
 

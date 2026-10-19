@@ -87,25 +87,25 @@ export default function Textarea({
     tiny: 'text-caption p-1 leading-[16px]', // caption (12px), padding 4px
   }[size];
 
-  const baseClasses = `block w-full border rounded-[8px] outline-none resize-none [&::-webkit-scrollbar]:hidden ${stateTransition}
-    placeholder:text-light-text-disabled dark:placeholder:text-dark-text-disabled`;
+  const baseClasses = `block w-full border rounded-control outline-none resize-none [&::-webkit-scrollbar]:hidden ${stateTransition}
+    placeholder:text-fg-disabled`;
 
   // One background and text color per state, so disabled can't be overridden by the enabled ones
   const colorClasses = disabled
-    ? 'bg-transparent text-light-text-disabled dark:text-dark-text-disabled cursor-not-allowed'
-    : 'bg-light-background-default dark:bg-dark-background-default text-light-text-primary dark:text-dark-text-primary';
+    ? 'bg-transparent text-fg-disabled cursor-not-allowed'
+    : 'bg-background-default text-fg-primary';
 
   // Border: error > focus (2px offset outline, the same weight as Button) > hover > default
   const getBorderColor = () => {
     if (error) {
-      return 'border-light-error-main dark:border-dark-error-main focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-light-error-main dark:focus:outline-dark-error-main';
+      return 'border-error-main focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-error-main';
     }
     if (disabled) {
-      return 'border-light-text-disabled dark:border-dark-text-disabled';
+      return 'border-fg-disabled';
     }
-    return `border-light-text-disabled dark:border-dark-text-disabled
-      hover:border-light-text-secondary dark:hover:border-dark-text-secondary
-      focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-light-text-primary dark:focus:outline-dark-text-primary`;
+    return `border-fg-disabled
+      hover:border-fg-secondary
+      focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-fg-primary`;
   };
 
   const containerClasses = `
@@ -120,7 +120,7 @@ export default function Textarea({
   return (
     <div className="flex flex-col w-full">
       {label && (
-        <label htmlFor={id} className="mb-1 text-body2 text-light-text-secondary dark:text-dark-text-secondary">
+        <label htmlFor={id} className="mb-1 text-body2 text-fg-secondary">
           {label}
         </label>
       )}
@@ -147,7 +147,7 @@ export default function Textarea({
         />
       </div>
       {error && (
-        <p id={errorId} className="mt-1 text-light-error-main dark:text-dark-error-main text-body2">
+        <p id={errorId} className="mt-1 text-error-main text-body2">
           {errorText}
         </p>
       )}

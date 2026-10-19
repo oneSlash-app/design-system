@@ -17,30 +17,30 @@ export default function Checkbox(_a) {
     return (<label className={"group flex items-start ".concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer')}>
       {/* Native input keeps keyboard focus, Space to toggle and screen-reader semantics */}
       <input type="checkbox" className="peer sr-only" checked={isChecked} disabled={disabled} onChange={handleChange}/>
-      <span className={"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full ".concat(stateTransition, "\n          peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-light-text-primary dark:peer-focus-visible:outline-dark-text-primary\n          ").concat(disabled ? '' : 'group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected')}>
+      <span className={"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full ".concat(stateTransition, "\n          peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-fg-primary\n          ").concat(disabled ? '' : 'group-hover:bg-action-selected')}>
         {/* Checkbox */}
         <span className={"relative w-4 h-4 border-2 rounded ".concat(stateTransition, " ").concat(disabled
             ? isChecked
-                ? 'bg-light-text-disabled dark:bg-dark-text-disabled border-transparent'
-                : 'border-light-text-disabled dark:border-dark-text-disabled'
+                ? 'bg-fg-disabled border-transparent'
+                : 'border-fg-disabled'
             : isChecked
-                ? 'bg-light-text-primary dark:bg-dark-text-primary border-transparent'
-                : 'border-light-text-secondary dark:border-dark-text-secondary', " flex items-center justify-center")}>
+                ? 'bg-fg-primary border-transparent'
+                : 'border-fg-secondary', " flex items-center justify-center")}>
           {/* Always rendered so the tick can scale in and out */}
-          <svg className={"w-3 h-3 text-light-text-contrast dark:text-dark-text-contrast ".concat(popTransition, " ").concat(isChecked ? 'scale-100' : 'scale-0')} fill="none" stroke="currentColor" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" aria-hidden>
+          <svg className={"w-3 h-3 text-fg-contrast ".concat(popTransition, " ").concat(isChecked ? 'scale-100' : 'scale-0')} fill="none" stroke="currentColor" viewBox="0 0 12 12" xmlns="http://www.w3.org/2000/svg" aria-hidden>
             <path strokeWidth="2" d="M1 6l4 3 6-7"/>
           </svg>
         </span>
       </span>
       {(label || secondLabel) && (<span className="flex flex-col ml-2">
           {label && (<span className={"text-body1 ".concat(disabled
-                    ? 'text-light-text-disabled dark:text-dark-text-disabled'
-                    : 'text-light-text-primary dark:text-dark-text-primary')}>
+                    ? 'text-fg-disabled'
+                    : 'text-fg-primary')}>
               {label}
             </span>)}
           {secondLabel && (<span className={"text-body2 opacity-70 ".concat(disabled
-                    ? 'text-light-text-disabled dark:text-dark-text-disabled'
-                    : 'text-light-text-primary dark:text-dark-text-primary')}>
+                    ? 'text-fg-disabled'
+                    : 'text-fg-primary')}>
               {secondLabel}
             </span>)}
         </span>)}

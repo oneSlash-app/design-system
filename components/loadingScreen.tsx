@@ -8,7 +8,7 @@ interface LoadingSmallProps {
 export default function LoadingScreen() {
   return (
     <div role="status" aria-label="Loading" className="flex justify-center items-center h-full w-full min-h-[200px]">
-        <div className="w-12 h-12 rounded-full border-4 border-current border-t-transparent text-light-text-primary dark:text-dark-text-primary animate-spin"></div>
+        <div className="w-12 h-12 rounded-full border-4 border-current border-t-transparent text-fg-primary animate-spin"></div>
     </div>
   );
 };

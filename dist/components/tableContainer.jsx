@@ -2,7 +2,7 @@
 import React from 'react';
 export default function TableContainer(_a) {
     var children = _a.children;
-    return (<div role="table" className="w-full overflow-x-auto bg-light-background-default dark:bg-dark-background-default">
+    return (<div role="table" className="w-full overflow-x-auto bg-background-default">
 						{children}
 				</div>);
 }

@@ -8,7 +8,7 @@ interface TableContainerProps{
 export default function TableContainer({children}: TableContainerProps) {
 
 		return (
-				<div role="table" className="w-full overflow-x-auto bg-light-background-default dark:bg-dark-background-default">
+				<div role="table" className="w-full overflow-x-auto bg-background-default">
 						{children}
 				</div>
 		);

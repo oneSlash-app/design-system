@@ -1,5 +1,5 @@
 // design tokens definitions
-module.exports = {
+const base = {
   colors: {
     // light
     light:{
@@ -81,6 +81,8 @@ module.exports = {
       misc:{
         divider: '#D1D1D1',
         scrim: '#000000',
+        tooltipBg: '#4F4F4F',
+        tooltipText: '#EEEEEE',
       },
     },
 
@@ -164,6 +166,8 @@ module.exports = {
       misc:{
         divider: '#404040',
         scrim: '#000000',
+        tooltipBg: '#FFFFFF',
+        tooltipText: '#000000',
       },
     },
   },
@@ -249,4 +253,127 @@ module.exports = {
       justify: 'justify',
     },
   },
+
+  radius: {
+    inline: '2px',
+    control: '8px',
+    container: '12px',
+    full: '9999px',
+  },
+
+  shadow: {
+    overlay: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+  },
+
+  zIndex: {
+    overlay: '50',
+    tooltip: '1000',
+  },
+
+  motion: {
+    duration: {
+      fast: '150ms',
+      slide: '200ms',
+      pop: '220ms',
+    },
+    easing: {
+      out: 'cubic-bezier(0, 0, 0.2, 1)',
+      emphasized: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    },
+  },
+};
+
+// Adds the semantic keys that are derived from a set's own groups, so the
+// rule lives once and applies to every set (default and themes, light and dark).
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} set
+ * @param {'light' | 'dark'} mode
+ */
+function withSemanticKeys(set, mode) {
+  const isLight = mode === 'light';
+  /** @param {typeof set.error} g @param {boolean} isError */
+  const status = (g, isError) => ({
+    ...g,
+    fill: isLight ? g.dark : g.main,
+    onFill: isLight ? '#FFFFFF' : '#000000',
+    text: isLight ? g.dark : isError ? g.light : g.main,
+    textHover: isLight ? g.dark : g.light,
+    tint: isLight ? g.light : g.dark,
+  });
+  return {
+    ...set,
+    primary: { ...set.primary, contrast: isLight ? '#ffffff' : '#000000' },
+    background: {
+      ...set.background,
+      elevated: isLight ? set.background.default : set.background.accent100,
+      overlay: isLight ? set.background.accent300 : set.background.accent100,
+    },
+    error: status(set.error, true),
+    warning: status(set.warning, false),
+    info: status(set.info, false),
+    success: status(set.success, false),
+  };
+}
+
+// Forest: the default set with these values replaced (group by group).
+/**
+ * @template T
+ * @param {T} set
+ * @param {{ [K in keyof T]?: Partial<T[K]> }} changes
+ * @returns {T}
+ */
+function override(set, changes) {
+  const out = { ...set };
+  for (const group of /** @type {(keyof T)[]} */ (Object.keys(changes))) out[group] = { ...set[group], ...changes[group] };
+  return out;
+}
+
+const baseColors = base.colors;
+
+const forestLight = override(baseColors.light, {
+  text: { primary: '#1C2213', secondary: '#515E3C', disabled: '#8A9670' },
+  accent: { main: '#1C2213', dark: '#2A331E', light: '#3A472B', contrast: '#E7ECDA' },
+  secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+  background: { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC' },
+});
+
+const forestDark = override(baseColors.dark, {
+  text: { primary: '#D9E5C7', secondary: '#9DAA85', disabled: '#6D7956' },
+  accent: { main: '#E7ECDA', dark: '#D6DEC3', light: '#F2F5EA', contrast: '#1C2213' },
+  secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+  background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
+});
+
+// The derived light info.text (#006BAB) is 4.33:1 on forest's background; #0068A3 is the lightest step that reaches 4.5.
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} set
+ * @returns {S}
+ */
+const withForestInfoText = (set) => ({ ...set, info: { ...set.info, text: '#0068A3', textHover: '#0068A3' } });
+
+// Tooltips are inverted surfaces: each mode takes the other mode's accent300 and text.primary of the same theme.
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} light
+ * @param {S} dark
+ * @returns {{ light: S, dark: S }}
+ */
+const withTooltips = (light, dark) => ({
+  light: { ...light, misc: { ...light.misc, tooltipBg: dark.background.accent300, tooltipText: dark.text.primary } },
+  dark: { ...dark, misc: { ...dark.misc, tooltipBg: light.background.accent300, tooltipText: light.text.primary } },
+});
+
+const defaultSets = withTooltips(withSemanticKeys(baseColors.light, 'light'), withSemanticKeys(baseColors.dark, 'dark'));
+const forestSets = withTooltips(
+  withForestInfoText(withSemanticKeys(forestLight, 'light')),
+  withSemanticKeys(forestDark, 'dark'),
+);
+
+module.exports = {
+  ...base,
+  colors: defaultSets,
+  themes: { forest: forestSets },
 };

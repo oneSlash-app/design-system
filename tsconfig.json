@@ -11,6 +11,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
     "plugins": [
       {
         "name": "next"
@@ -33,5 +34,5 @@
     "*.js",
     "index.css"
   ],
-  "exclude": [ "node_modules",  "dist" ]
+  "exclude": [ "node_modules",  "dist", "scripts", "tests", "playwright.config.ts", "tailwind.config.ts" ]
 }

@@ -15,8 +15,8 @@ export default function EmptyBox ({
 }: EmptyBoxProps) {
 
     // The icon can be faint; the text needs readable contrast
-    const iconColor = 'text-light-text-disabled dark:text-dark-text-disabled';
-    const textColor = 'text-light-text-secondary dark:text-dark-text-secondary';
+    const iconColor = 'text-fg-disabled';
+    const textColor = 'text-fg-secondary';
     const height = size === 'small' ? 'py-6' : 'h-full';
     const iconSize = 'size-6' ;
 

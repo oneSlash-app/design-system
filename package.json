@@ -1,7 +1,7 @@
 {
   "name": "oneslash-design-system",
   "description": "A design system for the Oneslash projects",
-  "version": "1.8.5",
+  "version": "2.0.0",
   "private": false,
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -18,20 +18,31 @@
       "types": "./dist/designTokens.d.ts",
       "default": "./dist/designTokens.js"
     },
-    "./styles": "./dist/output.css"
+    "./themes/*": "./dist/themes/*",
+    "./tokens.css": "./dist/tokens.css",
+    "./theme.css": "./dist/theme.css",
+    "./theme-auto.css": "./dist/theme-auto.css",
+    "./typography.css": "./dist/typography.css",
+    "./tailwind": "./dist/tailwind-preset.js",
+    "./tailwind-auto": "./dist/tailwind-preset-auto.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "dev": "next dev",
-    "build": "tsc && postcss index.css -o dist/output.css",
-    "build:css": "postcss index.css -o dist/output.css",
+    "build:tokens": "node scripts/build-tokens.js",
+    "build": "npm run build:tokens && tsc",
     "watch": "tsc --watch",
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "pretest": "npm run build",
+    "test": "node --test scripts/*.test.js scripts/tokens/*.test.js",
+    "check:contrast": "node scripts/check-contrast.js",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -43,6 +54,7 @@
     "react-dom": "^18 || ^19"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "@storybook/addon-essentials": "8.6",
     "@storybook/react-vite": "8.6",
     "@types/node": "20.16.10",
@@ -52,6 +64,7 @@
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
+    "http-server": "14.1.1",
     "next": "14.2.13",
     "postcss": "^8",
     "postcss-cli": "^11.0.0",

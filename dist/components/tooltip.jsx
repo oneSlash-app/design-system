@@ -88,7 +88,7 @@ export default function Tooltip(_a) {
     onFocus={function () { return show(0); }} onBlur={hide} onClick={hide} className="relative inline-block">
       {children}
       {/* Rendered in <body> so no parent's overflow or stacking context can clip or cover it */}
-      {mounted && createPortal(<div ref={tooltipRef} id={tooltipId} role="tooltip" className={"fixed z-[1000] w-max max-w-[min(320px,calc(100vw-16px))] break-words text-caption rounded-[8px] py-1 px-2 pointer-events-none\n            dark:bg-light-background-accent300 bg-dark-background-accent300\n            dark:text-light-text-primary text-dark-text-primary\n            transition-opacity duration-150 ease-out motion-reduce:transition-none ".concat(visible && coords ? 'opacity-100' : 'opacity-0')} style={{ top: (_b = coords === null || coords === void 0 ? void 0 : coords.top) !== null && _b !== void 0 ? _b : 0, left: (_c = coords === null || coords === void 0 ? void 0 : coords.left) !== null && _c !== void 0 ? _c : 0 }}>
+      {mounted && createPortal(<div ref={tooltipRef} id={tooltipId} role="tooltip" className={"fixed z-[var(--os-z-tooltip)] w-max max-w-[min(320px,calc(100vw-16px))] break-words text-caption rounded-control py-1 px-2 pointer-events-none\n            bg-misc-tooltipBg\n            text-misc-tooltipText\n            transition-opacity duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none ".concat(visible && coords ? 'opacity-100' : 'opacity-0')} style={{ top: (_b = coords === null || coords === void 0 ? void 0 : coords.top) !== null && _b !== void 0 ? _b : 0, left: (_c = coords === null || coords === void 0 ? void 0 : coords.left) !== null && _c !== void 0 ? _c : 0 }}>
           {title}
         </div>, document.body)}
     </div>);
