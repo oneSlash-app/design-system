@@ -4,7 +4,11 @@ import * as LucideIcons from 'lucide-react';
 import { LoadingSmall } from './loadingScreen';
 import { focusRing, pressFeedback, stateTransition } from './sharedStyles';
 
-interface IconButtonProps {
+/** `aria-*`, `data-*`, `id` and `title` are forwarded to the rendered `<button>` */
+interface IconButtonProps extends React.AriaAttributes {
+  id?: string;
+  title?: string;
+  [dataAttr: `data-${string}`]: string | number | boolean | undefined;
   color: "primary" | "secondary" | "tertiary" | "iconOnly";
   state: "enabled" | "selected" | "disabled";
   size: "large" | "medium" | "small" | "tiny";
@@ -25,6 +29,7 @@ export default function IconButton({
   onClick,
   loading = false, // Default to false
   ariaLabel,
+  ...rest
 }: IconButtonProps) {
   const Icon = LucideIcons[iconName] as IconType | undefined;
   // "ChevronDown" -> "Chevron Down"
@@ -97,6 +102,7 @@ export default function IconButton({
 
   return (
     <button
+      {...rest}
       type="button"
       className={`${baseClasses} ${bgColor} ${iconColor} ${bgColorHover} ${stateClasses} ${stateTransition} ${pressFeedback} ${focusRing} flex items-center justify-center`}
       disabled={isDisabled || loading} // Disable button during loading

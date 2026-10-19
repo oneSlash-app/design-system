@@ -1,10 +1,21 @@
 'use client';
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
 import { LoadingSmall } from './loadingScreen';
 import { focusRing, focusRingDanger, pressFeedback, stateTransition } from './sharedStyles';
 export default function Button(_a) {
-    var size = _a.size, type = _a.type, _b = _a.color, color = _b === void 0 ? 'default' : _b, state = _a.state, label = _a.label, secondLabel = _a.secondLabel, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _c = _a.className, className = _c === void 0 ? '' : _c, _d = _a.loading, loading = _d === void 0 ? false : _d;
+    var size = _a.size, type = _a.type, _b = _a.color, color = _b === void 0 ? 'default' : _b, state = _a.state, label = _a.label, secondLabel = _a.secondLabel, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _c = _a.className, className = _c === void 0 ? '' : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, rest = __rest(_a, ["size", "type", "color", "state", "label", "secondLabel", "decoIcon", "actionIcon", "onClickButton", "onClickActionIcon", "className", "loading"]);
     // Synchronous lookup so icons render on the first paint
     var IconLeft = decoIcon ? LucideIcons[decoIcon] : null;
     var IconRight = actionIcon ? LucideIcons[actionIcon] : null;
@@ -67,7 +78,7 @@ export default function Button(_a) {
     };
     // Hover is pure CSS; `state="hovered"` and `state="focused"` only exist to show those states in docs
     var buttonClasses = "\n    flex flex-row items-center rounded-control justify-between ".concat(stateTransition, " ").concat(pressFeedback, "\n    ").concat(color === 'danger' ? focusRingDanger : focusRing, "\n    ").concat(sizeClasses, "\n    ").concat(state === 'selected' ? stateClasses.selected : '', "\n    ").concat(state === 'enabled' || state === 'hovered' ? "".concat(baseTypeClasses, " ").concat(loading ? 'cursor-wait' : "".concat(stateClasses.enabled, " ").concat(hoverTypeClasses)) : '', "\n    ").concat(state === 'focused' ? "".concat(baseTypeClasses, " ").concat(hoverTypeClasses, " ").concat(stateClasses.focused) : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : '', "\n    ").concat(className, "\n  ");
-    return (<button type="button" className={buttonClasses} disabled={state === 'disabled' || loading} aria-busy={loading || undefined} onClick={onClickButton}>
+    return (<button {...rest} type="button" className={buttonClasses} disabled={state === 'disabled' || loading} aria-busy={loading || undefined} onClick={onClickButton}>
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className={"flex items-center ".concat(size === 'tiny' ? 'gap-0.5' : 'gap-1')}>
         {loading ? (<LoadingSmall size={spinnerSize}/>) : (IconLeft && <IconLeft className={"".concat(sizeIcon, " flex-shrink-0")} strokeWidth={2}/>)}

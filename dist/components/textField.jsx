@@ -2,7 +2,7 @@
 import React from 'react';
 import { stateTransition } from './sharedStyles';
 export default function TextField(_a) {
-    var id = _a.id, label = _a.label, value = _a.value, _b = _a.type, type = _b === void 0 ? 'text' : _b, onChange = _a.onChange, onBlur = _a.onBlur, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, onSubmit = _a.onSubmit, _c = _a.autoFocus, autoFocus = _c === void 0 ? false : _c, _d = _a.multiline, multiline = _d === void 0 ? false : _d, _e = _a.maxRows, maxRows = _e === void 0 ? 6 : _e, _f = _a.disabled, disabled = _f === void 0 ? false : _f, _g = _a.error, error = _g === void 0 ? false : _g, _h = _a.errorText, errorText = _h === void 0 ? 'This field is required' : _h, _j = _a.required, required = _j === void 0 ? false : _j, _k = _a.size, size = _k === void 0 ? 'medium' : _k, placeholder = _a.placeholder;
+    var id = _a.id, label = _a.label, value = _a.value, _b = _a.type, type = _b === void 0 ? 'text' : _b, onChange = _a.onChange, onBlur = _a.onBlur, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, onSubmit = _a.onSubmit, _c = _a.autoFocus, autoFocus = _c === void 0 ? false : _c, _d = _a.multiline, multiline = _d === void 0 ? false : _d, _e = _a.maxRows, maxRows = _e === void 0 ? 6 : _e, _f = _a.disabled, disabled = _f === void 0 ? false : _f, _g = _a.error, error = _g === void 0 ? false : _g, _h = _a.errorText, errorText = _h === void 0 ? 'This field is required' : _h, _j = _a.required, required = _j === void 0 ? false : _j, _k = _a.size, size = _k === void 0 ? 'medium' : _k, placeholder = _a.placeholder, name = _a.name, _l = _a.autoComplete, autoComplete = _l === void 0 ? 'off' : _l, tabIndex = _a.tabIndex;
     var handleKeyDown = function (e) {
         // Ctrl+Enter or Cmd+Enter to submit
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && onSubmit) {
@@ -62,7 +62,7 @@ export default function TextField(_a) {
           {label}{required && <span className="text-error-text ml-0.5">*</span>}
         </label>)}
       <div className="relative">
-        {multiline ? (<textarea id={id} rows={maxRows} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} autoComplete="off" {...errorProps}/>) : (<input id={id} type={type} inputMode={getInputMode()} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} autoComplete="off" {...errorProps}/>)}
+        {multiline ? (<textarea id={id} rows={maxRows} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} name={name} autoComplete={autoComplete} tabIndex={tabIndex} {...errorProps}/>) : (<input id={id} type={type} inputMode={getInputMode()} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} name={name} autoComplete={autoComplete} tabIndex={tabIndex} {...errorProps}/>)}
       </div>
       {error && (<p id={errorId} className="mt-1 text-error-text text-body2">
           {errorText}

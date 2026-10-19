@@ -80,6 +80,17 @@ export var Clickable = {
         onClick: function () { return alert("Tag clicked!"); },
     },
 };
+// A clickable tag with `disabled`: dimmed, aria-disabled, out of the tab order, clicks ignored
+export var ClickableDisabled = {
+    args: {
+        variant: "contained",
+        size: "medium",
+        state: "enabled",
+        label: "Unavailable",
+        onClick: function () { return alert("Should not fire"); },
+        disabled: true,
+    },
+};
 export var AllVariants = {
     render: function () { return (<div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
       <Tag variant="contained" size="medium" label="Contained"/>

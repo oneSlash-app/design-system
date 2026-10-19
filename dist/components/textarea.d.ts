@@ -18,6 +18,10 @@ interface TextareaProps {
     errorText?: string;
     size?: 'medium' | 'small' | 'tiny';
     placeholder?: string;
+    name?: string;
+    /** Browser autofill hint. Defaults to "off". */
+    autoComplete?: string;
+    tabIndex?: number;
 }
-export default function Textarea({ id, label, value, onChange, onBlur, onFocus, onKeyDown, onCompositionStart, onCompositionEnd, onSubmit, autoFocus, maxRows, disabled, error, errorText, size, placeholder, }: TextareaProps): React.JSX.Element;
+export default function Textarea({ id, label, value, onChange, onBlur, onFocus, onKeyDown, onCompositionStart, onCompositionEnd, onSubmit, autoFocus, maxRows, disabled, error, errorText, size, placeholder, name, autoComplete, tabIndex, }: TextareaProps): React.JSX.Element;
 export {};

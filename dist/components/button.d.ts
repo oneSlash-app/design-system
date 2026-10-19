@@ -1,5 +1,9 @@
 import React from 'react';
-interface ButtonProps {
+/** `aria-*`, `data-*`, `id` and `title` are forwarded to the rendered `<button>` */
+interface ButtonProps extends React.AriaAttributes {
+    id?: string;
+    title?: string;
+    [dataAttr: `data-${string}`]: string | number | boolean | undefined;
     size: 'tiny' | 'small' | 'medium' | 'large';
     type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
     color?: 'default' | 'danger';
@@ -14,5 +18,5 @@ interface ButtonProps {
     /** Shows a spinner in the icon slot, keeps the label, and disables the button */
     loading?: boolean;
 }
-export default function Button({ size, type, color, state, label, secondLabel, decoIcon, actionIcon, onClickButton, onClickActionIcon, className, loading, }: ButtonProps): React.JSX.Element;
+export default function Button({ size, type, color, state, label, secondLabel, decoIcon, actionIcon, onClickButton, onClickActionIcon, className, loading, ...rest }: ButtonProps): React.JSX.Element;
 export {};

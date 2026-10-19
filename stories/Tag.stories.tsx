@@ -93,6 +93,18 @@ export const Clickable: Story = {
   },
 };
 
+// A clickable tag with `disabled`: dimmed, aria-disabled, out of the tab order, clicks ignored
+export const ClickableDisabled: Story = {
+  args: {
+    variant: "contained",
+    size: "medium",
+    state: "enabled",
+    label: "Unavailable",
+    onClick: () => alert("Should not fire"),
+    disabled: true,
+  },
+};
+
 export const AllVariants: Story = {
   render: () => (
     <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>

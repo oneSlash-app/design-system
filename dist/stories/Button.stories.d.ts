@@ -17,3 +17,4 @@ export declare const DangerTertiary: Story;
 export declare const DangerTextOnly: Story;
 export declare const DangerVariants: Story;
 export declare const Loading: Story;
+export declare const AriaExpanded: Story;

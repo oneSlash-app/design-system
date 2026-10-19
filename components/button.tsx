@@ -4,7 +4,11 @@ import * as LucideIcons from 'lucide-react';
 import { LoadingSmall } from './loadingScreen';
 import { focusRing, focusRingDanger, pressFeedback, stateTransition } from './sharedStyles';
 
-interface ButtonProps {
+/** `aria-*`, `data-*`, `id` and `title` are forwarded to the rendered `<button>` */
+interface ButtonProps extends React.AriaAttributes {
+  id?: string;
+  title?: string;
+  [dataAttr: `data-${string}`]: string | number | boolean | undefined;
   size: 'tiny' | 'small' | 'medium' | 'large';
   type: 'primary' | 'secondary' | 'tertiary' | 'textOnly';
   color?: 'default' | 'danger';
@@ -35,6 +39,7 @@ export default function Button({
   onClickActionIcon,
   className = '',
   loading = false,
+  ...rest
 }: ButtonProps) {
   // Synchronous lookup so icons render on the first paint
   const IconLeft = decoIcon ? (LucideIcons[decoIcon as keyof typeof LucideIcons] as IconType) : null;
@@ -118,6 +123,7 @@ export default function Button({
 
   return (
     <button
+      {...rest}
       type="button"
       className={buttonClasses}
       disabled={state === 'disabled' || loading}

@@ -168,3 +168,19 @@ export const Loading: Story = {
     </div>
   ),
 };
+
+// `aria-*`, `data-*`, `id` and `title` reach the <button>, so an app can mark a toggle
+export const AriaExpanded: Story = {
+  args: {
+    size: "medium",
+    type: "secondary",
+    state: "enabled",
+    label: "Filters",
+    actionIcon: "ChevronDown",
+    id: "filters-trigger",
+    title: "Show filters",
+    "aria-expanded": false,
+    "aria-controls": "filters-panel",
+    "data-testid": "filters-trigger",
+  },
+};
