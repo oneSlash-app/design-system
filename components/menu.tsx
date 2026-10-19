@@ -13,7 +13,7 @@ const Menu = forwardRef<HTMLDivElement, MenuProps>(
       <div
         ref={ref}
         className={`
-          bg-light-background-accent300 dark:bg-dark-background-accent300
+          bg-light-background-accent300 dark:bg-dark-background-accent100
           rounded-[12px]
           shadow-lg
           dark:ring-1 dark:ring-dark-misc-divider
