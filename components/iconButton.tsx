@@ -77,7 +77,7 @@ export default function IconButton({
   const iconColor = isDisabled
     ? 'text-fg-disabled'
     : state === 'selected'
-    ? 'text-fg-contrast' // Selected state
+    ? 'text-primary-contrast' // Selected state
     : color === 'primary'
     ? 'text-accent-contrast' // Primary
     : color === 'secondary'

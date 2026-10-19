@@ -33,7 +33,10 @@ export default function UserImage(_a) {
     var lightBg = "hsl(".concat(hue, ", ").concat(saturation, "%, 80%)");
     // Dark mode: darker, vibrant variant
     var darkBg = "hsl(".concat(hue, ", ").concat(saturation, "%, 30%)");
-    return (<div style={{
+    return (
+    // Per-user hue computed in JS, not a theme token, so the dark: variant stays here (the only
+    // dark: color variant in the components). Under an -auto theme with no class it keeps the light shade.
+    <div style={{
             '--light-bg': lightBg,
             '--dark-bg': darkBg,
         }} className="flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-[var(--light-bg)] dark:bg-[var(--dark-bg)] text-fg-primary">
