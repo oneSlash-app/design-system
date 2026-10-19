@@ -102,7 +102,7 @@ For new code, use the semantic names. They need no `dark:` pair:
 
 Named `z-*` and `duration-*` utilities are not possible on Tailwind v4, so those use the `[var(…)]` form on both versions.
 
-New semantic tokens: `background.elevated` (Modal) and `background.overlay` (Menu, Popover); for each status group (`error`, `warning`, `info`, `success`) `fill`, `onFill`, `text`, `textHover`, `tint`; `primary.contrast`; `misc.tooltipBg` and `misc.tooltipText`; and the non-color groups `radius`, `shadow`, `zIndex`, `motion.duration`, `motion.easing`.
+New semantic tokens: `background.elevated` (Modal) and `background.overlay` (Menu, Popover); for each status group (`error`, `warning`, `info`, `success`) `fill`, `onFill`, `text`, `textHover`, `tint`; `primary.contrast`; `secondary.contrast` (2.0.1, the secondary Button and IconButton label; `text.primary` in the default theme); `misc.tooltipBg` and `misc.tooltipText`; and the non-color groups `radius`, `shadow`, `zIndex`, `motion.duration`, `motion.easing`.
 
 In plain CSS the variables are `--os-color-<group>-<key>`, `--os-radius-*`, `--os-shadow-overlay`, `--os-z-*`, `--os-duration-*`, `--os-ease-*` and `--os-spacing-*`. Color variables hold RGB channels, so wrap them:
 
@@ -123,7 +123,7 @@ npm run build:tokens && npm run check:contrast
 
 3. Commit `dist/`.
 
-`check:contrast` requires 4.5:1 for: `text.primary` on all backgrounds, `text.secondary` on `default` and `accent100`, each status `onFill` on `fill` and `text`/`textHover` on `default`, `accent.contrast`, and `primary.contrast`. The built-in `forest` theme is Scindo's palette with one adjustment: light `info.text` and `info.textHover` are `#0068A3` to reach 4.5:1.
+`check:contrast` requires 4.5:1 for: `text.primary` on all backgrounds, `text.secondary` on `default` and `accent100`, each status `onFill` on `fill` and `text`/`textHover` on `default`, `accent.contrast`, `primary.contrast`, and `secondary.contrast` on `secondary.main`. The built-in `forest` theme is Scindo's palette with two adjustments: light `info.text` and `info.textHover` are `#0068A3` to reach 4.5:1, and `secondary.contrast` is the pale green Scindo used on its mid-tone secondary button (report-only, 3.8:1 light and 3.5:1 dark).
 
 Quick way, inside one app: copy `node_modules/oneslash-design-system/dist/themes/default.css` into your app and change the channel values (space-separated RGB, e.g. `238 174 3`). The copy starts with `@import "../tokens.css";`, which does not resolve outside the package. Replace that line with `@import "oneslash-design-system/tokens.css";` (or import `tokens.css` separately; the same replacement applies to a copy of `default-auto.css`), otherwise the radius, shadow, z-index, motion and spacing variables are missing. Then import your copy instead of the package's theme file.
 

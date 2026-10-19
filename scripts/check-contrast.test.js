@@ -27,6 +27,7 @@ test('report-only pairs are reported but never fail', () => {
   assert.ok(report.some((r) => r.pair === 'error.onFill on error.fill' && r.gated && r.min === 4.5));
   assert.ok(report.some((r) => r.pair === 'accent.contrast on accent.main'));
   assert.ok(report.some((r) => r.pair === 'primary.contrast on primary.dark'));
+  assert.ok(report.some((r) => r.pair === 'secondary.contrast on secondary.main'));
 });
 
 test('gated text.secondary on background.default fails', () => {
@@ -47,6 +48,7 @@ test('component pairs are reported with the right gated flags', () => {
       assert.equal(row(theme, mode, 'error.contrast on error.main').gated, mode !== 'dark');
       assert.equal(row(theme, mode, 'error.main on background.default').gated, false);
       assert.equal(row(theme, mode, 'text.primary on secondary.main').gated, theme !== 'forest');
+      assert.equal(row(theme, mode, 'secondary.contrast on secondary.main').gated, theme !== 'forest');
     }
   }
 });

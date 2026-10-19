@@ -299,7 +299,9 @@ function withSemanticKeys(set, mode) {
     var isLight = mode === 'light';
     /** @param {typeof set.error} g @param {boolean} isError */
     var status = function (g, isError) { return (__assign(__assign({}, g), { fill: isLight ? g.dark : g.main, onFill: isLight ? '#FFFFFF' : '#000000', text: isLight ? g.dark : isError ? g.light : g.main, textHover: isLight ? g.dark : g.light, tint: isLight ? g.light : g.dark })); };
-    return __assign(__assign({}, set), { primary: __assign(__assign({}, set.primary), { contrast: isLight ? '#ffffff' : '#000000' }), background: __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100 }), error: status(set.error, true), warning: status(set.warning, false), info: status(set.info, false), success: status(set.success, false) });
+    return __assign(__assign({}, set), { primary: __assign(__assign({}, set.primary), { contrast: isLight ? '#ffffff' : '#000000' }), 
+        // Secondary buttons use text.primary as their label; a theme whose secondary.main is mid-tone sets its own.
+        secondary: __assign(__assign({}, set.secondary), { contrast: set.text.primary }), background: __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100 }), error: status(set.error, true), warning: status(set.warning, false), info: status(set.info, false), success: status(set.success, false) });
 }
 // Forest: the default set with these values replaced (group by group).
 /**
@@ -336,6 +338,15 @@ var forestDark = override(baseColors.dark, {
  * @returns {S}
  */
 var withForestInfoText = function (set) { return (__assign(__assign({}, set), { info: __assign(__assign({}, set.info), { text: '#0068A3', textHover: '#0068A3' }) })); };
+// Forest's secondary.main (#6E7A5A) is mid-tone: its text.primary gives 3.5:1, so the label is the pale green
+// Scindo's hand-written theme used (3.8:1 light, 3.5:1 dark; report-only in check:contrast).
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} set
+ * @param {string} contrast
+ * @returns {S}
+ */
+var withSecondaryContrast = function (set, contrast) { return (__assign(__assign({}, set), { secondary: __assign(__assign({}, set.secondary), { contrast: contrast }) })); };
 // Tooltips are inverted surfaces: each mode takes the other mode's accent300 and text.primary of the same theme.
 /**
  * @template {typeof base.colors.light} S
@@ -348,5 +359,5 @@ var withTooltips = function (light, dark) { return ({
     dark: __assign(__assign({}, dark), { misc: __assign(__assign({}, dark.misc), { tooltipBg: light.background.accent300, tooltipText: light.text.primary }) }),
 }); };
 var defaultSets = withTooltips(withSemanticKeys(baseColors.light, 'light'), withSemanticKeys(baseColors.dark, 'dark'));
-var forestSets = withTooltips(withForestInfoText(withSemanticKeys(forestLight, 'light')), withSemanticKeys(forestDark, 'dark'));
+var forestSets = withTooltips(withSecondaryContrast(withForestInfoText(withSemanticKeys(forestLight, 'light')), '#E7ECDA'), withSecondaryContrast(withSemanticKeys(forestDark, 'dark'), '#D9E5C7'));
 module.exports = __assign(__assign({}, base), { colors: defaultSets, themes: { forest: forestSets } });

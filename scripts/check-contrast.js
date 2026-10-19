@@ -14,6 +14,7 @@ const TEXT_RULES = [
 // fixing them changes visible colors, which is a separate decision from 2.0.
 const REPORT_ONLY = [
   { theme: 'forest', pair: 'text.primary on secondary.main', reason: 'Scindo secondary is mid-tone (3.57/3.48)' },
+  { theme: 'forest', pair: 'secondary.contrast on secondary.main', reason: 'Scindo secondary button label, 3.79/3.48 in its hand-written theme' },
   { mode: 'dark', pair: 'error.contrast on error.main', reason: 'danger primary label, 3.79 in 1.x' },
   { mode: 'light', pair: 'error.text on error.alertBg', reason: 'danger secondary label, 4.27 in 1.x' },
   { pair: 'error.main on background.default', reason: 'field error message, 3.79-4.06 in 1.x' },
@@ -42,6 +43,7 @@ function pairsFor(set) {
   for (const s of STATUSES) add(`text.primary on ${s}.alertBg`, set.text.primary, set[s].alertBg, 4.5, true);
   add('accent.contrast on accent.main', set.accent.contrast, set.accent.main, 4.5, true);
   add('primary.contrast on primary.dark', set.primary.contrast, set.primary.dark, 4.5, true);
+  add('secondary.contrast on secondary.main', set.secondary.contrast, set.secondary.main, 4.5, true);
   return pairs;
 }
 

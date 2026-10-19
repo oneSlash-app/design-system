@@ -26,7 +26,7 @@ export default function Button(_a) {
     var baseTypeClasses = {
         default: {
             primary: 'bg-accent-main text-accent-contrast',
-            secondary: 'bg-secondary-main text-fg-primary',
+            secondary: 'bg-secondary-main text-secondary-contrast',
             tertiary: 'bg-background-accent100 text-fg-primary',
             textOnly: 'text-fg-primary',
         },
