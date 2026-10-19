@@ -24,7 +24,7 @@ export default function Link(_a) {
             visited: 'visited:text-light-info-dark dark:visited:text-dark-info-light',
         },
         error: {
-            default: 'text-light-error-dark dark:text-dark-error-main',
+            default: 'text-light-error-dark dark:text-dark-error-light', // error.main is 4.0:1 on the dark background
             hover: 'hover:underline-offset-[4px] dark:hover:text-dark-error-light',
             visited: 'visited:text-light-error-dark dark:visited:text-dark-error-light',
         },
