@@ -39,7 +39,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "pretest": "npm run build",
-    "test": "node --test scripts/",
+    "test": "node --test scripts/*.test.js scripts/tokens/*.test.js",
     "check:contrast": "node scripts/check-contrast.js",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots"
