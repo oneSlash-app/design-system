@@ -74,7 +74,7 @@ export default function Popover({
     >
       {/* Popper owns the outer transform, so the fade and scale go on this inner panel */}
       <div
-        className={`bg-light-background-accent300 dark:bg-dark-background-accent300 dark:ring-1 dark:ring-dark-misc-divider rounded-[8px] shadow-lg p-2 origin-top-left
+        className={`bg-light-background-accent300 dark:bg-dark-background-accent100 dark:ring-1 dark:ring-dark-misc-divider rounded-[8px] shadow-lg p-2 origin-top-left
           ${overlayTransition} ${visible ? overlayVisible : overlayHidden}`}
       >
         {children}
