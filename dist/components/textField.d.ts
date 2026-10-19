@@ -19,6 +19,10 @@ interface TextFieldProps {
     required?: boolean;
     size?: 'large' | 'medium' | 'small' | 'tiny';
     placeholder?: string;
+    name?: string;
+    /** Browser autofill hint, e.g. "username" or "current-password". Defaults to "off". */
+    autoComplete?: string;
+    tabIndex?: number;
 }
-export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, error, errorText, required, size, placeholder, }: TextFieldProps): React.JSX.Element;
+export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, error, errorText, required, size, placeholder, name, autoComplete, tabIndex, }: TextFieldProps): React.JSX.Element;
 export {};

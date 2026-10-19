@@ -47,7 +47,7 @@ var colorConfig = {
     },
 };
 export default function Tag(_a) {
-    var variant = _a.variant, size = _a.size, _b = _a.state, state = _b === void 0 ? 'enabled' : _b, color = _a.color, label = _a.label, secondLabel = _a.secondLabel, iconName = _a.iconName, onClick = _a.onClick;
+    var variant = _a.variant, size = _a.size, _b = _a.state, state = _b === void 0 ? 'enabled' : _b, color = _a.color, label = _a.label, secondLabel = _a.secondLabel, iconName = _a.iconName, onClick = _a.onClick, _c = _a.disabled, disabled = _c === void 0 ? false : _c;
     // Get icon directly from icons map
     var Icon = iconName ? icons[iconName] : null;
     // Size and padding
@@ -114,20 +114,22 @@ export default function Tag(_a) {
     }
     // Dot color
     var dotColor = (colorStyles === null || colorStyles === void 0 ? void 0 : colorStyles.dot) || colorConfig.default.dot;
-    // Hover (only when not selected, no color, and onClick is provided)
-    var hoverClasses = !isSelected && !color && variant === 'contained' && onClick
+    var isDisabled = !!onClick && disabled;
+    // Hover (only when not selected, not disabled, no color, and onClick is provided)
+    var hoverClasses = !isSelected && !isDisabled && !color && variant === 'contained' && onClick
         ? 'hover:bg-background-accent200'
         : '';
-    var cursorClass = onClick && !isSelected ? 'cursor-pointer' : '';
+    var cursorClass = isDisabled ? 'cursor-not-allowed opacity-50' : onClick && !isSelected ? 'cursor-pointer' : '';
     // inline-flex so a tag wraps its content instead of stretching to its container
     var baseClasses = "inline-flex items-center gap-1 rounded-full whitespace-nowrap ".concat(stateTransition);
     // A clickable tag is a keyboard-reachable toggle button
     var interactiveProps = onClick
         ? {
             role: 'button',
-            tabIndex: 0,
+            tabIndex: isDisabled ? -1 : 0,
             'aria-pressed': isSelected,
-            onClick: onClick,
+            'aria-disabled': isDisabled || undefined,
+            onClick: isDisabled ? undefined : onClick,
             onKeyDown: function (e) {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -136,7 +138,7 @@ export default function Tag(_a) {
             },
         }
         : {};
-    return (<div className={"".concat(baseClasses, " ").concat(sizeClasses, " ").concat(bgClasses, " ").concat(fontClasses, " ").concat(borderClasses, " ").concat(hoverClasses, " ").concat(cursorClass, " ").concat(onClick ? "".concat(focusRing, " ").concat(pressFeedbackAny) : '')} {...interactiveProps}>
+    return (<div className={"".concat(baseClasses, " ").concat(sizeClasses, " ").concat(bgClasses, " ").concat(fontClasses, " ").concat(borderClasses, " ").concat(hoverClasses, " ").concat(cursorClass, " ").concat(onClick ? focusRing : '', " ").concat(onClick && !isDisabled ? pressFeedbackAny : '')} {...interactiveProps}>
       {variant === 'dot' && (<span className={"w-3 h-3 rounded-full flex-shrink-0 ".concat(dotColor)}/>)}
       {Icon && variant !== 'dot' && <Icon className={"".concat(size === 'tiny' ? 'w-3 h-3' : 'w-4 h-4', " flex-shrink-0")} strokeWidth={2}/>}
       <div className="flex flex-col text-center">

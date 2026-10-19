@@ -82,3 +82,16 @@ export var AllSizes = {
       <TextareaWrapper id="size-medium" label="Medium" size="medium"/>
     </div>); },
 };
+// `name`, `autoComplete` and `tabIndex` reach the <textarea>
+export var Named = {
+    render: function (args) { return <TextareaWrapper {...args}/>; },
+    args: {
+        id: "named-textarea",
+        label: "Message",
+        value: "",
+        name: "message",
+        autoComplete: "off",
+        tabIndex: 0,
+        size: "medium",
+    },
+};

@@ -14,6 +14,8 @@ interface TagProps {
   secondLabel?: string;
   iconName?: IconName;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
+  /** Only applies to a clickable tag: dims it, drops it from the tab order and ignores clicks */
+  disabled?: boolean;
 }
 
 // Filled tags use the status `fill` with `onFill` text; text-only tags use the status `text` token.
@@ -70,6 +72,7 @@ export default function Tag({
   secondLabel,
   iconName,
   onClick,
+  disabled = false,
 }: TagProps): JSX.Element {
   // Get icon directly from icons map
   const Icon = iconName ? icons[iconName] : null;
@@ -134,12 +137,14 @@ export default function Tag({
   // Dot color
   const dotColor = colorStyles?.dot || colorConfig.default.dot;
 
-  // Hover (only when not selected, no color, and onClick is provided)
-  const hoverClasses = !isSelected && !color && variant === 'contained' && onClick
+  const isDisabled = !!onClick && disabled;
+
+  // Hover (only when not selected, not disabled, no color, and onClick is provided)
+  const hoverClasses = !isSelected && !isDisabled && !color && variant === 'contained' && onClick
     ? 'hover:bg-background-accent200'
     : '';
 
-  const cursorClass = onClick && !isSelected ? 'cursor-pointer' : '';
+  const cursorClass = isDisabled ? 'cursor-not-allowed opacity-50' : onClick && !isSelected ? 'cursor-pointer' : '';
 
   // inline-flex so a tag wraps its content instead of stretching to its container
   const baseClasses = `inline-flex items-center gap-1 rounded-full whitespace-nowrap ${stateTransition}`;
@@ -148,9 +153,10 @@ export default function Tag({
   const interactiveProps = onClick
     ? {
         role: 'button',
-        tabIndex: 0,
+        tabIndex: isDisabled ? -1 : 0,
         'aria-pressed': isSelected,
-        onClick,
+        'aria-disabled': isDisabled || undefined,
+        onClick: isDisabled ? undefined : onClick,
         onKeyDown: (e: React.KeyboardEvent<HTMLDivElement>) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
@@ -162,7 +168,7 @@ export default function Tag({
 
   return (
     <div
-      className={`${baseClasses} ${sizeClasses} ${bgClasses} ${fontClasses} ${borderClasses} ${hoverClasses} ${cursorClass} ${onClick ? `${focusRing} ${pressFeedbackAny}` : ''}`}
+      className={`${baseClasses} ${sizeClasses} ${bgClasses} ${fontClasses} ${borderClasses} ${hoverClasses} ${cursorClass} ${onClick ? focusRing : ''} ${onClick && !isDisabled ? pressFeedbackAny : ''}`}
       {...interactiveProps}
     >
       {variant === 'dot' && (

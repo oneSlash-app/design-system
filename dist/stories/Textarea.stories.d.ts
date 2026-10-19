@@ -10,3 +10,4 @@ export declare const WithError: Story;
 export declare const SmallSize: Story;
 export declare const AutoExpanding: Story;
 export declare const AllSizes: Story;
+export declare const Named: Story;

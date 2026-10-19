@@ -9,6 +9,7 @@ export declare const Selected: Story;
 export declare const WithIcon: Story;
 export declare const Small: Story;
 export declare const Clickable: Story;
+export declare const ClickableDisabled: Story;
 export declare const AllVariants: Story;
 export declare const Success: Story;
 export declare const Warning: Story;

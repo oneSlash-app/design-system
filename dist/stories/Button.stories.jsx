@@ -146,3 +146,18 @@ export var Loading = {
       <Button size="tiny" type="textOnly" state="enabled" label="Saving" loading/>
     </div>); },
 };
+// `aria-*`, `data-*`, `id` and `title` reach the <button>, so an app can mark a toggle
+export var AriaExpanded = {
+    args: {
+        size: "medium",
+        type: "secondary",
+        state: "enabled",
+        label: "Filters",
+        actionIcon: "ChevronDown",
+        id: "filters-trigger",
+        title: "Show filters",
+        "aria-expanded": false,
+        "aria-controls": "filters-panel",
+        "data-testid": "filters-trigger",
+    },
+};

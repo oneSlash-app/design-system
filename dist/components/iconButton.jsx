@@ -1,11 +1,22 @@
 'use client';
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
 import { LoadingSmall } from './loadingScreen';
 import { focusRing, pressFeedback, stateTransition } from './sharedStyles';
 export default function IconButton(_a) {
     var color = _a.color, state = _a.state, size = _a.size, iconName = _a.iconName, onClick = _a.onClick, _b = _a.loading, loading = _b === void 0 ? false : _b, // Default to false
-    ariaLabel = _a.ariaLabel;
+    ariaLabel = _a.ariaLabel, rest = __rest(_a, ["color", "state", "size", "iconName", "onClick", "loading", "ariaLabel"]);
     var Icon = LucideIcons[iconName];
     // "ChevronDown" -> "Chevron Down"
     var label = ariaLabel !== null && ariaLabel !== void 0 ? ariaLabel : String(iconName).replace(/([a-z])([A-Z0-9])/g, '$1 $2');
@@ -67,7 +78,7 @@ export default function IconButton(_a) {
             : state === 'selected'
                 ? 'cursor-pointer'
                 : 'cursor-pointer';
-    return (<button type="button" className={"".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses, " ").concat(stateTransition, " ").concat(pressFeedback, " ").concat(focusRing, " flex items-center justify-center")} disabled={isDisabled || loading} // Disable button during loading
+    return (<button {...rest} type="button" className={"".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses, " ").concat(stateTransition, " ").concat(pressFeedback, " ").concat(focusRing, " flex items-center justify-center")} disabled={isDisabled || loading} // Disable button during loading
      onClick={onClick} aria-label={loading ? 'Loading' : label}>
       {loading ? (<LoadingSmall size={size}/>) : (Icon && <Icon className={iconSizeClasses[size]} strokeWidth={2}/>)}
     </button>);

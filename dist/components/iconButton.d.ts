@@ -1,6 +1,10 @@
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
-interface IconButtonProps {
+/** `aria-*`, `data-*`, `id` and `title` are forwarded to the rendered `<button>` */
+interface IconButtonProps extends React.AriaAttributes {
+    id?: string;
+    title?: string;
+    [dataAttr: `data-${string}`]: string | number | boolean | undefined;
     color: "primary" | "secondary" | "tertiary" | "iconOnly";
     state: "enabled" | "selected" | "disabled";
     size: "large" | "medium" | "small" | "tiny";
@@ -11,5 +15,5 @@ interface IconButtonProps {
     ariaLabel?: string;
 }
 export default function IconButton({ color, state, size, iconName, onClick, loading, // Default to false
-ariaLabel, }: IconButtonProps): React.JSX.Element;
+ariaLabel, ...rest }: IconButtonProps): React.JSX.Element;
 export {};

@@ -22,6 +22,10 @@ interface TextFieldProps {
   required?: boolean;
   size?: 'large' | 'medium' | 'small' | 'tiny';
   placeholder?: string;
+  name?: string;
+  /** Browser autofill hint, e.g. "username" or "current-password". Defaults to "off". */
+  autoComplete?: string;
+  tabIndex?: number;
 }
 
 export default function TextField({
@@ -43,6 +47,9 @@ export default function TextField({
   required = false,
   size = 'medium',
   placeholder,
+  name,
+  autoComplete = 'off',
+  tabIndex,
 }: TextFieldProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     // Ctrl+Enter or Cmd+Enter to submit
@@ -136,7 +143,9 @@ export default function TextField({
             autoFocus={autoFocus}
             disabled={disabled}
             required={required}
-            autoComplete="off"
+            name={name}
+            autoComplete={autoComplete}
+            tabIndex={tabIndex}
             {...errorProps}
           />
         ) : (
@@ -154,7 +163,9 @@ export default function TextField({
             autoFocus={autoFocus}
             disabled={disabled}
             required={required}
-            autoComplete="off"
+            name={name}
+            autoComplete={autoComplete}
+            tabIndex={tabIndex}
             {...errorProps}
           />
         )}

@@ -102,3 +102,17 @@ export const AllSizes: Story = {
     </div>
   ),
 };
+
+// `name`, `autoComplete` and `tabIndex` reach the <textarea>
+export const Named: Story = {
+  render: (args) => <TextareaWrapper {...args} />,
+  args: {
+    id: "named-textarea",
+    label: "Message",
+    value: "",
+    name: "message",
+    autoComplete: "off",
+    tabIndex: 0,
+    size: "medium",
+  },
+};

@@ -86,3 +86,18 @@ export var AllSizes = {
       <IconButton color="primary" state="enabled" size="large" iconName="Star"/>
     </div>); },
 };
+// `aria-*`, `data-*`, `id` and `title` reach the <button>, so an app can mark a toggle
+export var AriaExpanded = {
+    args: {
+        color: "iconOnly",
+        state: "enabled",
+        size: "medium",
+        iconName: "ChevronDown",
+        ariaLabel: "Show details",
+        id: "details-trigger",
+        title: "Show details",
+        "aria-expanded": true,
+        "aria-controls": "details-panel",
+        "data-testid": "details-trigger",
+    },
+};

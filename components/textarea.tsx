@@ -21,6 +21,10 @@ interface TextareaProps {
   errorText?: string;
   size?: 'medium' | 'small' | 'tiny';
   placeholder?: string;
+  name?: string;
+  /** Browser autofill hint. Defaults to "off". */
+  autoComplete?: string;
+  tabIndex?: number;
 }
 
 export default function Textarea({
@@ -41,6 +45,9 @@ export default function Textarea({
   errorText = 'This field is required',
   size = 'medium',
   placeholder,
+  name,
+  autoComplete = 'off',
+  tabIndex,
 }: TextareaProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -141,7 +148,9 @@ export default function Textarea({
           onCompositionEnd={onCompositionEnd}
           autoFocus={autoFocus}
           disabled={disabled}
-          autoComplete="off"
+          name={name}
+          autoComplete={autoComplete}
+          tabIndex={tabIndex}
           aria-invalid={error || undefined}
           aria-describedby={error ? errorId : undefined}
         />

@@ -11,3 +11,4 @@ export declare const Selected: Story;
 export declare const Disabled: Story;
 export declare const Loading: Story;
 export declare const AllSizes: Story;
+export declare const AriaExpanded: Story;

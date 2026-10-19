@@ -143,3 +143,16 @@ export var Number = {
         size: "medium",
     },
 };
+// `name` and `autoComplete` let the browser autofill a login form; `tabIndex` reaches the input too
+export var Autofill = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "autofill-textfield",
+        label: "Username",
+        value: "",
+        name: "username",
+        autoComplete: "username",
+        tabIndex: 0,
+        size: "medium",
+    },
+};

@@ -100,3 +100,19 @@ export const AllSizes: Story = {
     </div>
   ),
 };
+
+// `aria-*`, `data-*`, `id` and `title` reach the <button>, so an app can mark a toggle
+export const AriaExpanded: Story = {
+  args: {
+    color: "iconOnly",
+    state: "enabled",
+    size: "medium",
+    iconName: "ChevronDown",
+    ariaLabel: "Show details",
+    id: "details-trigger",
+    title: "Show details",
+    "aria-expanded": true,
+    "aria-controls": "details-panel",
+    "data-testid": "details-trigger",
+  },
+};

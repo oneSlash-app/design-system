@@ -10,6 +10,8 @@ interface TagProps {
     secondLabel?: string;
     iconName?: IconName;
     onClick?: React.MouseEventHandler<HTMLDivElement>;
+    /** Only applies to a clickable tag: dims it, drops it from the tab order and ignores clicks */
+    disabled?: boolean;
 }
-export default function Tag({ variant, size, state, color, label, secondLabel, iconName, onClick, }: TagProps): JSX.Element;
+export default function Tag({ variant, size, state, color, label, secondLabel, iconName, onClick, disabled, }: TagProps): JSX.Element;
 export {};

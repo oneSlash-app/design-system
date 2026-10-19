@@ -15,3 +15,4 @@ export declare const Email: Story;
 export declare const Password: Story;
 export declare const Required: Story;
 export declare const Number: Story;
+export declare const Autofill: Story;

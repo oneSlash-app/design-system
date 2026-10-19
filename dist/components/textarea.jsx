@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import { stateTransition } from './sharedStyles';
 export default function Textarea(_a) {
-    var id = _a.id, label = _a.label, value = _a.value, onChange = _a.onChange, onBlur = _a.onBlur, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, onCompositionStart = _a.onCompositionStart, onCompositionEnd = _a.onCompositionEnd, onSubmit = _a.onSubmit, _b = _a.autoFocus, autoFocus = _b === void 0 ? false : _b, _c = _a.maxRows, maxRows = _c === void 0 ? 6 : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, _f = _a.errorText, errorText = _f === void 0 ? 'This field is required' : _f, _g = _a.size, size = _g === void 0 ? 'medium' : _g, placeholder = _a.placeholder;
+    var id = _a.id, label = _a.label, value = _a.value, onChange = _a.onChange, onBlur = _a.onBlur, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, onCompositionStart = _a.onCompositionStart, onCompositionEnd = _a.onCompositionEnd, onSubmit = _a.onSubmit, _b = _a.autoFocus, autoFocus = _b === void 0 ? false : _b, _c = _a.maxRows, maxRows = _c === void 0 ? 6 : _c, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.error, error = _e === void 0 ? false : _e, _f = _a.errorText, errorText = _f === void 0 ? 'This field is required' : _f, _g = _a.size, size = _g === void 0 ? 'medium' : _g, placeholder = _a.placeholder, name = _a.name, _h = _a.autoComplete, autoComplete = _h === void 0 ? 'off' : _h, tabIndex = _a.tabIndex;
     var textareaRef = useRef(null);
     var handleKeyDown = function (e) {
         // Ctrl+Enter or Cmd+Enter to submit
@@ -65,7 +65,7 @@ export default function Textarea(_a) {
           {label}
         </label>)}
       <div className="relative">
-        <textarea ref={textareaRef} id={id} rows={1} className={containerClasses} value={value} onChange={onChange} onInput={adjustHeight} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} onCompositionStart={onCompositionStart} onCompositionEnd={onCompositionEnd} autoFocus={autoFocus} disabled={disabled} autoComplete="off" aria-invalid={error || undefined} aria-describedby={error ? errorId : undefined}/>
+        <textarea ref={textareaRef} id={id} rows={1} className={containerClasses} value={value} onChange={onChange} onInput={adjustHeight} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} onCompositionStart={onCompositionStart} onCompositionEnd={onCompositionEnd} autoFocus={autoFocus} disabled={disabled} name={name} autoComplete={autoComplete} tabIndex={tabIndex} aria-invalid={error || undefined} aria-describedby={error ? errorId : undefined}/>
       </div>
       {error && (<p id={errorId} className="mt-1 text-error-text text-body2">
           {errorText}

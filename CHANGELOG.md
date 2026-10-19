@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.3] - 2026-10-19
+
+### Added
+
+- Button and IconButton forward `aria-*`, `data-*`, `id` and `title` to the rendered `<button>`, so toggles can carry `aria-expanded` / `aria-controls`.
+- TextField and Textarea accept `name`, `autoComplete` (default stays `"off"`) and `tabIndex`, passed to the native element, for autofilled login fields and honeypot inputs.
+- Tag: `disabled` on a clickable tag applies `opacity-50`, `cursor-not-allowed` and `aria-disabled`, removes it from the tab order and ignores clicks. No effect without `onClick`.
+
 ## [2.0.2] - 2026-10-18
 
 ### Changed

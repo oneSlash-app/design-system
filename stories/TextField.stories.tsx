@@ -168,3 +168,17 @@ export const Number: Story = {
     size: "medium",
   },
 };
+
+// `name` and `autoComplete` let the browser autofill a login form; `tabIndex` reaches the input too
+export const Autofill: Story = {
+  render: (args) => <TextFieldWrapper {...args} />,
+  args: {
+    id: "autofill-textfield",
+    label: "Username",
+    value: "",
+    name: "username",
+    autoComplete: "username",
+    tabIndex: 0,
+    size: "medium",
+  },
+};
