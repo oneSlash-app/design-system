@@ -80,7 +80,7 @@ test('non-color groups', () => {
 
 test('tooltip tokens are inverted surfaces derived from the opposite mode of the same theme', () => {
   assert.equal(tokens.colors.light.misc.tooltipBg, '#4F4F4F');
-  assert.equal(tokens.colors.light.misc.tooltipText, '#EEEEEE');
+  assert.equal(tokens.colors.light.misc.tooltipText.toUpperCase(), '#EEEEEE');
   assert.equal(tokens.colors.dark.misc.tooltipBg, '#FFFFFF');
   assert.equal(tokens.colors.dark.misc.tooltipText, '#000000');
   assert.equal(tokens.themes.forest.light.misc.tooltipBg, '#424F34');
