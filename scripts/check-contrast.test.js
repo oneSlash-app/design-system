@@ -34,3 +34,19 @@ test('gated text.secondary on background.default fails', () => {
   t.colors.dark.text.secondary = t.colors.dark.background.default;
   assert.ok(checkContrast(t).failures.some((f) => f.theme === 'default' && f.mode === 'dark' && f.pair === 'text.secondary on background.default'));
 });
+
+test('component pairs are reported with the right gated flags', () => {
+  const { report } = checkContrast(tokens);
+  const row = (theme, mode, pair) => report.find((r) => r.theme === theme && r.mode === mode && r.pair === pair);
+  for (const theme of ['default', 'forest']) {
+    for (const mode of ['light', 'dark']) {
+      for (const s of ['error', 'warning', 'info', 'success']) {
+        assert.equal(row(theme, mode, `text.primary on ${s}.alertBg`).gated, true);
+      }
+      assert.equal(row(theme, mode, 'error.text on error.alertBg').gated, mode !== 'light');
+      assert.equal(row(theme, mode, 'error.contrast on error.main').gated, mode !== 'dark');
+      assert.equal(row(theme, mode, 'error.main on background.default').gated, false);
+      assert.equal(row(theme, mode, 'text.primary on secondary.main').gated, theme !== 'forest');
+    }
+  }
+});

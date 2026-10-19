@@ -10,6 +10,18 @@ const TEXT_RULES = [
   { key: 'disabled', min: 3.0, gatedOn: [] },
 ];
 
+// Report-only per pair (theme/mode/pair, `theme` omitted = every theme). These fail in 1.x or in Scindo's palette;
+// fixing them changes visible colors, which is a separate decision from 2.0.
+const REPORT_ONLY = [
+  { theme: 'forest', pair: 'text.primary on secondary.main', reason: 'Scindo secondary is mid-tone (3.57/3.48)' },
+  { mode: 'dark', pair: 'error.contrast on error.main', reason: 'danger primary label, 3.79 in 1.x' },
+  { mode: 'light', pair: 'error.text on error.alertBg', reason: 'danger secondary label, 4.27 in 1.x' },
+  { pair: 'error.main on background.default', reason: 'field error message, 3.79-4.06 in 1.x' },
+];
+
+const isReportOnly = (theme, mode, pair) =>
+  REPORT_ONLY.some((r) => r.pair === pair && (!r.theme || r.theme === theme) && (!r.mode || r.mode === mode));
+
 function pairsFor(set) {
   const pairs = [];
   const add = (pair, fg, bg, min, gated) => pairs.push({ pair, fg, bg, min, gated });
@@ -23,6 +35,11 @@ function pairsFor(set) {
     add(`${s}.text on background.default`, set[s].text, set.background.default, 4.5, true);
     add(`${s}.textHover on background.default`, set[s].textHover, set.background.default, 4.5, true);
   }
+  add('text.primary on secondary.main', set.text.primary, set.secondary.main, 4.5, true);
+  add('error.contrast on error.main', set.error.contrast, set.error.main, 4.5, true);
+  add('error.text on error.alertBg', set.error.text, set.error.alertBg, 4.5, true);
+  add('error.main on background.default', set.error.main, set.background.default, 4.5, true);
+  for (const s of STATUSES) add(`text.primary on ${s}.alertBg`, set.text.primary, set[s].alertBg, 4.5, true);
   add('accent.contrast on accent.main', set.accent.contrast, set.accent.main, 4.5, true);
   add('primary.contrast on primary.dark', set.primary.contrast, set.primary.dark, 4.5, true);
   return pairs;
@@ -34,7 +51,9 @@ function checkContrast(tokens) {
   const report = [];
   for (const [theme, modes] of Object.entries(themes)) {
     for (const mode of ['light', 'dark']) {
-      for (const { pair, fg, bg, min, gated } of pairsFor(modes[mode])) {
+      for (const p of pairsFor(modes[mode])) {
+        const { pair, fg, bg, min } = p;
+        const gated = p.gated && !isReportOnly(theme, mode, pair);
         const ratio = contrastRatio(fg, bg);
         report.push({ theme, mode, pair, ratio, min, gated });
         if (gated && ratio < min) failures.push({ theme, mode, pair, ratio, min });
