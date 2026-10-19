@@ -2,6 +2,7 @@
 /* Theme "default". Variables hold RGB channels: use rgb(var(--os-color-…) / <alpha>). */
 @import "../tokens.css";
 :root {
+  --os-mode: light;
   --os-color-text-primary: 0 0 0;
   --os-color-text-secondary: 104 104 104;
   --os-color-text-disabled: 158 158 158;
@@ -82,6 +83,7 @@
   --os-color-misc-tooltipText: 238 238 238;
 }
 .dark {
+  --os-mode: dark;
   --os-color-text-primary: 238 238 238;
   --os-color-text-secondary: 176 176 176;
   --os-color-text-disabled: 109 109 109;

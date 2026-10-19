@@ -133,7 +133,7 @@ Tooltip colors come from `misc.tooltipBg` (`bg-misc-tooltipBg`) and `misc.toolti
 
 ### 8. `useDarkMode()`
 
-`useDarkMode()` now reports the effective mode: `.dark` on `<html>` gives dark, `.light` gives light, and with neither it follows the OS setting. Previously it read only the `.dark` class. The pure helper is `resolveDarkMode(classList, prefersDark)`. Both are exported from the package root:
+`useDarkMode()` now reports the mode the loaded theme file is rendering: each theme file declares `--os-mode` (`light` or `dark`), so the hook agrees with the variables on screen, including under a `-auto` file. Without a 2.0 theme file loaded it falls back to the old rule: `.dark` on `<html>` gives dark, `.light` gives light, otherwise the OS setting. Previously it read only the `.dark` class. The hook returns `false` on the first render and resolves after mount (no SSR hydration mismatch). The pure helper is `resolveDarkMode(classList, prefersDark, mode?)`, where `mode` is the trimmed `--os-mode` value. Both are exported from the package root:
 
 ```ts
 import { useDarkMode, resolveDarkMode } from 'oneslash-design-system';

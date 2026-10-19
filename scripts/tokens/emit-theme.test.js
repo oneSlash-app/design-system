@@ -27,3 +27,11 @@ test('forest uses forest values', () => {
   assert.match(f, /:root \{[^}]*--os-color-accent-main: 28 34 19;/);
   assert.match(f, /^\/\* Theme "forest"\./m);
 });
+
+test('theme files declare the mode they render, first in each block', () => {
+  const auto = emitThemeCss('default', tokens.colors, { auto: true });
+  assert.match(auto, /:root \{\n  --os-mode: light;\n/);
+  assert.match(auto, /\.dark \{\n  --os-mode: dark;\n/);
+  assert.match(auto, /:root:not\(\.light\) \{\n    --os-mode: dark;\n/);
+  assert.equal((css.match(/--os-mode:/g) || []).length, 2);
+});

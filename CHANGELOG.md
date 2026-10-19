@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Themeable tokens.** Colors, radius, shadow, z-index and motion are CSS variables (`--os-*`). Components use semantic classes (`bg-accent-main`, `text-fg-primary`, `rounded-control`, `shadow-overlay`) that need no `dark:` pairs.
 - Apps must import one theme file and adopt the preset (Tailwind v3) or the `@theme` files (v4). See `MIGRATION_GUIDE.md`.
-- `useDarkMode()` reports the effective mode: `.dark`, `.light`, else the OS setting.
+- `useDarkMode()` reports the mode the loaded theme file is rendering (each theme file declares `--os-mode`); without a 2.0 theme it falls back to `.dark`, `.light`, else the OS setting. It starts `false` and resolves after mount.
 - Two documented `dark:` exemptions remain: `UserImage` per-user hue, and the dark-only edge ring on Menu, Popover and Modal.
 
 ### Added

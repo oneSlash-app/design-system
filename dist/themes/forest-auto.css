@@ -2,6 +2,7 @@
 /* Theme "forest". Variables hold RGB channels: use rgb(var(--os-color-…) / <alpha>). */
 @import "../tokens.css";
 :root {
+  --os-mode: light;
   --os-color-text-primary: 28 34 19;
   --os-color-text-secondary: 81 94 60;
   --os-color-text-disabled: 138 150 112;
@@ -82,6 +83,7 @@
   --os-color-misc-tooltipText: 217 229 199;
 }
 .dark {
+  --os-mode: dark;
   --os-color-text-primary: 217 229 199;
   --os-color-text-secondary: 157 170 133;
   --os-color-text-disabled: 109 121 86;
@@ -163,6 +165,7 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
+    --os-mode: dark;
     --os-color-text-primary: 217 229 199;
     --os-color-text-secondary: 157 170 133;
     --os-color-text-disabled: 109 121 86;

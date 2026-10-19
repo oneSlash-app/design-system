@@ -27,4 +27,9 @@ test('resolveDarkMode', () => {
   assert.equal(resolveDarkMode(cl('light'), true), false);
   assert.equal(resolveDarkMode(cl(), true), true);
   assert.equal(resolveDarkMode(cl(), false), false);
+  assert.equal(resolveDarkMode(cl('dark'), false, 'light'), false);
+  assert.equal(resolveDarkMode(cl(), true, 'light'), false);
+  assert.equal(resolveDarkMode(cl(), true, undefined), true);
+  assert.equal(resolveDarkMode(cl(), true, 'dark'), true);
+  assert.equal(resolveDarkMode(cl(), true, ''), true);
 });
