@@ -24,7 +24,8 @@ export function LoadingSmall({ size = 'medium' }: LoadingSmallProps) {
   return (
     <div role="status" aria-label="Loading" className="flex justify-center items-center">
       <div
-        className={`rounded-full border-current border-t-transparent text-light-text-primary dark:text-dark-text-primary animate-spin ${spinnerSizeClasses[size]}`}
+        // border-current: the spinner takes the color of its parent (e.g. an IconButton's icon color)
+        className={`rounded-full border-current border-t-transparent animate-spin ${spinnerSizeClasses[size]}`}
       />
     </div>
   );

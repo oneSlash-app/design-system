@@ -11,6 +11,8 @@ interface ButtonProps {
     onClickButton?: any;
     onClickActionIcon?: () => void;
     className?: string;
+    /** Shows a spinner in the icon slot, keeps the label, and disables the button */
+    loading?: boolean;
 }
-export default function Button({ size, type, color, state, label, secondLabel, decoIcon, actionIcon, onClickButton, onClickActionIcon, className, }: ButtonProps): React.JSX.Element;
+export default function Button({ size, type, color, state, label, secondLabel, decoIcon, actionIcon, onClickButton, onClickActionIcon, className, loading, }: ButtonProps): React.JSX.Element;
 export {};

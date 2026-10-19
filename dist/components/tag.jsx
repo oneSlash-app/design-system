@@ -82,9 +82,13 @@ export default function Tag(_a) {
     else if (colorStyles) {
         fontClasses = variant === 'textOnly' ? colorStyles.textOnly : colorStyles.text;
     }
-    else if (isSelected) {
-        // Selected tags sit on accent-main — use the accent contrast token
+    else if (isSelected && variant === 'contained') {
+        // Selected contained tags sit on accent-main — use the accent contrast token
         fontClasses = 'text-light-accent-contrast dark:text-dark-accent-contrast';
+    }
+    else if (isSelected) {
+        // No fill behind the text: the accent border marks the selection
+        fontClasses = 'text-light-text-primary dark:text-dark-text-primary';
     }
     else {
         fontClasses = 'text-light-text-primary dark:text-dark-text-primary';
@@ -115,7 +119,8 @@ export default function Tag(_a) {
         ? 'hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'
         : '';
     var cursorClass = onClick && !isSelected ? 'cursor-pointer' : '';
-    var baseClasses = "flex items-center gap-1 rounded-full whitespace-nowrap ".concat(stateTransition);
+    // inline-flex so a tag wraps its content instead of stretching to its container
+    var baseClasses = "inline-flex items-center gap-1 rounded-full whitespace-nowrap ".concat(stateTransition);
     // A clickable tag is a keyboard-reachable toggle button
     var interactiveProps = onClick
         ? {
