@@ -47,7 +47,7 @@ export default function UserImage({
 
   return (
     // Per-user hue computed in JS, not a theme token, so the dark: variant stays here (one of the two documented
-    // `dark:` exemptions, see the overlay rings in Menu/Popover/Modal). Under an -auto theme with no class it keeps the light shade.
+    // `dark:` exemptions, see the overlay rings in Menu/Popover/Modal). The dark: variant follows whatever dark variant the app's preset/@theme defines (class-only or OS-aware).
     <div
       style={{
         '--light-bg': lightBg,

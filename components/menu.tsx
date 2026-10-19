@@ -9,7 +9,7 @@ interface MenuProps {
 
 const Menu = forwardRef<HTMLDivElement, MenuProps>(
   ({ children, width, className = '' }, ref) => {
-    // dark-only edge: a ring only in dark mode, so it keeps a dark: variant
+    // dark-only edge: a ring only in dark mode, so it keeps a dark: variant (it follows whatever dark variant the app's preset/@theme defines, class-only or OS-aware)
     return (
       <div
         ref={ref}

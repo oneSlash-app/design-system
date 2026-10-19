@@ -92,7 +92,7 @@ export default function Modal({
 
   if (!mounted) return null;
 
-  // dark-only edge: a ring only in dark mode, so it keeps a dark: variant
+  // dark-only edge: a ring only in dark mode, so it keeps a dark: variant (it follows whatever dark variant the app's preset/@theme defines, class-only or OS-aware)
   return (
     <div
       className={`fixed bg-misc-scrim/40 flex items-center justify-center z-[var(--os-z-overlay)]

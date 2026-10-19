@@ -64,7 +64,7 @@ export default function Popover({
 
   // Render popover in a portal to prevent layout shifts and positioning issues
   
-  // dark-only edge: a ring only in dark mode, so it keeps a dark: variant
+  // dark-only edge: a ring only in dark mode, so it keeps a dark: variant (it follows whatever dark variant the app's preset/@theme defines, class-only or OS-aware)
   return createPortal(
     <div
       id={id}

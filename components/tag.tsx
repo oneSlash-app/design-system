@@ -16,8 +16,8 @@ interface TagProps {
   onClick?: React.MouseEventHandler<HTMLDivElement>;
 }
 
-// Light: the -dark shade with white text; dark: the -main shade with black text.
-// Both keep text at 4.4:1 or better.
+// Filled tags use the status `fill` with `onFill` text; text-only tags use the status `text` token.
+// Each pair is checked at 4.5:1 by `npm run check:contrast`.
 const colorConfig = {
   default: {
     bg: 'bg-secondary-light',
