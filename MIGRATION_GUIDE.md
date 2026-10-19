@@ -29,7 +29,7 @@ npm install oneslash-design-system@^2.0.0
 
 Pair them as shown. Each theme file imports `../tokens.css` (radius, shadow, z-index, motion, spacing), so you import only the theme file.
 
-Under the `-auto` files the variables switch with `prefers-color-scheme: dark`. Add `.dark` to force dark or `.light` to opt out of the OS dark setting.
+Under the `-auto` files the variables switch with `prefers-color-scheme: dark`. Add `.dark` to force dark or `.light` to opt out of the OS dark setting. Put `.dark`/`.light` on `<html>` only: a nested `.light` turns `dark:` utilities off but not the variables. The v3 `-auto` preset needs Tailwind 3.4.1 or newer.
 
 Import it once, before Tailwind, for example at the top of your global CSS:
 
@@ -125,7 +125,7 @@ npm run build:tokens && npm run check:contrast
 
 `check:contrast` requires 4.5:1 for: `text.primary` on all backgrounds, `text.secondary` on `default` and `accent100`, each status `onFill` on `fill` and `text`/`textHover` on `default`, `accent.contrast`, and `primary.contrast`. The built-in `forest` theme is Scindo's palette with one adjustment: light `info.text` and `info.textHover` are `#0068A3` to reach 4.5:1.
 
-Quick way, inside one app: copy `node_modules/oneslash-design-system/dist/themes/default.css` into your app and change the channel values (space-separated RGB, e.g. `238 174 3`). The copy starts with `@import "../tokens.css";`, which does not resolve outside the package. Replace that line with `@import "oneslash-design-system/tokens.css";` (or import `tokens.css` separately), otherwise the radius, shadow, z-index, motion and spacing variables are missing. Then import your copy instead of the package's theme file.
+Quick way, inside one app: copy `node_modules/oneslash-design-system/dist/themes/default.css` into your app and change the channel values (space-separated RGB, e.g. `238 174 3`). The copy starts with `@import "../tokens.css";`, which does not resolve outside the package. Replace that line with `@import "oneslash-design-system/tokens.css";` (or import `tokens.css` separately; the same replacement applies to a copy of `default-auto.css`), otherwise the radius, shadow, z-index, motion and spacing variables are missing. Then import your copy instead of the package's theme file.
 
 ### 7. Tooltip tokens
 

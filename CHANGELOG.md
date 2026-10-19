@@ -29,6 +29,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - The 1.x class names (`bg-light-*`, `dark:*-dark-*`, `font-h1`, `leading-body1`, …) still work as aliases of the themed variables. They are removed in 3.0.
 
+### Removed
+
+- The `./styles` export and `dist/output.css`. Apps that imported the prebuilt CSS must switch to a theme file plus the preset (v3) or the `@theme` files (v4).
+
 ### Since 1.7.2
 
 Details for 1.3 to 1.8 are in [GitHub Releases](https://github.com/oneSlash-app/design-system/releases). 1.7.3 was never released.
