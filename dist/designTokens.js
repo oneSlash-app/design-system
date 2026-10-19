@@ -1,6 +1,17 @@
 "use strict";
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 // design tokens definitions
-module.exports = {
+var tokens = {
     colors: {
         // light
         light: {
@@ -247,4 +258,76 @@ module.exports = {
             justify: 'justify',
         },
     },
+    radius: {
+        inline: '2px',
+        control: '8px',
+        container: '12px',
+        full: '9999px',
+    },
+    shadow: {
+        overlay: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+    },
+    zIndex: {
+        overlay: '50',
+        tooltip: '1000',
+    },
+    motion: {
+        duration: {
+            fast: '150ms',
+            slide: '200ms',
+            pop: '220ms',
+        },
+        easing: {
+            out: 'cubic-bezier(0, 0, 0.2, 1)',
+            emphasized: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+        },
+    },
 };
+// Adds the semantic keys that are derived from a set's own groups, so the
+// rule lives once and applies to every set (default and themes, light and dark).
+function withSemanticKeys(set, mode) {
+    var isLight = mode === 'light';
+    var out = __assign({}, set);
+    out.primary = __assign(__assign({}, set.primary), { contrast: isLight ? '#ffffff' : '#000000' });
+    out.background = __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100 });
+    for (var _i = 0, _a = ['error', 'warning', 'info', 'success']; _i < _a.length; _i++) {
+        var name_1 = _a[_i];
+        var g = set[name_1];
+        out[name_1] = __assign(__assign({}, g), { fill: isLight ? g.dark : g.main, onFill: isLight ? '#FFFFFF' : '#000000', text: isLight ? g.dark : name_1 === 'error' ? g.light : g.main, textHover: isLight ? g.dark : g.light });
+    }
+    return out;
+}
+// Forest: the default set with these values replaced (group by group).
+function override(set, changes) {
+    var out = __assign({}, set);
+    for (var _i = 0, _a = Object.entries(changes); _i < _a.length; _i++) {
+        var _b = _a[_i], group = _b[0], values = _b[1];
+        out[group] = __assign(__assign({}, set[group]), values);
+    }
+    return out;
+}
+var base = tokens.colors;
+var forestLight = override(base.light, {
+    text: { primary: '#1C2213', secondary: '#515E3C', disabled: '#8A9670' },
+    accent: { main: '#1C2213', dark: '#2A331E', light: '#3A472B', contrast: '#E7ECDA' },
+    secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+    background: { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC' },
+});
+var forestDark = override(base.dark, {
+    text: { primary: '#D9E5C7', secondary: '#9DAA85', disabled: '#6D7956' },
+    accent: { main: '#E7ECDA', dark: '#D6DEC3', light: '#F2F5EA', contrast: '#1C2213' },
+    secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+    background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
+});
+tokens.themes = {
+    forest: {
+        light: withSemanticKeys(forestLight, 'light'),
+        dark: withSemanticKeys(forestDark, 'dark'),
+    },
+};
+tokens.colors = {
+    light: withSemanticKeys(base.light, 'light'),
+    dark: withSemanticKeys(base.dark, 'dark'),
+};
+module.exports = tokens;

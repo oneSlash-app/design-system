@@ -1,5 +1,5 @@
 // design tokens definitions
-module.exports = {
+const tokens = {
   colors: {
     // light
     light:{
@@ -249,4 +249,93 @@ module.exports = {
       justify: 'justify',
     },
   },
+
+  radius: {
+    inline: '2px',
+    control: '8px',
+    container: '12px',
+    full: '9999px',
+  },
+
+  shadow: {
+    overlay: '0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)',
+  },
+
+  zIndex: {
+    overlay: '50',
+    tooltip: '1000',
+  },
+
+  motion: {
+    duration: {
+      fast: '150ms',
+      slide: '200ms',
+      pop: '220ms',
+    },
+    easing: {
+      out: 'cubic-bezier(0, 0, 0.2, 1)',
+      emphasized: 'cubic-bezier(0.16, 1, 0.3, 1)',
+      spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
+    },
+  },
 };
+
+// Adds the semantic keys that are derived from a set's own groups, so the
+// rule lives once and applies to every set (default and themes, light and dark).
+function withSemanticKeys(set, mode) {
+  const isLight = mode === 'light';
+  const out = { ...set };
+  out.primary = { ...set.primary, contrast: isLight ? '#ffffff' : '#000000' };
+  out.background = {
+    ...set.background,
+    elevated: isLight ? set.background.default : set.background.accent100,
+    overlay: isLight ? set.background.accent300 : set.background.accent100,
+  };
+  for (const name of ['error', 'warning', 'info', 'success']) {
+    const g = set[name];
+    out[name] = {
+      ...g,
+      fill: isLight ? g.dark : g.main,
+      onFill: isLight ? '#FFFFFF' : '#000000',
+      text: isLight ? g.dark : name === 'error' ? g.light : g.main,
+      textHover: isLight ? g.dark : g.light,
+    };
+  }
+  return out;
+}
+
+// Forest: the default set with these values replaced (group by group).
+function override(set, changes) {
+  const out = { ...set };
+  for (const [group, values] of Object.entries(changes)) out[group] = { ...set[group], ...values };
+  return out;
+}
+
+const base = tokens.colors;
+
+const forestLight = override(base.light, {
+  text: { primary: '#1C2213', secondary: '#515E3C', disabled: '#8A9670' },
+  accent: { main: '#1C2213', dark: '#2A331E', light: '#3A472B', contrast: '#E7ECDA' },
+  secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+  background: { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC' },
+});
+
+const forestDark = override(base.dark, {
+  text: { primary: '#D9E5C7', secondary: '#9DAA85', disabled: '#6D7956' },
+  accent: { main: '#E7ECDA', dark: '#D6DEC3', light: '#F2F5EA', contrast: '#1C2213' },
+  secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+  background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
+});
+
+tokens.themes = {
+  forest: {
+    light: withSemanticKeys(forestLight, 'light'),
+    dark: withSemanticKeys(forestDark, 'dark'),
+  },
+};
+tokens.colors = {
+  light: withSemanticKeys(base.light, 'light'),
+  dark: withSemanticKeys(base.dark, 'dark'),
+};
+
+module.exports = tokens;
