@@ -5,7 +5,7 @@ const base = {
     light:{
       text:{
         primary: '#000000',
-        secondary: '#6D6D6D',
+        secondary: '#686868', // 4.6:1 on background.default (#6D6D6D was 4.2)
         disabled: '#9E9E9E',
         contrast: '#ffffff',
       },
