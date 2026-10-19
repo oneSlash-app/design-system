@@ -99,6 +99,7 @@ export namespace colors {
             onFill: string;
             text: string;
             textHover: string;
+            tint: string;
             main: string;
             dark: string;
             light: string;
@@ -110,6 +111,7 @@ export namespace colors {
             onFill: string;
             text: string;
             textHover: string;
+            tint: string;
             main: string;
             dark: string;
             light: string;
@@ -121,6 +123,7 @@ export namespace colors {
             onFill: string;
             text: string;
             textHover: string;
+            tint: string;
             main: string;
             dark: string;
             light: string;
@@ -132,6 +135,7 @@ export namespace colors {
             onFill: string;
             text: string;
             textHover: string;
+            tint: string;
             main: string;
             dark: string;
             light: string;
@@ -239,6 +243,7 @@ export namespace colors {
             onFill: string;
             text: string;
             textHover: string;
+            tint: string;
             main: string;
             dark: string;
             light: string;
@@ -250,6 +255,7 @@ export namespace colors {
             onFill: string;
             text: string;
             textHover: string;
+            tint: string;
             main: string;
             dark: string;
             light: string;
@@ -261,6 +267,7 @@ export namespace colors {
             onFill: string;
             text: string;
             textHover: string;
+            tint: string;
             main: string;
             dark: string;
             light: string;
@@ -272,6 +279,7 @@ export namespace colors {
             onFill: string;
             text: string;
             textHover: string;
+            tint: string;
             main: string;
             dark: string;
             light: string;
@@ -382,6 +390,7 @@ export namespace themes {
                 onFill: string;
                 text: string;
                 textHover: string;
+                tint: string;
                 main: string;
                 dark: string;
                 light: string;
@@ -393,6 +402,7 @@ export namespace themes {
                 onFill: string;
                 text: string;
                 textHover: string;
+                tint: string;
                 main: string;
                 dark: string;
                 light: string;
@@ -404,6 +414,7 @@ export namespace themes {
                 onFill: string;
                 text: string;
                 textHover: string;
+                tint: string;
                 main: string;
                 dark: string;
                 light: string;
@@ -415,6 +426,7 @@ export namespace themes {
                 onFill: string;
                 text: string;
                 textHover: string;
+                tint: string;
                 main: string;
                 dark: string;
                 light: string;
@@ -523,6 +535,7 @@ export namespace themes {
                 onFill: string;
                 text: string;
                 textHover: string;
+                tint: string;
                 main: string;
                 dark: string;
                 light: string;
@@ -534,6 +547,7 @@ export namespace themes {
                 onFill: string;
                 text: string;
                 textHover: string;
+                tint: string;
                 main: string;
                 dark: string;
                 light: string;
@@ -545,6 +559,7 @@ export namespace themes {
                 onFill: string;
                 text: string;
                 textHover: string;
+                tint: string;
                 main: string;
                 dark: string;
                 light: string;
@@ -556,6 +571,7 @@ export namespace themes {
                 onFill: string;
                 text: string;
                 textHover: string;
+                tint: string;
                 main: string;
                 dark: string;
                 light: string;

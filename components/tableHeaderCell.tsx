@@ -16,7 +16,7 @@ export default function TableHeaderCell({children, width, minWidth, align = 'lef
 		return (
 				<div
 						role="columnheader"
-						className={`${flexClass} p-2 text-body2 text-light-text-secondary dark:text-dark-text-secondary ${alignClass}`}
+						className={`${flexClass} p-2 text-body2 text-fg-secondary ${alignClass}`}
 						style={widthStyle}
 				>
 						{children}

@@ -13,8 +13,8 @@ export default function Navigation({
   return (
     <nav
       className={`
-        bg-light-background-default dark:bg-dark-background-default
-        border-r border-light-misc-divider dark:border-dark-misc-divider
+        bg-background-default
+        border-r border-misc-divider
         p-2 flex flex-col gap-0.5
         ${className}
       `}

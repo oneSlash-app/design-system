@@ -42,24 +42,24 @@ export default function Checkbox({
       />
       <span
         className={`relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full ${stateTransition}
-          peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-light-text-primary dark:peer-focus-visible:outline-dark-text-primary
-          ${disabled ? '' : 'group-hover:bg-light-action-selected dark:group-hover:bg-dark-action-selected'}`}
+          peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-fg-primary
+          ${disabled ? '' : 'group-hover:bg-action-selected'}`}
       >
         {/* Checkbox */}
         <span
           className={`relative w-4 h-4 border-2 rounded ${stateTransition} ${
             disabled
               ? isChecked
-                ? 'bg-light-text-disabled dark:bg-dark-text-disabled border-transparent'
-                : 'border-light-text-disabled dark:border-dark-text-disabled'
+                ? 'bg-fg-disabled border-transparent'
+                : 'border-fg-disabled'
               : isChecked
-                ? 'bg-light-text-primary dark:bg-dark-text-primary border-transparent'
-                : 'border-light-text-secondary dark:border-dark-text-secondary'
+                ? 'bg-fg-primary border-transparent'
+                : 'border-fg-secondary'
           } flex items-center justify-center`}
         >
           {/* Always rendered so the tick can scale in and out */}
           <svg
-            className={`w-3 h-3 text-light-text-contrast dark:text-dark-text-contrast ${popTransition} ${isChecked ? 'scale-100' : 'scale-0'}`}
+            className={`w-3 h-3 text-fg-contrast ${popTransition} ${isChecked ? 'scale-100' : 'scale-0'}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 12 12"
@@ -76,8 +76,8 @@ export default function Checkbox({
             <span
               className={`text-body1 ${
                 disabled
-                  ? 'text-light-text-disabled dark:text-dark-text-disabled'
-                  : 'text-light-text-primary dark:text-dark-text-primary'
+                  ? 'text-fg-disabled'
+                  : 'text-fg-primary'
               }`}
             >
               {label}
@@ -87,8 +87,8 @@ export default function Checkbox({
             <span
               className={`text-body2 opacity-70 ${
                 disabled
-                  ? 'text-light-text-disabled dark:text-dark-text-disabled'
-                  : 'text-light-text-primary dark:text-dark-text-primary'
+                  ? 'text-fg-disabled'
+                  : 'text-fg-primary'
               }`}
             >
               {secondLabel}

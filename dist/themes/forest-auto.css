@@ -26,6 +26,7 @@
   --os-color-error-onFill: 255 255 255;
   --os-color-error-text: 178 35 35;
   --os-color-error-textHover: 178 35 35;
+  --os-color-error-tint: 242 119 119;
   --os-color-warning-main: 239 108 0;
   --os-color-warning-dark: 168 70 0;
   --os-color-warning-light: 255 167 50;
@@ -35,6 +36,7 @@
   --os-color-warning-onFill: 255 255 255;
   --os-color-warning-text: 168 70 0;
   --os-color-warning-textHover: 168 70 0;
+  --os-color-warning-tint: 255 167 50;
   --os-color-info-main: 0 135 212;
   --os-color-info-dark: 0 107 171;
   --os-color-info-light: 44 193 255;
@@ -44,6 +46,7 @@
   --os-color-info-onFill: 255 255 255;
   --os-color-info-text: 0 104 163;
   --os-color-info-textHover: 0 104 163;
+  --os-color-info-tint: 44 193 255;
   --os-color-success-main: 50 135 54;
   --os-color-success-dark: 42 107 45;
   --os-color-success-light: 103 193 107;
@@ -53,6 +56,7 @@
   --os-color-success-onFill: 255 255 255;
   --os-color-success-text: 42 107 45;
   --os-color-success-textHover: 42 107 45;
+  --os-color-success-tint: 103 193 107;
   --os-color-background-default: 217 229 199;
   --os-color-background-accent100: 226 236 212;
   --os-color-background-accent200: 235 241 224;
@@ -100,6 +104,7 @@
   --os-color-error-onFill: 0 0 0;
   --os-color-error-text: 242 119 119;
   --os-color-error-textHover: 242 119 119;
+  --os-color-error-tint: 178 35 35;
   --os-color-warning-main: 255 140 10;
   --os-color-warning-dark: 204 83 2;
   --os-color-warning-light: 255 167 50;
@@ -109,6 +114,7 @@
   --os-color-warning-onFill: 0 0 0;
   --os-color-warning-text: 255 140 10;
   --os-color-warning-textHover: 255 167 50;
+  --os-color-warning-tint: 204 83 2;
   --os-color-info-main: 0 175 255;
   --os-color-info-dark: 0 107 171;
   --os-color-info-light: 44 193 255;
@@ -118,6 +124,7 @@
   --os-color-info-onFill: 0 0 0;
   --os-color-info-text: 0 175 255;
   --os-color-info-textHover: 44 193 255;
+  --os-color-info-tint: 0 107 171;
   --os-color-success-main: 66 165 71;
   --os-color-success-dark: 42 107 45;
   --os-color-success-light: 103 193 107;
@@ -127,6 +134,7 @@
   --os-color-success-onFill: 0 0 0;
   --os-color-success-text: 66 165 71;
   --os-color-success-textHover: 103 193 107;
+  --os-color-success-tint: 42 107 45;
   --os-color-background-default: 28 34 19;
   --os-color-background-accent100: 39 48 27;
   --os-color-background-accent200: 54 66 40;
@@ -175,6 +183,7 @@
     --os-color-error-onFill: 0 0 0;
     --os-color-error-text: 242 119 119;
     --os-color-error-textHover: 242 119 119;
+    --os-color-error-tint: 178 35 35;
     --os-color-warning-main: 255 140 10;
     --os-color-warning-dark: 204 83 2;
     --os-color-warning-light: 255 167 50;
@@ -184,6 +193,7 @@
     --os-color-warning-onFill: 0 0 0;
     --os-color-warning-text: 255 140 10;
     --os-color-warning-textHover: 255 167 50;
+    --os-color-warning-tint: 204 83 2;
     --os-color-info-main: 0 175 255;
     --os-color-info-dark: 0 107 171;
     --os-color-info-light: 44 193 255;
@@ -193,6 +203,7 @@
     --os-color-info-onFill: 0 0 0;
     --os-color-info-text: 0 175 255;
     --os-color-info-textHover: 44 193 255;
+    --os-color-info-tint: 0 107 171;
     --os-color-success-main: 66 165 71;
     --os-color-success-dark: 42 107 45;
     --os-color-success-light: 103 193 107;
@@ -202,6 +213,7 @@
     --os-color-success-onFill: 0 0 0;
     --os-color-success-text: 66 165 71;
     --os-color-success-textHover: 103 193 107;
+    --os-color-success-tint: 42 107 45;
     --os-color-background-default: 28 34 19;
     --os-color-background-accent100: 39 48 27;
     --os-color-background-accent200: 54 66 40;

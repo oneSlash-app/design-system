@@ -296,6 +296,7 @@ function withSemanticKeys(set, mode) {
     onFill: isLight ? '#FFFFFF' : '#000000',
     text: isLight ? g.dark : isError ? g.light : g.main,
     textHover: isLight ? g.dark : g.light,
+    tint: isLight ? g.light : g.dark,
   });
   return {
     ...set,

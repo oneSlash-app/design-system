@@ -4,8 +4,8 @@ import { AlertCircle } from 'lucide-react';
 export default function EmptyBox(_a) {
     var text = _a.text, secondText = _a.secondText, size = _a.size;
     // The icon can be faint; the text needs readable contrast
-    var iconColor = 'text-light-text-disabled dark:text-dark-text-disabled';
-    var textColor = 'text-light-text-secondary dark:text-dark-text-secondary';
+    var iconColor = 'text-fg-disabled';
+    var textColor = 'text-fg-secondary';
     var height = size === 'small' ? 'py-6' : 'h-full';
     var iconSize = 'size-6';
     return (<div className={"flex flex-col space-y-2 justify-center items-center w-full ".concat(height)}>

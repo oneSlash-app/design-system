@@ -96,8 +96,8 @@ export default function TimeStamp(_a) {
     var sizeClass = textSize === 'medium' ? 'text-body2' : textSize === 'large' ? 'text-body1' : 'text-caption';
     // Determine text color classes
     var colorClass = textColor === 'primary'
-        ? 'text-light-text-primary dark:text-dark-text-primary'
-        : 'text-light-text-secondary dark:text-dark-text-secondary';
+        ? 'text-fg-primary'
+        : 'text-fg-secondary';
     return (
     // Relative times differ between server and client render, which is expected
     <time dateTime={isNaN(new Date(createdAt).getTime()) ? undefined : new Date(createdAt).toISOString()} className={"block ".concat(sizeClass, " ").concat(colorClass)} suppressHydrationWarning>

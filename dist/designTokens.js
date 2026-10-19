@@ -294,7 +294,7 @@ var base = {
 function withSemanticKeys(set, mode) {
     var isLight = mode === 'light';
     /** @param {typeof set.error} g @param {boolean} isError */
-    var status = function (g, isError) { return (__assign(__assign({}, g), { fill: isLight ? g.dark : g.main, onFill: isLight ? '#FFFFFF' : '#000000', text: isLight ? g.dark : isError ? g.light : g.main, textHover: isLight ? g.dark : g.light })); };
+    var status = function (g, isError) { return (__assign(__assign({}, g), { fill: isLight ? g.dark : g.main, onFill: isLight ? '#FFFFFF' : '#000000', text: isLight ? g.dark : isError ? g.light : g.main, textHover: isLight ? g.dark : g.light, tint: isLight ? g.light : g.dark })); };
     return __assign(__assign({}, set), { primary: __assign(__assign({}, set.primary), { contrast: isLight ? '#ffffff' : '#000000' }), background: __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100 }), error: status(set.error, true), warning: status(set.warning, false), info: status(set.info, false), success: status(set.success, false) });
 }
 // Forest: the default set with these values replaced (group by group).

@@ -16,7 +16,7 @@ export default function TableCell({children, width, minWidth, align = 'left'}: T
 		return (
 				<div
 						role="cell"
-						className={`${flexClass} p-2 text-body2 text-light-text-primary dark:text-dark-text-primary border-t border-light-misc-divider dark:border-dark-misc-divider ${alignClass}`}
+						className={`${flexClass} p-2 text-body2 text-fg-primary border-t border-misc-divider ${alignClass}`}
 						style={widthStyle}
 				>
 						{children}

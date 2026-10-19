@@ -106,8 +106,8 @@ export default function TimeStamp({
 
     // Determine text color classes
     const colorClass = textColor === 'primary'
-        ? 'text-light-text-primary dark:text-dark-text-primary'
-        : 'text-light-text-secondary dark:text-dark-text-secondary';
+        ? 'text-fg-primary'
+        : 'text-fg-secondary';
 
     return (
         // Relative times differ between server and client render, which is expected

@@ -60,53 +60,53 @@ export default function Button({
 
   const baseTypeClasses = {
     default: {
-      primary: 'bg-light-accent-main dark:bg-dark-accent-main text-light-text-primary dark:text-dark-text-contrast',
-      secondary: 'bg-light-secondary-main dark:bg-dark-secondary-main text-light-text-primary dark:text-dark-text-primary',
-      tertiary: 'bg-light-background-accent100 dark:bg-dark-background-accent100 text-light-text-primary dark:text-dark-text-primary',
-      textOnly: 'text-light-text-primary dark:text-dark-text-primary',
+      primary: 'bg-accent-main text-accent-contrast',
+      secondary: 'bg-secondary-main text-fg-primary',
+      tertiary: 'bg-background-accent100 text-fg-primary',
+      textOnly: 'text-fg-primary',
     },
     danger: {
-      primary: 'bg-light-error-main dark:bg-dark-error-main text-light-error-contrast dark:text-dark-error-contrast',
-      secondary: 'bg-light-error-alertBg dark:bg-dark-error-alertBg text-light-error-dark dark:text-dark-error-light',
+      primary: 'bg-error-main text-error-contrast',
+      secondary: 'bg-error-alertBg text-error-text',
       // Inset ring instead of a border so it adds no height
-      tertiary: 'bg-transparent ring-1 ring-inset ring-light-error-main dark:ring-dark-error-main text-light-error-main dark:text-dark-error-main',
-      textOnly: 'text-light-error-main dark:text-dark-error-main',
+      tertiary: 'bg-transparent ring-1 ring-inset ring-error-main text-error-main',
+      textOnly: 'text-error-main',
     },
   }[color][type];
 
   const hoverTypeClasses = {
     default: {
-      primary: 'hover:bg-light-accent-dark dark:hover:bg-dark-accent-dark',
-      secondary: 'hover:bg-light-secondary-dark dark:hover:bg-dark-secondary-dark',
-      tertiary: 'hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200',
-      textOnly: 'hover:bg-light-background-accent100 dark:hover:bg-dark-background-accent100',
+      primary: 'hover:bg-accent-dark',
+      secondary: 'hover:bg-secondary-dark',
+      tertiary: 'hover:bg-background-accent200',
+      textOnly: 'hover:bg-background-accent100',
     },
     danger: {
-      primary: 'hover:bg-light-error-dark dark:hover:bg-dark-error-dark',
-      secondary: 'hover:bg-light-error-light/60 dark:hover:bg-dark-error-dark/60',
-      tertiary: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
-      textOnly: 'hover:bg-light-error-main/10 dark:hover:bg-dark-error-main/10',
+      primary: 'hover:bg-error-dark',
+      secondary: 'hover:bg-error-tint/60',
+      tertiary: 'hover:bg-error-main/10',
+      textOnly: 'hover:bg-error-main/10',
     },
   }[color][type];
 
   // Same outline as real keyboard focus (focusRing), so the demo state matches it and
   // paints no box behind a transparent textOnly button
   const focusedOutline = color === 'danger'
-    ? 'outline outline-2 outline-offset-2 outline-light-error-main dark:outline-dark-error-main'
-    : 'outline outline-2 outline-offset-2 outline-light-text-primary dark:outline-dark-text-primary';
+    ? 'outline outline-2 outline-offset-2 outline-error-main'
+    : 'outline outline-2 outline-offset-2 outline-fg-primary';
 
   const stateClasses = {
     enabled: 'cursor-pointer',
     focused: focusedOutline,
     disabled: type === 'textOnly'
-      ? 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-transparent'
-      : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',
-    selected: 'cursor-pointer bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast',
+      ? 'cursor-not-allowed text-fg-disabled bg-transparent'
+      : 'cursor-not-allowed text-fg-disabled bg-actionBackground-disabled',
+    selected: 'cursor-pointer bg-primary-dark text-primary-contrast',
   };
 
   // Hover is pure CSS; `state="hovered"` and `state="focused"` only exist to show those states in docs
   const buttonClasses = `
-    flex flex-row items-center rounded-[8px] justify-between ${stateTransition} ${pressFeedback}
+    flex flex-row items-center rounded-control justify-between ${stateTransition} ${pressFeedback}
     ${color === 'danger' ? focusRingDanger : focusRing}
     ${sizeClasses}
     ${state === 'selected' ? stateClasses.selected : ''}

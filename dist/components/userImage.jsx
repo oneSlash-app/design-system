@@ -36,8 +36,8 @@ export default function UserImage(_a) {
     return (<div style={{
             '--light-bg': lightBg,
             '--dark-bg': darkBg,
-        }} className="flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-[var(--light-bg)] dark:bg-[var(--dark-bg)] text-light-text-primary dark:text-dark-text-primary">
-      {userImgUrl ? (<img src={userImgUrl} alt={userHandle} className="w-full h-full object-cover rounded-full"/>) : (<span className="text-body1 text-light-text-primary dark:text-dark-text-primary">
+        }} className="flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-[var(--light-bg)] dark:bg-[var(--dark-bg)] text-fg-primary">
+      {userImgUrl ? (<img src={userImgUrl} alt={userHandle} className="w-full h-full object-cover rounded-full"/>) : (<span className="text-body1 text-fg-primary">
           {displayInitial}
         </span>)}
     </div>);

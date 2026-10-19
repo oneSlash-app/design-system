@@ -24,41 +24,41 @@ export default function IconButton(_a) {
         tiny: 'size-4', // 16px
     };
     // Base classes (padding and corner radius)
-    var baseClasses = "".concat(sizeClasses[size], " rounded-[8px] leading-none relative");
+    var baseClasses = "".concat(sizeClasses[size], " rounded-control leading-none relative");
     // Background color
     var bgColor = isDisabled
-        ? (color === 'iconOnly' ? '' : 'bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled')
+        ? (color === 'iconOnly' ? '' : 'bg-actionBackground-disabled')
         : state === 'selected'
-            ? 'bg-light-primary-dark dark:bg-dark-primary-dark' // Selected state
+            ? 'bg-primary-dark' // Selected state
             : color === 'primary'
-                ? 'bg-light-accent-main dark:bg-dark-accent-main' // Primary
+                ? 'bg-accent-main' // Primary
                 : color === 'secondary'
-                    ? 'bg-light-secondary-main dark:bg-dark-secondary-main' // Secondary
+                    ? 'bg-secondary-main' // Secondary
                     : color === 'tertiary'
-                        ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' // Tertiary
+                        ? 'bg-background-accent100' // Tertiary
                         : ' '; // iconOnly: none
     // Background hover color; `enabled:` skips it while disabled or loading
     var bgColorHover = state === 'selected'
         ? '' // No hover effect when selected
         : color === 'primary'
-            ? 'enabled:hover:bg-light-accent-dark/75 dark:enabled:hover:bg-dark-accent-dark/75' // Primary
+            ? 'enabled:hover:bg-accent-dark/75' // Primary
             : color === 'secondary'
-                ? 'enabled:hover:bg-light-secondary-dark/75 dark:enabled:hover:bg-dark-secondary-dark/75' // Secondary
+                ? 'enabled:hover:bg-secondary-dark/75' // Secondary
                 : color === 'tertiary'
-                    ? 'enabled:hover:bg-light-background-accent200/75 dark:enabled:hover:bg-dark-background-accent200/75' // Tertiary
-                    : 'enabled:hover:bg-light-background-accent200/75 dark:enabled:hover:bg-dark-background-accent200/75'; // iconOnly
+                    ? 'enabled:hover:bg-background-accent200/75' // Tertiary
+                    : 'enabled:hover:bg-background-accent200/75'; // iconOnly
     // Icon color
     var iconColor = isDisabled
-        ? 'text-light-text-disabled dark:text-dark-text-disabled'
+        ? 'text-fg-disabled'
         : state === 'selected'
-            ? 'text-light-text-contrast dark:text-dark-text-contrast' // Selected state
+            ? 'text-fg-contrast' // Selected state
             : color === 'primary'
-                ? 'text-light-text-primary dark:text-dark-text-contrast' // Primary
+                ? 'text-accent-contrast' // Primary
                 : color === 'secondary'
-                    ? 'text-light-text-primary dark:text-dark-text-primary' // Secondary
+                    ? 'text-fg-primary' // Secondary
                     : color === 'tertiary'
-                        ? 'text-light-text-primary dark:text-dark-text-primary' // Tertiary
-                        : 'text-light-text-primary dark:text-dark-text-primary'; // iconOnly
+                        ? 'text-fg-primary' // Tertiary
+                        : 'text-fg-primary'; // iconOnly
     // State classes, including loading
     var stateClasses = loading
         ? 'cursor-wait' // Show a waiting cursor during loading

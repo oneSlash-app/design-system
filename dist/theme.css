@@ -74,6 +74,9 @@
   --color-error-textHover: rgb(var(--os-color-error-textHover));
   --color-light-error-textHover: rgb(var(--os-color-error-textHover));
   --color-dark-error-textHover: rgb(var(--os-color-error-textHover));
+  --color-error-tint: rgb(var(--os-color-error-tint));
+  --color-light-error-tint: rgb(var(--os-color-error-tint));
+  --color-dark-error-tint: rgb(var(--os-color-error-tint));
   --color-warning-main: rgb(var(--os-color-warning-main));
   --color-light-warning-main: rgb(var(--os-color-warning-main));
   --color-dark-warning-main: rgb(var(--os-color-warning-main));
@@ -101,6 +104,9 @@
   --color-warning-textHover: rgb(var(--os-color-warning-textHover));
   --color-light-warning-textHover: rgb(var(--os-color-warning-textHover));
   --color-dark-warning-textHover: rgb(var(--os-color-warning-textHover));
+  --color-warning-tint: rgb(var(--os-color-warning-tint));
+  --color-light-warning-tint: rgb(var(--os-color-warning-tint));
+  --color-dark-warning-tint: rgb(var(--os-color-warning-tint));
   --color-info-main: rgb(var(--os-color-info-main));
   --color-light-info-main: rgb(var(--os-color-info-main));
   --color-dark-info-main: rgb(var(--os-color-info-main));
@@ -128,6 +134,9 @@
   --color-info-textHover: rgb(var(--os-color-info-textHover));
   --color-light-info-textHover: rgb(var(--os-color-info-textHover));
   --color-dark-info-textHover: rgb(var(--os-color-info-textHover));
+  --color-info-tint: rgb(var(--os-color-info-tint));
+  --color-light-info-tint: rgb(var(--os-color-info-tint));
+  --color-dark-info-tint: rgb(var(--os-color-info-tint));
   --color-success-main: rgb(var(--os-color-success-main));
   --color-light-success-main: rgb(var(--os-color-success-main));
   --color-dark-success-main: rgb(var(--os-color-success-main));
@@ -155,6 +164,9 @@
   --color-success-textHover: rgb(var(--os-color-success-textHover));
   --color-light-success-textHover: rgb(var(--os-color-success-textHover));
   --color-dark-success-textHover: rgb(var(--os-color-success-textHover));
+  --color-success-tint: rgb(var(--os-color-success-tint));
+  --color-light-success-tint: rgb(var(--os-color-success-tint));
+  --color-dark-success-tint: rgb(var(--os-color-success-tint));
   --color-background-default: rgb(var(--os-color-background-default));
   --color-light-background-default: rgb(var(--os-color-background-default));
   --color-dark-background-default: rgb(var(--os-color-background-default));

@@ -19,24 +19,24 @@ export default function Link(_a) {
     // Light mode uses the -dark shade so link text keeps 4.5:1 on light backgrounds
     var colorClasses = {
         info: {
-            default: 'text-light-info-dark dark:text-dark-info-main',
-            hover: 'hover:underline-offset-[4px] dark:hover:text-dark-info-light',
-            visited: 'visited:text-light-info-dark dark:visited:text-dark-info-light',
+            default: 'text-info-text',
+            hover: 'hover:underline-offset-[4px] hover:text-info-textHover',
+            visited: 'visited:text-info-textHover',
         },
         error: {
-            default: 'text-light-error-dark dark:text-dark-error-main',
-            hover: 'hover:underline-offset-[4px] dark:hover:text-dark-error-light',
-            visited: 'visited:text-light-error-dark dark:visited:text-dark-error-light',
+            default: 'text-error-text',
+            hover: 'hover:underline-offset-[4px] hover:text-error-textHover',
+            visited: 'visited:text-error-textHover',
         },
         warning: {
-            default: 'text-light-warning-dark dark:text-dark-warning-main',
-            hover: 'hover:underline-offset-[4px] dark:hover:text-dark-warning-light',
-            visited: 'visited:text-light-warning-dark dark:visited:text-dark-warning-light',
+            default: 'text-warning-text',
+            hover: 'hover:underline-offset-[4px] hover:text-warning-textHover',
+            visited: 'visited:text-warning-textHover',
         },
         success: {
-            default: 'text-light-success-dark dark:text-dark-success-main',
-            hover: 'hover:underline-offset-[4px] dark:hover:text-dark-success-light',
-            visited: 'visited:text-light-success-dark dark:visited:text-dark-success-light',
+            default: 'text-success-text',
+            hover: 'hover:underline-offset-[4px] hover:text-success-textHover',
+            visited: 'visited:text-success-textHover',
         },
     };
     var selectedColorClasses = colorClasses[color];
@@ -58,7 +58,7 @@ export default function Link(_a) {
         body2: 'text-body2',
         caption: 'text-caption',
     }[size];
-    var linkClasses = "\n    ".concat(sizeClass, "\n    ").concat(selectedColorClasses.default, "\n    ").concat(selectedColorClasses.hover, "\n    ").concat(selectedColorClasses.visited, "\n    underline\n    underline-offset-[2px]\n    decoration-2\n    cursor-pointer\n    rounded-[2px]\n    transition-[color,text-underline-offset]\n    duration-150\n    ease-out\n    motion-reduce:transition-none\n    ").concat(focusRing, "\n    ").concat(className, "\n  ").trim().replace(/\s+/g, ' ');
+    var linkClasses = "\n    ".concat(sizeClass, "\n    ").concat(selectedColorClasses.default, "\n    ").concat(selectedColorClasses.hover, "\n    ").concat(selectedColorClasses.visited, "\n    underline\n    underline-offset-[2px]\n    decoration-2\n    cursor-pointer\n    rounded-inline\n    transition-[color,text-underline-offset]\n    duration-[var(--os-duration-fast)]\n    ease-out\n    motion-reduce:transition-none\n    ").concat(focusRing, "\n    ").concat(className, "\n  ").trim().replace(/\s+/g, ' ');
     var commonProps = __assign({ className: linkClasses }, (shouldOpenInNewTab && {
         target: '_blank',
         rel: 'noopener noreferrer',

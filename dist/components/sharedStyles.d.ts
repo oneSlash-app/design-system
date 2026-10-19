@@ -1,9 +1,9 @@
-export declare const focusRing = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-text-primary dark:focus-visible:outline-dark-text-primary";
-export declare const focusRingDanger = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-light-error-main dark:focus-visible:outline-dark-error-main";
-export declare const stateTransition = "transition duration-150 ease-out motion-reduce:transition-none";
+export declare const focusRing = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-primary";
+export declare const focusRingDanger = "focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-error-main";
+export declare const stateTransition = "transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none";
 export declare const pressFeedback = "enabled:active:scale-[0.97]";
 export declare const pressFeedbackAny = "active:scale-[0.97]";
-export declare const overlayTransition = "transition-[opacity,transform] duration-150 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none";
+export declare const overlayTransition = "transition-[opacity,transform] duration-[var(--os-duration-fast)] ease-emphasized motion-reduce:transition-none";
 export declare const overlayHidden = "opacity-0 scale-[0.96]";
 export declare const overlayVisible = "opacity-100 scale-100";
-export declare const popTransition = "transition-transform duration-150 ease-[cubic-bezier(0.34,1.56,0.64,1)] motion-reduce:transition-none";
+export declare const popTransition = "transition-transform duration-[var(--os-duration-fast)] ease-spring motion-reduce:transition-none";

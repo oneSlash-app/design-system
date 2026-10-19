@@ -24,24 +24,24 @@ export default function Link({
   // Light mode uses the -dark shade so link text keeps 4.5:1 on light backgrounds
   const colorClasses = {
     info: {
-      default: 'text-light-info-dark dark:text-dark-info-main',
-      hover: 'hover:underline-offset-[4px] dark:hover:text-dark-info-light',
-      visited: 'visited:text-light-info-dark dark:visited:text-dark-info-light',
+      default: 'text-info-text',
+      hover: 'hover:underline-offset-[4px] hover:text-info-textHover',
+      visited: 'visited:text-info-textHover',
     },
     error: {
-      default: 'text-light-error-dark dark:text-dark-error-main',
-      hover: 'hover:underline-offset-[4px] dark:hover:text-dark-error-light',
-      visited: 'visited:text-light-error-dark dark:visited:text-dark-error-light',
+      default: 'text-error-text',
+      hover: 'hover:underline-offset-[4px] hover:text-error-textHover',
+      visited: 'visited:text-error-textHover',
     },
     warning: {
-      default: 'text-light-warning-dark dark:text-dark-warning-main',
-      hover: 'hover:underline-offset-[4px] dark:hover:text-dark-warning-light',
-      visited: 'visited:text-light-warning-dark dark:visited:text-dark-warning-light',
+      default: 'text-warning-text',
+      hover: 'hover:underline-offset-[4px] hover:text-warning-textHover',
+      visited: 'visited:text-warning-textHover',
     },
     success: {
-      default: 'text-light-success-dark dark:text-dark-success-main',
-      hover: 'hover:underline-offset-[4px] dark:hover:text-dark-success-light',
-      visited: 'visited:text-light-success-dark dark:visited:text-dark-success-light',
+      default: 'text-success-text',
+      hover: 'hover:underline-offset-[4px] hover:text-success-textHover',
+      visited: 'visited:text-success-textHover',
     },
   };
 
@@ -77,9 +77,9 @@ export default function Link({
     underline-offset-[2px]
     decoration-2
     cursor-pointer
-    rounded-[2px]
+    rounded-inline
     transition-[color,text-underline-offset]
-    duration-150
+    duration-[var(--os-duration-fast)]
     ease-out
     motion-reduce:transition-none
     ${focusRing}

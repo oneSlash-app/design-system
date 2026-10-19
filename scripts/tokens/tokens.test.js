@@ -12,6 +12,12 @@ test('semantic status tokens derive from the base shades', () => {
   assert.equal(tokens.colors.dark.success.textHover, tokens.colors.dark.success.light);
   assert.equal(tokens.colors.light.success.text, tokens.colors.light.success.dark);
   assert.equal(tokens.colors.light.info.textHover, tokens.colors.light.info.dark);
+  for (const g of ['error', 'warning', 'info', 'success']) {
+    assert.equal(tokens.colors.light[g].tint, tokens.colors.light[g].light);
+    assert.equal(tokens.colors.dark[g].tint, tokens.colors.dark[g].dark);
+    assert.equal(tokens.themes.forest.light[g].tint, tokens.themes.forest.light[g].light);
+    assert.equal(tokens.themes.forest.dark[g].tint, tokens.themes.forest.dark[g].dark);
+  }
 });
 
 test('background.elevated, background.overlay and primary.contrast', () => {
