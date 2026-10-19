@@ -36,3 +36,10 @@ yarn-error.log*
 next-env.d.ts
 
 *storybook.log
+
+# Superpowers plan workspaces (local scratch)
+.superpowers/
+
+# test output
+test-results/
+playwright-report/

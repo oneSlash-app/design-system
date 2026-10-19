@@ -18,20 +18,25 @@
       "types": "./dist/designTokens.d.ts",
       "default": "./dist/designTokens.js"
     },
-    "./styles": "./dist/output.css"
+    "./themes/*": "./dist/themes/*",
+    "./tokens.css": "./dist/tokens.css",
+    "./theme.css": "./dist/theme.css",
+    "./typography.css": "./dist/typography.css",
+    "./tailwind": "./dist/tailwind-preset.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
     "dev": "next dev",
-    "build": "tsc && postcss index.css -o dist/output.css",
-    "build:css": "postcss index.css -o dist/output.css",
+    "build:tokens": "node scripts/build-tokens.js",
+    "build": "npm run build:tokens && tsc",
     "watch": "tsc --watch",
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "test": "node --test scripts/"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
