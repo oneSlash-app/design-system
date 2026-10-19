@@ -8,6 +8,7 @@ var meta = {
             control: "select",
             options: ["tiny", "small", "medium", "large"],
         },
+        loading: { control: "boolean" },
         type: {
             control: "select",
             options: ["primary", "secondary", "tertiary", "textOnly"],
@@ -135,5 +136,13 @@ export var DangerVariants = {
       <Button size="medium" type="secondary" color="danger" state="enabled" label="Secondary"/>
       <Button size="medium" type="tertiary" color="danger" state="enabled" label="Tertiary"/>
       <Button size="medium" type="textOnly" color="danger" state="enabled" label="Text Only"/>
+    </div>); },
+};
+export var Loading = {
+    render: function () { return (<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <Button size="large" type="primary" state="enabled" label="Saving" loading/>
+      <Button size="medium" type="secondary" state="enabled" label="Saving" loading/>
+      <Button size="small" type="tertiary" state="enabled" label="Saving" loading/>
+      <Button size="tiny" type="textOnly" state="enabled" label="Saving" loading/>
     </div>); },
 };

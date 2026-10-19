@@ -77,7 +77,7 @@ export default function TabsContainer(_a) {
             e.preventDefault();
             tabs[next].focus();
             tabs[next].click();
-        }} className={"\n          relative flex gap-2 p-1 rounded-[12px] overflow-x-auto\n          ".concat(tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent', "\n        ")} style={{
+        }} className={"\n          relative flex gap-0.5 p-1 rounded-[12px] overflow-x-auto\n          ".concat(tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent', "\n        ")} style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
         }}>

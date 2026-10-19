@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import * as LucideIcons from 'lucide-react';
+import { LoadingSmall } from './loadingScreen';
 import { focusRing, focusRingDanger, pressFeedback, stateTransition } from './sharedStyles';
 
 interface ButtonProps {
@@ -15,6 +16,8 @@ interface ButtonProps {
   onClickButton?: any;
   onClickActionIcon?: () => void;
   className?: string;
+  /** Shows a spinner in the icon slot, keeps the label, and disables the button */
+  loading?: boolean;
 }
 
 type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
@@ -31,6 +34,7 @@ export default function Button({
   onClickButton,
   onClickActionIcon,
   className = '',
+  loading = false,
 }: ButtonProps) {
   // Synchronous lookup so icons render on the first paint
   const IconLeft = decoIcon ? (LucideIcons[decoIcon as keyof typeof LucideIcons] as IconType) : null;
@@ -50,6 +54,9 @@ export default function Button({
     small: 'w-4 h-4',
     tiny: 'w-3.5 h-3.5',
   }[size];
+
+  // LoadingSmall sizes are 24/20/16px; pick the one closest to this size's icon
+  const spinnerSize = { large: 'large', medium: 'small', small: 'tiny', tiny: 'tiny' }[size] as 'large' | 'small' | 'tiny';
 
   const baseTypeClasses = {
     default: {
@@ -82,13 +89,15 @@ export default function Button({
     },
   }[color][type];
 
-  const focusRingColor = color === 'danger'
-    ? 'ring-light-error-main dark:ring-dark-error-main'
-    : 'ring-light-text-primary dark:ring-dark-text-primary';
+  // Same outline as real keyboard focus (focusRing), so the demo state matches it and
+  // paints no box behind a transparent textOnly button
+  const focusedOutline = color === 'danger'
+    ? 'outline outline-2 outline-offset-2 outline-light-error-main dark:outline-dark-error-main'
+    : 'outline outline-2 outline-offset-2 outline-light-text-primary dark:outline-dark-text-primary';
 
   const stateClasses = {
     enabled: 'cursor-pointer',
-    focused: `ring-2 ring-offset-4 ring-offset-light-background-default dark:ring-offset-dark-background-default ${focusRingColor}`,
+    focused: focusedOutline,
     disabled: type === 'textOnly'
       ? 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-transparent'
       : 'cursor-not-allowed text-light-text-disabled dark:text-dark-text-disabled bg-light-actionBackground-disabled dark:bg-dark-actionBackground-disabled',
@@ -101,7 +110,7 @@ export default function Button({
     ${color === 'danger' ? focusRingDanger : focusRing}
     ${sizeClasses}
     ${state === 'selected' ? stateClasses.selected : ''}
-    ${state === 'enabled' || state === 'hovered' ? `${stateClasses.enabled} ${baseTypeClasses} ${hoverTypeClasses}` : ''}
+    ${state === 'enabled' || state === 'hovered' ? `${baseTypeClasses} ${loading ? 'cursor-wait' : `${stateClasses.enabled} ${hoverTypeClasses}`}` : ''}
     ${state === 'focused' ? `${baseTypeClasses} ${hoverTypeClasses} ${stateClasses.focused}` : ''}
     ${state === 'disabled' ? stateClasses.disabled : ''}
     ${className}
@@ -111,12 +120,17 @@ export default function Button({
     <button
       type="button"
       className={buttonClasses}
-      disabled={state === 'disabled'}
+      disabled={state === 'disabled' || loading}
+      aria-busy={loading || undefined}
       onClick={onClickButton}
     >
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className={`flex items-center ${size === 'tiny' ? 'gap-0.5' : 'gap-1'}`}>
-        {IconLeft && <IconLeft className={`${sizeIcon} flex-shrink-0`} strokeWidth={2} />}
+        {loading ? (
+          <LoadingSmall size={spinnerSize} />
+        ) : (
+          IconLeft && <IconLeft className={`${sizeIcon} flex-shrink-0`} strokeWidth={2} />
+        )}
         <div className={`flex flex-col text-center px-1`}>
           <span className="whitespace-nowrap overflow-hidden truncate">{label}</span>
           {secondLabel && (

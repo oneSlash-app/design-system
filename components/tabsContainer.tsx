@@ -91,7 +91,7 @@ export default function TabsContainer({
           tabs[next].click();
         }}
         className={`
-          relative flex gap-2 p-1 rounded-[12px] overflow-x-auto
+          relative flex gap-0.5 p-1 rounded-[12px] overflow-x-auto
           ${tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent'}
         `}
         style={{
