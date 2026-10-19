@@ -1,6 +1,8 @@
 // Visual regression gate for every story. Snapshots in tests/__snapshots__ are generated on
 // macOS Chromium at 1024x768, scale 1, and must be regenerated on the same platform
 // (no platform suffix in the path). This is a local gate; it is not run in CI.
+// Rendering is made deterministic (grayscale antialiasing, no font hinting) and the
+// comparison is strict (per-pixel threshold 0, zero differing pixels).
 // Requires storybook-static: npm run build-storybook
 //   Verify: npm run test:visual
 //   Update: npm run test:visual:update
@@ -13,7 +15,7 @@ export default defineConfig({
   workers: 4,
   retries: 0,
   expect: {
-    toHaveScreenshot: { maxDiffPixels: 0, animations: 'disabled' },
+    toHaveScreenshot: { threshold: 0, maxDiffPixels: 0, animations: 'disabled' },
   },
   use: {
     baseURL: 'http://localhost:6007',
@@ -23,6 +25,7 @@ export default defineConfig({
     timezoneId: 'UTC',
     locale: 'en-US',
     reducedMotion: 'no-preference',
+    launchOptions: { args: ['--disable-lcd-text', '--font-render-hinting=none'] },
   },
   projects: [{ name: 'chromium' }],
   webServer: {
