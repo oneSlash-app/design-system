@@ -110,6 +110,18 @@ In plain CSS the variables are `--os-color-<group>-<key>`, `--os-radius-*`, `--o
 .banner { background: rgb(var(--os-color-accent-main) / 0.5); }
 ```
 
+#### Bare `dark-*` classes
+
+A `dark-<group>-<key>` class used without the `dark:` prefix meant "the dark-mode color in both modes" in 1.x. `bg-dark-background-accent100 dark:bg-light-background-accent100` inverted a panel, and `bg-dark-background-default` forced a dark backdrop on a light page. In 2.x `dark-*` is an alias of the themed color, the same value `light-*` resolves to, so such an element now follows the page instead of staying dark or inverting.
+
+Rewrite those usages with explicit values. Use an arbitrary value with the hex the element had before (`bg-[#333333] dark:bg-[#F1F1F1]`, `bg-[#262626]`), or `rgb(var(--os-color-<group>-<key>))` only where the themed color is what you want. Find them with:
+
+```bash
+grep -rnE "(^|[^:])bg-dark-|(^|[^:])text-dark-|(^|[^:])border-dark-" src
+```
+
+Every hit that is not behind a variant prefix needs a look. The same applies to `ring-dark-*`, `from-dark-*` and the other color utilities.
+
 ### 6. Writing a theme
 
 Preferred, in this repo, so the derived keys and the contrast check come with it:
