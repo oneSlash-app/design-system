@@ -1,3 +1,4 @@
+import React from "react";
 import EmptyBox from "../components/emptyBox";
 var meta = {
     title: "Components/EmptyBox",

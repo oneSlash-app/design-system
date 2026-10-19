@@ -36,6 +36,7 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
+    "pretest": "npm run build",
     "test": "node --test scripts/",
     "check:contrast": "node scripts/check-contrast.js",
     "test:visual": "playwright test",
