@@ -18,6 +18,7 @@
   --os-color-secondary-main: 110 122 90;
   --os-color-secondary-dark: 93 104 73;
   --os-color-secondary-light: 130 141 107;
+  --os-color-secondary-contrast: 231 236 218;
   --os-color-error-main: 211 47 47;
   --os-color-error-dark: 178 35 35;
   --os-color-error-light: 242 119 119;
@@ -99,6 +100,7 @@
   --os-color-secondary-main: 110 122 90;
   --os-color-secondary-dark: 93 104 73;
   --os-color-secondary-light: 130 141 107;
+  --os-color-secondary-contrast: 217 229 199;
   --os-color-error-main: 231 76 76;
   --os-color-error-dark: 178 35 35;
   --os-color-error-light: 242 119 119;
@@ -181,6 +183,7 @@
     --os-color-secondary-main: 110 122 90;
     --os-color-secondary-dark: 93 104 73;
     --os-color-secondary-light: 130 141 107;
+    --os-color-secondary-contrast: 217 229 199;
     --os-color-error-main: 231 76 76;
     --os-color-error-dark: 178 35 35;
     --os-color-error-light: 242 119 119;

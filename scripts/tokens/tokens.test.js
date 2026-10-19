@@ -20,13 +20,17 @@ test('semantic status tokens derive from the base shades', () => {
   }
 });
 
-test('background.elevated, background.overlay and primary.contrast', () => {
+test('background.elevated, background.overlay, primary.contrast and secondary.contrast', () => {
   assert.equal(tokens.colors.light.background.elevated, tokens.colors.light.background.default);
   assert.equal(tokens.colors.dark.background.elevated, tokens.colors.dark.background.accent100);
   assert.equal(tokens.colors.light.background.overlay, tokens.colors.light.background.accent300);
   assert.equal(tokens.colors.dark.background.overlay, tokens.colors.dark.background.accent100);
   assert.equal(tokens.colors.light.primary.contrast, '#ffffff');
   assert.equal(tokens.colors.dark.primary.contrast, '#000000');
+  assert.equal(tokens.colors.light.secondary.contrast, tokens.colors.light.text.primary);
+  assert.equal(tokens.colors.dark.secondary.contrast, tokens.colors.dark.text.primary);
+  assert.equal(tokens.colors.light.secondary.contrast, '#000000');
+  assert.equal(tokens.colors.dark.secondary.contrast, '#eeeeee');
 });
 
 test('forest is a full set with the same keys as default', () => {
@@ -45,7 +49,7 @@ test('forest overrides and derived keys follow forest groups', () => {
   assert.equal(f.light.text.secondary, '#515E3C');
   assert.equal(f.light.text.disabled, '#8A9670');
   assert.deepEqual(f.light.accent, { main: '#1C2213', dark: '#2A331E', light: '#3A472B', contrast: '#E7ECDA' });
-  assert.deepEqual(f.light.secondary, { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' });
+  assert.deepEqual(f.light.secondary, { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B', contrast: '#E7ECDA' });
   assert.deepEqual(
     { ...f.light.background },
     { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC', elevated: '#D9E5C7', overlay: '#F4F7EC' }
@@ -54,7 +58,7 @@ test('forest overrides and derived keys follow forest groups', () => {
   assert.equal(f.dark.text.secondary, '#9DAA85');
   assert.equal(f.dark.text.disabled, '#6D7956');
   assert.deepEqual(f.dark.accent, { main: '#E7ECDA', dark: '#D6DEC3', light: '#F2F5EA', contrast: '#1C2213' });
-  assert.deepEqual(f.dark.secondary, { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' });
+  assert.deepEqual(f.dark.secondary, { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B', contrast: '#D9E5C7' });
   assert.deepEqual(
     { ...f.dark.background },
     { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34', elevated: '#27301B', overlay: '#27301B' }

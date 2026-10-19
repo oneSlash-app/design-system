@@ -53,6 +53,9 @@
   --color-secondary-light: rgb(var(--os-color-secondary-light));
   --color-light-secondary-light: rgb(var(--os-color-secondary-light));
   --color-dark-secondary-light: rgb(var(--os-color-secondary-light));
+  --color-secondary-contrast: rgb(var(--os-color-secondary-contrast));
+  --color-light-secondary-contrast: rgb(var(--os-color-secondary-contrast));
+  --color-dark-secondary-contrast: rgb(var(--os-color-secondary-contrast));
   --color-error-main: rgb(var(--os-color-error-main));
   --color-light-error-main: rgb(var(--os-color-error-main));
   --color-dark-error-main: rgb(var(--os-color-error-main));

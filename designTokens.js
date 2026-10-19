@@ -305,6 +305,8 @@ function withSemanticKeys(set, mode) {
   return {
     ...set,
     primary: { ...set.primary, contrast: isLight ? '#ffffff' : '#000000' },
+    // Secondary buttons use text.primary as their label; a theme whose secondary.main is mid-tone sets its own.
+    secondary: { ...set.secondary, contrast: set.text.primary },
     background: {
       ...set.background,
       elevated: isLight ? set.background.default : set.background.accent100,
@@ -354,6 +356,16 @@ const forestDark = override(baseColors.dark, {
  */
 const withForestInfoText = (set) => ({ ...set, info: { ...set.info, text: '#0068A3', textHover: '#0068A3' } });
 
+// Forest's secondary.main (#6E7A5A) is mid-tone: its text.primary gives 3.5:1, so the label is the pale green
+// Scindo's hand-written theme used (3.8:1 light, 3.5:1 dark; report-only in check:contrast).
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} set
+ * @param {string} contrast
+ * @returns {S}
+ */
+const withSecondaryContrast = (set, contrast) => ({ ...set, secondary: { ...set.secondary, contrast } });
+
 // Tooltips are inverted surfaces: each mode takes the other mode's accent300 and text.primary of the same theme.
 /**
  * @template {typeof base.colors.light} S
@@ -368,8 +380,8 @@ const withTooltips = (light, dark) => ({
 
 const defaultSets = withTooltips(withSemanticKeys(baseColors.light, 'light'), withSemanticKeys(baseColors.dark, 'dark'));
 const forestSets = withTooltips(
-  withForestInfoText(withSemanticKeys(forestLight, 'light')),
-  withSemanticKeys(forestDark, 'dark'),
+  withSecondaryContrast(withForestInfoText(withSemanticKeys(forestLight, 'light')), '#E7ECDA'),
+  withSecondaryContrast(withSemanticKeys(forestDark, 'dark'), '#D9E5C7'),
 );
 
 module.exports = {

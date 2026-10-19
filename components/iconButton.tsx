@@ -81,7 +81,7 @@ export default function IconButton({
     : color === 'primary'
     ? 'text-accent-contrast' // Primary
     : color === 'secondary'
-    ? 'text-fg-primary' // Secondary
+    ? 'text-secondary-contrast' // Secondary
     : color === 'tertiary'
     ? 'text-fg-primary' // Tertiary
     : 'text-fg-primary'; // iconOnly

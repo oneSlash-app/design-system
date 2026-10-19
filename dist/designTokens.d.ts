@@ -88,6 +88,12 @@ declare const defaultSets: {
             dark: string;
             light: string;
         };
+        secondary: {
+            contrast: string;
+            main: string;
+            dark: string;
+            light: string;
+        };
         background: {
             elevated: string;
             overlay: string;
@@ -229,6 +235,12 @@ declare const defaultSets: {
         };
     } & {
         primary: {
+            contrast: string;
+            main: string;
+            dark: string;
+            light: string;
+        };
+        secondary: {
             contrast: string;
             main: string;
             dark: string;
@@ -382,6 +394,12 @@ declare const forestSets: {
             dark: string;
             light: string;
         };
+        secondary: {
+            contrast: string;
+            main: string;
+            dark: string;
+            light: string;
+        };
         background: {
             elevated: string;
             overlay: string;
@@ -523,6 +541,12 @@ declare const forestSets: {
         };
     } & {
         primary: {
+            contrast: string;
+            main: string;
+            dark: string;
+            light: string;
+        };
+        secondary: {
             contrast: string;
             main: string;
             dark: string;

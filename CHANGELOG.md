@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.1] - 2026-10-18
+
+### Added
+
+- `secondary.contrast` token (`text-secondary-contrast`, aliases `light-secondary-contrast` / `dark-secondary-contrast`): the label color on `secondary.main`. Derived as `text.primary`, so the default theme renders exactly as before; `forest` sets `#E7ECDA` (light) and `#D9E5C7` (dark) so the label stays readable on its mid-tone olive secondary button.
+- `check:contrast` gates `secondary.contrast on secondary.main` (report-only for `forest`).
+
+### Changed
+
+- Button `type="secondary"` and IconButton `color="secondary"` color their label with `text-secondary-contrast` instead of `text-fg-primary`.
+
 ## [2.0.0] - 2026-10-18
 
 ### Changed
