@@ -1,319 +1,189 @@
-# Migration Guide: HeroIcons → Lucide React
+# Migration Guide
 
-## Quick Start
+## 2.0: themeable tokens
 
-This guide helps you migrate from HeroIcons to Lucide React in your application using oneslash-design-system v1.2.19+.
+2.0 moves every color, radius, shadow, z-index and motion value into CSS variables (`--os-*`). Components read the variables, so one theme file decides how the whole app looks and light/dark no longer needs `dark:` pairs.
+
+Markup does not have to change. Every 1.x class name keeps working as an alias of the themed variable. What you must do is wire up the new setup, in three steps:
+
+1. Import one theme file.
+2. Adopt the Tailwind preset (v3) or the `@theme` files (v4).
+3. Keep `transpilePackages` and the `dist/**/*.{js,jsx}` scan glob.
+
+Skipping step 2 on Tailwind v3 does not fail the build. The components render unstyled, because your Tailwind config knows neither the semantic class names (`bg-accent-main`, `text-fg-primary`, …) nor the variables.
+
+### 1. Install
+
+```bash
+npm install oneslash-design-system@^2.0.0
+```
+
+### 2. Pick a theme file
+
+| App | Theme file | Tailwind v4 | Tailwind v3 |
+|---|---|---|---|
+| Has a light/dark toggle that sets `.dark` on `<html>` | `themes/default.css` | `theme.css` | `oneslash-design-system/tailwind` |
+| Follows the OS setting | `themes/default-auto.css` | `theme-auto.css` | `oneslash-design-system/tailwind-auto` |
+| Scindo, toggle | `themes/forest.css` | `theme.css` | `tailwind` |
+| Scindo, follows the OS | `themes/forest-auto.css` | `theme-auto.css` | `tailwind-auto` |
+
+Pair them as shown. Each theme file imports `../tokens.css` (radius, shadow, z-index, motion, spacing), so you import only the theme file.
+
+Under the `-auto` files the variables switch with `prefers-color-scheme: dark`. Add `.dark` to force dark or `.light` to opt out of the OS dark setting.
+
+Import it once, before Tailwind, for example at the top of your global CSS:
+
+```css
+@import "oneslash-design-system/themes/default.css";
+```
+
+### 3. Tailwind v3 setup
+
+```ts
+// tailwind.config.ts
+import type { Config } from "tailwindcss";
+
+const config: Config = {
+  presets: [require("oneslash-design-system/tailwind")], // or ".../tailwind-auto"
+  content: [
+    "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/oneslash-design-system/dist/**/*.{js,jsx}",
+  ],
+  plugins: [],
+};
+export default config;
+```
+
+The preset sets `darkMode` for you (`class` for `tailwind`, `class` plus the OS media query for `tailwind-auto`), so remove your own `darkMode` setting if it differs. Delete `theme.extend.colors`, `spacing`, `fontSize`, `fontFamily` and `textAlign` that you built from `oneslash-design-system/tokens`; the preset provides them. Keep colors that only your app uses.
+
+The preset only registers `fontFamily.inter`. If you applied Inter to `.text-h1`…`.text-caption` with your own Tailwind plugin, keep that plugin. The package's `index.css` sets `body { font-family: Inter }`; otherwise add `font-inter` to your body.
+
+Next.js needs the package transpiled because the components ship as `.jsx`:
+
+```js
+// next.config.mjs
+export default { transpilePackages: ["oneslash-design-system"] };
+```
+
+### 4. Tailwind v4 setup
+
+```css
+/* globals.css */
+@import "tailwindcss";
+@import "oneslash-design-system/themes/default.css";
+@import "oneslash-design-system/theme.css";
+@import "oneslash-design-system/typography.css";
+@source "../node_modules/oneslash-design-system/dist/**/*.jsx";
+```
+
+Adjust the `@source` path to where your CSS file lives. For an OS-following app use `themes/default-auto.css` and `theme-auto.css`. `theme-auto.css` declares the `dark` variant for you, so `dark:` utilities fire under the OS dark setting. Do not add your own `@custom-variant dark` line on top of it.
+
+`typography.css` is the type scale (`text-h1`…`text-caption`, `font-inter`). Skip it if you own the scale. Delete your `@config` line and `tailwind.config.ts` if they only existed to build the tokens. `transpilePackages` is the same as in v3.
+
+### 5. Your old class names keep working
+
+`bg-light-accent-main`, `dark:text-dark-text-primary`, `font-h1`, `leading-body1` and every other 1.x name is now an alias that points at the same themed variable. `light-*` and `dark-*` resolve to the identical value, and the theme file switches that value. The aliases stay for all of 2.x and are removed in 3.0.
+
+For new code, use the semantic names. They need no `dark:` pair:
+
+| 1.x | 2.0 |
+|---|---|
+| `bg-light-background-default dark:bg-dark-background-default` | `bg-background-default` |
+| `text-light-text-primary dark:text-dark-text-primary` | `text-fg-primary` (the `text` group is `fg` in utilities) |
+| `border-light-misc-divider dark:border-dark-misc-divider` | `border-misc-divider` |
+| `rounded-[8px]` | `rounded-control` |
+| `rounded-[12px]` | `rounded-container` |
+| `rounded-[2px]` | `rounded-inline` |
+| `shadow-lg` on overlays | `shadow-overlay` |
+| `z-50` | `z-[var(--os-z-overlay)]` |
+| `z-[1000]` | `z-[var(--os-z-tooltip)]` |
+| durations | `duration-[var(--os-duration-fast)]`, `-slide`, `-pop` |
+| easings | `ease-out`, `ease-emphasized`, `ease-spring` |
+
+Named `z-*` and `duration-*` utilities are not possible on Tailwind v4, so those use the `[var(…)]` form on both versions.
+
+New semantic tokens: `background.elevated` (Modal) and `background.overlay` (Menu, Popover); for each status group (`error`, `warning`, `info`, `success`) `fill`, `onFill`, `text`, `textHover`, `tint`; `primary.contrast`; `misc.tooltipBg` and `misc.tooltipText`; and the non-color groups `radius`, `shadow`, `zIndex`, `motion.duration`, `motion.easing`.
+
+In plain CSS the variables are `--os-color-<group>-<key>`, `--os-radius-*`, `--os-shadow-overlay`, `--os-z-*`, `--os-duration-*`, `--os-ease-*` and `--os-spacing-*`. Color variables hold RGB channels, so wrap them:
+
+```css
+.banner { background: rgb(var(--os-color-accent-main) / 0.5); }
+```
+
+### 6. Writing a theme
+
+Quick way: copy `node_modules/oneslash-design-system/dist/themes/default.css` into your app, change the channel values, and import your copy instead of the package's. Values are space-separated RGB channels (`238 174 3`).
+
+Better way, in this repo, so the derived keys and the contrast check come with it:
+
+1. Add your theme to `designTokens.themes` in `designTokens.js` (the full set of light and dark values; derived keys come from the helper).
+2. Run the generator and the contrast gate:
+
+```bash
+npm run build:tokens && npm run check:contrast
+```
+
+3. Commit `dist/`.
+
+`check:contrast` requires 4.5:1 for: `text.primary` on all backgrounds, `text.secondary` on `default` and `accent100`, each status `onFill` on `fill` and `text`/`textHover` on `default`, `accent.contrast`, and `primary.contrast`. The built-in `forest` theme is Scindo's palette with one adjustment: light `info.text` and `info.textHover` are `#0068A3` to reach 4.5:1.
+
+### 7. Tooltip tokens
+
+Tooltip colors come from `misc.tooltipBg` (`bg-misc-tooltipBg`) and `misc.tooltipText` (`text-misc-tooltipText`), so a theme can set both. Defaults: `#4F4F4F` / `#EEEEEE` in light, `#FFFFFF` / `#000000` in dark. If you override the theme, set both.
+
+### 8. `useDarkMode()`
+
+`useDarkMode()` now reports the effective mode: `.dark` on `<html>` gives dark, `.light` gives light, and with neither it follows the OS setting. Previously it read only the `.dark` class. The pure helper is exported as `resolveDarkMode(classList, prefersDark)`.
+
+### Other notes
+
+- Two `dark:` exemptions remain inside components: `UserImage`'s per-user hue, and the dark-only edge ring on Menu, Popover and Modal.
+- Some 1.x hotfixes changed visuals slightly, for example light secondary text is `#686868` (was `#6D6D6D`). Expect small screenshot diffs in light mode.
+- Do not install from a local `.tgz` in a real PR; use the published version.
 
 ---
 
-## 🔍 Step 1: Find Icon References
+## 1.2.19: icon library migration (heroicons → lucide)
 
-Search your codebase for components that use icons:
+Since 1.2.19 icon props take Lucide names instead of HeroIcons names. Drop the `Icon` suffix and use PascalCase. Browse names at https://lucide.dev/icons/.
+
+Find usages:
 
 ```bash
-# Find all icon prop usage
 grep -rn "iconName\|decoIcon\|actionIcon" --include="*.tsx" --include="*.ts" .
 ```
 
----
+| HeroIcon | Lucide |
+|---|---|
+| `XMarkIcon` | `X` |
+| `CheckCircleIcon` | `CheckCircle` |
+| `ExclamationCircleIcon` | `AlertCircle` |
+| `ExclamationTriangleIcon` | `AlertTriangle` |
+| `InformationCircleIcon` | `Info` |
+| `ChevronDownIcon` / `Up` / `Left` / `Right` | `ChevronDown` / `ChevronUp` / `ChevronLeft` / `ChevronRight` |
+| `PlusIcon` / `MinusIcon` | `Plus` / `Minus` |
+| `MagnifyingGlassIcon` | `Search` |
+| `TrashIcon` | `Trash2` |
+| `PencilIcon` | `Pencil` |
+| `Cog6ToothIcon` | `Settings` |
+| `BellIcon`, `UserIcon`, `HomeIcon` | `Bell`, `User`, `Home` |
+| `DocumentIcon` / `FolderIcon` | `File` / `Folder` |
+| `ArrowUpIcon` / `Down` / `Left` / `Right` | `ArrowUp` / `ArrowDown` / `ArrowLeft` / `ArrowRight` |
 
-## 🔄 Step 2: Update Icon Names
+Example, for any component with an icon prop (`IconButton`, `Button`, `MenuItem`, `Tab`, `Tag`, `Select`):
 
-Replace HeroIcon names with Lucide equivalents:
-
-### Common Icon Mappings
-
-| HeroIcon Name | Lucide Name | Usage |
-|---------------|-------------|--------|
-| `XMarkIcon` | `X` | Close buttons |
-| `CheckCircleIcon` | `CheckCircle` | Success indicators |
-| `ExclamationCircleIcon` | `AlertCircle` | Error/warning states |
-| `ExclamationTriangleIcon` | `AlertTriangle` | Warning alerts |
-| `InformationCircleIcon` | `Info` | Info messages |
-| `ChevronDownIcon` | `ChevronDown` | Dropdowns |
-| `ChevronUpIcon` | `ChevronUp` | Expand/collapse |
-| `ChevronLeftIcon` | `ChevronLeft` | Navigation |
-| `ChevronRightIcon` | `ChevronRight` | Navigation |
-| `PlusIcon` | `Plus` | Add actions |
-| `MinusIcon` | `Minus` | Remove actions |
-| `MagnifyingGlassIcon` | `Search` | Search fields |
-| `TrashIcon` | `Trash2` | Delete actions |
-| `PencilIcon` | `Pencil` | Edit actions |
-| `Cog6ToothIcon` | `Settings` | Settings |
-| `BellIcon` | `Bell` | Notifications |
-| `UserIcon` | `User` | User profile |
-| `HomeIcon` | `Home` | Home navigation |
-| `DocumentIcon` | `File` | Documents |
-| `FolderIcon` | `Folder` | Folders |
-| `ArrowUpIcon` | `ArrowUp` | Upload/sort |
-| `ArrowDownIcon` | `ArrowDown` | Download/sort |
-| `ArrowLeftIcon` | `ArrowLeft` | Back navigation |
-| `ArrowRightIcon` | `ArrowRight` | Forward navigation |
-
-### Finding Lucide Names
-
-1. **Browse all icons**: https://lucide.dev/icons/
-2. **Search by keyword**: Use the search bar on Lucide's website
-3. **Pattern recognition**:
-   - HeroIcons often have "Icon" suffix → Remove it for Lucide
-   - Multi-word names: Keep PascalCase (e.g., `AlertCircle`, `CheckCircle`)
-
----
-
-## 📝 Step 3: Update Your Code
-
-### Example 1: IconButton
-
-**Before:**
 ```tsx
-import { IconButton } from 'oneslash-design-system';
-
-function MyComponent() {
-  return (
-    <IconButton
-      iconName="XMarkIcon"
-      color="primary"
-      size="medium"
-      onClick={handleClose}
-    />
-  );
-}
+// before
+<Button label="Save" decoIcon="CheckCircleIcon" actionIcon="ChevronDownIcon" />
+// after
+<Button label="Save" decoIcon="CheckCircle" actionIcon="ChevronDown" />
 ```
 
-**After:**
-```tsx
-import { IconButton } from 'oneslash-design-system';
+Prop names that take icons: `iconName`, `iconRight`, `decoIcon`, `actionIcon`, `decoIconName`.
 
-function MyComponent() {
-  return (
-    <IconButton
-      iconName="X"
-      color="primary"
-      size="medium"
-      onClick={handleClose}
-    />
-  );
-}
-```
-
----
-
-### Example 2: Button with Icons
-
-**Before:**
-```tsx
-import { Button } from 'oneslash-design-system';
-
-function SaveButton() {
-  return (
-    <Button
-      label="Save Changes"
-      decoIcon="CheckCircleIcon"
-      actionIcon="ChevronDownIcon"
-      type="primary"
-      size="medium"
-      state="enabled"
-    />
-  );
-}
-```
-
-**After:**
-```tsx
-import { Button } from 'oneslash-design-system';
-
-function SaveButton() {
-  return (
-    <Button
-      label="Save Changes"
-      decoIcon="CheckCircle"
-      actionIcon="ChevronDown"
-      type="primary"
-      size="medium"
-      state="enabled"
-    />
-  );
-}
-```
-
----
-
-### Example 3: MenuItem
-
-**Before:**
-```tsx
-import { MenuItem } from 'oneslash-design-system';
-
-function NavItem() {
-  return (
-    <MenuItem
-      label="Settings"
-      iconName="Cog6ToothIcon"
-      iconRight="ChevronRightIcon"
-      onClick={handleClick}
-    />
-  );
-}
-```
-
-**After:**
-```tsx
-import { MenuItem } from 'oneslash-design-system';
-
-function NavItem() {
-  return (
-    <MenuItem
-      label="Settings"
-      iconName="Settings"
-      iconRight="ChevronRight"
-      onClick={handleClick}
-    />
-  );
-}
-```
-
----
-
-### Example 4: Tab
-
-**Before:**
-```tsx
-import { Tab } from 'oneslash-design-system';
-
-function MyTab() {
-  return (
-    <Tab
-      label="Dashboard"
-      decoIcon="HomeIcon"
-      actionIcon="XMarkIcon"
-      isSelected={selected}
-      onClickTab={handleTabClick}
-      onClickActionIcon={handleClose}
-    />
-  );
-}
-```
-
-**After:**
-```tsx
-import { Tab } from 'oneslash-design-system';
-
-function MyTab() {
-  return (
-    <Tab
-      label="Dashboard"
-      decoIcon="Home"
-      actionIcon="X"
-      isSelected={selected}
-      onClickTab={handleTabClick}
-      onClickActionIcon={handleClose}
-    />
-  );
-}
-```
-
----
-
-### Example 5: Tag
-
-**Before:**
-```tsx
-import { Tag } from 'oneslash-design-system';
-
-function StatusTag() {
-  return (
-    <Tag
-      variant="contained"
-      size="medium"
-      label="Active"
-      iconName="CheckCircleIcon"
-    />
-  );
-}
-```
-
-**After:**
-```tsx
-import { Tag } from 'oneslash-design-system';
-
-function StatusTag() {
-  return (
-    <Tag
-      variant="contained"
-      size="medium"
-      label="Active"
-      iconName="CheckCircle"
-    />
-  );
-}
-```
-
----
-
-### Example 6: Select with Icon
-
-**Before:**
-```tsx
-import { Select } from 'oneslash-design-system';
-
-function MySelect() {
-  return (
-    <Select
-      options={options}
-      value={value}
-      onChange={handleChange}
-      decoIconName="MagnifyingGlassIcon"
-    />
-  );
-}
-```
-
-**After:**
-```tsx
-import { Select } from 'oneslash-design-system';
-
-function MySelect() {
-  return (
-    <Select
-      options={options}
-      value={value}
-      onChange={handleChange}
-      decoIconName="Search"
-    />
-  );
-}
-```
-
----
-
-## ✅ Step 4: Test Your Changes
-
-1. **Visual Check**: Ensure all icons render correctly
-2. **Type Check**: Run `tsc --noEmit` to catch any TypeScript errors
-3. **Runtime Test**: Test icon interactions (hover, click, etc.)
+To replace in bulk (commit first):
 
 ```bash
-# Type check
-npm run type-check
-
-# Build your app
-npm run build
-
-# Test in development
-npm run dev
-```
-
----
-
-## 🔧 Automated Migration Script
-
-If you have many icon references, create a script to automate the replacement:
-
-```bash
-#!/bin/bash
-
-# Example: Replace common icon names in all TypeScript/TSX files
-
 find . -type f \( -name "*.tsx" -o -name "*.ts" \) -exec sed -i '' \
   -e 's/XMarkIcon/X/g' \
   -e 's/CheckCircleIcon/CheckCircle/g' \
@@ -321,143 +191,11 @@ find . -type f \( -name "*.tsx" -o -name "*.ts" \) -exec sed -i '' \
   -e 's/ExclamationTriangleIcon/AlertTriangle/g' \
   -e 's/InformationCircleIcon/Info/g' \
   -e 's/ChevronDownIcon/ChevronDown/g' \
-  -e 's/ChevronUpIcon/ChevronUp/g' \
-  -e 's/ChevronLeftIcon/ChevronLeft/g' \
-  -e 's/ChevronRightIcon/ChevronRight/g' \
   -e 's/MagnifyingGlassIcon/Search/g' \
   -e 's/Cog6ToothIcon/Settings/g' \
   {} \;
 ```
 
-**⚠️ Warning**: Always commit your changes before running automated replacements!
+`Alert`, `EmptyBox` and the `Select` chevron map their icons internally and need no change.
 
----
-
-## 🎨 Components with Built-in Icons
-
-These components have been updated internally and require **no changes** from you:
-
-### Alert Component
-The `Alert` component automatically maps its icons:
-- `type="error"` → Uses `AlertCircle`
-- `type="warning"` → Uses `AlertTriangle`
-- `type="info"` → Uses `Info`
-- `type="success"` → Uses `CheckCircle`
-- Close button → Uses `X`
-
-**No changes needed! ✅**
-
-```tsx
-// This works exactly the same as before
-<Alert
-  type="success"
-  message="Your changes have been saved"
-  showCloseButton
-  onClose={handleClose}
-/>
-```
-
----
-
-### EmptyBox Component
-The `EmptyBox` component internally uses `AlertCircle` now.
-
-**No changes needed! ✅**
-
-```tsx
-// This works exactly the same as before
-<EmptyBox
-  text="No items found"
-  size="large"
-/>
-```
-
----
-
-### Select Component
-The dropdown chevron is handled internally.
-
-**No changes needed! ✅** (unless you're using a custom `decoIconName`)
-
-```tsx
-// Chevron automatically uses Lucide's ChevronDown
-<Select
-  options={options}
-  value={value}
-  onChange={handleChange}
-/>
-```
-
----
-
-## 📦 Package Updates
-
-Update your `package.json` to use the latest version:
-
-```bash
-npm install oneslash-design-system@^1.2.19
-```
-
-Or with yarn:
-
-```bash
-yarn add oneslash-design-system@^1.2.19
-```
-
----
-
-## 🐛 Troubleshooting
-
-### Issue: "Icon not found" console errors
-
-**Cause**: Icon name doesn't exist in Lucide
-**Solution**: Check the icon name at https://lucide.dev/icons/
-
-### Issue: TypeScript errors on iconName prop
-
-**Cause**: Icon name doesn't match Lucide's type definitions
-**Solution**:
-1. Ensure you're using correct Lucide icon names
-2. Check for typos (icon names are case-sensitive)
-3. Browse https://lucide.dev/icons/ for the correct name
-
-### Issue: Icons look different
-
-**Cause**: Lucide and HeroIcons have slightly different designs
-**Solution**: This is expected - Lucide icons have a consistent 2px stroke width and may vary slightly in appearance
-
----
-
-## 🎯 Migration Checklist
-
-- [ ] Update design system package to v1.2.19+
-- [ ] Search codebase for icon references
-- [ ] Update all `iconName` props
-- [ ] Update all `decoIcon` props
-- [ ] Update all `actionIcon` props
-- [ ] Run type checking
-- [ ] Test all components with icons
-- [ ] Verify icons render correctly
-- [ ] Test in all supported browsers
-- [ ] Update any documentation/comments
-
----
-
-## 💡 Tips
-
-1. **Use TypeScript**: It will catch incorrect icon names at compile time
-2. **Check Lucide first**: Browse https://lucide.dev/icons/ before coding
-3. **Consistent naming**: Lucide uses PascalCase (e.g., `AlertCircle`, not `alert-circle`)
-4. **More options**: You now have 1,400+ icons instead of 292!
-
----
-
-## 🆘 Need Help?
-
-- **Browse icons**: https://lucide.dev/icons/
-- **Lucide docs**: https://lucide.dev/guide/
-- **Design system issues**: Open an issue in the repository
-
----
-
-**Happy migrating!** 🚀
+Troubleshooting: "icon not found" or a TypeScript error on an icon prop means the name does not exist in Lucide (names are case-sensitive). Icons look slightly different because Lucide uses a consistent 2px stroke.
