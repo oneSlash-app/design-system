@@ -178,30 +178,30 @@ export default function Select({
   // Determine border and background styles based on state
   const getStateStyles = () => {
     if (disabled) {
-      return 'border border-light-actionOutlinedBorder-disabled dark:border-dark-actionOutlinedBorder-disabled bg-light-background-default dark:bg-dark-background-default';
+      return 'border border-actionOutlinedBorder-disabled bg-background-default';
     }
     if (isOpen) {
       // Same 2px offset outline as focus and Button
-      return 'border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled outline outline-2 outline-offset-2 outline-light-text-primary dark:outline-dark-text-primary bg-light-background-default dark:bg-dark-background-default';
+      return 'border border-actionOutlinedBorder-enabled outline outline-2 outline-offset-2 outline-fg-primary bg-background-default';
     }
-    return `border border-light-actionOutlinedBorder-enabled dark:border-dark-actionOutlinedBorder-enabled bg-light-background-default dark:bg-dark-background-default
-      hover:border-light-text-secondary dark:hover:border-dark-text-secondary hover:bg-light-action-hover dark:hover:bg-dark-action-hover`;
+    return `border border-actionOutlinedBorder-enabled bg-background-default
+      hover:border-fg-secondary hover:bg-action-hover`;
   };
 
   // Determine text color
   const getTextColor = () => {
     if (disabled) {
-      return 'text-light-text-disabled dark:text-dark-text-disabled';
+      return 'text-fg-disabled';
     }
-    return 'text-light-text-primary dark:text-dark-text-primary';
+    return 'text-fg-primary';
   };
 
   // Determine icon color
   const getIconColor = () => {
     if (disabled) {
-      return 'text-light-text-disabled dark:text-dark-text-disabled';
+      return 'text-fg-disabled';
     }
-    return 'text-light-text-secondary dark:text-dark-text-secondary';
+    return 'text-fg-secondary';
   };
 
   return (
@@ -216,7 +216,7 @@ export default function Select({
         aria-activedescendant={isOpen && activeIndex >= 0 ? optionId(activeIndex) : undefined}
         aria-disabled={disabled || undefined}
         className={`
-          rounded-[8px]
+          rounded-control
           ${getStateStyles()}
           ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}
           ${stateTransition}
@@ -246,7 +246,7 @@ export default function Select({
             className={`
               w-6 h-6 flex-shrink-0 ml-1
               ${getIconColor()}
-              transition-transform duration-150 ease-out motion-reduce:transition-none
+              transition-transform duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none
               ${isOpen ? 'transform rotate-180' : ''}
             `}
             strokeWidth={2}
@@ -261,7 +261,7 @@ export default function Select({
           id={listboxId}
           role="listbox"
           aria-multiselectable={multiple || undefined}
-          className={`absolute z-50 mt-1 left-0 origin-top ${overlayTransition} ${menuVisible ? overlayVisible : overlayHidden}`}
+          className={`absolute z-[var(--os-z-overlay)] mt-1 left-0 origin-top ${overlayTransition} ${menuVisible ? overlayVisible : overlayHidden}`}
           style={{ width: width || '100%' }}
         >
           <Menu ref={menuRef} width={width || '100%'} className="max-h-[320px] overflow-y-auto">

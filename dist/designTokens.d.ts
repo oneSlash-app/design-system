@@ -78,6 +78,8 @@ export namespace colors {
         misc: {
             divider: string;
             scrim: string;
+            tooltipBg: string;
+            tooltipText: string;
         };
     } & {
         primary: {
@@ -222,6 +224,8 @@ export namespace colors {
         misc: {
             divider: string;
             scrim: string;
+            tooltipBg: string;
+            tooltipText: string;
         };
     } & {
         primary: {
@@ -369,6 +373,8 @@ export namespace themes {
             misc: {
                 divider: string;
                 scrim: string;
+                tooltipBg: string;
+                tooltipText: string;
             };
         } & {
             primary: {
@@ -514,6 +520,8 @@ export namespace themes {
             misc: {
                 divider: string;
                 scrim: string;
+                tooltipBg: string;
+                tooltipText: string;
             };
         } & {
             primary: {

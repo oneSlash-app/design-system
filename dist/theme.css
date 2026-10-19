@@ -230,6 +230,12 @@
   --color-misc-scrim: rgb(var(--os-color-misc-scrim));
   --color-light-misc-scrim: rgb(var(--os-color-misc-scrim));
   --color-dark-misc-scrim: rgb(var(--os-color-misc-scrim));
+  --color-misc-tooltipBg: rgb(var(--os-color-misc-tooltipBg));
+  --color-light-misc-tooltipBg: rgb(var(--os-color-misc-tooltipBg));
+  --color-dark-misc-tooltipBg: rgb(var(--os-color-misc-tooltipBg));
+  --color-misc-tooltipText: rgb(var(--os-color-misc-tooltipText));
+  --color-light-misc-tooltipText: rgb(var(--os-color-misc-tooltipText));
+  --color-dark-misc-tooltipText: rgb(var(--os-color-misc-tooltipText));
   --radius-inline: var(--os-radius-inline);
   --radius-control: var(--os-radius-control);
   --radius-container: var(--os-radius-container);

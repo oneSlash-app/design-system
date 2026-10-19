@@ -13,11 +13,11 @@ interface AlertProps {
 }
 
 const bgClassMap = {
-  error:   'bg-light-error-alertBg dark:bg-dark-error-alertBg',
-  warning: 'bg-light-warning-alertBg dark:bg-dark-warning-alertBg',
-  info:    'bg-light-info-alertBg dark:bg-dark-info-alertBg',
-  success: 'bg-light-success-alertBg dark:bg-dark-success-alertBg',
-  default: 'bg-light-secondary-light dark:bg-dark-secondary-light',
+  error:   'bg-error-alertBg',
+  warning: 'bg-warning-alertBg',
+  info:    'bg-info-alertBg',
+  success: 'bg-success-alertBg',
+  default: 'bg-secondary-light',
 } as const;
 
 const AUTO_DISMISS_MS = 5000;
@@ -25,8 +25,8 @@ const EXIT_MS = 150;
 
 // Toasts slide in from the top edge (position + opacity only), overshooting once, and leave quickly
 const motionClasses = {
-  enter: 'duration-[220ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]',
-  exit: 'duration-150 ease-in',
+  enter: 'duration-[var(--os-duration-pop)] ease-spring',
+  exit: 'duration-[var(--os-duration-fast)] ease-in',
 };
 
 export default function Alert({
@@ -93,11 +93,11 @@ export default function Alert({
       onMouseLeave={() => setIsPaused(false)}
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
-      className={`flex ${secondMessage ? 'items-start' : 'items-center'} justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] ${isVisible ? motionClasses.enter : motionClasses.exit} motion-reduce:transition-none ${bgClasses} ${
+      className={`flex ${secondMessage ? 'items-start' : 'items-center'} justify-between w-full p-2 rounded-control transition-[opacity,transform] ${isVisible ? motionClasses.enter : motionClasses.exit} motion-reduce:transition-none ${bgClasses} ${
         isVisible ? 'opacity-100 translate-y-0' : variant === 'toast' ? 'opacity-0 -translate-y-[calc(100%+1rem)]' : 'opacity-0'
       } ${variant === 'toast' ? 'max-w-md pointer-events-auto' : ''}`}
     >
-      <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
+      <div className="flex items-start gap-2 text-fg-primary">
         {/* With two lines, nudge the text so its first line centers on the close button */}
         <div className={`flex flex-col text-left ${secondMessage && showCloseButton ? 'pt-[3px]' : ''}`}>
           <span className="text-body2">{message}</span>
@@ -126,7 +126,7 @@ export default function Alert({
   }
 
   return (
-    <div className="fixed top-4 inset-x-0 z-50 flex justify-center pointer-events-none">
+    <div className="fixed top-4 inset-x-0 z-[var(--os-z-overlay)] flex justify-center pointer-events-none">
       {alertContent}
     </div>
   );

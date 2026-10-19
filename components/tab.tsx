@@ -56,8 +56,8 @@ export default function Tab({
 
   // Inside a TabsContainer the container's sliding pill is the selected background
   const selectedClasses = inContainer
-    ? 'text-light-text-contrast dark:text-dark-text-contrast'
-    : 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast';
+    ? 'text-primary-contrast'
+    : 'bg-primary-dark text-primary-contrast';
 
   return (
     <div
@@ -73,11 +73,11 @@ export default function Tab({
         }
       }}
       className={`
-        relative flex items-center space-x-1 rounded-[8px] cursor-pointer justify-start ${stateTransition} ${pressFeedbackAny} ${focusRing}
+        relative flex items-center space-x-1 rounded-control cursor-pointer justify-start ${stateTransition} ${pressFeedbackAny} ${focusRing}
         ${sizeClasses.tab}
         ${isSelected
           ? selectedClasses
-          : 'text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200'}
+          : 'text-fg-primary hover:bg-background-accent200'}
       `}
       onClick={handleClick}
     >

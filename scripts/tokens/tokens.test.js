@@ -77,3 +77,12 @@ test('non-color groups', () => {
     spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
   });
 });
+
+test('tooltip tokens are inverted surfaces and forest copies them', () => {
+  assert.equal(tokens.colors.light.misc.tooltipBg, '#4F4F4F');
+  assert.equal(tokens.colors.light.misc.tooltipText, '#EEEEEE');
+  assert.equal(tokens.colors.dark.misc.tooltipBg, '#FFFFFF');
+  assert.equal(tokens.colors.dark.misc.tooltipText, '#000000');
+  assert.equal(tokens.themes.forest.light.misc.tooltipBg, '#4F4F4F');
+  assert.equal(tokens.themes.forest.dark.misc.tooltipText, '#000000');
+});

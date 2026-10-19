@@ -81,6 +81,8 @@ const base = {
       misc:{
         divider: '#D1D1D1',
         scrim: '#000000',
+        tooltipBg: '#4F4F4F',
+        tooltipText: '#EEEEEE',
       },
     },
 
@@ -164,6 +166,8 @@ const base = {
       misc:{
         divider: '#404040',
         scrim: '#000000',
+        tooltipBg: '#FFFFFF',
+        tooltipText: '#000000',
       },
     },
   },

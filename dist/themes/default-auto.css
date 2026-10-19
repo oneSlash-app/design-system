@@ -78,6 +78,8 @@
   --os-color-actionOutlinedBorder-disabled: 176 176 176;
   --os-color-misc-divider: 209 209 209;
   --os-color-misc-scrim: 0 0 0;
+  --os-color-misc-tooltipBg: 79 79 79;
+  --os-color-misc-tooltipText: 238 238 238;
 }
 .dark {
   --os-color-text-primary: 238 238 238;
@@ -156,6 +158,8 @@
   --os-color-actionOutlinedBorder-disabled: 56 56 56;
   --os-color-misc-divider: 64 64 64;
   --os-color-misc-scrim: 0 0 0;
+  --os-color-misc-tooltipBg: 255 255 255;
+  --os-color-misc-tooltipText: 0 0 0;
 }
 @media (prefers-color-scheme: dark) {
   :root:not(.light) {
@@ -235,5 +239,7 @@
     --os-color-actionOutlinedBorder-disabled: 56 56 56;
     --os-color-misc-divider: 64 64 64;
     --os-color-misc-scrim: 0 0 0;
+    --os-color-misc-tooltipBg: 255 255 255;
+    --os-color-misc-tooltipText: 0 0 0;
   }
 }

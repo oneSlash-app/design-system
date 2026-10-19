@@ -46,8 +46,8 @@ export default function UserImage({
   const darkBg = `hsl(${hue}, ${saturation}%, 30%)`;
 
   return (
-    // Per-user hue computed in JS, not a theme token, so the dark: variant stays here (the only
-    // dark: color variant in the components). Under an -auto theme with no class it keeps the light shade.
+    // Per-user hue computed in JS, not a theme token, so the dark: variant stays here (one of the two documented
+    // `dark:` exemptions, see the overlay rings in Menu/Popover/Modal). Under an -auto theme with no class it keeps the light shade.
     <div
       style={{
         '--light-bg': lightBg,

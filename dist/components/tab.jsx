@@ -22,8 +22,8 @@ export default function Tab(_a) {
     }[size];
     // Inside a TabsContainer the container's sliding pill is the selected background
     var selectedClasses = inContainer
-        ? 'text-light-text-contrast dark:text-dark-text-contrast'
-        : 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast';
+        ? 'text-primary-contrast'
+        : 'bg-primary-dark text-primary-contrast';
     return (<div data-tab-selected={isSelected} role="tab" aria-selected={isSelected} 
     // Inside a container only the selected tab is in the Tab order; arrow keys move between tabs
     tabIndex={inContainer && !isSelected ? -1 : 0} onKeyDown={function (e) {
@@ -31,9 +31,9 @@ export default function Tab(_a) {
                 e.preventDefault();
                 handleClick();
             }
-        }} className={"\n        relative flex items-center space-x-1 rounded-[8px] cursor-pointer justify-start ".concat(stateTransition, " ").concat(pressFeedbackAny, " ").concat(focusRing, "\n        ").concat(sizeClasses.tab, "\n        ").concat(isSelected
+        }} className={"\n        relative flex items-center space-x-1 rounded-control cursor-pointer justify-start ".concat(stateTransition, " ").concat(pressFeedbackAny, " ").concat(focusRing, "\n        ").concat(sizeClasses.tab, "\n        ").concat(isSelected
             ? selectedClasses
-            : 'text-light-text-primary dark:text-dark-text-primary hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200', "\n      ")} onClick={handleClick}>
+            : 'text-fg-primary hover:bg-background-accent200', "\n      ")} onClick={handleClick}>
       {IconLeft && <IconLeft className={sizeClasses.icon} strokeWidth={2}/>}
       <div className={"flex flex-col text-center ".concat(sizeClasses.label)}>
         <span className="whitespace-nowrap">

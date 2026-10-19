@@ -63,18 +63,20 @@ export default function Popover({
   if (!mounted || !hasMounted || !anchorEl) return null;
 
   // Render popover in a portal to prevent layout shifts and positioning issues
+  
+  // dark-only edge: a ring only in dark mode, so it keeps a dark: variant
   return createPortal(
     <div
       id={id}
       ref={setPopoverElement}
       style={styles.popper}
       {...attributes.popper}
-      className="z-50"
+      className="z-[var(--os-z-overlay)]"
       role="dialog"
     >
       {/* Popper owns the outer transform, so the fade and scale go on this inner panel */}
       <div
-        className={`bg-light-background-accent300 dark:bg-dark-background-accent100 dark:ring-1 dark:ring-dark-misc-divider rounded-[8px] shadow-lg p-2 origin-top-left
+        className={`bg-background-overlay dark:ring-1 dark:ring-misc-divider rounded-control shadow-overlay p-2 origin-top-left
           ${overlayTransition} ${visible ? overlayVisible : overlayHidden}`}
       >
         {children}

@@ -91,8 +91,8 @@ export default function TabsContainer({
           tabs[next].click();
         }}
         className={`
-          relative flex gap-0.5 p-1 rounded-[12px] overflow-x-auto
-          ${tabCount > 0 ? 'bg-light-background-accent100 dark:bg-dark-background-accent100' : 'bg-transparent'}
+          relative flex gap-0.5 p-1 rounded-container overflow-x-auto
+          ${tabCount > 0 ? 'bg-background-accent100' : 'bg-transparent'}
         `}
         style={{
           scrollbarWidth: 'none',
@@ -102,8 +102,8 @@ export default function TabsContainer({
         {indicator && (
           <span
             aria-hidden
-            className={`absolute rounded-[8px] pointer-events-none bg-light-primary-dark dark:bg-dark-primary-dark
-              ${indicator.animate ? 'transition-[transform,width,height] duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none' : ''}`}
+            className={`absolute rounded-control pointer-events-none bg-primary-dark
+              ${indicator.animate ? 'transition-[transform,width,height] duration-[var(--os-duration-slide)] ease-emphasized motion-reduce:transition-none' : ''}`}
             style={{
               top: 0,
               left: 0,

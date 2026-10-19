@@ -20,9 +20,9 @@ export default function MenuItem(_a) {
     var paddingClass = size === 'tiny' ? 'p-1' : 'p-2';
     var content = (<div id={id} role={href ? undefined : role} 
     // A link wrapper is already focusable; otherwise the row itself takes focus
-    tabIndex={href ? undefined : tabIndex} aria-selected={role === 'option' ? !!isSelected : undefined} className={"\n        flex items-center ".concat(paddingClass, " rounded-[8px] cursor-pointer justify-between text-left ").concat(stateTransition, " ").concat(pressFeedbackAny, " ").concat(focusRing, "\n        ").concat(isSelected
-            ? 'bg-light-primary-dark dark:bg-dark-primary-dark text-light-text-contrast dark:text-dark-text-contrast'
-            : "hover:bg-light-background-accent200 dark:hover:bg-dark-background-accent200 ".concat(isActive ? 'bg-light-background-accent200 dark:bg-dark-background-accent200' : ''), "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick} onKeyDown={function (e) {
+    tabIndex={href ? undefined : tabIndex} aria-selected={role === 'option' ? !!isSelected : undefined} className={"\n        flex items-center ".concat(paddingClass, " rounded-control cursor-pointer justify-between text-left ").concat(stateTransition, " ").concat(pressFeedbackAny, " ").concat(focusRing, "\n        ").concat(isSelected
+            ? 'bg-primary-dark text-primary-contrast'
+            : "hover:bg-background-accent200 ".concat(isActive ? 'bg-background-accent200' : ''), "\n        ").concat(className, "\n      ")} style={{ width: '100%' }} onClick={onClick} onKeyDown={function (e) {
             if (!href && e.target === e.currentTarget && (e.key === 'Enter' || e.key === ' ')) {
                 e.preventDefault();
                 e.currentTarget.click();
@@ -30,12 +30,12 @@ export default function MenuItem(_a) {
         }}>
       {/* Left group: icon/userImg + label with 8px gap */}
       <div className="flex items-center gap-2 min-w-0">
-        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : icon ? (<span className={"".concat(iconSize, " flex-shrink-0 flex items-center justify-center")}>{icon}</span>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " flex-shrink-0 ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary')} strokeWidth={2}/>))}
+        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : icon ? (<span className={"".concat(iconSize, " flex-shrink-0 flex items-center justify-center")}>{icon}</span>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " flex-shrink-0 ").concat(isSelected ? 'text-primary-contrast' : 'text-fg-secondary')} strokeWidth={2}/>))}
         <div className="flex flex-col min-w-0">
-          <span className={"truncate ".concat(labelClass, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
+          <span className={"truncate ".concat(labelClass, " ").concat(isSelected ? 'text-primary-contrast' : 'text-fg-primary')}>
             {label}
           </span>
-          {secondLabel && (<span className={"truncate ".concat(secondLabelClass, " opacity-70 ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-primary dark:text-dark-text-primary')}>
+          {secondLabel && (<span className={"truncate ".concat(secondLabelClass, " opacity-70 ").concat(isSelected ? 'text-primary-contrast' : 'text-fg-primary')}>
               {secondLabel}
             </span>)}
         </div>
@@ -46,11 +46,11 @@ export default function MenuItem(_a) {
         {tag && (<Tag variant={tag.variant || 'contained'} size={tagSize} label={tag.label} iconName={tag.iconName} 
         // 'default' has a fill that stays visible on the menu background
         color={(_b = tag.color) !== null && _b !== void 0 ? _b : 'default'}/>)}
-        {IconRight && (<IconRight className={"".concat(iconSize, " ").concat(isSelected ? 'text-light-text-contrast dark:text-dark-text-contrast' : 'text-light-text-secondary dark:text-dark-text-secondary', " flex-shrink-0")} strokeWidth={2}/>)}
+        {IconRight && (<IconRight className={"".concat(iconSize, " ").concat(isSelected ? 'text-primary-contrast' : 'text-fg-secondary', " flex-shrink-0")} strokeWidth={2}/>)}
         {rightAction && (<div onClick={function (e) { return e.stopPropagation(); }}>
             {rightAction}
           </div>)}
       </div>
     </div>);
-    return href ? <NextLink href={href} className={"block rounded-[8px] ".concat(focusRing)}>{content}</NextLink> : content;
+    return href ? <NextLink href={href} className={"block rounded-control ".concat(focusRing)}>{content}</NextLink> : content;
 }

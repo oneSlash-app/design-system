@@ -231,7 +231,13 @@ module.exports = {
         "dark-misc-divider": "rgb(var(--os-color-misc-divider) / <alpha-value>)",
         "misc-scrim": "rgb(var(--os-color-misc-scrim) / <alpha-value>)",
         "light-misc-scrim": "rgb(var(--os-color-misc-scrim) / <alpha-value>)",
-        "dark-misc-scrim": "rgb(var(--os-color-misc-scrim) / <alpha-value>)"
+        "dark-misc-scrim": "rgb(var(--os-color-misc-scrim) / <alpha-value>)",
+        "misc-tooltipBg": "rgb(var(--os-color-misc-tooltipBg) / <alpha-value>)",
+        "light-misc-tooltipBg": "rgb(var(--os-color-misc-tooltipBg) / <alpha-value>)",
+        "dark-misc-tooltipBg": "rgb(var(--os-color-misc-tooltipBg) / <alpha-value>)",
+        "misc-tooltipText": "rgb(var(--os-color-misc-tooltipText) / <alpha-value>)",
+        "light-misc-tooltipText": "rgb(var(--os-color-misc-tooltipText) / <alpha-value>)",
+        "dark-misc-tooltipText": "rgb(var(--os-color-misc-tooltipText) / <alpha-value>)"
       },
       "borderRadius": {
         "inline": "var(--os-radius-inline)",
