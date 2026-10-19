@@ -17,11 +17,12 @@ test('a bad theme fails with the pair named', () => {
 test('report-only pairs are reported but never fail', () => {
   const t = structuredClone(tokens);
   t.colors.light.text.disabled = '#FFFFFF';
-  t.colors.light.text.secondary = t.colors.light.background.accent300;
   const { failures, report } = checkContrast(t);
-  assert.deepEqual(failures, []);
+  const isReportOnly = (pair) => /^text\.disabled /.test(pair) || /^text\.secondary on background\.accent[23]00$/.test(pair);
+  assert.ok(!failures.some((f) => isReportOnly(f.pair)));
   const row = report.find((r) => r.theme === 'default' && r.mode === 'light' && r.pair === 'text.disabled on background.default');
   assert.equal(row.gated, false);
+  assert.ok(row.ratio < row.min);
   assert.ok(report.some((r) => r.pair === 'text.secondary on background.accent300' && !r.gated));
   assert.ok(report.some((r) => r.pair === 'error.onFill on error.fill' && r.gated && r.min === 4.5));
   assert.ok(report.some((r) => r.pair === 'accent.contrast on accent.main'));

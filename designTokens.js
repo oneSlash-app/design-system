@@ -342,6 +342,11 @@ const forestDark = override(baseColors.dark, {
 });
 
 // The derived light info.text (#006BAB) is 4.33:1 on forest's background; #0068A3 is the lightest step that reaches 4.5.
+/**
+ * @template {typeof base.colors.light} S
+ * @param {S} set
+ * @returns {S}
+ */
 const withForestInfoText = (set) => ({ ...set, info: { ...set.info, text: '#0068A3', textHover: '#0068A3' } });
 
 module.exports = {
