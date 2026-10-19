@@ -11,7 +11,7 @@ var __assign = (this && this.__assign) || function () {
     return __assign.apply(this, arguments);
 };
 // design tokens definitions
-var tokens = {
+var base = {
     colors: {
         // light
         light: {
@@ -286,48 +286,50 @@ var tokens = {
 };
 // Adds the semantic keys that are derived from a set's own groups, so the
 // rule lives once and applies to every set (default and themes, light and dark).
+/**
+ * @param {typeof base.colors.light} set
+ * @param {'light' | 'dark'} mode
+ */
 function withSemanticKeys(set, mode) {
     var isLight = mode === 'light';
-    var out = __assign({}, set);
-    out.primary = __assign(__assign({}, set.primary), { contrast: isLight ? '#ffffff' : '#000000' });
-    out.background = __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100 });
-    for (var _i = 0, _a = ['error', 'warning', 'info', 'success']; _i < _a.length; _i++) {
-        var name_1 = _a[_i];
-        var g = set[name_1];
-        out[name_1] = __assign(__assign({}, g), { fill: isLight ? g.dark : g.main, onFill: isLight ? '#FFFFFF' : '#000000', text: isLight ? g.dark : name_1 === 'error' ? g.light : g.main, textHover: isLight ? g.dark : g.light });
-    }
-    return out;
+    /** @param {typeof set.error} g @param {boolean} isError */
+    var status = function (g, isError) { return (__assign(__assign({}, g), { fill: isLight ? g.dark : g.main, onFill: isLight ? '#FFFFFF' : '#000000', text: isLight ? g.dark : isError ? g.light : g.main, textHover: isLight ? g.dark : g.light })); };
+    return __assign(__assign({}, set), { primary: __assign(__assign({}, set.primary), { contrast: isLight ? '#ffffff' : '#000000' }), background: __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100 }), error: status(set.error, true), warning: status(set.warning, false), info: status(set.info, false), success: status(set.success, false) });
 }
 // Forest: the default set with these values replaced (group by group).
+/**
+ * @template T
+ * @param {T} set
+ * @param {{ [K in keyof T]?: Partial<T[K]> }} changes
+ * @returns {T}
+ */
 function override(set, changes) {
     var out = __assign({}, set);
-    for (var _i = 0, _a = Object.entries(changes); _i < _a.length; _i++) {
-        var _b = _a[_i], group = _b[0], values = _b[1];
-        out[group] = __assign(__assign({}, set[group]), values);
+    for (var _i = 0, /** @type {(keyof T)[]} */ _a = (Object.keys(changes)); _i < _a.length; _i++) {
+        var group = _a[_i];
+        out[group] = __assign(__assign({}, set[group]), changes[group]);
     }
     return out;
 }
-var base = tokens.colors;
-var forestLight = override(base.light, {
+var baseColors = base.colors;
+var forestLight = override(baseColors.light, {
     text: { primary: '#1C2213', secondary: '#515E3C', disabled: '#8A9670' },
     accent: { main: '#1C2213', dark: '#2A331E', light: '#3A472B', contrast: '#E7ECDA' },
     secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
     background: { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC' },
 });
-var forestDark = override(base.dark, {
+var forestDark = override(baseColors.dark, {
     text: { primary: '#D9E5C7', secondary: '#9DAA85', disabled: '#6D7956' },
     accent: { main: '#E7ECDA', dark: '#D6DEC3', light: '#F2F5EA', contrast: '#1C2213' },
     secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
     background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
 });
-tokens.themes = {
-    forest: {
-        light: withSemanticKeys(forestLight, 'light'),
-        dark: withSemanticKeys(forestDark, 'dark'),
-    },
-};
-tokens.colors = {
-    light: withSemanticKeys(base.light, 'light'),
-    dark: withSemanticKeys(base.dark, 'dark'),
-};
-module.exports = tokens;
+module.exports = __assign(__assign({}, base), { colors: {
+        light: withSemanticKeys(baseColors.light, 'light'),
+        dark: withSemanticKeys(baseColors.dark, 'dark'),
+    }, themes: {
+        forest: {
+            light: withSemanticKeys(forestLight, 'light'),
+            dark: withSemanticKeys(forestDark, 'dark'),
+        },
+    } });

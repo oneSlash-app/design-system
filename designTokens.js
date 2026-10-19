@@ -1,5 +1,5 @@
 // design tokens definitions
-const tokens = {
+const base = {
   colors: {
     // light
     light:{
@@ -282,60 +282,74 @@ const tokens = {
 
 // Adds the semantic keys that are derived from a set's own groups, so the
 // rule lives once and applies to every set (default and themes, light and dark).
+/**
+ * @param {typeof base.colors.light} set
+ * @param {'light' | 'dark'} mode
+ */
 function withSemanticKeys(set, mode) {
   const isLight = mode === 'light';
-  const out = { ...set };
-  out.primary = { ...set.primary, contrast: isLight ? '#ffffff' : '#000000' };
-  out.background = {
-    ...set.background,
-    elevated: isLight ? set.background.default : set.background.accent100,
-    overlay: isLight ? set.background.accent300 : set.background.accent100,
+  /** @param {typeof set.error} g @param {boolean} isError */
+  const status = (g, isError) => ({
+    ...g,
+    fill: isLight ? g.dark : g.main,
+    onFill: isLight ? '#FFFFFF' : '#000000',
+    text: isLight ? g.dark : isError ? g.light : g.main,
+    textHover: isLight ? g.dark : g.light,
+  });
+  return {
+    ...set,
+    primary: { ...set.primary, contrast: isLight ? '#ffffff' : '#000000' },
+    background: {
+      ...set.background,
+      elevated: isLight ? set.background.default : set.background.accent100,
+      overlay: isLight ? set.background.accent300 : set.background.accent100,
+    },
+    error: status(set.error, true),
+    warning: status(set.warning, false),
+    info: status(set.info, false),
+    success: status(set.success, false),
   };
-  for (const name of ['error', 'warning', 'info', 'success']) {
-    const g = set[name];
-    out[name] = {
-      ...g,
-      fill: isLight ? g.dark : g.main,
-      onFill: isLight ? '#FFFFFF' : '#000000',
-      text: isLight ? g.dark : name === 'error' ? g.light : g.main,
-      textHover: isLight ? g.dark : g.light,
-    };
-  }
-  return out;
 }
 
 // Forest: the default set with these values replaced (group by group).
+/**
+ * @template T
+ * @param {T} set
+ * @param {{ [K in keyof T]?: Partial<T[K]> }} changes
+ * @returns {T}
+ */
 function override(set, changes) {
   const out = { ...set };
-  for (const [group, values] of Object.entries(changes)) out[group] = { ...set[group], ...values };
+  for (const group of /** @type {(keyof T)[]} */ (Object.keys(changes))) out[group] = { ...set[group], ...changes[group] };
   return out;
 }
 
-const base = tokens.colors;
+const baseColors = base.colors;
 
-const forestLight = override(base.light, {
+const forestLight = override(baseColors.light, {
   text: { primary: '#1C2213', secondary: '#515E3C', disabled: '#8A9670' },
   accent: { main: '#1C2213', dark: '#2A331E', light: '#3A472B', contrast: '#E7ECDA' },
   secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
   background: { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC' },
 });
 
-const forestDark = override(base.dark, {
+const forestDark = override(baseColors.dark, {
   text: { primary: '#D9E5C7', secondary: '#9DAA85', disabled: '#6D7956' },
   accent: { main: '#E7ECDA', dark: '#D6DEC3', light: '#F2F5EA', contrast: '#1C2213' },
   secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
   background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
 });
 
-tokens.themes = {
-  forest: {
-    light: withSemanticKeys(forestLight, 'light'),
-    dark: withSemanticKeys(forestDark, 'dark'),
+module.exports = {
+  ...base,
+  colors: {
+    light: withSemanticKeys(baseColors.light, 'light'),
+    dark: withSemanticKeys(baseColors.dark, 'dark'),
+  },
+  themes: {
+    forest: {
+      light: withSemanticKeys(forestLight, 'light'),
+      dark: withSemanticKeys(forestDark, 'dark'),
+    },
   },
 };
-tokens.colors = {
-  light: withSemanticKeys(base.light, 'light'),
-  dark: withSemanticKeys(base.dark, 'dark'),
-};
-
-module.exports = tokens;
