@@ -39,6 +39,9 @@ test('v4 typography.css matches designTokens.typography', () => {
     assert.ok(css.includes(`--text-${s}--line-height: ${t.lineHeight};`), s);
     assert.ok(css.includes(`--text-${s}--letter-spacing: ${t.letterSpacing};`), s);
     assert.ok(css.includes(`--text-${s}--font-weight: ${t.weight};`), s);
+    assert.ok(css.includes(`--font-weight-${s}: ${t.weight};`), s);
+    assert.ok(css.includes(`--leading-${s}: ${t.lineHeight};`), s);
+    assert.ok(css.includes(`--tracking-${s}: ${t.letterSpacing};`), s);
   }
 });
 

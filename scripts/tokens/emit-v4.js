@@ -42,6 +42,9 @@ function emitTypographyV4(tokens) {
       `  --text-${name}--line-height: ${t.lineHeight};`,
       `  --text-${name}--letter-spacing: ${t.letterSpacing};`,
       `  --text-${name}--font-weight: ${t.weight};`,
+      `  --font-weight-${name}: ${t.weight};`,
+      `  --leading-${name}: ${t.lineHeight};`,
+      `  --tracking-${name}: ${t.letterSpacing};`,
     );
   }
   return `${HEADER}\n@theme inline {\n${lines.join('\n')}\n}\n`;
