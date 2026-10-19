@@ -36,7 +36,8 @@
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "test": "node --test scripts/"
+    "test": "node --test scripts/",
+    "check:contrast": "node scripts/check-contrast.js"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",

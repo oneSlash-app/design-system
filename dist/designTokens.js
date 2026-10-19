@@ -325,12 +325,14 @@ var forestDark = override(baseColors.dark, {
     secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
     background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
 });
+// The derived light info.text (#006BAB) is 4.33:1 on forest's background; #0068A3 is the lightest step that reaches 4.5.
+var withForestInfoText = function (set) { return (__assign(__assign({}, set), { info: __assign(__assign({}, set.info), { text: '#0068A3', textHover: '#0068A3' }) })); };
 module.exports = __assign(__assign({}, base), { colors: {
         light: withSemanticKeys(baseColors.light, 'light'),
         dark: withSemanticKeys(baseColors.dark, 'dark'),
     }, themes: {
         forest: {
-            light: withSemanticKeys(forestLight, 'light'),
+            light: withForestInfoText(withSemanticKeys(forestLight, 'light')),
             dark: withSemanticKeys(forestDark, 'dark'),
         },
     } });

@@ -56,6 +56,8 @@ test('forest overrides and derived keys follow forest groups', () => {
   assert.equal(f.dark.error.text, f.dark.error.light);
   assert.equal(f.light.success.fill, f.light.success.dark);
   assert.equal(f.dark.primary.contrast, '#000000');
+  assert.equal(f.light.info.text, '#0068A3');
+  assert.equal(f.light.info.textHover, '#0068A3');
 });
 
 test('non-color groups', () => {

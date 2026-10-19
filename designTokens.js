@@ -341,6 +341,9 @@ const forestDark = override(baseColors.dark, {
   background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
 });
 
+// The derived light info.text (#006BAB) is 4.33:1 on forest's background; #0068A3 is the lightest step that reaches 4.5.
+const withForestInfoText = (set) => ({ ...set, info: { ...set.info, text: '#0068A3', textHover: '#0068A3' } });
+
 module.exports = {
   ...base,
   colors: {
@@ -349,7 +352,7 @@ module.exports = {
   },
   themes: {
     forest: {
-      light: withSemanticKeys(forestLight, 'light'),
+      light: withForestInfoText(withSemanticKeys(forestLight, 'light')),
       dark: withSemanticKeys(forestDark, 'dark'),
     },
   },
