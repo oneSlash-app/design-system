@@ -1,24 +1,43 @@
-import React, { useEffect } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import type { Preview } from "@storybook/react";
 // Compile the source CSS so Tailwind regenerates classes as components change
 import "../index.css";
 
-// Design token background colors
-const backgrounds = {
-  light: "#e8e8e8", // light.background.default
-  dark: "#262626",  // dark.background.default
-};
+import "../dist/tokens.css";
+import defaultCss from "../dist/themes/default.css?inline";
+import forestCss from "../dist/themes/forest.css?inline";
 
-const ThemeWrapper = ({ children, theme }: { children: React.ReactNode; theme: string }) => {
-  useEffect(() => {
-    // Apply theme to document and body
+const themeCss: Record<string, string> = { default: defaultCss, forest: forestCss };
+
+// The theme file begins with an @import of tokens.css, which is loaded above
+// and would 404 relative to the page if left in the injected style.
+const stripImport = (css: string) => css.replace(/@import\s+["']\.\.\/tokens\.css["'];?/, "");
+
+const readBackground = () =>
+  `rgb(${getComputedStyle(document.documentElement).getPropertyValue("--os-color-background-default")})`;
+
+const ThemeWrapper = ({ children, theme, brand }: { children: React.ReactNode; theme: string; brand: string }) => {
+  const [background, setBackground] = useState("");
+
+  // Inject the brand's theme before paint so the background read sees it
+  useLayoutEffect(() => {
+    let el = document.getElementById("os-theme") as HTMLStyleElement | null;
+    if (!el) {
+      el = document.createElement("style");
+      el.id = "os-theme";
+      document.head.appendChild(el);
+    }
+    el.textContent = stripImport(themeCss[brand] ?? defaultCss);
+
     document.documentElement.classList.remove("light", "dark");
     document.documentElement.classList.add(theme);
-    document.body.style.backgroundColor = backgrounds[theme as keyof typeof backgrounds];
+    const bg = readBackground();
+    setBackground(bg);
+    document.body.style.backgroundColor = bg;
     document.body.style.margin = "0";
     document.body.style.padding = "0";
     document.body.style.minHeight = "100vh";
-  }, [theme]);
+  }, [theme, brand]);
 
   return (
     <div
@@ -26,7 +45,7 @@ const ThemeWrapper = ({ children, theme }: { children: React.ReactNode; theme: s
       style={{
         padding: "1rem",
         minHeight: "100vh",
-        backgroundColor: backgrounds[theme as keyof typeof backgrounds],
+        backgroundColor: background,
       }}
     >
       {children}
@@ -60,16 +79,31 @@ const preview: Preview = {
         dynamicTitle: true,
       },
     },
+    brand: {
+      description: "Brand theme",
+      toolbar: {
+        title: "Brand",
+        icon: "paintbrush",
+        items: [
+          { value: "default", title: "Default" },
+          { value: "forest", title: "Forest" },
+        ],
+        dynamicTitle: true,
+      },
+    },
   },
   initialGlobals: {
     theme: "light",
+    brand: "default",
   },
   decorators: [
     (Story, context) => {
       const theme = context.globals.theme || "light";
 
+      const brand = context.globals.brand || "default";
+
       return (
-        <ThemeWrapper theme={theme}>
+        <ThemeWrapper theme={theme} brand={brand}>
           <Story />
         </ThemeWrapper>
       );
