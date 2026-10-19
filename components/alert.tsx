@@ -23,7 +23,7 @@ const bgClassMap = {
 const AUTO_DISMISS_MS = 5000;
 const EXIT_MS = 150;
 
-// Toasts pop in with a slight overshoot and leave quickly
+// Toasts slide in from the top edge (position + opacity only), overshooting once, and leave quickly
 const motionClasses = {
   enter: 'duration-[220ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]',
   exit: 'duration-150 ease-in',
@@ -94,7 +94,7 @@ export default function Alert({
       onFocus={() => setIsPaused(true)}
       onBlur={() => setIsPaused(false)}
       className={`flex ${secondMessage ? 'items-start' : 'items-center'} justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] ${isVisible ? motionClasses.enter : motionClasses.exit} motion-reduce:transition-none ${bgClasses} ${
-        isVisible ? 'opacity-100 translate-y-0 scale-100' : variant === 'toast' ? 'opacity-0 -translate-y-2 scale-90' : 'opacity-0'
+        isVisible ? 'opacity-100 translate-y-0' : variant === 'toast' ? 'opacity-0 -translate-y-[calc(100%+1rem)]' : 'opacity-0'
       } ${variant === 'toast' ? 'max-w-md pointer-events-auto' : ''}`}
     >
       <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">

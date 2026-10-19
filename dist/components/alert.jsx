@@ -10,7 +10,7 @@ var bgClassMap = {
 };
 var AUTO_DISMISS_MS = 5000;
 var EXIT_MS = 150;
-// Toasts pop in with a slight overshoot and leave quickly
+// Toasts slide in from the top edge (position + opacity only), overshooting once, and leave quickly
 var motionClasses = {
     enter: 'duration-[220ms] ease-[cubic-bezier(0.34,1.56,0.64,1)]',
     exit: 'duration-150 ease-in',
@@ -64,7 +64,7 @@ export default function Alert(_a) {
     var bgClasses = (_b = bgClassMap[type]) !== null && _b !== void 0 ? _b : bgClassMap.default;
     var alertContent = (<div 
     // Errors interrupt screen readers; everything else is announced politely
-    role={type === 'error' ? 'alert' : 'status'} onMouseEnter={function () { return setIsPaused(true); }} onMouseLeave={function () { return setIsPaused(false); }} onFocus={function () { return setIsPaused(true); }} onBlur={function () { return setIsPaused(false); }} className={"flex ".concat(secondMessage ? 'items-start' : 'items-center', " justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] ").concat(isVisible ? motionClasses.enter : motionClasses.exit, " motion-reduce:transition-none ").concat(bgClasses, " ").concat(isVisible ? 'opacity-100 translate-y-0 scale-100' : variant === 'toast' ? 'opacity-0 -translate-y-2 scale-90' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
+    role={type === 'error' ? 'alert' : 'status'} onMouseEnter={function () { return setIsPaused(true); }} onMouseLeave={function () { return setIsPaused(false); }} onFocus={function () { return setIsPaused(true); }} onBlur={function () { return setIsPaused(false); }} className={"flex ".concat(secondMessage ? 'items-start' : 'items-center', " justify-between w-full p-2 rounded-[8px] transition-[opacity,transform] ").concat(isVisible ? motionClasses.enter : motionClasses.exit, " motion-reduce:transition-none ").concat(bgClasses, " ").concat(isVisible ? 'opacity-100 translate-y-0' : variant === 'toast' ? 'opacity-0 -translate-y-[calc(100%+1rem)]' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
       <div className="flex items-start gap-2 text-light-text-primary dark:text-dark-text-primary">
         {/* With two lines, nudge the text so its first line centers on the close button */}
         <div className={"flex flex-col text-left ".concat(secondMessage && showCloseButton ? 'pt-[3px]' : '')}>
