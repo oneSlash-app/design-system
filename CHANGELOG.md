@@ -22,7 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `theme.css` and `theme-auto.css` (Tailwind v4 `@theme`), `typography.css` (v4 type scale).
 - `tailwind-preset.js` and `tailwind-preset-auto.js` (Tailwind v3), exported as `oneslash-design-system/tailwind` and `/tailwind-auto`.
 - New tokens: `background.elevated`, `background.overlay`, status `fill`/`onFill`/`text`/`textHover`/`tint`, `primary.contrast`, `misc.tooltipBg`/`misc.tooltipText`, and the `radius`, `shadow`, `zIndex`, `motion` groups.
-- `resolveDarkMode` export.
+- `useDarkMode` and `resolveDarkMode` are exported from the package root: `import { useDarkMode, resolveDarkMode } from 'oneslash-design-system'`.
 - `npm run check:contrast` (4.5:1 gate for text, status, accent and primary pairs), run in the release workflow.
 
 ### Deprecated

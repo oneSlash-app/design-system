@@ -27,3 +27,4 @@ export * from './components/textField';
 export * from './components/timeStamp';
 export * from './components/tooltip';
 export * from './components/userImage';
+export { default as useDarkMode, resolveDarkMode } from './components/useDarkMode';

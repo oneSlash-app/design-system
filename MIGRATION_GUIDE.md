@@ -56,7 +56,7 @@ export default config;
 
 The preset sets `darkMode` for you (`class` for `tailwind`, `class` plus the OS media query for `tailwind-auto`), so remove your own `darkMode` setting if it differs. Delete `theme.extend.colors`, `spacing`, `fontSize`, `fontFamily` and `textAlign` that you built from `oneslash-design-system/tokens`; the preset provides them. Keep colors that only your app uses.
 
-The preset only registers `fontFamily.inter`. If you applied Inter to `.text-h1`…`.text-caption` with your own Tailwind plugin, keep that plugin. The package's `index.css` sets `body { font-family: Inter }`; otherwise add `font-inter` to your body.
+The preset only registers `fontFamily.inter`. If you applied Inter to `.text-h1`…`.text-caption` with your own Tailwind plugin, keep that plugin. The preset gives you `fontFamily.inter`, so set `font-inter` on `body` yourself.
 
 Next.js needs the package transpiled because the components ship as `.jsx`:
 
@@ -78,7 +78,7 @@ export default { transpilePackages: ["oneslash-design-system"] };
 
 Adjust the `@source` path to where your CSS file lives. For an OS-following app use `themes/default-auto.css` and `theme-auto.css`. `theme-auto.css` declares the `dark` variant for you, so `dark:` utilities fire under the OS dark setting. Do not add your own `@custom-variant dark` line on top of it.
 
-`typography.css` is the type scale (`text-h1`…`text-caption`, `font-inter`). Skip it if you own the scale. Delete your `@config` line and `tailwind.config.ts` if they only existed to build the tokens. `transpilePackages` is the same as in v3.
+`typography.css` is the type scale (`text-h1`…`text-caption`) and defines `--font-inter`, which gives you `font-inter`; set it on `body` (or use `next/font`). App-level plugins that apply Inter to `text-h*` stay. Skip it if you own the scale. Delete your `@config` line and `tailwind.config.ts` if they only existed to build the tokens. `transpilePackages` is the same as in v3.
 
 ### 5. Your old class names keep working
 
@@ -112,9 +112,7 @@ In plain CSS the variables are `--os-color-<group>-<key>`, `--os-radius-*`, `--o
 
 ### 6. Writing a theme
 
-Quick way: copy `node_modules/oneslash-design-system/dist/themes/default.css` into your app, change the channel values, and import your copy instead of the package's. Values are space-separated RGB channels (`238 174 3`).
-
-Better way, in this repo, so the derived keys and the contrast check come with it:
+Preferred, in this repo, so the derived keys and the contrast check come with it:
 
 1. Add your theme to `designTokens.themes` in `designTokens.js` (the full set of light and dark values; derived keys come from the helper).
 2. Run the generator and the contrast gate:
@@ -127,13 +125,19 @@ npm run build:tokens && npm run check:contrast
 
 `check:contrast` requires 4.5:1 for: `text.primary` on all backgrounds, `text.secondary` on `default` and `accent100`, each status `onFill` on `fill` and `text`/`textHover` on `default`, `accent.contrast`, and `primary.contrast`. The built-in `forest` theme is Scindo's palette with one adjustment: light `info.text` and `info.textHover` are `#0068A3` to reach 4.5:1.
 
+Quick way, inside one app: copy `node_modules/oneslash-design-system/dist/themes/default.css` into your app and change the channel values (space-separated RGB, e.g. `238 174 3`). The copy starts with `@import "../tokens.css";`, which does not resolve outside the package. Replace that line with `@import "oneslash-design-system/tokens.css";` (or import `tokens.css` separately), otherwise the radius, shadow, z-index, motion and spacing variables are missing. Then import your copy instead of the package's theme file.
+
 ### 7. Tooltip tokens
 
 Tooltip colors come from `misc.tooltipBg` (`bg-misc-tooltipBg`) and `misc.tooltipText` (`text-misc-tooltipText`), so a theme can set both. Defaults: `#4F4F4F` / `#EEEEEE` in light, `#FFFFFF` / `#000000` in dark. If you override the theme, set both.
 
 ### 8. `useDarkMode()`
 
-`useDarkMode()` now reports the effective mode: `.dark` on `<html>` gives dark, `.light` gives light, and with neither it follows the OS setting. Previously it read only the `.dark` class. The pure helper is exported as `resolveDarkMode(classList, prefersDark)`.
+`useDarkMode()` now reports the effective mode: `.dark` on `<html>` gives dark, `.light` gives light, and with neither it follows the OS setting. Previously it read only the `.dark` class. The pure helper is `resolveDarkMode(classList, prefersDark)`. Both are exported from the package root:
+
+```ts
+import { useDarkMode, resolveDarkMode } from 'oneslash-design-system';
+```
 
 ### Other notes
 
