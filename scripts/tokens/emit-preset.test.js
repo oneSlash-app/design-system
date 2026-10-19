@@ -6,10 +6,10 @@ const path = require('node:path');
 const { emitPreset } = require('./emit-preset');
 const tokens = require('../../designTokens.js');
 
-function load() {
+function load(opts) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'preset-'));
   const file = path.join(dir, 'preset.js');
-  fs.writeFileSync(file, emitPreset(tokens));
+  fs.writeFileSync(file, emitPreset(tokens, opts));
   try { return require(file); } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 }
 
@@ -47,4 +47,13 @@ test('preset maps non-color tokens and typography', () => {
   assert.equal(e.letterSpacing.h1, h1.letterSpacing);
   assert.equal(e.lineHeight.h1, h1.lineHeight);
   assert.equal(Object.keys(e.fontSize).length, 11);
+});
+
+test('auto preset uses a variant darkMode with an OS media query', () => {
+  const preset = load({ auto: true });
+  assert.equal(preset.darkMode[0], 'variant');
+  assert.equal(preset.darkMode[1].length, 2);
+  assert.ok(preset.darkMode[1][1].includes('prefers-color-scheme: dark'));
+  assert.ok(preset.darkMode[1][1].includes(':not(.light, .light *)'));
+  assert.equal(load().darkMode, 'class');
 });

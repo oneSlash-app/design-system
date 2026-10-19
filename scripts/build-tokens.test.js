@@ -10,7 +10,7 @@ test('build-tokens writes the expected files into an output dir', () => {
   execFileSync('node', ['scripts/build-tokens.js', '--out', out]);
   for (const f of ['themes/default.css', 'themes/default-auto.css', 'themes/forest.css',
                    'themes/forest-auto.css', 'tokens.css', 'theme.css', 'typography.css',
-                   'tailwind-preset.js']) {
+                   'tailwind-preset.js', 'theme-auto.css', 'tailwind-preset-auto.js']) {
     assert.ok(fs.existsSync(path.join(out, f)), f);
   }
 });

@@ -21,8 +21,10 @@
     "./themes/*": "./dist/themes/*",
     "./tokens.css": "./dist/tokens.css",
     "./theme.css": "./dist/theme.css",
+    "./theme-auto.css": "./dist/theme-auto.css",
     "./typography.css": "./dist/typography.css",
-    "./tailwind": "./dist/tailwind-preset.js"
+    "./tailwind": "./dist/tailwind-preset.js",
+    "./tailwind-auto": "./dist/tailwind-preset-auto.js"
   },
   "files": [
     "dist"

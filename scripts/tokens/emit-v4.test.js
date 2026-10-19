@@ -3,6 +3,16 @@ const assert = require('node:assert/strict');
 const { emitThemeV4, emitTypographyV4 } = require('./emit-v4');
 const tokens = require('../../designTokens.js');
 
+test('v4 theme.css dark variant: class only vs auto', () => {
+  const plain = emitThemeV4(tokens);
+  assert.ok(!plain.includes('prefers-color-scheme'));
+  assert.ok(plain.includes('@custom-variant dark (&:where(.dark, .dark *));'));
+  const auto = emitThemeV4(tokens, { auto: true });
+  assert.ok(auto.includes('@media (prefers-color-scheme: dark)'));
+  assert.ok(auto.includes(':not(.light, .light *)'));
+  assert.ok(auto.includes('@theme inline {'));
+});
+
 test('v4 theme.css', () => {
   const css = emitThemeV4(tokens);
   assert.match(css, /^\/\* Generated from designTokens\.js/);

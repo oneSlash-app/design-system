@@ -6,7 +6,12 @@ function styles(typography) {
   return Object.entries(typography).filter(([, t]) => t && t.size);
 }
 
-function emitPreset(tokens) {
+const DARK_MODE_NOTE = {
+  false: '/* dark: .dark class only; pair with themes/default.css or forest.css */',
+  true: '/* dark: .dark class, or the OS setting unless .light is set; pair with themes/*-auto.css */',
+};
+
+function emitPreset(tokens, { auto = false } = {}) {
   const colors = {};
   for (const [group, keys] of Object.entries(tokens.colors.light)) {
     for (const key of Object.keys(keys)) {
@@ -21,7 +26,9 @@ function emitPreset(tokens) {
   const pick = (field) => Object.fromEntries(type.map(([name, t]) => [name, t[field]]));
 
   const preset = {
-    darkMode: 'class',
+    darkMode: auto
+      ? ['variant', ['&:where(.dark, .dark *)', '@media (prefers-color-scheme: dark) { &:where(:not(.light, .light *)) }']]
+      : 'class',
     theme: {
       extend: {
         colors,
@@ -42,7 +49,7 @@ function emitPreset(tokens) {
       },
     },
   };
-  return `${HEADER}\nmodule.exports = ${JSON.stringify(preset, null, 2)};\n`;
+  return `${HEADER}\n${DARK_MODE_NOTE[auto]}\nmodule.exports = ${JSON.stringify(preset, null, 2)};\n`;
 }
 
 module.exports = { emitPreset };

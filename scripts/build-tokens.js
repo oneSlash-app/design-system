@@ -16,8 +16,10 @@ const emitters = {
   'themes/forest-auto.css': (t) => emitThemeCss('forest', t.themes.forest, { auto: true }),
   'tokens.css': (t) => emitTokensCss(t),
   'theme.css': (t) => emitThemeV4(t),
+  'theme-auto.css': (t) => emitThemeV4(t, { auto: true }),
   'typography.css': (t) => emitTypographyV4(t),
   'tailwind-preset.js': (t) => emitPreset(t),
+  'tailwind-preset-auto.js': (t) => emitPreset(t, { auto: true }),
 };
 
 function generate(tokens) {

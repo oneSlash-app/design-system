@@ -1,4 +1,5 @@
 /* Generated from designTokens.js by scripts/build-tokens.js. Do not edit. */
+/* dark: .dark class only; pair with themes/default.css or forest.css */
 module.exports = {
   "darkMode": "class",
   "theme": {
