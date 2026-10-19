@@ -3,7 +3,7 @@
 @import "../tokens.css";
 :root {
   --os-color-text-primary: 0 0 0;
-  --os-color-text-secondary: 109 109 109;
+  --os-color-text-secondary: 104 104 104;
   --os-color-text-disabled: 158 158 158;
   --os-color-text-contrast: 255 255 255;
   --os-color-accent-main: 238 174 3;
