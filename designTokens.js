@@ -27,7 +27,7 @@ const base = {
       },
       error:{
         main: '#D32F2F',
-        dark: '#B22323',
+        dark: '#A82121', // 4.62:1 on alertBg (#B22323 was 4.27)
         light: '#F27777',
         alertBg: '#F2C4C4',
         contrast: '#FFFFFF',
@@ -115,7 +115,7 @@ const base = {
         dark: '#B22323',
         light: '#F27777',
         alertBg: '#5C1A1A',
-        contrast: '#FFFFFF',
+        contrast: '#000000', // 5.5:1 on main (#FFFFFF was 3.79)
       },
       warning:{
         main: '#FF8C0A',
@@ -356,8 +356,8 @@ const forestDark = override(baseColors.dark, {
  */
 const withForestInfoText = (set) => ({ ...set, info: { ...set.info, text: '#0068A3', textHover: '#0068A3' } });
 
-// Forest's secondary.main (#6E7A5A) is mid-tone: its text.primary gives 3.5:1, so the label is the pale green
-// Scindo's hand-written theme used (3.8:1 light, 3.5:1 dark; report-only in check:contrast).
+// Forest's secondary.main (#6E7A5A) is mid-tone: its text.primary gives 3.5:1 and Scindo's cream 3.8:1, so the
+// label is white (4.56:1) in both modes.
 /**
  * @template {typeof base.colors.light} S
  * @param {S} set
@@ -380,8 +380,8 @@ const withTooltips = (light, dark) => ({
 
 const defaultSets = withTooltips(withSemanticKeys(baseColors.light, 'light'), withSemanticKeys(baseColors.dark, 'dark'));
 const forestSets = withTooltips(
-  withSecondaryContrast(withForestInfoText(withSemanticKeys(forestLight, 'light')), '#E7ECDA'),
-  withSecondaryContrast(withSemanticKeys(forestDark, 'dark'), '#D9E5C7'),
+  withSecondaryContrast(withForestInfoText(withSemanticKeys(forestLight, 'light')), '#FFFFFF'),
+  withSecondaryContrast(withSemanticKeys(forestDark, 'dark'), '#FFFFFF'),
 );
 
 module.exports = {

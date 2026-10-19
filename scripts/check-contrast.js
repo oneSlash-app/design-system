@@ -10,14 +10,10 @@ const TEXT_RULES = [
   { key: 'disabled', min: 3.0, gatedOn: [] },
 ];
 
-// Report-only per pair (theme/mode/pair, `theme` omitted = every theme). These fail in 1.x or in Scindo's palette;
-// fixing them changes visible colors, which is a separate decision from 2.0.
+// Report-only per pair (theme/mode/pair, `theme` omitted = every theme): shown for the record, never fail the build.
 const REPORT_ONLY = [
-  { theme: 'forest', pair: 'text.primary on secondary.main', reason: 'Scindo secondary is mid-tone (3.57/3.48)' },
-  { theme: 'forest', pair: 'secondary.contrast on secondary.main', reason: 'Scindo secondary button label, 3.79/3.48 in its hand-written theme' },
-  { mode: 'dark', pair: 'error.contrast on error.main', reason: 'danger primary label, 3.79 in 1.x' },
-  { mode: 'light', pair: 'error.text on error.alertBg', reason: 'danger secondary label, 4.27 in 1.x' },
-  { pair: 'error.main on background.default', reason: 'field error message, 3.79-4.06 in 1.x' },
+  { theme: 'forest', pair: 'text.primary on secondary.main', reason: 'Scindo secondary is mid-tone (3.57/3.48); components use secondary.contrast' },
+  { pair: 'error.main on background.default', reason: 'borders and dots only since 2.0.2; messages use error.text' },
 ];
 
 const isReportOnly = (theme, mode, pair) =>

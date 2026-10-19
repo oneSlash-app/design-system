@@ -123,7 +123,7 @@ npm run build:tokens && npm run check:contrast
 
 3. Commit `dist/`.
 
-`check:contrast` requires 4.5:1 for: `text.primary` on all backgrounds, `text.secondary` on `default` and `accent100`, each status `onFill` on `fill` and `text`/`textHover` on `default`, `accent.contrast`, `primary.contrast`, and `secondary.contrast` on `secondary.main`. The built-in `forest` theme is Scindo's palette with two adjustments: light `info.text` and `info.textHover` are `#0068A3` to reach 4.5:1, and `secondary.contrast` is the pale green Scindo used on its mid-tone secondary button (report-only, 3.8:1 light and 3.5:1 dark).
+`check:contrast` requires 4.5:1 for: `text.primary` on all backgrounds, `text.secondary` on `default` and `accent100`, each status `onFill` on `fill` and `text`/`textHover` on `default`, `error.contrast` on `error.main`, `error.text` on `error.alertBg`, `accent.contrast`, `primary.contrast`, and `secondary.contrast` on `secondary.main`. The built-in `forest` theme is Scindo's palette with two adjustments: light `info.text` and `info.textHover` are `#0068A3`, and `secondary.contrast` is white, both to reach 4.5:1.
 
 Quick way, inside one app: copy `node_modules/oneslash-design-system/dist/themes/default.css` into your app and change the channel values (space-separated RGB, e.g. `238 174 3`). The copy starts with `@import "../tokens.css";`, which does not resolve outside the package. Replace that line with `@import "oneslash-design-system/tokens.css";` (or import `tokens.css` separately; the same replacement applies to a copy of `default-auto.css`), otherwise the radius, shadow, z-index, motion and spacing variables are missing. Then import your copy instead of the package's theme file.
 

@@ -59,12 +59,12 @@ export default function TextField(_a) {
     };
     return (<div className="flex flex-col w-full">
       {label && (<label htmlFor={id} className="mb-1 text-body2 text-fg-secondary">
-          {label}{required && <span className="text-error-main ml-0.5">*</span>}
+          {label}{required && <span className="text-error-text ml-0.5">*</span>}
         </label>)}
       <div className="relative">
         {multiline ? (<textarea id={id} rows={maxRows} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} autoComplete="off" {...errorProps}/>) : (<input id={id} type={type} inputMode={getInputMode()} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} autoComplete="off" {...errorProps}/>)}
       </div>
-      {error && (<p id={errorId} className="mt-1 text-error-main text-body2">
+      {error && (<p id={errorId} className="mt-1 text-error-text text-body2">
           {errorText}
         </p>)}
     </div>);

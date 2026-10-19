@@ -118,7 +118,7 @@ export default function TextField({
     <div className="flex flex-col w-full">
       {label && (
         <label htmlFor={id} className="mb-1 text-body2 text-fg-secondary">
-          {label}{required && <span className="text-error-main ml-0.5">*</span>}
+          {label}{required && <span className="text-error-text ml-0.5">*</span>}
         </label>
       )}
       <div className="relative">
@@ -160,7 +160,7 @@ export default function TextField({
         )}
       </div>
       {error && (
-        <p id={errorId} className="mt-1 text-error-main text-body2">
+        <p id={errorId} className="mt-1 text-error-text text-body2">
           {errorText}
         </p>
       )}

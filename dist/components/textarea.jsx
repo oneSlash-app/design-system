@@ -67,7 +67,7 @@ export default function Textarea(_a) {
       <div className="relative">
         <textarea ref={textareaRef} id={id} rows={1} className={containerClasses} value={value} onChange={onChange} onInput={adjustHeight} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} onCompositionStart={onCompositionStart} onCompositionEnd={onCompositionEnd} autoFocus={autoFocus} disabled={disabled} autoComplete="off" aria-invalid={error || undefined} aria-describedby={error ? errorId : undefined}/>
       </div>
-      {error && (<p id={errorId} className="mt-1 text-error-main text-body2">
+      {error && (<p id={errorId} className="mt-1 text-error-text text-body2">
           {errorText}
         </p>)}
     </div>);

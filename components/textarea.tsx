@@ -147,7 +147,7 @@ export default function Textarea({
         />
       </div>
       {error && (
-        <p id={errorId} className="mt-1 text-error-main text-body2">
+        <p id={errorId} className="mt-1 text-error-text text-body2">
           {errorText}
         </p>
       )}

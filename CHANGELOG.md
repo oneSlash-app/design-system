@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.2] - 2026-10-18
+
+### Changed
+
+Four text pairs that `check:contrast` only reported now reach 4.5:1 and are gated. These change visible colors in the default theme:
+
+- Dark `error.contrast` is `#000000` (was `#FFFFFF`, 3.79:1 on `error.main`): the danger primary Button label is black in dark mode, matching `error.onFill`.
+- Light `error.dark` is `#A82121` (was `#B22323`, 4.27:1 on `error.alertBg`): the danger secondary Button label, error Links, text-only and contained error Tags, and light error fills are slightly darker.
+- TextField and Textarea error messages and the required asterisk use `text-error-text` instead of `text-error-main` (4.06 / 3.99:1 on the page background). Borders and focus outlines stay on `error-main`.
+- Forest `secondary.contrast` is `#FFFFFF` in both modes (4.56:1 on its olive secondary button; 2.0.1's cream was 3.79 / 3.48).
+
+`error.main on background.default` stays report-only: it only colors borders, dots and icons now.
+
 ## [2.0.1] - 2026-10-18
 
 ### Added
