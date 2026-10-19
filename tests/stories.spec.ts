@@ -1,3 +1,5 @@
+// Snapshots are macOS Chromium, 1024x768 @1x; regenerate on the same platform. Local gate, not run in CI.
+// Verify: npm run test:visual | Update: npm run test:visual:update (needs npm run build-storybook first).
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 import path from 'node:path';
