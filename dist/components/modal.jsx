@@ -70,7 +70,7 @@ export default function Modal(_a) {
     };
     if (!mounted)
         return null;
-    // dark-only edge: a ring only in dark mode, so it keeps a dark: variant
+    // dark-only edge: a ring only in dark mode, so it keeps a dark: variant (it follows whatever dark variant the app's preset/@theme defines, class-only or OS-aware)
     return (<div className={"fixed bg-misc-scrim/40 flex items-center justify-center z-[var(--os-z-overlay)]\n        transition-opacity duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none ".concat(visible ? 'opacity-100' : 'opacity-0')} style={{ top: 0, left: 0, right: 0, bottom: 0 }} onClick={handleOverlayClick}>
       <div ref={panelRef} role="dialog" aria-modal="true" aria-labelledby={title ? titleId : undefined} tabIndex={-1} className={"bg-background-elevated dark:ring-1 dark:ring-misc-divider rounded-control ".concat(modalWidth, " flex flex-col outline-none\n          ").concat(overlayTransition, " ").concat(visible ? overlayVisible : overlayHidden)} style={{
             maxWidth: maxWidth,
