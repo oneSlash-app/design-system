@@ -37,7 +37,9 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "test": "node --test scripts/",
-    "check:contrast": "node scripts/check-contrast.js"
+    "check:contrast": "node scripts/check-contrast.js",
+    "test:visual": "playwright test",
+    "test:visual:update": "playwright test --update-snapshots"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -49,6 +51,7 @@
     "react-dom": "^18 || ^19"
   },
   "devDependencies": {
+    "@playwright/test": "1.64.1",
     "@storybook/addon-essentials": "8.6",
     "@storybook/react-vite": "8.6",
     "@types/node": "20.16.10",
@@ -58,6 +61,7 @@
     "autoprefixer": "^10.4.20",
     "eslint": "^8",
     "eslint-config-next": "14.2.13",
+    "http-server": "14.1.1",
     "next": "14.2.13",
     "postcss": "^8",
     "postcss-cli": "^11.0.0",
