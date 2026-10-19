@@ -119,7 +119,24 @@ colors use `info.dark` in light and `info.main` in dark; status Tags use the
 `-dark` fill in light and `-main` in dark. Rather than keep `dark:` variants
 inside components (which would let a theme's variables and the utility
 disagree), 2.0 adds semantic tokens whose per-mode values reproduce the
-current rendering exactly. [Names pending the user's answer; see hand-over.]
+current rendering exactly.
+
+Each status group (`error`, `warning`, `info`, `success`) gains four keys:
+
+| key | light value | dark value | used by |
+|---|---|---|---|
+| `fill` | the group's `dark` | the group's `main` | contained Tag background and border |
+| `onFill` | `#FFFFFF` | `#000000` | text on that fill |
+| `text` | the group's `dark` | the group's `main` (`error`: its `light`) | text-only Tag, Link, danger Button label |
+| `textHover` | the group's `dark` | the group's `light` | Link hover and visited |
+
+And `background` gains `elevated`: light `background.default`, dark
+`background.accent100`; used by the Modal panel.
+
+The "value" column is how the default theme's numbers are derived; the
+generated theme files store the resolved colors, and forest sets its own
+(initially derived the same way from forest's status colors, which equal the
+default's). With these, the default theme has 124 color names per mode.
 
 Everything below is **generated from this file** by a build script. No
 hand-maintained CSS.
@@ -158,7 +175,7 @@ used by IconButton) work on both v3 and v4:
 :root {
   --os-color-text-primary: 0 0 0;
   --os-color-accent-main: 238 174 3;
-  …all 107 names…
+  …every color name…
 }
 .dark {
   --os-color-text-primary: 238 238 238;
