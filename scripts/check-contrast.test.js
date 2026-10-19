@@ -44,11 +44,12 @@ test('component pairs are reported with the right gated flags', () => {
       for (const s of ['error', 'warning', 'info', 'success']) {
         assert.equal(row(theme, mode, `text.primary on ${s}.alertBg`).gated, true);
       }
-      assert.equal(row(theme, mode, 'error.text on error.alertBg').gated, mode !== 'light');
-      assert.equal(row(theme, mode, 'error.contrast on error.main').gated, mode !== 'dark');
+      assert.equal(row(theme, mode, 'error.text on error.alertBg').gated, true);
+      assert.equal(row(theme, mode, 'error.contrast on error.main').gated, true);
+      assert.equal(row(theme, mode, 'error.text on background.default').gated, true);
       assert.equal(row(theme, mode, 'error.main on background.default').gated, false);
       assert.equal(row(theme, mode, 'text.primary on secondary.main').gated, theme !== 'forest');
-      assert.equal(row(theme, mode, 'secondary.contrast on secondary.main').gated, theme !== 'forest');
+      assert.equal(row(theme, mode, 'secondary.contrast on secondary.main').gated, true);
     }
   }
 });
