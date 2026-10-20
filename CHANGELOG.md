@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.4] - 2026-10-19
+
+### Fixed
+
+- Popover draws no panel of its own when its child is a `Menu`. The Menu already supplies the overlay surface, 4px inset and container corners; the popover's 8px padding and control corners around it made menus look inset twice (as in the Popover › With Menu story). Other popover content keeps the panel.
+
 ## [2.0.3] - 2026-10-19
 
 ### Added

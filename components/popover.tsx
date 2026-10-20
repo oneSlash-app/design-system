@@ -1,9 +1,10 @@
 'use client';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, isValidElement } from 'react';
 import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
 import { overlayHidden, overlayTransition, overlayVisible } from './sharedStyles';
 import { useOverlayTransition } from './useOverlayTransition';
+import Menu from './menu';
 
 interface PopoverProps {
   id?: string;
@@ -62,6 +63,13 @@ export default function Popover({
 
   if (!mounted || !hasMounted || !anchorEl) return null;
 
+  // A Menu brings its own surface (4px inset, container corners), so the
+  // popover adds none around it rather than doubling the padding and edges.
+  const isMenu = isValidElement(children) && children.type === Menu;
+  const panelClass = isMenu
+    ? ''
+    : 'bg-background-overlay dark:ring-1 dark:ring-misc-divider rounded-control shadow-overlay p-2';
+
   // Render popover in a portal to prevent layout shifts and positioning issues
   
   // dark-only edge: a ring only in dark mode, so it keeps a dark: variant (it follows whatever dark variant the app's preset/@theme defines, class-only or OS-aware)
@@ -76,7 +84,7 @@ export default function Popover({
     >
       {/* Popper owns the outer transform, so the fade and scale go on this inner panel */}
       <div
-        className={`bg-background-overlay dark:ring-1 dark:ring-misc-divider rounded-control shadow-overlay p-2 origin-top-left
+        className={`${panelClass} origin-top-left
           ${overlayTransition} ${visible ? overlayVisible : overlayHidden}`}
       >
         {children}
