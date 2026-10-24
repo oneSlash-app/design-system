@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.0.5] - 2026-10-24
+
+### Changed
+
+- TextField and Textarea focus outline is 1px (was 2px), the same weight as the field's border. The 2px offset stays.
+
 ## [2.0.4] - 2026-10-19
 
 ### Fixed

@@ -102,17 +102,17 @@ export default function Textarea({
     ? 'bg-transparent text-fg-disabled cursor-not-allowed'
     : 'bg-background-default text-fg-primary';
 
-  // Border: error > focus (2px offset outline, the same weight as Button) > hover > default
+  // Border: error > focus (1px offset outline, the same weight as the border) > hover > default
   const getBorderColor = () => {
     if (error) {
-      return 'border-error-main focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-error-main';
+      return 'border-error-main focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-error-main';
     }
     if (disabled) {
       return 'border-fg-disabled';
     }
     return `border-fg-disabled
       hover:border-fg-secondary
-      focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-fg-primary`;
+      focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-fg-primary`;
   };
 
   const containerClasses = `

@@ -48,15 +48,15 @@ export default function Textarea(_a) {
     var colorClasses = disabled
         ? 'bg-transparent text-fg-disabled cursor-not-allowed'
         : 'bg-background-default text-fg-primary';
-    // Border: error > focus (2px offset outline, the same weight as Button) > hover > default
+    // Border: error > focus (1px offset outline, the same weight as the border) > hover > default
     var getBorderColor = function () {
         if (error) {
-            return 'border-error-main focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-error-main';
+            return 'border-error-main focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-error-main';
         }
         if (disabled) {
             return 'border-fg-disabled';
         }
-        return "border-fg-disabled\n      hover:border-fg-secondary\n      focus:outline focus:outline-2 focus:outline-offset-2 focus:outline-fg-primary";
+        return "border-fg-disabled\n      hover:border-fg-secondary\n      focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-fg-primary";
     };
     var containerClasses = "\n    ".concat(colorClasses, "\n    ").concat(baseClasses, "\n    ").concat(sizeClasses, "\n    ").concat(getBorderColor(), "\n  ");
     var errorId = "".concat(id, "-error");
