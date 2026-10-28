@@ -6,8 +6,11 @@ import "../index.css";
 import "../dist/tokens.css";
 import defaultCss from "../dist/themes/default.css?inline";
 import forestCss from "../dist/themes/forest.css?inline";
+import clayCss from "../dist/themes/clay.css?inline";
+import indigoCss from "../dist/themes/indigo.css?inline";
+import wineCss from "../dist/themes/wine.css?inline";
 
-const themeCss: Record<string, string> = { default: defaultCss, forest: forestCss };
+const themeCss: Record<string, string> = { default: defaultCss, forest: forestCss, clay: clayCss, indigo: indigoCss, wine: wineCss };
 
 // The theme file begins with an @import of tokens.css, which is loaded above
 // and would 404 relative to the page if left in the injected style.
@@ -87,6 +90,9 @@ const preview: Preview = {
         items: [
           { value: "default", title: "Default" },
           { value: "forest", title: "Forest" },
+          { value: "clay", title: "Clay" },
+          { value: "indigo", title: "Indigo" },
+          { value: "wine", title: "Wine" },
         ],
         dynamicTitle: true,
       },

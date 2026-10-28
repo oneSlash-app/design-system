@@ -10,6 +10,7 @@ The package ships Tailwind class names, CSS variables and untranspiled `.jsx`. E
    - light/dark toggle that sets `.dark` on `<html>`: `oneslash-design-system/themes/default.css`
    - follows the OS: `oneslash-design-system/themes/default-auto.css` (`.light` opts out of OS dark)
    - Scindo: `themes/forest.css` / `themes/forest-auto.css`
+   - other brand themes: `themes/clay.css`, `themes/indigo.css`, `themes/wine.css` (each with an `-auto` version)
 2. **Tailwind v3:** `presets: [require("oneslash-design-system/tailwind")]` (toggle) or `oneslash-design-system/tailwind-auto` (OS). Without the preset the components render unstyled.
 3. **Tailwind v4:** import `oneslash-design-system/theme.css` (toggle) or `theme-auto.css` (OS), plus `typography.css` if you want the type scale.
 4. **Next.js:** `transpilePackages: ["oneslash-design-system"]` in `next.config`.

@@ -348,7 +348,54 @@ const forestDark = override(baseColors.dark, {
   background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
 });
 
-// The derived light info.text (#006BAB) is 4.33:1 on forest's background; #0068A3 is the lightest step that reaches 4.5.
+// Clay, Indigo and Wine follow default's shape (tinted secondary per mode, so secondary buttons keep the
+// text.primary label) with the brand hue in text, accent, secondary and background.
+const clayLight = override(baseColors.light, {
+  text: { primary: '#2B1F12', secondary: '#6B5640', disabled: '#A8957C' },
+  accent: { main: '#D9B26A', dark: '#B8904A', light: '#F2D57E', contrast: '#2B1F12' },
+  secondary: { main: '#CDB49A', dark: '#B89A7C', light: '#E2D1BE' },
+  background: { default: '#EDE0CC', accent100: '#F2E8D9', accent200: '#F7F0E6', accent300: '#FCF8F2' },
+});
+
+const clayDark = override(baseColors.dark, {
+  text: { primary: '#F2E2CE', secondary: '#C2AD93', disabled: '#7A6A57' },
+  accent: { main: '#F2D57E', dark: '#D9B26A', light: '#F7E4A8', contrast: '#2B1F12' },
+  secondary: { main: '#5C4630', dark: '#4D3A27', light: '#75593D' },
+  background: { default: '#2A2119', accent100: '#362A1F', accent200: '#45362A', accent300: '#514034' },
+});
+
+const indigoLight = override(baseColors.light, {
+  text: { primary: '#111A2E', secondary: '#4A5670', disabled: '#8F99AD' },
+  accent: { main: '#204F8C', dark: '#162D59', light: '#548DBF', contrast: '#FFFFFF' },
+  secondary: { main: '#B4C6DC', dark: '#8EA6C4', light: '#CFDCEA' },
+  background: { default: '#DDE6F0', accent100: '#E6EDF5', accent200: '#EEF3F9', accent300: '#F7F9FC' },
+});
+
+const indigoDark = override(baseColors.dark, {
+  text: { primary: '#E3ECF5', secondary: '#A3B2C8', disabled: '#637089' },
+  accent: { main: '#C2E0F2', dark: '#9FC6E3', light: '#DCEEF8', contrast: '#162D59' },
+  secondary: { main: '#344566', dark: '#2B3A57', light: '#44587F' },
+  background: { default: '#141C2E', accent100: '#1C263B', accent200: '#29354D', accent300: '#33405A' },
+});
+
+const wineLight = override(baseColors.light, {
+  text: { primary: '#2A1622', secondary: '#6A4A5C', disabled: '#A68B99' },
+  accent: { main: '#8C2668', dark: '#6E1D52', light: '#A66086', contrast: '#F2EDE4' },
+  secondary: { main: '#D5BCC8', dark: '#BF93A8', light: '#E6D4DC' },
+  background: { default: '#EEE4E4', accent100: '#F3EBEA', accent200: '#F7F2F0', accent300: '#FCF9F7' },
+});
+
+const wineDark = override(baseColors.dark, {
+  text: { primary: '#F2EDE4', secondary: '#C2AAB6', disabled: '#7D6672' },
+  accent: { main: '#E2B4CC', dark: '#BF93A8', light: '#F0D2E1', contrast: '#2C1A26' },
+  secondary: { main: '#4E3346', dark: '#43293C', light: '#634257' },
+  background: { default: '#2A1F28', accent100: '#352833', accent200: '#453541', accent300: '#51404D' },
+});
+
+/** @param {typeof base.colors.light} light @param {typeof base.colors.light} dark */
+const themeSets = (light, dark) => withTooltips(withSemanticKeys(light, 'light'), withSemanticKeys(dark, 'dark'));
+
+// The derived light info.text (#006BAB) is 4.33:1 on forest's background (4.37 on clay's); #0068A3 is the lightest step that reaches 4.5.
 /**
  * @template {typeof base.colors.light} S
  * @param {S} set
@@ -387,5 +434,10 @@ const forestSets = withTooltips(
 module.exports = {
   ...base,
   colors: defaultSets,
-  themes: { forest: forestSets },
+  themes: {
+    forest: forestSets,
+    clay: withTooltips(withForestInfoText(withSemanticKeys(clayLight, 'light')), withSemanticKeys(clayDark, 'dark')),
+    indigo: themeSets(indigoLight, indigoDark),
+    wine: themeSets(wineLight, wineDark),
+  },
 };

@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const tokens = require('../designTokens.js');
 const { checkContrast } = require('./check-contrast.js');
 
-test('default and forest pass', () => {
+test('every theme passes', () => {
   assert.deepEqual(checkContrast(tokens).failures, []);
 });
 
@@ -39,7 +39,7 @@ test('gated text.secondary on background.default fails', () => {
 test('component pairs are reported with the right gated flags', () => {
   const { report } = checkContrast(tokens);
   const row = (theme, mode, pair) => report.find((r) => r.theme === theme && r.mode === mode && r.pair === pair);
-  for (const theme of ['default', 'forest']) {
+  for (const theme of ['default', 'forest', 'clay', 'indigo', 'wine']) {
     for (const mode of ['light', 'dark']) {
       for (const s of ['error', 'warning', 'info', 'success']) {
         assert.equal(row(theme, mode, `text.primary on ${s}.alertBg`).gated, true);
