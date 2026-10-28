@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.1.0] - 2026-10-28
+
+### Added
+
+- Three brand themes: `themes/clay.css` (ochre and brown), `themes/indigo.css` (navy and sky blue) and `themes/wine.css` (plum and cream), each with an `-auto` file. Like forest, each changes only `text`, `accent`, `secondary` and `background` from default, in light and dark, and passes the contrast check. Unlike forest, secondary is a light tint in light mode and a dark tint in dark mode, as in default, so secondary buttons keep the `text.primary` label. Clay's light `info.text` is `#0068A3` (as in forest) to reach 4.5:1.
+- Storybook's Brand toolbar lists the new themes.
+
 ## [2.0.5] - 2026-10-24
 
 ### Changed

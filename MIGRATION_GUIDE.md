@@ -26,6 +26,7 @@ npm install oneslash-design-system@^2.0.0
 | Follows the OS setting | `themes/default-auto.css` | `theme-auto.css` | `oneslash-design-system/tailwind-auto` |
 | Scindo, toggle | `themes/forest.css` | `theme.css` | `tailwind` |
 | Scindo, follows the OS | `themes/forest-auto.css` | `theme-auto.css` | `tailwind-auto` |
+| Clay, Indigo or Wine brand | `themes/clay.css`, `themes/indigo.css`, `themes/wine.css` (or their `-auto` files) | `theme.css` / `theme-auto.css` | `tailwind` / `tailwind-auto` |
 
 Pair them as shown. Each theme file imports `../tokens.css` (radius, shadow, z-index, motion, spacing), so you import only the theme file.
 
@@ -135,7 +136,7 @@ npm run build:tokens && npm run check:contrast
 
 3. Commit `dist/`.
 
-`check:contrast` requires 4.5:1 for: `text.primary` on all backgrounds, `text.secondary` on `default` and `accent100`, each status `onFill` on `fill` and `text`/`textHover` on `default`, `error.contrast` on `error.main`, `error.text` on `error.alertBg`, `accent.contrast`, `primary.contrast`, and `secondary.contrast` on `secondary.main`. The built-in `forest` theme is Scindo's palette with two adjustments: light `info.text` and `info.textHover` are `#0068A3`, and `secondary.contrast` is white, both to reach 4.5:1.
+`check:contrast` requires 4.5:1 for: `text.primary` on all backgrounds, `text.secondary` on `default` and `accent100`, each status `onFill` on `fill` and `text`/`textHover` on `default`, `error.contrast` on `error.main`, `error.text` on `error.alertBg`, `accent.contrast`, `primary.contrast`, and `secondary.contrast` on `secondary.main`. The built-in `forest` theme is Scindo's palette with two adjustments: light `info.text` and `info.textHover` are `#0068A3`, and `secondary.contrast` is white, both to reach 4.5:1. `clay`, `indigo` and `wine` change only `text`, `accent`, `secondary` and `background` from default; clay's light `info.text` is `#0068A3` for the same reason.
 
 Quick way, inside one app: copy `node_modules/oneslash-design-system/dist/themes/default.css` into your app and change the channel values (space-separated RGB, e.g. `238 174 3`). The copy starts with `@import "../tokens.css";`, which does not resolve outside the package. Replace that line with `@import "oneslash-design-system/tokens.css";` (or import `tokens.css` separately; the same replacement applies to a copy of `default-auto.css`), otherwise the radius, shadow, z-index, motion and spacing variables are missing. Then import your copy instead of the package's theme file.
 

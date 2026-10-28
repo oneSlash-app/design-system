@@ -613,6 +613,924 @@ declare const forestSets: {
 export { defaultSets as colors };
 export declare namespace themes {
     export { forestSets as forest };
+    export let clay: {
+        light: {
+            text: {
+                primary: string;
+                secondary: string;
+                disabled: string;
+                contrast: string;
+            };
+            accent: {
+                main: string;
+                dark: string;
+                light: string;
+                contrast: string;
+            };
+            primary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            error: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            background: {
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            action: {
+                active: string;
+                hover: string;
+                selected: string;
+                disabledBackground: string;
+                disabled: string;
+            };
+            actionBackground: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            actionOutlinedBorder: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            misc: {
+                divider: string;
+                scrim: string;
+                tooltipBg: string;
+                tooltipText: string;
+            };
+        } & {
+            primary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            background: {
+                elevated: string;
+                overlay: string;
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            error: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+        };
+        dark: {
+            text: {
+                primary: string;
+                secondary: string;
+                disabled: string;
+                contrast: string;
+            };
+            accent: {
+                main: string;
+                dark: string;
+                light: string;
+                contrast: string;
+            };
+            primary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            error: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            background: {
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            action: {
+                active: string;
+                hover: string;
+                selected: string;
+                disabledBackground: string;
+                disabled: string;
+            };
+            actionBackground: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            actionOutlinedBorder: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            misc: {
+                divider: string;
+                scrim: string;
+                tooltipBg: string;
+                tooltipText: string;
+            };
+        } & {
+            primary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            background: {
+                elevated: string;
+                overlay: string;
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            error: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+        };
+    };
+    export let indigo: {
+        light: {
+            text: {
+                primary: string;
+                secondary: string;
+                disabled: string;
+                contrast: string;
+            };
+            accent: {
+                main: string;
+                dark: string;
+                light: string;
+                contrast: string;
+            };
+            primary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            error: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            background: {
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            action: {
+                active: string;
+                hover: string;
+                selected: string;
+                disabledBackground: string;
+                disabled: string;
+            };
+            actionBackground: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            actionOutlinedBorder: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            misc: {
+                divider: string;
+                scrim: string;
+                tooltipBg: string;
+                tooltipText: string;
+            };
+        } & {
+            primary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            background: {
+                elevated: string;
+                overlay: string;
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            error: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+        };
+        dark: {
+            text: {
+                primary: string;
+                secondary: string;
+                disabled: string;
+                contrast: string;
+            };
+            accent: {
+                main: string;
+                dark: string;
+                light: string;
+                contrast: string;
+            };
+            primary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            error: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            background: {
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            action: {
+                active: string;
+                hover: string;
+                selected: string;
+                disabledBackground: string;
+                disabled: string;
+            };
+            actionBackground: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            actionOutlinedBorder: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            misc: {
+                divider: string;
+                scrim: string;
+                tooltipBg: string;
+                tooltipText: string;
+            };
+        } & {
+            primary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            background: {
+                elevated: string;
+                overlay: string;
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            error: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+        };
+    };
+    export let wine: {
+        light: {
+            text: {
+                primary: string;
+                secondary: string;
+                disabled: string;
+                contrast: string;
+            };
+            accent: {
+                main: string;
+                dark: string;
+                light: string;
+                contrast: string;
+            };
+            primary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            error: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            background: {
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            action: {
+                active: string;
+                hover: string;
+                selected: string;
+                disabledBackground: string;
+                disabled: string;
+            };
+            actionBackground: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            actionOutlinedBorder: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            misc: {
+                divider: string;
+                scrim: string;
+                tooltipBg: string;
+                tooltipText: string;
+            };
+        } & {
+            primary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            background: {
+                elevated: string;
+                overlay: string;
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            error: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+        };
+        dark: {
+            text: {
+                primary: string;
+                secondary: string;
+                disabled: string;
+                contrast: string;
+            };
+            accent: {
+                main: string;
+                dark: string;
+                light: string;
+                contrast: string;
+            };
+            primary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                main: string;
+                dark: string;
+                light: string;
+            };
+            error: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            background: {
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            action: {
+                active: string;
+                hover: string;
+                selected: string;
+                disabledBackground: string;
+                disabled: string;
+            };
+            actionBackground: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            actionOutlinedBorder: {
+                enabled: string;
+                hovered: string;
+                selected: string;
+                disabled: string;
+            };
+            misc: {
+                divider: string;
+                scrim: string;
+                tooltipBg: string;
+                tooltipText: string;
+            };
+        } & {
+            primary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            secondary: {
+                contrast: string;
+                main: string;
+                dark: string;
+                light: string;
+            };
+            background: {
+                elevated: string;
+                overlay: string;
+                default: string;
+                accent100: string;
+                accent200: string;
+                accent300: string;
+            };
+            error: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            warning: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            info: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+            success: {
+                fill: string;
+                onFill: string;
+                text: string;
+                textHover: string;
+                tint: string;
+                main: string;
+                dark: string;
+                light: string;
+                alertBg: string;
+                contrast: string;
+            };
+        };
+    };
 }
 export declare namespace spacing {
     let small: string;
