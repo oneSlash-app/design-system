@@ -42,7 +42,7 @@ function emitPreset(tokens, { auto = false } = {}) {
             [t.size, { lineHeight: t.lineHeight, letterSpacing: t.letterSpacing, fontWeight: t.weight }],
           ]),
         ),
-        fontFamily: { inter: tokens.typography.family },
+        fontFamily: { inter: tokens.typography.family, mono: tokens.typography.monoFamily },
         fontWeight: pick('weight'),
         letterSpacing: pick('letterSpacing'),
         lineHeight: pick('lineHeight'),

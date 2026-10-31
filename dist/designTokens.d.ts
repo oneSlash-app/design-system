@@ -1539,6 +1539,7 @@ export declare namespace spacing {
 }
 export declare namespace typography {
     let family: string;
+    let monoFamily: string;
     namespace h1 {
         let weight: string;
         let size: string;

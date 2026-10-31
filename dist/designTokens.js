@@ -189,6 +189,7 @@ var base = {
     },
     typography: {
         family: 'Inter, sans-serif',
+        monoFamily: "'JetBrains Mono', ui-monospace, monospace",
         h1: {
             weight: '400',
             size: '96px',

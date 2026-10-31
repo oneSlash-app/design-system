@@ -34,9 +34,9 @@ function emitThemeV4(tokens, { auto = false } = {}) {
 }
 
 function emitTypographyV4(tokens) {
-  const lines = [`  --font-inter: ${tokens.typography.family};`];
+  const lines = [`  --font-inter: ${tokens.typography.family};`, `  --font-mono: ${tokens.typography.monoFamily};`];
   for (const [name, t] of Object.entries(tokens.typography)) {
-    if (!t || !t.size) continue; // skips family and alignments
+    if (!t || !t.size) continue; // skips family, monoFamily and alignments
     lines.push(
       `  --text-${name}: ${t.size};`,
       `  --text-${name}--line-height: ${t.lineHeight};`,

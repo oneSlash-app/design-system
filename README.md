@@ -15,6 +15,13 @@ The package ships Tailwind class names, CSS variables and untranspiled `.jsx`. E
 3. **Tailwind v4:** import `oneslash-design-system/theme.css` (toggle) or `theme-auto.css` (OS), plus `typography.css` if you want the type scale.
 4. **Next.js:** `transpilePackages: ["oneslash-design-system"]` in `next.config`.
 5. **Scan the components:** v3 `content` gets `./node_modules/oneslash-design-system/dist/**/*.{js,jsx}`; v4 CSS gets `@source "../node_modules/oneslash-design-system/dist/**/*.jsx";`.
+6. **Load the fonts:** the package names Inter (`font-inter`) and JetBrains Mono (`font-mono`, for code, identifiers and type names) but does not ship them. Load both under their real family names, for example with one Google Fonts link in `<head>`:
+
+```html
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=JetBrains+Mono:wght@400&display=swap">
+```
+
+   `next/font/google` registers a hashed family name instead, so with it apply `mono.className` to the code element rather than relying on `font-mono`.
 
 ```css
 /* Tailwind v4, OS-driven dark mode */

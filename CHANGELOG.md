@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.2.0] - 2026-10-31
+
+### Added
+
+- Monospace type for code, identifiers and type names: `typography.monoFamily` is `'JetBrains Mono', ui-monospace, monospace`. The Tailwind preset registers it as `fontFamily.mono` and `typography.css` defines `--font-mono`, so `font-mono` renders JetBrains Mono in both Tailwind v3 and v4 once the app loads the font (`next/font/google` or Google Fonts), the same way it loads Inter. JetBrains Mono was chosen because its x-height (0.550) and cap height (0.730) match Inter's (0.546 / 0.728) within half a percent, so inline code sits on Inter's line without a size tweak; IBM Plex Mono, Roboto Mono, Geist Mono and Fira Code all sit 3–6% shorter.
+
 ## [2.1.0] - 2026-10-28
 
 ### Added

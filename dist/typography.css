@@ -1,6 +1,7 @@
 /* Generated from designTokens.js by scripts/build-tokens.js. Do not edit. */
 @theme inline {
   --font-inter: Inter, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
   --text-h1: 96px;
   --text-h1--line-height: 115px;
   --text-h1--letter-spacing: -1.5px;
