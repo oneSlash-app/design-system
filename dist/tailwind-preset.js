@@ -350,11 +350,19 @@ module.exports = {
             "letterSpacing": "0.5px",
             "fontWeight": "400"
           }
+        ],
+        "code": [
+          "14px",
+          {
+            "lineHeight": "21px",
+            "letterSpacing": "0px",
+            "fontWeight": "300"
+          }
         ]
       },
       "fontFamily": {
         "inter": "Inter, sans-serif",
-        "mono": "'JetBrains Mono', ui-monospace, monospace"
+        "mono": "'Fira Code', ui-monospace, monospace"
       },
       "fontWeight": {
         "h1": "400",
@@ -367,7 +375,8 @@ module.exports = {
         "subtitle2": "400",
         "body1": "400",
         "body2": "400",
-        "caption": "400"
+        "caption": "400",
+        "code": "300"
       },
       "letterSpacing": {
         "h1": "-1.5px",
@@ -380,7 +389,8 @@ module.exports = {
         "subtitle2": "0.1px",
         "body1": "0.2px",
         "body2": "0.2px",
-        "caption": "0.5px"
+        "caption": "0.5px",
+        "code": "0px"
       },
       "lineHeight": {
         "h1": "115px",
@@ -393,7 +403,8 @@ module.exports = {
         "subtitle2": "21px",
         "body1": "24px",
         "body2": "21px",
-        "caption": "18px"
+        "caption": "18px",
+        "code": "21px"
       }
     }
   }

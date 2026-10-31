@@ -1,7 +1,7 @@
 /* Generated from designTokens.js by scripts/build-tokens.js. Do not edit. */
 @theme inline {
   --font-inter: Inter, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: 'Fira Code', ui-monospace, monospace;
   --text-h1: 96px;
   --text-h1--line-height: 115px;
   --text-h1--letter-spacing: -1.5px;
@@ -79,4 +79,11 @@
   --font-weight-caption: 400;
   --leading-caption: 18px;
   --tracking-caption: 0.5px;
+  --text-code: 14px;
+  --text-code--line-height: 21px;
+  --text-code--letter-spacing: 0px;
+  --text-code--font-weight: 300;
+  --font-weight-code: 300;
+  --leading-code: 21px;
+  --tracking-code: 0px;
 }
