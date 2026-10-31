@@ -57,7 +57,7 @@ export default config;
 
 The preset sets `darkMode` for you (`class` for `tailwind`, `class` plus the OS media query for `tailwind-auto`), so remove your own `darkMode` setting if it differs. Delete `theme.extend.colors`, `spacing`, `fontSize`, `fontFamily` and `textAlign` that you built from `oneslash-design-system/tokens`; the preset provides them. Keep colors that only your app uses.
 
-The preset only registers `fontFamily.inter`. If you applied Inter to `.text-h1`…`.text-caption` with your own Tailwind plugin, keep that plugin. The preset gives you `fontFamily.inter`, so set `font-inter` on `body` yourself.
+The preset registers `fontFamily.inter` and `fontFamily.mono` (JetBrains Mono, since 2.2.0). If you applied Inter to `.text-h1`…`.text-caption` with your own Tailwind plugin, keep that plugin. The preset gives you `fontFamily.inter`, so set `font-inter` on `body` yourself.
 
 Next.js needs the package transpiled because the components ship as `.jsx`:
 
@@ -79,7 +79,7 @@ export default { transpilePackages: ["oneslash-design-system"] };
 
 Adjust the `@source` path to where your CSS file lives. For an OS-following app use `themes/default-auto.css` and `theme-auto.css`. `theme-auto.css` declares the `dark` variant for you, so `dark:` utilities fire under the OS dark setting. Do not add your own `@custom-variant dark` line on top of it.
 
-`typography.css` is the type scale (`text-h1`…`text-caption`) and defines `--font-inter`, which gives you `font-inter`; set it on `body` (or use `next/font`). App-level plugins that apply Inter to `text-h*` stay. Skip it if you own the scale. Delete your `@config` line and `tailwind.config.ts` if they only existed to build the tokens. `transpilePackages` is the same as in v3.
+`typography.css` is the type scale (`text-h1`…`text-caption`) and defines `--font-inter` and `--font-mono`, which give you `font-inter` and `font-mono` (JetBrains Mono, since 2.2.0); set `font-inter` on `body` (or use `next/font`). App-level plugins that apply Inter to `text-h*` stay. Skip it if you own the scale. Delete your `@config` line and `tailwind.config.ts` if they only existed to build the tokens. `transpilePackages` is the same as in v3.
 
 ### 5. Your old class names keep working
 

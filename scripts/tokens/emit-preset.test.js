@@ -42,6 +42,7 @@ test('preset maps non-color tokens and typography', () => {
   assert.equal(e.spacing.large, 'var(--os-spacing-large)');
   assert.deepEqual(e.fontSize.h5, ['24px', { lineHeight: '29px', letterSpacing: '0px', fontWeight: '400' }]);
   assert.deepEqual(e.fontFamily.inter, tokens.typography.family);
+  assert.deepEqual(e.fontFamily.mono, tokens.typography.monoFamily);
   const h1 = tokens.typography.h1;
   assert.equal(e.fontWeight.h1, h1.weight);
   assert.equal(e.letterSpacing.h1, h1.letterSpacing);

@@ -353,7 +353,8 @@ module.exports = {
         ]
       },
       "fontFamily": {
-        "inter": "Inter, sans-serif"
+        "inter": "Inter, sans-serif",
+        "mono": "'JetBrains Mono', ui-monospace, monospace"
       },
       "fontWeight": {
         "h1": "400",
