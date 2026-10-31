@@ -34,7 +34,7 @@ test('v4 typography.css matches designTokens.typography', () => {
   const css = emitTypographyV4(tokens);
   assert.ok(css.includes(`--font-inter: ${tokens.typography.family};`));
   assert.ok(css.includes(`--font-mono: ${tokens.typography.monoFamily};`));
-  for (const s of ['h1','h2','h3','h4','h5','h6','subtitle1','subtitle2','body1','body2','caption']) {
+  for (const s of ['h1','h2','h3','h4','h5','h6','subtitle1','subtitle2','body1','body2','caption','code']) {
     const t = tokens.typography[s];
     assert.ok(css.includes(`--text-${s}: ${t.size};`), s);
     assert.ok(css.includes(`--text-${s}--line-height: ${t.lineHeight};`), s);
@@ -50,5 +50,5 @@ test('v4 typography.css emits only real text styles', () => {
   const css = emitTypographyV4(tokens);
   assert.ok(!css.includes('undefined'));
   assert.ok(!css.includes('alignments'));
-  assert.equal(css.match(/^ {2}--text-\w+: /gm).length, 11);
+  assert.equal(css.match(/^ {2}--text-\w+: /gm).length, 12);
 });

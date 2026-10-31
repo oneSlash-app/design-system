@@ -47,7 +47,8 @@ test('preset maps non-color tokens and typography', () => {
   assert.equal(e.fontWeight.h1, h1.weight);
   assert.equal(e.letterSpacing.h1, h1.letterSpacing);
   assert.equal(e.lineHeight.h1, h1.lineHeight);
-  assert.equal(Object.keys(e.fontSize).length, 11);
+  assert.equal(Object.keys(e.fontSize).length, 12);
+  assert.deepEqual(e.fontSize.code, ['14px', { lineHeight: '21px', letterSpacing: '0px', fontWeight: '300' }]);
 });
 
 test('auto preset uses a variant darkMode with an OS media query', () => {

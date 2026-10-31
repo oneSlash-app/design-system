@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.3.0] - 2026-10-31
+
+### Changed
+
+- The monospace family is Fira Code (was JetBrains Mono in 2.2.0): `typography.monoFamily` is `'Fira Code', ui-monospace, monospace`, so `font-mono` renders Fira Code once the app loads it. Fira Code's ligatures give code a more distinctive look; it sits about 4% shorter than Inter.
+
+### Added
+
+- `code` text style (`text-code`): 14px / 21px, weight 300, 0 tracking. Fira Code's regular weight reads dark next to Inter, so code uses the Light weight; tracking stays at 0 because any letter-spacing turns Fira Code's ligatures off. Use `text-code font-mono` on code, identifiers and type names, and load Fira Code at weights 300 and 400.
+
 ## [2.2.0] - 2026-10-31
 
 ### Added

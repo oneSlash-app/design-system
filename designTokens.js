@@ -180,7 +180,7 @@ const base = {
   
   typography: {
     family: 'Inter, sans-serif',
-    monoFamily: "'JetBrains Mono', ui-monospace, monospace",
+    monoFamily: "'Fira Code', ui-monospace, monospace",
     h1: {
       weight: '400',
       size: '96px',
@@ -246,6 +246,15 @@ const base = {
       size: '12px',
       lineHeight: '18px',
       letterSpacing: '0.5px',
+    },
+    // Code, identifiers and type names; pair with font-mono. Light weight
+    // because Fira Code's regular is dark next to Inter; 0 tracking because
+    // letter-spacing disables its ligatures.
+    code: {
+      weight: '300',
+      size: '14px',
+      lineHeight: '21px',
+      letterSpacing: '0px',
     },
     alignments: {
       left: 'left',

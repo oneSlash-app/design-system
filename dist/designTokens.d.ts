@@ -1646,6 +1646,16 @@ export declare namespace typography {
         let letterSpacing_10: string;
         export { letterSpacing_10 as letterSpacing };
     }
+    namespace code {
+        let weight_11: string;
+        export { weight_11 as weight };
+        let size_11: string;
+        export { size_11 as size };
+        let lineHeight_11: string;
+        export { lineHeight_11 as lineHeight };
+        let letterSpacing_11: string;
+        export { letterSpacing_11 as letterSpacing };
+    }
     namespace alignments {
         let left: string;
         let center: string;
