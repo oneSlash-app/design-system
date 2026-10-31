@@ -21,7 +21,7 @@ The package ships Tailwind class names, CSS variables and untranspiled `.jsx`. E
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Fira+Code:wght@300;400&display=swap">
 ```
 
-   `next/font/google` registers a hashed family name instead, so with it apply `mono.className` to the code element rather than relying on `font-mono`.
+   Don't load Fira Code with `next/font/google`: it registers a generated family name, so `font-mono` would not find it. If your Content Security Policy blocks Google Fonts, self-host it with `@fontsource/fira-code` (import `latin-300.css` and `latin-400.css` in the root layout), which keeps the real family name.
 
 ```css
 /* Tailwind v4, OS-driven dark mode */
