@@ -1,6 +1,6 @@
 # oneslash-design-system: page patterns and page tokens
 
-Status: draft for discussion, 2026-11-08. Nothing here is built.
+Status: built in 2.4.0 on the `page-patterns` branch, 2026-11-08, not merged or published. Left out: `PageNav` and the anchored `Heading` (both carry app logic), and the `Link` card variant (`LinkCard` is the answer). Added beyond the list: `Paragraph`, `Heading`, `List`, `PageShell`, `PageHeader` and the layout helpers, which a page needs to avoid markup of its own.
 
 ## Intent
 
