@@ -97,6 +97,8 @@ declare const defaultSets: {
         background: {
             elevated: string;
             overlay: string;
+            panel: string;
+            paper: string;
             default: string;
             accent100: string;
             accent200: string;
@@ -249,6 +251,8 @@ declare const defaultSets: {
         background: {
             elevated: string;
             overlay: string;
+            panel: string;
+            paper: string;
             default: string;
             accent100: string;
             accent200: string;
@@ -403,6 +407,8 @@ declare const forestSets: {
         background: {
             elevated: string;
             overlay: string;
+            panel: string;
+            paper: string;
             default: string;
             accent100: string;
             accent200: string;
@@ -555,6 +561,8 @@ declare const forestSets: {
         background: {
             elevated: string;
             overlay: string;
+            panel: string;
+            paper: string;
             default: string;
             accent100: string;
             accent200: string;
@@ -712,6 +720,8 @@ export declare namespace themes {
             background: {
                 elevated: string;
                 overlay: string;
+                panel: string;
+                paper: string;
                 default: string;
                 accent100: string;
                 accent200: string;
@@ -864,6 +874,8 @@ export declare namespace themes {
             background: {
                 elevated: string;
                 overlay: string;
+                panel: string;
+                paper: string;
                 default: string;
                 accent100: string;
                 accent200: string;
@@ -1018,6 +1030,8 @@ export declare namespace themes {
             background: {
                 elevated: string;
                 overlay: string;
+                panel: string;
+                paper: string;
                 default: string;
                 accent100: string;
                 accent200: string;
@@ -1170,6 +1184,8 @@ export declare namespace themes {
             background: {
                 elevated: string;
                 overlay: string;
+                panel: string;
+                paper: string;
                 default: string;
                 accent100: string;
                 accent200: string;
@@ -1324,6 +1340,8 @@ export declare namespace themes {
             background: {
                 elevated: string;
                 overlay: string;
+                panel: string;
+                paper: string;
                 default: string;
                 accent100: string;
                 accent200: string;
@@ -1476,6 +1494,8 @@ export declare namespace themes {
             background: {
                 elevated: string;
                 overlay: string;
+                panel: string;
+                paper: string;
                 default: string;
                 accent100: string;
                 accent200: string;
@@ -1536,6 +1556,27 @@ export declare namespace spacing {
     let small: string;
     let medium: string;
     let large: string;
+    let xlarge: string;
+    let xxlarge: string;
+    let huge: string;
+    let giant: string;
+    let section: string;
+    let page: string;
+}
+export declare namespace measure {
+    let narrow: string;
+    let lede: string;
+    let statement: string;
+    let body: string;
+    let wide: string;
+}
+export declare let container: {
+    page: string;
+    'page-wide': string;
+};
+export declare namespace stage {
+    let short: string;
+    let tall: string;
 }
 export declare namespace typography {
     let family: string;
@@ -1664,10 +1705,11 @@ export declare namespace typography {
     }
 }
 export declare namespace radius {
-    let inline: string;
-    let control: string;
-    let container: string;
-    let full: string;
+    export let inline: string;
+    export let control: string;
+    let container_1: string;
+    export { container_1 as container };
+    export let full: string;
 }
 export declare namespace shadow {
     let overlay: string;

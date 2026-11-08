@@ -41,7 +41,7 @@ function validateTokens(tokens) {
       checkSet(`themes.${name}.${mode}`, flatten(theme[mode]), reference, 'colors.light');
     }
   }
-  for (const key of ['radius', 'shadow', 'zIndex']) checkStrings(key, tokens[key]);
+  for (const key of ['radius', 'shadow', 'zIndex', 'spacing', 'measure', 'container', 'stage']) checkStrings(key, tokens[key]);
   checkStrings('motion.duration', tokens.motion && tokens.motion.duration);
   checkStrings('motion.easing', tokens.motion && tokens.motion.easing);
 }

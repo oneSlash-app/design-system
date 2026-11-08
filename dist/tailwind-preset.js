@@ -191,6 +191,12 @@ module.exports = {
         "background-overlay": "rgb(var(--os-color-background-overlay) / <alpha-value>)",
         "light-background-overlay": "rgb(var(--os-color-background-overlay) / <alpha-value>)",
         "dark-background-overlay": "rgb(var(--os-color-background-overlay) / <alpha-value>)",
+        "background-panel": "rgb(var(--os-color-background-panel) / <alpha-value>)",
+        "light-background-panel": "rgb(var(--os-color-background-panel) / <alpha-value>)",
+        "dark-background-panel": "rgb(var(--os-color-background-panel) / <alpha-value>)",
+        "background-paper": "rgb(var(--os-color-background-paper) / <alpha-value>)",
+        "light-background-paper": "rgb(var(--os-color-background-paper) / <alpha-value>)",
+        "dark-background-paper": "rgb(var(--os-color-background-paper) / <alpha-value>)",
         "action-active": "rgb(var(--os-color-action-active) / <alpha-value>)",
         "light-action-active": "rgb(var(--os-color-action-active) / <alpha-value>)",
         "dark-action-active": "rgb(var(--os-color-action-active) / <alpha-value>)",
@@ -260,7 +266,22 @@ module.exports = {
       "spacing": {
         "small": "var(--os-spacing-small)",
         "medium": "var(--os-spacing-medium)",
-        "large": "var(--os-spacing-large)"
+        "large": "var(--os-spacing-large)",
+        "xlarge": "var(--os-spacing-xlarge)",
+        "xxlarge": "var(--os-spacing-xxlarge)",
+        "huge": "var(--os-spacing-huge)",
+        "giant": "var(--os-spacing-giant)",
+        "section": "var(--os-spacing-section)",
+        "page": "var(--os-spacing-page)"
+      },
+      "maxWidth": {
+        "measure-narrow": "var(--os-measure-narrow)",
+        "measure-lede": "var(--os-measure-lede)",
+        "measure-statement": "var(--os-measure-statement)",
+        "measure-body": "var(--os-measure-body)",
+        "measure-wide": "var(--os-measure-wide)",
+        "page": "var(--os-container-page)",
+        "page-wide": "var(--os-container-page-wide)"
       },
       "fontSize": {
         "h1": [

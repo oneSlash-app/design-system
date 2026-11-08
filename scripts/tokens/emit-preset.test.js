@@ -51,6 +51,16 @@ test('preset maps non-color tokens and typography', () => {
   assert.deepEqual(e.fontSize.code, ['14px', { lineHeight: '21px', letterSpacing: '0px', fontWeight: '300' }]);
 });
 
+test('preset maps page spacing, text measures and the page column', () => {
+  const e = load().theme.extend;
+  assert.equal(e.spacing.section, 'var(--os-spacing-section)');
+  assert.equal(e.spacing.xxlarge, 'var(--os-spacing-xxlarge)');
+  assert.equal(e.maxWidth['measure-body'], 'var(--os-measure-body)');
+  assert.equal(e.maxWidth['measure-statement'], 'var(--os-measure-statement)');
+  assert.equal(e.maxWidth.page, 'var(--os-container-page)');
+  assert.equal(e.maxWidth['page-wide'], 'var(--os-container-page-wide)');
+});
+
 test('auto preset uses a variant darkMode with an OS media query', () => {
   const preset = load({ auto: true });
   assert.equal(preset.darkMode[0], 'variant');

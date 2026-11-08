@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.4.0] - 2026-11-08
+
+### Added
+
+- Page tokens. Spacing gains `xlarge` (24px), `xxlarge` (32px), `huge` (48px), `giant` (64px), `section` (128px, between the sections of a page) and `page` (160px, under the last one). New groups: `measure` (`max-w-measure-narrow|lede|statement|body|wide`, how wide a line of text runs), `container` (`max-w-page`, `max-w-page-wide`) and `stage` (the least height of a panel, `--os-stage-short`, `--os-stage-tall`). New colors in every theme and mode: `background.panel` (follows `accent100`) and `background.paper` (white in both modes, for scans and drawings in black). All of it is in the Tailwind v3 preset and the v4 `@theme` file.
+- Page components, taken from the docs site so a page can be built from the system alone: `PageShell`, `PageHeader`, `SectionIntro` (and `headingId`), `FactsRow`, `NumberedRow`, `Surface`, `Figure`, `LinkCard`, `Paragraph`, and the layout helpers `Stack`, `Cluster`, `Grid` and `PageSection`.
+
 ## [2.3.0] - 2026-10-31
 
 ### Changed

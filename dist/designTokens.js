@@ -186,6 +186,32 @@ var base = {
         small: '4px',
         medium: '8px',
         large: '16px',
+        xlarge: '24px',
+        xxlarge: '32px',
+        huge: '48px',
+        giant: '64px',
+        // The space between the sections of a page, and under its last one.
+        section: '128px',
+        page: '160px',
+    },
+    // How wide a line of text runs, in characters, so a paragraph stays
+    // readable at any window width. `statement` is the large line that opens a
+    // section.
+    measure: {
+        narrow: '24ch',
+        lede: '48ch',
+        statement: '40rem',
+        body: '60ch',
+        wide: '75ch',
+    },
+    // The width of a page's column, and how tall a panel is at least.
+    container: {
+        page: '48rem',
+        'page-wide': '64rem',
+    },
+    stage: {
+        short: '20rem',
+        tall: '26rem',
     },
     typography: {
         family: 'Inter, sans-serif',
@@ -311,7 +337,10 @@ function withSemanticKeys(set, mode) {
     var status = function (g, isError) { return (__assign(__assign({}, g), { fill: isLight ? g.dark : g.main, onFill: isLight ? '#FFFFFF' : '#000000', text: isLight ? g.dark : isError ? g.light : g.main, textHover: isLight ? g.dark : g.light, tint: isLight ? g.light : g.dark })); };
     return __assign(__assign({}, set), { primary: __assign(__assign({}, set.primary), { contrast: isLight ? '#ffffff' : '#000000' }), 
         // Secondary buttons use text.primary as their label; a theme whose secondary.main is mid-tone sets its own.
-        secondary: __assign(__assign({}, set.secondary), { contrast: set.text.primary }), background: __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100 }), error: status(set.error, true), warning: status(set.warning, false), info: status(set.info, false), success: status(set.success, false) });
+        secondary: __assign(__assign({}, set.secondary), { contrast: set.text.primary }), background: __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100, 
+            // The surface a panel of content sits on, and a sheet of paper that stays
+            // light in dark mode, for scans, drawings and specimens drawn in black.
+            panel: set.background.accent100, paper: '#FFFFFF' }), error: status(set.error, true), warning: status(set.warning, false), info: status(set.info, false), success: status(set.success, false) });
 }
 // Forest: the default set with these values replaced (group by group).
 /**

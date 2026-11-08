@@ -8,6 +8,9 @@ function emitTokensCss(tokens) {
     ['duration', tokens.motion.duration],
     ['ease', tokens.motion.easing],
     ['spacing', tokens.spacing],
+    ['measure', tokens.measure],
+    ['container', tokens.container],
+    ['stage', tokens.stage],
   ];
   const lines = [];
   for (const [prefix, values] of groups) {
