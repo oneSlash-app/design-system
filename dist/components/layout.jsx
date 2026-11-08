@@ -18,7 +18,17 @@ export function Cluster(_a) {
     var children = _a.children, _b = _a.gap, gap = _b === void 0 ? 'medium' : _b, _c = _a.className, className = _c === void 0 ? '' : _c;
     return <div className={"flex flex-wrap items-center ".concat(gaps[gap], " ").concat(className)}>{children}</div>;
 }
-var mdColumns = { 2: 'md:grid-cols-2', 3: 'md:grid-cols-3', 4: 'md:grid-cols-4' };
+var mdColumns = {
+    2: 'md:grid-cols-2',
+    3: 'md:grid-cols-3',
+    4: 'md:grid-cols-4',
+    5: 'md:grid-cols-5',
+    6: 'md:grid-cols-6',
+    7: 'md:grid-cols-7',
+    8: 'md:grid-cols-8',
+    9: 'md:grid-cols-9',
+    10: 'md:grid-cols-10',
+};
 export function Grid(_a) {
     var children = _a.children, _b = _a.columns, columns = _b === void 0 ? 2 : _b, _c = _a.compact, compact = _c === void 0 ? false : _c, _d = _a.align, align = _d === void 0 ? 'stretch' : _d, _e = _a.gap, gap = _e === void 0 ? 'large' : _e, _f = _a.className, className = _f === void 0 ? '' : _f;
     return (<div className={"grid ".concat(compact ? 'grid-cols-2' : 'grid-cols-1', " ").concat(mdColumns[columns], " ").concat(align === 'start' ? 'items-start' : '', " ").concat(gaps[gap], " ").concat(className)}>

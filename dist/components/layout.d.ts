@@ -13,7 +13,7 @@ export declare function Stack({ children, gap, align, className }: StackProps): 
 export declare function Cluster({ children, gap, className }: LayoutProps): React.JSX.Element;
 interface GridProps extends LayoutProps {
     /** How many columns from the medium breakpoint up. Below it: two for `compact`, otherwise one. */
-    columns?: 2 | 3 | 4;
+    columns?: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
     compact?: boolean;
     /** `stretch` makes the items in a row the same height; `start` lets each keep its own. */
     align?: 'stretch' | 'start';

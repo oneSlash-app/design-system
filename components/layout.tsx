@@ -35,13 +35,23 @@ export function Cluster({ children, gap = 'medium', className = '' }: LayoutProp
 
 interface GridProps extends LayoutProps {
   /** How many columns from the medium breakpoint up. Below it: two for `compact`, otherwise one. */
-  columns?: 2 | 3 | 4;
+  columns?: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
   compact?: boolean;
   /** `stretch` makes the items in a row the same height; `start` lets each keep its own. */
   align?: 'stretch' | 'start';
 }
 
-const mdColumns = { 2: 'md:grid-cols-2', 3: 'md:grid-cols-3', 4: 'md:grid-cols-4' };
+const mdColumns = {
+  2: 'md:grid-cols-2',
+  3: 'md:grid-cols-3',
+  4: 'md:grid-cols-4',
+  5: 'md:grid-cols-5',
+  6: 'md:grid-cols-6',
+  7: 'md:grid-cols-7',
+  8: 'md:grid-cols-8',
+  9: 'md:grid-cols-9',
+  10: 'md:grid-cols-10',
+};
 
 export function Grid({ children, columns = 2, compact = false, align = 'stretch', gap = 'large', className = '' }: GridProps) {
   return (
