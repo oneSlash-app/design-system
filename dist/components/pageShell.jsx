@@ -13,9 +13,9 @@ import React from 'react';
 // The frame of a page: the column, its side space, and the space between sections.
 // Anything else given (data-* attributes, an id) goes to the <main>.
 export default function PageShell(_a) {
-    var children = _a.children, _b = _a.wide, wide = _b === void 0 ? false : _b, _c = _a.className, className = _c === void 0 ? '' : _c, rest = __rest(_a, ["children", "wide", "className"]);
+    var children = _a.children, _b = _a.wide, wide = _b === void 0 ? false : _b, _c = _a.fluid, fluid = _c === void 0 ? false : _c, _d = _a.className, className = _d === void 0 ? '' : _d, rest = __rest(_a, ["children", "wide", "fluid", "className"]);
     return (<main className={"min-h-screen ".concat(className)} {...rest}>
-      <div className={"mx-auto flex w-full max-w-page flex-col gap-section px-xlarge pb-page pt-giant md:px-xxlarge ".concat(wide ? '2xl:max-w-page-wide' : '')}>
+      <div className={"mx-auto flex w-full flex-col gap-section px-xlarge pb-page pt-giant md:px-xxlarge ".concat(fluid ? '' : "max-w-page ".concat(wide ? '2xl:max-w-page-wide' : ''))}>
         {children}
       </div>
     </main>);
