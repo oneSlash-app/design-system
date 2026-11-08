@@ -16,4 +16,19 @@
   --os-spacing-small: 4px;
   --os-spacing-medium: 8px;
   --os-spacing-large: 16px;
+  --os-spacing-xlarge: 24px;
+  --os-spacing-xxlarge: 32px;
+  --os-spacing-huge: 48px;
+  --os-spacing-giant: 64px;
+  --os-spacing-section: 128px;
+  --os-spacing-page: 160px;
+  --os-measure-narrow: 24ch;
+  --os-measure-lede: 48ch;
+  --os-measure-statement: 40rem;
+  --os-measure-body: 60ch;
+  --os-measure-wide: 75ch;
+  --os-container-page: 48rem;
+  --os-container-page-wide: 64rem;
+  --os-stage-short: 20rem;
+  --os-stage-tall: 26rem;
 }

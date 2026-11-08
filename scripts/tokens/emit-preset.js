@@ -36,6 +36,11 @@ function emitPreset(tokens, { auto = false } = {}) {
         boxShadow: vars('shadow', tokens.shadow),
         transitionTimingFunction: vars('ease', tokens.motion.easing),
         spacing: vars('spacing', tokens.spacing),
+        // max-w-measure-body for a line of text, max-w-page for the column.
+        maxWidth: {
+          ...Object.fromEntries(Object.keys(tokens.measure).map((k) => [`measure-${k}`, `var(--os-measure-${k})`])),
+          ...vars('container', tokens.container),
+        },
         fontSize: Object.fromEntries(
           type.map(([name, t]) => [
             name,

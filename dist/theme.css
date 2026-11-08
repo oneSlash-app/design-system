@@ -189,6 +189,12 @@
   --color-background-overlay: rgb(var(--os-color-background-overlay));
   --color-light-background-overlay: rgb(var(--os-color-background-overlay));
   --color-dark-background-overlay: rgb(var(--os-color-background-overlay));
+  --color-background-panel: rgb(var(--os-color-background-panel));
+  --color-light-background-panel: rgb(var(--os-color-background-panel));
+  --color-dark-background-panel: rgb(var(--os-color-background-panel));
+  --color-background-paper: rgb(var(--os-color-background-paper));
+  --color-light-background-paper: rgb(var(--os-color-background-paper));
+  --color-dark-background-paper: rgb(var(--os-color-background-paper));
   --color-action-active: rgb(var(--os-color-action-active));
   --color-light-action-active: rgb(var(--os-color-action-active));
   --color-dark-action-active: rgb(var(--os-color-action-active));
@@ -251,4 +257,17 @@
   --spacing-small: var(--os-spacing-small);
   --spacing-medium: var(--os-spacing-medium);
   --spacing-large: var(--os-spacing-large);
+  --spacing-xlarge: var(--os-spacing-xlarge);
+  --spacing-xxlarge: var(--os-spacing-xxlarge);
+  --spacing-huge: var(--os-spacing-huge);
+  --spacing-giant: var(--os-spacing-giant);
+  --spacing-section: var(--os-spacing-section);
+  --spacing-page: var(--os-spacing-page);
+  --container-measure-narrow: var(--os-measure-narrow);
+  --container-measure-lede: var(--os-measure-lede);
+  --container-measure-statement: var(--os-measure-statement);
+  --container-measure-body: var(--os-measure-body);
+  --container-measure-wide: var(--os-measure-wide);
+  --container-page: var(--os-container-page);
+  --container-page-wide: var(--os-container-page-wide);
 }

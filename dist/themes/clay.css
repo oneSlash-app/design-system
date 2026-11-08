@@ -65,6 +65,8 @@
   --os-color-background-accent300: 252 248 242;
   --os-color-background-elevated: 237 224 204;
   --os-color-background-overlay: 252 248 242;
+  --os-color-background-panel: 242 232 217;
+  --os-color-background-paper: 255 255 255;
   --os-color-action-active: 136 136 136;
   --os-color-action-hover: 243 243 243;
   --os-color-action-selected: 227 227 227;
@@ -147,6 +149,8 @@
   --os-color-background-accent300: 81 64 52;
   --os-color-background-elevated: 54 42 31;
   --os-color-background-overlay: 54 42 31;
+  --os-color-background-panel: 54 42 31;
+  --os-color-background-paper: 255 255 255;
   --os-color-action-active: 23 23 23;
   --os-color-action-hover: 61 61 61;
   --os-color-action-selected: 78 78 78;

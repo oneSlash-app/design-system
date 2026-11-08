@@ -30,6 +30,9 @@ function emitThemeV4(tokens, { auto = false } = {}) {
   for (const [prefix, source, values] of groups) {
     for (const key of Object.keys(values)) lines.push(`  --${prefix}-${key}: var(--os-${source}-${key});`);
   }
+  // max-w-measure-body and max-w-page read --container-* in Tailwind v4.
+  for (const key of Object.keys(tokens.measure)) lines.push(`  --container-measure-${key}: var(--os-measure-${key});`);
+  for (const key of Object.keys(tokens.container)) lines.push(`  --container-${key}: var(--os-container-${key});`);
   return `${HEADER}\n${auto ? DARK_AUTO : DARK_CLASS}\n\n@theme inline {\n${lines.join('\n')}\n}\n`;
 }
 

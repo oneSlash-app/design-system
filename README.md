@@ -34,6 +34,22 @@ The package ships Tailwind class names, CSS variables and untranspiled `.jsx`. E
 
 Use class names that mean the same thing in Tailwind v3 and v4 inside components, since apps on both versions compile them.
 
+## Building a page
+
+2.4.0 adds what a page needs on top of the components, so a page can be written with no markup of its own: `PageShell` (the column and the space between sections), `PageHeader`, `SectionIntro`, `FactsRow`, `NumberedRow`, `Surface` (a panel, or a sheet of `paper`), `Figure`, `LinkCard`, `Heading`, `Paragraph`, `List`, and the layout helpers `Stack`, `Cluster`, `Grid` and `PageSection` in `components/layout`. Spacing has steps up to `page` (160px), text widths are `max-w-measure-*`, and the column is `max-w-page`. A Button in a `Stack` stretches to the full width, so put it in a `Cluster`.
+
+```jsx
+import PageShell from 'oneslash-design-system/components/pageShell';
+import { PageSection } from 'oneslash-design-system/components/layout';
+import SectionIntro from 'oneslash-design-system/components/sectionIntro';
+
+<PageShell>
+  <PageSection>
+    <SectionIntro name="Origin" statement="Say the point of the section here." />
+  </PageSection>
+</PageShell>
+```
+
 ## Releasing
 
 Bump `version` in `package.json`, run `npm run build`, and merge to `main`. The Release workflow runs the tests and `npm run check:contrast`, then publishes to npm, creates the tag and GitHub Release with notes from the merged PR titles, and updates the docs site.

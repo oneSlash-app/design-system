@@ -176,6 +176,35 @@ const base = {
     small: '4px',
     medium: '8px',
     large: '16px',
+    xlarge: '24px',
+    xxlarge: '32px',
+    huge: '48px',
+    giant: '64px',
+    // The space between the sections of a page, and under its last one.
+    section: '128px',
+    page: '160px',
+  },
+
+  // How wide a line of text runs, in characters, so a paragraph stays
+  // readable at any window width. `statement` is the large line that opens a
+  // section.
+  measure: {
+    narrow: '24ch',
+    lede: '48ch',
+    statement: '40rem',
+    body: '60ch',
+    wide: '75ch',
+  },
+
+  // The width of a page's column, and how tall a panel is at least.
+  container: {
+    page: '48rem',
+    'page-wide': '64rem',
+  },
+
+  stage: {
+    short: '20rem',
+    tall: '26rem',
   },
   
   typography: {
@@ -321,6 +350,10 @@ function withSemanticKeys(set, mode) {
       ...set.background,
       elevated: isLight ? set.background.default : set.background.accent100,
       overlay: isLight ? set.background.accent300 : set.background.accent100,
+      // The surface a panel of content sits on, and a sheet of paper that stays
+      // light in dark mode, for scans, drawings and specimens drawn in black.
+      panel: set.background.accent100,
+      paper: '#FFFFFF',
     },
     error: status(set.error, true),
     warning: status(set.warning, false),
