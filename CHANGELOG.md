@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.5.0] - 2026-11-09
+
+### Added
+
+- `PageShell fluid`: the column runs the full width of the window and keeps its side space, for a page that is a feed of images.
+
 ## [2.4.0] - 2026-11-08
 
 ### Added
