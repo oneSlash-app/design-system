@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.8.0] - 2026-11-11
+
+### Added
+
+- `PageHeader level`: `1` (default, as before), `2` or `3` sets which heading element the title renders as, for a header that sits inside a page that already has its own `h1`. The type style does not change.
+
 ## [2.7.2] - 2026-11-11
 
 ### Fixed
