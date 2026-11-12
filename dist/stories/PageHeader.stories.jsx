@@ -19,5 +19,9 @@ var meta = {
 };
 export default meta;
 export var Default = {};
-/** Renders an h2; the type style is the same as the default. */
+/** Level 1 (the default) renders an h1 at the largest title size. */
+export var Level1 = { args: { level: 1 } };
+/** Renders an h2, one type step smaller than level 1. */
 export var Level2 = { args: { level: 2 } };
+/** Renders an h3, two type steps smaller than level 1. */
+export var Level3 = { args: { level: 3 } };
