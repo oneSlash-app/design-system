@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.7.0] - 2026-11-11
+
+### Added
+
+- `List marker`: `'none'` (default, as before), `'dot'` or `'number'` puts a bullet or a 1, 2, 3 before each item. Markers take the list's `tone` and stay aligned when an item wraps; `'number'` renders an `<ol>`.
+
 ## [2.6.0] - 2026-11-09
 
 ### Changed
