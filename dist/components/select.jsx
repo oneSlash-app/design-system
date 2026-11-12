@@ -8,20 +8,54 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import React, { useState, useEffect, useRef, useId } from 'react';
+import React, { useState, useEffect, useRef, useId, useCallback } from 'react';
+import { createPortal } from 'react-dom';
+import { usePopper } from 'react-popper';
 import * as LucideIcons from 'lucide-react';
 import { ChevronDown } from 'lucide-react';
 import Menu from './menu';
 import MenuItem from './menuItem';
 import { focusRing, overlayHidden, overlayTransition, overlayVisible, stateTransition } from './sharedStyles';
 import { useOverlayTransition } from './useOverlayTransition';
+// Module-level so the options keep one identity: react-popper re-runs on every
+// render when a modifier's functions are new, which loops with its own state updates.
+var popperOptions = {
+    placement: 'bottom-start',
+    modifiers: [
+        { name: 'offset', options: { offset: [0, 4] } }, // Same 4px gap as Popover and Tooltip
+        {
+            // Match the trigger's width (which is the width prop when one is set)
+            name: 'sameWidth',
+            enabled: true,
+            phase: 'beforeWrite',
+            requires: ['computeStyles'],
+            fn: function (_a) {
+                var state = _a.state;
+                state.styles.popper.width = "".concat(state.rects.reference.width, "px");
+            },
+            effect: function (_a) {
+                var state = _a.state;
+                state.elements.popper.style.width = "".concat(state.elements.reference.offsetWidth, "px");
+            },
+        },
+    ],
+};
 export default function Select(_a) {
-    var value = _a.value, options = _a.options, onChange = _a.onChange, _b = _a.disabled, disabled = _b === void 0 ? false : _b, _c = _a.placeholder, placeholder = _c === void 0 ? 'Label' : _c, decoIconName = _a.decoIconName, width = _a.width, _d = _a.multiple, multiple = _d === void 0 ? false : _d, _e = _a.className, className = _e === void 0 ? '' : _e;
-    var _f = useState(false), isOpen = _f[0], setIsOpen = _f[1];
+    var _b, _c;
+    var value = _a.value, options = _a.options, onChange = _a.onChange, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.placeholder, placeholder = _e === void 0 ? 'Label' : _e, decoIconName = _a.decoIconName, width = _a.width, _f = _a.multiple, multiple = _f === void 0 ? false : _f, _g = _a.className, className = _g === void 0 ? '' : _g;
+    var _h = useState(false), isOpen = _h[0], setIsOpen = _h[1];
     // Option highlighted by the keyboard; focus itself stays on the trigger
-    var _g = useState(-1), activeIndex = _g[0], setActiveIndex = _g[1];
-    var _h = useOverlayTransition(isOpen), menuMounted = _h.mounted, menuVisible = _h.visible;
+    var _j = useState(-1), activeIndex = _j[0], setActiveIndex = _j[1];
+    var _k = useOverlayTransition(isOpen), menuMounted = _k.mounted, menuVisible = _k.visible;
     var selectRef = useRef(null);
+    // The listbox renders in a portal so no ancestor's overflow can clip it
+    var _l = useState(null), listElement = _l[0], setListElement = _l[1];
+    var _m = useState(null), triggerElement = _m[0], setTriggerElement = _m[1];
+    var setTrigger = useCallback(function (el) {
+        selectRef.current = el;
+        setTriggerElement(el);
+    }, []);
+    var _o = usePopper(triggerElement, listElement, popperOptions), styles = _o.styles, attributes = _o.attributes;
     var menuRef = useRef(null);
     var listboxId = useId();
     var optionId = function (index) { return "".concat(listboxId, "-option-").concat(index); };
@@ -175,7 +209,7 @@ export default function Select(_a) {
     };
     return (<div className={"relative ".concat(className)} style={{ width: width || '100%' }}>
       {/* Select Button */}
-      <div ref={selectRef} role="combobox" aria-haspopup="listbox" aria-expanded={isOpen} aria-controls={listboxId} aria-activedescendant={isOpen && activeIndex >= 0 ? optionId(activeIndex) : undefined} aria-disabled={disabled || undefined} className={"\n          rounded-control\n          ".concat(getStateStyles(), "\n          ").concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer', "\n          ").concat(stateTransition, "\n          ").concat(focusRing, "\n        ")} onClick={handleToggle} tabIndex={disabled ? -1 : 0} onKeyDown={handleKeyDown}>
+      <div ref={setTrigger} role="combobox" aria-haspopup="listbox" aria-expanded={isOpen} aria-controls={listboxId} aria-activedescendant={isOpen && activeIndex >= 0 ? optionId(activeIndex) : undefined} aria-disabled={disabled || undefined} className={"\n          rounded-control\n          ".concat(getStateStyles(), "\n          ").concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer', "\n          ").concat(stateTransition, "\n          ").concat(focusRing, "\n        ")} onClick={handleToggle} tabIndex={disabled ? -1 : 0} onKeyDown={handleKeyDown}>
         {/* Inner Content Container; 7px vertical padding makes the control 40px like Button and TextField */}
         <div className={"flex items-center justify-between px-2 py-[7px] ".concat(getTextColor())}>
           {/* Content Container */}
@@ -194,12 +228,15 @@ export default function Select(_a) {
         </div>
       </div>
 
-      {/* Dropdown Menu */}
-      {menuMounted && (<div id={listboxId} role="listbox" aria-multiselectable={multiple || undefined} className={"absolute z-[var(--os-z-overlay)] mt-1 left-0 origin-top ".concat(overlayTransition, " ").concat(menuVisible ? overlayVisible : overlayHidden)} style={{ width: width || '100%' }}>
-          <Menu ref={menuRef} width={width || '100%'} className="max-h-[320px] overflow-y-auto">
-            {options.map(function (option, index) { return (<MenuItem key={option.value} id={optionId(index)} role="option" tabIndex={-1} isActive={index === activeIndex} label={option.label} iconName={option.iconName} isSelected={isSelected(option.value)} onClick={function () { return handleSelect(option.value); }} className="w-full"/>); })}
-          </Menu>
-        </div>)}
+      {/* Dropdown Menu: portaled to the body, positioned by Popper (flips above when there is no room below) */}
+      {menuMounted && createPortal(<div id={listboxId} ref={setListElement} role="listbox" aria-multiselectable={multiple || undefined} style={styles.popper} {...attributes.popper} className="z-[var(--os-z-overlay)]">
+          {/* Popper owns the outer transform, so the fade and scale go on this inner panel */}
+          <div className={"".concat(((_c = (_b = attributes.popper) === null || _b === void 0 ? void 0 : _b['data-popper-placement']) === null || _c === void 0 ? void 0 : _c.startsWith('top')) ? 'origin-bottom' : 'origin-top', " ").concat(overlayTransition, " ").concat(menuVisible ? overlayVisible : overlayHidden)}>
+            <Menu ref={menuRef} width="100%" className="max-h-[320px] overflow-y-auto">
+              {options.map(function (option, index) { return (<MenuItem key={option.value} id={optionId(index)} role="option" tabIndex={-1} isActive={index === activeIndex} label={option.label} iconName={option.iconName} isSelected={isSelected(option.value)} onClick={function () { return handleSelect(option.value); }} className="w-full"/>); })}
+            </Menu>
+          </div>
+        </div>, document.body)}
     </div>);
 }
 export { Select };
