@@ -8,3 +8,4 @@ export declare const WithIcons: Story;
 export declare const WithDecoIcon: Story;
 export declare const Disabled: Story;
 export declare const MultiSelect: Story;
+export declare const InsideClippingContainer: Story;

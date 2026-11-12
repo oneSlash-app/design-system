@@ -94,3 +94,24 @@ export const MultiSelect: Story = {
     width: 250,
   },
 };
+
+// The list is portaled, so a clipping ancestor (overflow hidden/auto) must not cut it off.
+export const InsideClippingContainer: Story = {
+  render: (args) => (
+    <div className="overflow-hidden rounded-control border border-misc-divider p-4" style={{ width: 320, height: 120 }}>
+      <SelectWrapper {...args} />
+    </div>
+  ),
+  play: async ({ canvasElement }) => {
+    canvasElement.querySelector<HTMLElement>('[role="combobox"]')?.click();
+  },
+  args: {
+    placeholder: "Select an option",
+    options: [
+      { value: "option1", label: "Option 1" },
+      { value: "option2", label: "Option 2" },
+      { value: "option3", label: "Option 3" },
+      { value: "option4", label: "Option 4" },
+    ],
+  },
+};

@@ -1,5 +1,7 @@
 'use client';
-import React, { useState, useEffect, useRef, useId, SVGProps, JSX } from 'react';
+import React, { useState, useEffect, useRef, useId, useCallback, SVGProps, JSX } from 'react';
+import { createPortal } from 'react-dom';
+import { usePopper } from 'react-popper';
 import * as LucideIcons from 'lucide-react';
 import { ChevronDown } from 'lucide-react';
 import Menu from './menu';
@@ -27,6 +29,28 @@ interface SelectProps {
   className?: string;
 }
 
+// Module-level so the options keep one identity: react-popper re-runs on every
+// render when a modifier's functions are new, which loops with its own state updates.
+const popperOptions: Parameters<typeof usePopper>[2] = {
+  placement: 'bottom-start',
+  modifiers: [
+    { name: 'offset', options: { offset: [0, 4] } }, // Same 4px gap as Popover and Tooltip
+    {
+      // Match the trigger's width (which is the width prop when one is set)
+      name: 'sameWidth',
+      enabled: true,
+      phase: 'beforeWrite',
+      requires: ['computeStyles'],
+      fn: ({ state }) => {
+        state.styles.popper.width = `${state.rects.reference.width}px`;
+      },
+      effect: ({ state }) => {
+        state.elements.popper.style.width = `${(state.elements.reference as HTMLElement).offsetWidth}px`;
+      },
+    },
+  ],
+};
+
 export default function Select({
   value,
   options,
@@ -43,7 +67,15 @@ export default function Select({
   const [activeIndex, setActiveIndex] = useState(-1);
   const { mounted: menuMounted, visible: menuVisible } = useOverlayTransition(isOpen);
 
-  const selectRef = useRef<HTMLDivElement>(null);
+  const selectRef = useRef<HTMLDivElement | null>(null);
+  // The listbox renders in a portal so no ancestor's overflow can clip it
+  const [listElement, setListElement] = useState<HTMLDivElement | null>(null);
+  const [triggerElement, setTriggerElement] = useState<HTMLDivElement | null>(null);
+  const setTrigger = useCallback((el: HTMLDivElement | null) => {
+    selectRef.current = el;
+    setTriggerElement(el);
+  }, []);
+  const { styles, attributes } = usePopper(triggerElement, listElement, popperOptions);
   const menuRef = useRef<HTMLDivElement>(null);
   const listboxId = useId();
   const optionId = (index: number) => `${listboxId}-option-${index}`;
@@ -208,7 +240,7 @@ export default function Select({
     <div className={`relative ${className}`} style={{ width: width || '100%' }}>
       {/* Select Button */}
       <div
-        ref={selectRef}
+        ref={setTrigger}
         role="combobox"
         aria-haspopup="listbox"
         aria-expanded={isOpen}
@@ -255,32 +287,40 @@ export default function Select({
         </div>
       </div>
 
-      {/* Dropdown Menu */}
-      {menuMounted && (
+      {/* Dropdown Menu: portaled to the body, positioned by Popper (flips above when there is no room below) */}
+      {menuMounted && createPortal(
         <div
           id={listboxId}
+          ref={setListElement}
           role="listbox"
           aria-multiselectable={multiple || undefined}
-          className={`absolute z-[var(--os-z-overlay)] mt-1 left-0 origin-top ${overlayTransition} ${menuVisible ? overlayVisible : overlayHidden}`}
-          style={{ width: width || '100%' }}
+          style={styles.popper}
+          {...attributes.popper}
+          className="z-[var(--os-z-overlay)]"
         >
-          <Menu ref={menuRef} width={width || '100%'} className="max-h-[320px] overflow-y-auto">
-            {options.map((option, index) => (
-              <MenuItem
-                key={option.value}
-                id={optionId(index)}
-                role="option"
-                tabIndex={-1}
-                isActive={index === activeIndex}
-                label={option.label}
-                iconName={option.iconName}
-                isSelected={isSelected(option.value)}
-                onClick={() => handleSelect(option.value)}
-                className="w-full"
-              />
-            ))}
-          </Menu>
-        </div>
+          {/* Popper owns the outer transform, so the fade and scale go on this inner panel */}
+          <div
+            className={`${attributes.popper?.['data-popper-placement']?.startsWith('top') ? 'origin-bottom' : 'origin-top'} ${overlayTransition} ${menuVisible ? overlayVisible : overlayHidden}`}
+          >
+            <Menu ref={menuRef} width="100%" className="max-h-[320px] overflow-y-auto">
+              {options.map((option, index) => (
+                <MenuItem
+                  key={option.value}
+                  id={optionId(index)}
+                  role="option"
+                  tabIndex={-1}
+                  isActive={index === activeIndex}
+                  label={option.label}
+                  iconName={option.iconName}
+                  isSelected={isSelected(option.value)}
+                  onClick={() => handleSelect(option.value)}
+                  className="w-full"
+                />
+              ))}
+            </Menu>
+          </div>
+        </div>,
+        document.body
       )}
     </div>
   );

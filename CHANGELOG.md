@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.7.1] - 2026-11-11
+
+### Fixed
+
+- `Select`: the open list renders in a portal, so an ancestor with `overflow: auto`, `hidden` or `scroll` (a scrolling card, a table wrapper, a Modal body) no longer cuts it off. It opens below the trigger at the trigger's width, flips above when there is no room, and follows the trigger on scroll and resize.
+
 ## [2.7.0] - 2026-11-11
 
 ### Added
