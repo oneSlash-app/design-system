@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.7.2] - 2026-11-11
+
+### Fixed
+
+- `Checkbox`, `RadioGroup`: the visually hidden native input is now positioned inside its label (the label is `relative`). Before, the input was positioned against the nearest positioned ancestor, so inside a scrolling container that was not positioned it escaped, stretched the page and made the window scroll when the input took focus.
+
 ## [2.7.1] - 2026-11-11
 
 ### Fixed

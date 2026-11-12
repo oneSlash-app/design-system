@@ -31,7 +31,7 @@ export default function Checkbox({
   };
 
   return (
-    <label className={`group flex items-start ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
+    <label className={`group relative flex items-start ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`}>
       {/* Native input keeps keyboard focus, Space to toggle and screen-reader semantics */}
       <input
         type="checkbox"

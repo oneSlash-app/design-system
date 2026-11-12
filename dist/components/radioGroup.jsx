@@ -8,7 +8,7 @@ export default function RadioGroup(_a) {
     return (<div role="radiogroup" className={"flex ".concat(direction === 'horizontal' ? 'gap-4' : 'flex-col gap-2')}>
       {options.map(function (option) {
             var isSelected = selectedValue === option.value;
-            return (<label key={option.value} className="group flex items-start cursor-pointer">
+            return (<label key={option.value} className="group relative flex items-start cursor-pointer">
             <input type="radio" name={groupName} value={option.value} checked={isSelected} onChange={function () { return onChange(option.value); }} className="peer sr-only"/>
             {/* Hover halo and hit area, same as Checkbox */}
             <span className={"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full ".concat(stateTransition, "\n                group-hover:bg-action-selected\n                peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-fg-primary")}>
