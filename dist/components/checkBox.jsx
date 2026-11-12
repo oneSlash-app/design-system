@@ -14,7 +14,7 @@ export default function Checkbox(_a) {
         setIsChecked(event.target.checked);
         onChange === null || onChange === void 0 ? void 0 : onChange(event.target.checked);
     };
-    return (<label className={"group flex items-start ".concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer')}>
+    return (<label className={"group relative flex items-start ".concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer')}>
       {/* Native input keeps keyboard focus, Space to toggle and screen-reader semantics */}
       <input type="checkbox" className="peer sr-only" checked={isChecked} disabled={disabled} onChange={handleChange}/>
       <span className={"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full ".concat(stateTransition, "\n          peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-fg-primary\n          ").concat(disabled ? '' : 'group-hover:bg-action-selected')}>

@@ -34,7 +34,7 @@ export default function RadioGroup({
         return (
           <label
             key={option.value}
-            className="group flex items-start cursor-pointer"
+            className="group relative flex items-start cursor-pointer"
           >
             <input
               type="radio"
