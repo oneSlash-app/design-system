@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.9.0] - 2026-11-11
+
+### Changed
+
+- `PageHeader level` now sets the size of the title as well as the element: level `1` (default) is unchanged (48px, 60px from `md`), level `2` is one type step smaller (34px, 48px from `md`) and level `3` two steps smaller (24px, 34px from `md`). In 2.8.0, levels 2 and 3 rendered at the level 1 size, so a header using them is now smaller.
+
 ## [2.8.0] - 2026-11-11
 
 ### Added

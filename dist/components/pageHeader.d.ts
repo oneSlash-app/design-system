@@ -3,7 +3,7 @@ interface PageHeaderProps {
     /** A small line over the title: where this page sits. */
     eyebrow?: string;
     title: string;
-    /** The element: h1 to h3. Pick the one that fits the page's outline; it does not change the size. */
+    /** The element and the size: h1 to h3, each a step smaller than the last. Pick the one that fits the page's outline. */
     level?: 1 | 2 | 3;
     lede?: React.ReactNode;
     facts?: {

@@ -26,5 +26,9 @@ export default meta;
 type Story = StoryObj<typeof PageHeader>;
 
 export const Default: Story = {};
-/** Renders an h2; the type style is the same as the default. */
+/** Level 1 (the default) renders an h1 at the largest title size. */
+export const Level1: Story = { args: { level: 1 } };
+/** Renders an h2, one type step smaller than level 1. */
 export const Level2: Story = { args: { level: 2 } };
+/** Renders an h3, two type steps smaller than level 1. */
+export const Level3: Story = { args: { level: 3 } };
