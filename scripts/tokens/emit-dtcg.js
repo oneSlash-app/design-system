@@ -15,7 +15,13 @@ const duration = (v) => {
 };
 const bezier = (v) => {
   const m = BEZIER.exec(v);
-  return m && m[1].split(',').map(Number);
+  if (!m) return null;
+  const nums = m[1].split(',').map((n) => (n.trim() === '' ? NaN : Number(n)));
+  return nums.length === 4 && nums.every(Number.isFinite) ? nums : null;
+};
+const finite = (v) => {
+  const n = typeof v === 'number' || (typeof v === 'string' && v.trim() !== '') ? Number(v) : NaN;
+  return Number.isFinite(n) ? n : null;
 };
 const families = (v) => v.split(',').map((f) => f.trim().replace(/^(['"])(.*)\1$/, '$2'));
 
@@ -39,7 +45,7 @@ function emitDtcg(tokens) {
   const addGroup = (name, values, type, convert) => {
     const group = {};
     for (const [key, raw] of Object.entries(values)) {
-      const value = convert(raw);
+      const value = convert(raw, key);
       if (value === null || value === undefined) omitted.push(`${name}.${key}`);
       else group[key] = { $type: type, $value: value };
     }
@@ -66,29 +72,29 @@ function emitDtcg(tokens) {
   addGroup('measure', tokens.measure, 'dimension', dimension);
   addGroup('duration', tokens.motion.duration, 'duration', duration);
   addGroup('easing', tokens.motion.easing, 'cubicBezier', bezier);
-  addGroup('zIndex', tokens.zIndex, 'number', (v) => Number(v));
+  addGroup('zIndex', tokens.zIndex, 'number', finite);
 
   // The format has a shadow type, but not for a layered CSS string; leave each one out.
   for (const key of Object.keys(tokens.shadow)) omitted.push(`shadow.${key}`);
 
   const t = tokens.typography;
-  const typography = {};
-  for (const [role, spec] of Object.entries(t)) {
-    if (typeof spec !== 'object' || !spec.size) continue;
+  const roles = Object.fromEntries(
+    Object.entries(t).filter(([, spec]) => spec !== null && typeof spec === 'object' && 'size' in spec),
+  );
+  addGroup('typography', roles, 'typography', (spec, role) => {
     const size = dimension(spec.size);
     const line = dimension(spec.lineHeight);
-    typography[role] = {
-      $type: 'typography',
-      $value: {
-        fontFamily: families(role === 'code' ? t.monoFamily : t.family),
-        fontSize: size,
-        fontWeight: Number(spec.weight),
-        letterSpacing: dimension(spec.letterSpacing),
-        lineHeight: line.value / size.value,
-      },
+    const letterSpacing = dimension(spec.letterSpacing);
+    const fontWeight = finite(spec.weight);
+    if (!size || !line || !letterSpacing || fontWeight === null || line.unit !== size.unit || size.value === 0) return null;
+    return {
+      fontFamily: families(role === 'code' ? t.monoFamily : t.family),
+      fontSize: size,
+      fontWeight,
+      letterSpacing,
+      lineHeight: line.value / size.value,
     };
-  }
-  out.typography = typography;
+  });
 
   const note = omitted.length
     ? ` Left out because the format cannot express them: ${omitted.join(', ')}.`

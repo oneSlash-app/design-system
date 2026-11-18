@@ -56,3 +56,43 @@ test('omitted list is computed from the input', () => {
   assert.doesNotMatch(d, /measure\./);
   assert.doesNotMatch(d, /shadow/);
 });
+
+const emitWith = (patch) => emitDtcg({ ...tokens, ...patch });
+const typo = (over) => ({ typography: { ...tokens.typography, body1: { ...tokens.typography.body1, ...over } } });
+
+test('the real tokens produce no null', () => {
+  assert.doesNotMatch(text, /null/);
+});
+for (const [label, over] of [
+  ['em letterSpacing', { letterSpacing: '0.1em' }],
+  ['unitless lineHeight', { lineHeight: '1.5' }],
+  ['bold weight', { weight: 'bold' }],
+  ['rem lineHeight over px size', { lineHeight: '1.5rem' }],
+  ['percent size', { size: '100%' }],
+]) {
+  test(`typography with ${label} is omitted and named`, () => {
+    const s = emitWith(typo(over));
+    assert.doesNotMatch(s, /null|NaN/);
+    const o = JSON.parse(s);
+    assert.equal(o.typography.body1, undefined);
+    assert.ok(o.typography.body2);
+    assert.match(o.$description, /typography\.body1/);
+  });
+}
+test('non-numeric zIndex is omitted and named', () => {
+  const s = emitWith({ zIndex: { ...tokens.zIndex, auto: 'auto' } });
+  assert.doesNotMatch(s, /null|NaN/);
+  const o = JSON.parse(s);
+  assert.equal(o.zIndex.auto, undefined);
+  assert.match(o.$description, /zIndex\.auto/);
+});
+test('a three-argument cubic-bezier is omitted and named', () => {
+  const s = emitWith({ motion: { ...tokens.motion, easing: { ...tokens.motion.easing, bad: 'cubic-bezier(0, 0, 1)' } } });
+  assert.doesNotMatch(s, /null|NaN/);
+  const o = JSON.parse(s);
+  assert.equal(o.easing.bad, undefined);
+  assert.match(o.$description, /easing\.bad/);
+});
+test('a null typography entry does not throw', () => {
+  assert.doesNotThrow(() => emitWith({ typography: { ...tokens.typography, gone: null } }));
+});
