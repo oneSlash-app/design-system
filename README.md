@@ -38,7 +38,7 @@ Use class names that mean the same thing in Tailwind v3 and v4 inside components
 
 The Swift package `OneSlashDesign` (iOS 26 and macOS 26 and later) is this repository: `https://github.com/oneSlash-app/design-system`.
 
-1. Add the package with Swift Package Manager (`.package(url: "https://github.com/oneSlash-app/design-system", from: "2.10.0")`) and the `OneSlashDesign` product to the target, then `import OneSlashDesign`.
+1. Add the package with Swift Package Manager (`.package(url: "https://github.com/oneSlash-app/design-system", from: "2.10.0")`) and the `OneSlashDesign` product to the target (`.product(name: "OneSlashDesign", package: "design-system")`; by URL the package identity is `design-system`), then `import OneSlashDesign`.
 2. Apply one theme at the scene root: `.odsTheme(.forest)`. It sets the tint and the text foreground styles, and no background.
 3. Read colors from `@Environment(\.odsTheme)`, for example `theme.background.default`, and use `ODSSpacing`, `ODSRadius`, `ODSDuration` and `Font.ods(_:)` for our own content views.
 

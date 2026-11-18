@@ -11,7 +11,7 @@ import Testing
 /// Renders a solid rectangle filled with `.primary`/`.secondary` hierarchical style
 /// under `.odsTheme(theme)` and returns the center pixel as 0xRRGGBB.
 @MainActor
-private func renderedHex(_ style: HierarchicalShapeStyle, theme: ODSTheme, scheme: ColorScheme) -> UInt32? {
+private func renderedHex(_ style: some ShapeStyle, theme: ODSTheme, scheme: ColorScheme) -> UInt32? {
     let view = Rectangle()
         .foregroundStyle(style)
         .frame(width: 8, height: 8)
@@ -41,4 +41,15 @@ private func renderedHex(_ style: HierarchicalShapeStyle, theme: ODSTheme, schem
     // Public API cannot resolve a HierarchicalShapeStyle to a color value, so render it.
     #expect(renderedHex(.secondary, theme: .forest, scheme: .light) == 0x515E3C)
     #expect(renderedHex(.primary, theme: .forest, scheme: .light) != renderedHex(.secondary, theme: .forest, scheme: .light))
+}
+
+@Test @MainActor func themeTextLevelsRenderInLightAndDark() {
+    #expect(renderedHex(.primary, theme: .forest, scheme: .light) == 0x1C2213)
+    #expect(renderedHex(.tertiary, theme: .forest, scheme: .light) == 0x8A9670)
+    #expect(renderedHex(.secondary, theme: .forest, scheme: .dark) == 0x9DAA85)
+}
+
+@Test @MainActor func tintStyleRendersAccentMain() {
+    // The documented way to give a text-like control the accent under the modifier.
+    #expect(renderedHex(.tint, theme: .indigo, scheme: .light) == 0x204F8C)
 }

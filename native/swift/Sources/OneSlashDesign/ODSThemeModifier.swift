@@ -18,6 +18,10 @@ public extension View {
     /// Sets the `odsTheme` environment value, the tint (`accent.main`), and the
     /// primary, secondary and tertiary foreground styles, so `.foregroundStyle(.secondary)`
     /// and `.tertiary` resolve to the theme's text colors. It sets no background.
+    ///
+    /// The root foreground style takes the tint away from text-like controls:
+    /// borderless buttons and links render in `text.primary`, not the accent.
+    /// Apply `.foregroundStyle(.tint)` to one to give it the accent.
     func odsTheme(_ theme: ODSTheme) -> some View {
         self
             .environment(\.odsTheme, theme)

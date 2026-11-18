@@ -192,12 +192,18 @@ Spacing and radius tokens apply to our own content views. System containers (lis
 
 Platforms: iOS 26 and macOS 26 and later.
 
-1. Add the package with Swift Package Manager: `.package(url: "https://github.com/oneSlash-app/design-system", from: "2.10.0")`. Add the `OneSlashDesign` product to the target.
+1. Add the package with Swift Package Manager: `.package(url: "https://github.com/oneSlash-app/design-system", from: "2.10.0")`. Add the `OneSlashDesign` product to the target. By URL the package identity is `design-system`, so a manifest writes `.product(name: "OneSlashDesign", package: "design-system")`.
 2. `import OneSlashDesign`.
-3. Apply one theme at the scene root: `.odsTheme(.forest)`. The themes are `ODSTheme.default`, `.forest`, `.clay`, `.indigo` and `.wine`. The modifier sets the `odsTheme` environment value, the tint (`accent.main`), and the primary, secondary and tertiary foreground styles from the theme's text colors. It sets no background.
+3. Apply one theme at the scene root: `.odsTheme(.forest)`. The themes are `ODSTheme.default`, `.forest`, `.clay`, `.indigo` and `.wine`. The modifier sets the `odsTheme` environment value, the tint (`accent.main`), and the primary, secondary and tertiary foreground styles from the theme's text colors. It sets no background. Under the modifier, text-like controls (borderless buttons, links) take `text.primary`, not the accent; to give one the accent, apply `.foregroundStyle(.tint)` to it. `text.disabled` is the tertiary level, so `.foregroundStyle(.tertiary)` is the disabled text color.
 4. Read the theme with `@Environment(\.odsTheme) private var theme` for backgrounds and status colors, for example `theme.background.default` and `theme.error.main`. Each color has the same group and key names as the color table above.
 5. Spacing, radius and motion are constants for our own content views: `ODSSpacing`, `ODSRadius` and `ODSDuration` (in seconds).
 6. Fonts: `Font.ods(_ role: ODSTextRole)` returns the system text style for a type role. See the type roles table below. Native apps use the system fonts with Dynamic Type; Inter and Fira Code stay on the web.
+
+Limits to know:
+
+- The accent the modifier sets reaches only what `.tint` reaches. System alerts and the macOS selection color still come from the app's `AccentColor` asset, which an app should keep in sync with its theme or leave to the system.
+- Each scene needs its own `.odsTheme`, for example a macOS `Settings` scene as well as the main window.
+- For motion, prefer the platform's springs. Use `ODSDuration` only for our own content views.
 
 ### Type roles
 
@@ -225,7 +231,7 @@ For each web component, the table gives the native control to use. System contro
 | ODS | SwiftUI | Compose | Note |
 | --- | --- | --- | --- |
 | alert | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `.alert` for messages that need a decision; Compose `Snackbar` in a `SnackbarHost` for toasts. |
-| button | `Button` with `.borderedProminent` or `.glassProminent` for accent, `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. |
+| button | `Button` with `.borderedProminent` or `.glassProminent` for accent, `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. A prominent button's system label is white; on themes whose accent is light (default, clay) that fails contrast in light mode, so set the label's `.foregroundStyle(theme.accent.contrast)`. Forest, indigo and wine pass as is. |
 | checkBox | `Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS) | `Checkbox` |  |
 | emptyBox | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `ContentUnavailableView`; Compose a centered `Icon` and `Text` in a `Column`. |
 | factsRow | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows. |

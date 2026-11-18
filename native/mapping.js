@@ -26,7 +26,7 @@ const components = [
     note: 'Until then: SwiftUI `.alert` for messages that need a decision; Compose `Snackbar` in a `SnackbarHost` for toasts.' },
   { ods: 'button', swiftui: '`Button` with `.borderedProminent` or `.glassProminent` for accent, `.bordered` for primary',
     compose: '`Button`, `OutlinedButton`',
-    note: 'Tertiary and text-only: `.borderless` / `TextButton`.' },
+    note: 'Tertiary and text-only: `.borderless` / `TextButton`. A prominent button\'s system label is white; on themes whose accent is light (default, clay) that fails contrast in light mode, so set the label\'s `.foregroundStyle(theme.accent.contrast)`. Forest, indigo and wine pass as is.' },
   { ods: 'checkBox', swiftui: '`Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS)', compose: '`Checkbox`' },
   { ods: 'emptyBox', swiftui: PLANNED, compose: PLANNED,
     note: 'Until then: SwiftUI `ContentUnavailableView`; Compose a centered `Icon` and `Text` in a `Column`.' },
