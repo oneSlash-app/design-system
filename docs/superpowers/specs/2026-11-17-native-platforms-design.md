@@ -1,6 +1,6 @@
 # oneslash-design-system: native platforms (Apple first)
 
-Status: design approved by the owner on 2026-11-17. Nothing is built. Plan: `docs/superpowers/plans/2026-11-17-native-platforms-ods.md` (ODS side); the Scindo redesign plan follows in the scindo repo.
+Status: design approved by the owner on 2026-11-17; section 5 corrected the same day. Built: the ODS side, Tasks 1 to 7 (PR #75), not released. Plan: `docs/superpowers/plans/2026-11-17-native-platforms-ods.md` (ODS side); the Scindo redesign plan follows in the scindo repo.
 
 This is the first of three design docs. The other two (agent rules and parts;
 Compose theme and Android) are outlined at the end and get their own docs.
@@ -203,42 +203,70 @@ component, saying what to use on each platform, for example:
 
 The builder completes it for all components in `components/`.
 
-### 5. Scindo Apple redesign (scindo repo, `apps/apple`)
+### 5. Scindo Apple migration (scindo repo, `apps/apple`)
 
-Current state: stock SwiftUI, 299 Swift files, system fonts and colors, SF
-Symbols, no custom control styles. The one ODS value is the Forest accent,
-typed into the asset catalog. `MessageListMetrics` holds hand-copied spacing
-and radius. A handful of raw colors exist (`Color.red`, `systemGreen`, a tier
-color function).
+**Corrected 2026-11-17.** The first version of this section described the
+apps as stock SwiftUI with only the accent color from ODS. That was wrong: it
+was written from a stale local checkout. Scindo's `main` already themes both
+apps with Forest (scindo PR #299 on 2026-11-16, tuned through #321 on
+2026-11-17).
 
-Steps:
+Current state: `apps/apple/Shared/ForestTheme.swift` holds the Forest values
+as hand-typed hex (`Forest.background`, `surface100` to `surface300`, `row`,
+`sheet`, text, status) and helpers used about 130 times: `forestRoot`,
+`forestScreen`, `forestSheet`, `forestRows`, `forestPane`, `forestField`,
+`forestTitlebar`, `forestToolbarMenuLabel`. `MessageListMetrics` holds
+hand-copied spacing and radius. The accent is the `AccentColor` asset.
 
-1. **Spike, shown to the owner before the rollout.** Apply Forest surfaces in
-   light and dark to: on iPhone, the conversation list, a message thread and
-   Settings; on Mac, the main window (sidebar plus thread) and Settings. The
-   owner approves the look from screenshots. This is where glass-over-Forest,
-   sheets and grouped forms are judged by eye. The spike runs on a local
-   reference to the package, before the ODS release.
+So the work is a migration, not a redesign. The owner chose, on 2026-11-17,
+**values first, then review**:
 
-   On Mac the conversation list is the split view's sidebar. Its material
-   stays the system's (rule 3): on macOS 26 it sits over the window content
-   and takes its color from the Forest background behind it. Text and status
-   colors inside its rows use tokens. If the owner finds the sidebar too plain
-   at the spike, that is raised then; the default is not to paint it.
-2. Add the package; delete the hand-typed accent color set and
-   `MessageListMetrics`; replace raw colors with tokens.
-3. Roll the approved treatment through the remaining screens.
-4. Add the CI check (section 6).
-5. Update scindo's `CLAUDE.md` and the 11/02 spec to say the exemption is
-   replaced by this doc. Scindo's root `DESIGN.md` stays as Scindo's own
-   summary: it gains a native section that states the OS-update rules in
-   brief and points to the generated ODS `DESIGN.md`, and its "message list
-   only" wording is removed.
-6. Prepare the store update: version bump and new store screenshots
-   (`apps/apple/scripts/screenshots.sh`), ending at builds ready to submit.
-   The owner submits and releases, as with 1.0.
+1. **Values first, no visual change.** Every hand-typed value in the app comes
+   from the ODS package instead; the helpers stay. Proof: before and after
+   screenshots are identical, in light and dark, on iPhone and Mac. This runs
+   on a local reference to the package, and its passing is the gate for the
+   ODS 2.10.0 release (replacing the "spike approval" gate).
+2. **Review of the chrome customizations, one at a time.** These conflict
+   with the OS-update rules. For each, the owner sees the system version next
+   to the current one and decides keep or remove:
+
+   | Customization | Conflicts with |
+   |---|---|
+   | Painted sheet backgrounds (`forestSheet`) | rule 3 |
+   | Painted Mac sidebar and panes (`forestPane`) | rule 3 |
+   | Title bar and window color set directly (`forestTitlebar`, `WindowBackground`) | rules 1 and 3 |
+   | Custom-drawn text field (`forestField`) | rule 2 |
+   | Text levels chosen by branching on color scheme (`ForestTextLevels`, `forestToolbarMenuLabel`) | rule 8 |
+
+   The last one works around a system behavior: a menu draws its item icons
+   with the light value of a dynamic root foreground color. The ODS
+   `odsTheme(_:)` modifier must handle this itself (section 2), after which
+   the app's workaround goes.
+
+   A customization the owner keeps is recorded as a **named exception**: a row
+   in "Named exceptions" below and an allow-list entry in Scindo's check, each
+   with the reason. Kept exceptions are re-checked in the yearly beta step.
+3. Add the CI check (section 6).
+4. Update scindo's `CLAUDE.md`, the 11/02 spec and the root `DESIGN.md` to
+   point to the package and the generated ODS `DESIGN.md`.
+5. Prepare the store update if the review changed the look: version bump and
+   new store screenshots, ending at builds ready to submit. The owner submits.
 
 Behavior, navigation and features do not change.
+
+**What the migration needs from ODS before 2.10.0:**
+
+- `odsTheme(_:)` resolves its three text colors for the current color scheme,
+  so menus and toolbar menu labels draw them correctly in dark mode.
+- A `background.row` color (light `accent200`, dark `accent100`): the surface
+  of opaque grouped rows, which Scindo uses as `Forest.row` and no token
+  expresses today. It is added for every theme, so the web gets it too.
+
+**The `AccentColor` asset stays.** The system reads it for alerts and macOS
+selection, which the modifier's tint does not reach. The check verifies its
+two values equal the theme's `accent.main`.
+
+**Named exceptions:** none yet. Filled in after the review.
 
 The mapping table is also published as a page in the docs site
 (`oneSlash-app/design-system-docs`), which is in scope.
@@ -274,11 +302,11 @@ The mapping table is also published as a page in the docs site
 ## My calls (not yet confirmed by the owner)
 
 - System fonts on native; Inter and Fira Code stay on the web.
-- Sheets, popovers and menus keep the system material.
+- Sheets, popovers and menus keep the system material, unless the owner keeps a named exception in the review (section 5).
 - The Swift package lives in the design-system repo, not a separate repo.
 - No increased-contrast variants in the first version.
 - The Compose theme waits for the Android app.
-- The Mac sidebar keeps the system material and is not painted.
+- The Mac sidebar keeps the system material, unless the owner keeps a named exception in the review (section 5).
 - The work ends at store builds ready to submit; the owner submits.
 - Scindo's `DESIGN.md` is kept and points to the generated ODS one.
 - The docs site gets the mapping table page.
