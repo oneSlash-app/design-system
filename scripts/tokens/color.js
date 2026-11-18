@@ -25,4 +25,4 @@ function contrastRatio(a, b) {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-module.exports = { hexToChannels, contrastRatio };
+module.exports = { parseHex, hexToChannels, contrastRatio };

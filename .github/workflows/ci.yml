@@ -1,0 +1,49 @@
+# Checks every pull request and every push to main: the Node package
+# (tests, contrast, committed dist/ and native/ output up to date) and the
+# Swift package (build, test, iOS build).
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+
+      - run: npm ci
+
+      - run: npm test
+
+      - run: npm run check:contrast
+
+      - name: Build and check committed output is up to date
+        run: |
+          npm run build
+          if [ -n "$(git status --porcelain dist native)" ]; then
+            git status --porcelain dist native
+            echo "::error::dist/ or native/ is out of date. Run npm run build and commit."
+            exit 1
+          fi
+
+  swift:
+    runs-on: macos-26
+    steps:
+      - uses: actions/checkout@v7
+
+      - run: swift build
+
+      - run: swift test
+
+      - name: Build for iOS
+        run: xcodebuild -scheme OneSlashDesign -destination 'generic/platform=iOS' build

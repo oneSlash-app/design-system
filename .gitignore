@@ -47,3 +47,7 @@ playwright-report/
 # storybook build output
 /storybook-static
 /.tsbuildinfo
+
+# SwiftPM
+.build/
+.swiftpm/
