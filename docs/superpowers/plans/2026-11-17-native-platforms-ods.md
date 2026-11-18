@@ -370,6 +370,8 @@ The color table has one row per `group.key` and two columns (light, dark) per th
 
 Added 2026-11-17 after Tasks 1 to 7 merged (PR #75). Scindo found that a menu draws its item icons with the light value of a dynamic root foreground color, so icons vanish in dark mode (scindo PRs #301, #315; its workaround is `ForestTextLevels` in `apps/apple/Shared/ForestTheme.swift`).
 
+**Outcome (2026-11-17):** In a scratch app on the iOS 26.4 and iOS 27.2 simulators (Xcode 27.2), the icon bug did not reproduce under `odsTheme`. Menus draw their item icons in the tint, and the modifier's dynamic `.tint(accent.main)` resolves correctly in dark mode. The bug appears only when a root sets the foreground style without a tint, as Scindo's did: the icons then take `text.primary`'s light value. The toolbar menu label bug did reproduce under `odsTheme`: the label was white in both appearances. So `odsTheme(_:)` is unchanged, and only `odsToolbarMenuLabel()` was added, with a test and docs. The steps below record the original plan.
+
 **Files:**
 - Modify: `native/swift/Sources/OneSlashDesign/ODSThemeModifier.swift`, `native/swift/Tests/OneSlashDesignTests/ThemeModifierTests.swift`, `scripts/tokens/design-md.src.md`
 
