@@ -14,6 +14,7 @@
       "types": "./dist/components/*.d.ts",
       "default": "./dist/components/*.jsx"
     },
+    "./tokens.json": "./dist/tokens.json",
     "./tokens": {
       "types": "./dist/designTokens.d.ts",
       "default": "./dist/designTokens.js"

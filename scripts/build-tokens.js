@@ -7,6 +7,7 @@ const { emitThemeCss } = require('./tokens/emit-theme');
 const { emitTokensCss } = require('./tokens/emit-tokens-css');
 const { emitPreset } = require('./tokens/emit-preset');
 const { emitThemeV4, emitTypographyV4 } = require('./tokens/emit-v4');
+const { emitDtcg } = require('./tokens/emit-dtcg');
 const { emitSwiftColors, emitSwiftMetrics } = require('./tokens/emit-swift');
 
 // Each emitter returns the file contents.
@@ -25,6 +26,7 @@ const emitters = {
   'theme.css': (t) => emitThemeV4(t),
   'theme-auto.css': (t) => emitThemeV4(t, { auto: true }),
   'typography.css': (t) => emitTypographyV4(t),
+  'tokens.json': (t) => emitDtcg(t),
   'tailwind-preset.js': (t) => emitPreset(t),
   'tailwind-preset-auto.js': (t) => emitPreset(t, { auto: true }),
 };
