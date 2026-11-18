@@ -17,7 +17,7 @@ const bgClassMap = {
   warning: 'bg-warning-alertBg',
   info:    'bg-info-alertBg',
   success: 'bg-success-alertBg',
-  default: 'bg-secondary-light',
+  default: 'bg-secondary-main',
 } as const;
 
 const AUTO_DISMISS_MS = 5000;
@@ -84,6 +84,8 @@ export default function Alert({
   if (!shouldRender) return null;
 
   const bgClasses = bgClassMap[type] ?? bgClassMap.default;
+  // The default alert sits on secondary.main, whose label is secondary.contrast; the status backgrounds take text.primary
+  const textClasses = bgClasses === bgClassMap.default ? 'text-secondary-contrast' : 'text-fg-primary';
 
   const alertContent = (
     <div
@@ -97,7 +99,7 @@ export default function Alert({
         isVisible ? 'opacity-100 translate-y-0' : variant === 'toast' ? 'opacity-0 -translate-y-[calc(100%+1rem)]' : 'opacity-0'
       } ${variant === 'toast' ? 'max-w-md pointer-events-auto' : ''}`}
     >
-      <div className="flex items-start gap-2 text-fg-primary">
+      <div className={`flex items-start gap-2 ${textClasses}`}>
         {/* With two lines, nudge the text so its first line centers on the close button */}
         <div className={`flex flex-col text-left ${secondMessage && showCloseButton ? 'pt-[3px]' : ''}`}>
           <span className="text-body2">{message}</span>
