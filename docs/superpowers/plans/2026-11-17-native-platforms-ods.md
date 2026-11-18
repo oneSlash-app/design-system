@@ -22,7 +22,7 @@
 - Generated files are committed. `npm run build` must leave `git status --porcelain dist native` empty.
 - Generated files start with the existing `HEADER` text from `scripts/tokens/emit-theme.js` (as a `//` comment in Swift, `<!-- -->` in Markdown; JSON carries it in a top-level `$description`).
 - `package.json` `version` stays `2.9.0` until Task 8; the release workflow publishes on any version change merged to `main`.
-- The release (Task 8) waits for the owner's approval of the Scindo spike, so a token gap found there is fixed before the version ships.
+- The release (Task 8) waits for Tasks 7a and 7b and for the Scindo migration's "values first" step to pass its identical-screenshot check on a local reference to this package (scindo plan `docs/superpowers/plans/2026-11-17-native-apps-13-ods-package.md`, Task 3), so a token gap found there is fixed before the version ships.
 - Commit messages end with `Co-Authored-By: Claude Fable 5.2 <noreply@anthropic.com>`; PR bodies end with `🤖 Generated with [Claude Code](https://claude.com/claude-code)`.
 
 ## Review Focus
@@ -366,15 +366,53 @@ The color table has one row per `group.key` and two columns (light, dark) per th
 
 ---
 
+### Task 7a: `odsTheme` text colors survive menus
+
+Added 2026-11-17 after Tasks 1 to 7 merged (PR #75). Scindo found that a menu draws its item icons with the light value of a dynamic root foreground color, so icons vanish in dark mode (scindo PRs #301, #315; its workaround is `ForestTextLevels` in `apps/apple/Shared/ForestTheme.swift`).
+
+**Files:**
+- Modify: `native/swift/Sources/OneSlashDesign/ODSThemeModifier.swift`, `native/swift/Tests/OneSlashDesignTests/ThemeModifierTests.swift`, `scripts/tokens/design-md.src.md`
+
+**Interfaces:**
+- Produces: `odsTheme(_:)` keeps its signature. Internally it becomes a `ViewModifier` that reads the environment and passes `.foregroundStyle` three **fixed** colors, each `Color(theme.text.<level>.resolve(in: environment))`, so no dynamic color reaches a menu. No hex and no explicit branch on color scheme in the source.
+- Adds `public extension View { func odsToolbarMenuLabel() -> some View }`: the label of a toolbar `Menu` in the resolved `text.primary` (an iPhone toolbar menu otherwise draws its label white in both appearances).
+
+- [ ] **Step 1: Reproduce.** In a scratch iOS app target (not committed) or a SwiftUI preview on the iOS 26 simulator in dark mode, put a toolbar `Menu` with `Label` items under `.odsTheme(.forest)` and confirm the icons use the light value. Record a screenshot path in the commit message. If it does not reproduce on the current OS, stop and report: the change is then not needed and Scindo's workaround can simply be deleted.
+- [ ] **Step 2: Failing test.** Rendered test: under `.odsTheme(.forest)` with `.environment(\.colorScheme, .dark)`, a view that captures `@Environment(\.self)` and resolves the root foreground's primary level must give `0xD9E5C7` when resolved again in a **light** environment (a fixed color does not change; a dynamic one gives `0x1C2213`).
+- [ ] **Step 3: Implement** as in Interfaces. Existing rendered tests (primary, secondary, tertiary, dark secondary, tint) must still pass unchanged.
+- [ ] **Step 4: Document** both in `design-md.src.md` (one sentence each) and rebuild.
+- [ ] **Step 5: Verify** `swift test`, `npm test`, the iOS `xcodebuild` build; `git status --porcelain dist native` empty after `npm run build`.
+- [ ] **Step 6: Commit** `fix(native): odsTheme passes resolved text colors so menus draw them in dark mode`
+
+---
+
+### Task 7b: `background.row` token
+
+Scindo's `Forest.row` (opaque grouped rows: light `accent200`, dark `accent100`) has no token, so the app cannot stop typing those values.
+
+**Files:**
+- Modify: `designTokens.js` (`withSemanticKeys`), `scripts/tokens/tokens.test.js`, `scripts/check-contrast.js` if it lists surfaces, `CHANGELOG.md` is left for Task 8
+
+**Interfaces:**
+- Produces: `background.row` in every theme and mode: `isLight ? set.background.accent200 : set.background.accent100`, with a comment saying what it is for. It flows to every output with no emitter change: `--os-color-background-row`, `bg-background-row`, `ODSTheme.<theme>.background.row`, `tokens.json`, `DESIGN.md`.
+
+- [ ] **Step 1: Failing test** in `tokens.test.js`: forest `background.row` is `#EBF1E0` in light and `#27301B` in dark; default's equals its own `accent200` / `accent100`.
+- [ ] **Step 2: Run** `npm test`. Expected: FAIL.
+- [ ] **Step 3: Implement.** If the contrast gate checks text on surfaces by name, add `row` with `text.primary`, `text.secondary` and `error.text`.
+- [ ] **Step 4: Run** `npm test`, `npm run check:contrast`, `swift test`. Expected: pass. If a theme fails contrast on `row`, report it; do not change values.
+- [ ] **Step 5: Commit** `feat(tokens): background.row for opaque grouped rows` (include regenerated `dist` and `native`).
+
+---
+
 ### Task 8: Release 2.10.0 and the docs-site page
 
-Gate: the owner has approved the Scindo spike (second plan), and any token change it asked for is merged.
+Gate: Tasks 7a and 7b are merged, and the Scindo plan's Task 3 (identical screenshots on a local package reference) has passed.
 
 **Files:**
 - Modify: `package.json` (`version`: `2.10.0`), `CHANGELOG.md`
 - In `oneSlash-app/design-system-docs`: create `src/app/design-tokens/native/page.tsx`; modify the navigation list that contains `design-tokens/spacing`
 
-- [ ] **Step 1: CHANGELOG** entry `## [2.10.0] - <date>` under `### Added`: the Swift package `OneSlashDesign` (iOS 26, macOS 26; colors for all themes, spacing, radius, durations, `odsTheme(_:)`, type roles); `tokens.json`; `DESIGN.md`; `native-mapping.json`.
+- [ ] **Step 1: CHANGELOG** entry `## [2.10.0] - <date>` under `### Added`: the Swift package `OneSlashDesign` (iOS 26, macOS 26; colors for all themes, spacing, radius, durations, `odsTheme(_:)`, `odsToolbarMenuLabel()`, type roles); `tokens.json`; `DESIGN.md`; `native-mapping.json`; the `background.row` color.
 
 - [ ] **Step 2: Bump, build, verify:** set the version, run `npm run build`, `npm test`, `swift test`; `git status --porcelain dist native` shows only intended changes, all committed.
 
