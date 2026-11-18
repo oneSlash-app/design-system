@@ -166,7 +166,7 @@ Platforms: iOS 26 and macOS 26 and later, matching Scindo.
 
 | Area | Treatment |
 |---|---|
-| Accent | `accent.main` as the app accent color (already the case, now generated) |
+| Accent | `accent.main` as the app accent color: the app's `AccentColor` asset, which the package neither sets nor verifies |
 | Screen and window content background | `background.default` |
 | Raised content (cards, message bubbles, grouped rows) | `background.accent100` to `accent300`, as on the web |
 | Text | `text.primary` as the root foreground style; `text.secondary` and `text.disabled` for the lower levels |
@@ -262,8 +262,8 @@ Behavior, navigation and features do not change.
   of opaque grouped rows, which Scindo uses as `Forest.row` and no token
   expresses today. It is added for every theme, so the web gets it too.
 
-**The `AccentColor` asset stays.** The system reads it for alerts and macOS
-selection, which the modifier's tint does not reach. The check verifies its
+**The `AccentColor` asset stays.** It is the app's only accent: `odsTheme(_:)`
+sets no tint, and the package verifies nothing about it. The check verifies its
 two values equal the theme's `accent.main`.
 
 **Named exceptions:** none yet. Filled in after the review.

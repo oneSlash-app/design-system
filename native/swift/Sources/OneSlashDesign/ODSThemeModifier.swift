@@ -12,26 +12,43 @@ public extension EnvironmentValues {
     }
 }
 
+/// The theme's three text levels, resolved where the modifier sits, as fixed colors.
+private struct ODSTextLevels: ViewModifier {
+    let theme: ODSTheme
+    @Environment(\.self) private var environment
+
+    func body(content: Content) -> some View {
+        content.foregroundStyle(Color(theme.text.primary.resolve(in: environment)),
+                                Color(theme.text.secondary.resolve(in: environment)),
+                                Color(theme.text.disabled.resolve(in: environment)))
+    }
+}
+
 public extension View {
     /// Applies a oneSlash theme to this view and its descendants.
     ///
-    /// Sets the `odsTheme` environment value, the tint (`accent.main`), and the
-    /// primary, secondary and tertiary foreground styles, so `.foregroundStyle(.secondary)`
-    /// and `.tertiary` resolve to the theme's text colors. It sets no background.
+    /// Sets the `odsTheme` environment value and the primary, secondary and tertiary foreground
+    /// styles, so `.foregroundStyle(.secondary)` and `.tertiary` resolve to the theme's text colors.
+    /// It sets no tint and no background.
+    ///
+    /// The accent comes from the app's `AccentColor` asset, which the app must define with the
+    /// theme's `accent.main` light and dark values. That asset tints controls, alerts and selection;
+    /// on macOS it yields to the user's system accent choice. An explicit tint would override that
+    /// choice, and on iOS it changes how some controls draw, such as bordered button fills.
+    ///
+    /// The foreground styles are fixed colors: each text level resolved in the current environment,
+    /// and resolved again when the environment changes, so an appearance switch still follows.
+    /// System toolbars and menus resolve a dynamic root color without the window's appearance,
+    /// which gives dark toolbar glyphs and menu icons in dark mode.
     ///
     /// The root foreground style takes the tint away from text-like controls:
     /// borderless buttons and links render in `text.primary`, not the accent.
     /// Apply `.foregroundStyle(.tint)` to one to give it the accent.
     ///
-    /// Menus draw their item icons in the tint, so they take `accent.main`, not `text.primary`.
-    /// The tint also keeps them visible: without it, the icons take the root foreground style in
-    /// its light value, which is near invisible on a dark menu (seen on iOS 26.4 and 27.2).
     /// Toolbar menu labels need `odsToolbarMenuLabel()`.
     func odsTheme(_ theme: ODSTheme) -> some View {
-        self
+        modifier(ODSTextLevels(theme: theme))
             .environment(\.odsTheme, theme)
-            .tint(theme.accent.main)
-            .foregroundStyle(theme.text.primary, theme.text.secondary, theme.text.disabled)
     }
 }
 
