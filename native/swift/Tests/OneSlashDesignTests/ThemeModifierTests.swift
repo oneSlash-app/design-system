@@ -57,7 +57,9 @@ private func centerHex(of view: some View) -> UInt32? {
 @Test @MainActor func themeSetsNoTint() {
     // The accent comes from the app's AccentColor asset, not from the modifier. The system
     // accent in a test host is not ours to know, so assert only that it is not the theme's.
-    #expect(renderedHex(.tint, theme: .indigo, scheme: .light) != 0x204F8C)
+    let tint = renderedHex(.tint, theme: .indigo, scheme: .light)
+    #expect(tint != nil)
+    #expect(tint != 0x204F8C)
 }
 
 @Test @MainActor func themePrimaryLevelIsFixedColor() {
