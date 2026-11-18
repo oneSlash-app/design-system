@@ -18,12 +18,13 @@ interface TagProps {
   disabled?: boolean;
 }
 
-// Filled tags use the status `fill` with `onFill` text; text-only tags use the status `text` token.
+// Filled tags use the status `fill` with `onFill` text (the default tag: `secondary.main` with
+// `secondary.contrast`); text-only tags use the status `text` token.
 // Each pair is checked at 4.5:1 by `npm run check:contrast`.
 const colorConfig = {
   default: {
-    bg: 'bg-secondary-light',
-    text: 'text-fg-primary',
+    bg: 'bg-secondary-main',
+    text: 'text-secondary-contrast',
     textOnly: 'text-fg-secondary',
     border: 'border-misc-divider',
     dot: 'bg-fg-secondary',

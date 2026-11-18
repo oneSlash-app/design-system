@@ -6,7 +6,7 @@ var bgClassMap = {
     warning: 'bg-warning-alertBg',
     info: 'bg-info-alertBg',
     success: 'bg-success-alertBg',
-    default: 'bg-secondary-light',
+    default: 'bg-secondary-main',
 };
 var AUTO_DISMISS_MS = 5000;
 var EXIT_MS = 150;
@@ -62,10 +62,12 @@ export default function Alert(_a) {
     if (!shouldRender)
         return null;
     var bgClasses = (_b = bgClassMap[type]) !== null && _b !== void 0 ? _b : bgClassMap.default;
+    // The default alert sits on secondary.main, whose label is secondary.contrast; the status backgrounds take text.primary
+    var textClasses = bgClasses === bgClassMap.default ? 'text-secondary-contrast' : 'text-fg-primary';
     var alertContent = (<div 
     // Errors interrupt screen readers; everything else is announced politely
     role={type === 'error' ? 'alert' : 'status'} onMouseEnter={function () { return setIsPaused(true); }} onMouseLeave={function () { return setIsPaused(false); }} onFocus={function () { return setIsPaused(true); }} onBlur={function () { return setIsPaused(false); }} className={"flex ".concat(secondMessage ? 'items-start' : 'items-center', " justify-between w-full p-2 rounded-control transition-[opacity,transform] ").concat(isVisible ? motionClasses.enter : motionClasses.exit, " motion-reduce:transition-none ").concat(bgClasses, " ").concat(isVisible ? 'opacity-100 translate-y-0' : variant === 'toast' ? 'opacity-0 -translate-y-[calc(100%+1rem)]' : 'opacity-0', " ").concat(variant === 'toast' ? 'max-w-md pointer-events-auto' : '')}>
-      <div className="flex items-start gap-2 text-fg-primary">
+      <div className={"flex items-start gap-2 ".concat(textClasses)}>
         {/* With two lines, nudge the text so its first line centers on the close button */}
         <div className={"flex flex-col text-left ".concat(secondMessage && showCloseButton ? 'pt-[3px]' : '')}>
           <span className="text-body2">{message}</span>
