@@ -1,0 +1,249 @@
+{
+  "components": [
+    {
+      "ods": "alert",
+      "swiftui": "ODS part (planned)",
+      "compose": "ODS part (planned)",
+      "note": "Until then: SwiftUI `.alert` for messages that need a decision; Compose `Snackbar` in a `SnackbarHost` for toasts."
+    },
+    {
+      "ods": "button",
+      "swiftui": "`Button` with `.borderedProminent` or `.glassProminent` for accent, `.bordered` for primary",
+      "compose": "`Button`, `OutlinedButton`",
+      "note": "Tertiary and text-only: `.borderless` / `TextButton`."
+    },
+    {
+      "ods": "checkBox",
+      "swiftui": "`Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS)",
+      "compose": "`Checkbox`"
+    },
+    {
+      "ods": "emptyBox",
+      "swiftui": "ODS part (planned)",
+      "compose": "ODS part (planned)",
+      "note": "Until then: SwiftUI `ContentUnavailableView`; Compose a centered `Icon` and `Text` in a `Column`."
+    },
+    {
+      "ods": "factsRow",
+      "swiftui": "Not applicable: web page pattern",
+      "compose": "Not applicable: web page pattern",
+      "note": "In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows."
+    },
+    {
+      "ods": "figure",
+      "swiftui": "Not applicable: web page pattern",
+      "compose": "Not applicable: web page pattern",
+      "note": "In an app screen: an `Image` with a caption `Text` in the caption text style."
+    },
+    {
+      "ods": "heading",
+      "swiftui": "`Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)`",
+      "compose": "`Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }`"
+    },
+    {
+      "ods": "icon",
+      "swiftui": "`Image(systemName:)` (SF Symbols)",
+      "compose": "Material Symbols"
+    },
+    {
+      "ods": "iconButton",
+      "swiftui": "`Button` with a `Label` and `.labelStyle(.iconOnly)`",
+      "compose": "`IconButton`"
+    },
+    {
+      "ods": "layout",
+      "swiftui": "Not applicable: web page pattern",
+      "compose": "Not applicable: web page pattern",
+      "note": "In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`."
+    },
+    {
+      "ods": "line",
+      "swiftui": "`Divider`",
+      "compose": "`HorizontalDivider`, `VerticalDivider`"
+    },
+    {
+      "ods": "link",
+      "swiftui": "`Link`",
+      "compose": "`Text` with a `LinkAnnotation.Url` in its `AnnotatedString`"
+    },
+    {
+      "ods": "linkCard",
+      "swiftui": "Not applicable: web page pattern",
+      "compose": "Not applicable: web page pattern",
+      "note": "In an app screen: a `NavigationLink` row in a `List` / a clickable `ListItem`."
+    },
+    {
+      "ods": "list",
+      "swiftui": "`List`",
+      "compose": "`LazyColumn` of `ListItem`",
+      "note": "A short bulleted passage inside text stays `Text` lines."
+    },
+    {
+      "ods": "loadingScreen",
+      "swiftui": "`ProgressView`",
+      "compose": "`CircularProgressIndicator`"
+    },
+    {
+      "ods": "menu",
+      "swiftui": "`Menu` or `.contextMenu`",
+      "compose": "`DropdownMenu`"
+    },
+    {
+      "ods": "menuItem",
+      "swiftui": "`Button` inside a `Menu`",
+      "compose": "`DropdownMenuItem`",
+      "note": "In a sidebar: a `List` row / `NavigationDrawerItem`."
+    },
+    {
+      "ods": "modal",
+      "swiftui": "`.sheet` or `.alert`",
+      "compose": "`ModalBottomSheet` or `AlertDialog`",
+      "note": "`ModalBottomSheet` needs `@OptIn(ExperimentalMaterial3Api::class)`."
+    },
+    {
+      "ods": "navigation",
+      "swiftui": "`NavigationSplitView` with a sidebar `List`",
+      "compose": "`NavigationRail` or `ModalNavigationDrawer` with `NavigationDrawerItem`"
+    },
+    {
+      "ods": "numberedRow",
+      "swiftui": "Not applicable: web page pattern",
+      "compose": "Not applicable: web page pattern",
+      "note": "In an app screen: rows of a `List` / `ListItem`s."
+    },
+    {
+      "ods": "pageHeader",
+      "swiftui": "Not applicable: web page pattern",
+      "compose": "Not applicable: web page pattern",
+      "note": "In an app screen: `.navigationTitle` / `TopAppBar`."
+    },
+    {
+      "ods": "pageShell",
+      "swiftui": "Not applicable: web page pattern",
+      "compose": "Not applicable: web page pattern",
+      "note": "In an app screen: `NavigationStack` / `Scaffold`."
+    },
+    {
+      "ods": "paragraph",
+      "swiftui": "`Text` with `.font(.body)`",
+      "compose": "`Text` with `MaterialTheme.typography.bodyLarge`"
+    },
+    {
+      "ods": "popover",
+      "swiftui": "`.popover`",
+      "compose": "`DropdownMenu`",
+      "note": "Larger anchored content on Android: `ModalBottomSheet`."
+    },
+    {
+      "ods": "radioGroup",
+      "swiftui": "`Picker` (`.inline` on iOS, `.radioGroup` on macOS)",
+      "compose": "`RadioButton`s in a `Column` with `Modifier.selectableGroup()`"
+    },
+    {
+      "ods": "sectionIntro",
+      "swiftui": "Not applicable: web page pattern",
+      "compose": "Not applicable: web page pattern",
+      "note": "In an app screen: a `Section` header in a `List` or `Form` / a heading `Text`."
+    },
+    {
+      "ods": "select",
+      "swiftui": "`Picker` or `Menu`",
+      "compose": "`ExposedDropdownMenuBox`"
+    },
+    {
+      "ods": "surface",
+      "swiftui": "Not applicable: web page pattern",
+      "compose": "Not applicable: web page pattern",
+      "note": "In an app screen: a `Form` section or `GroupBox` / `Card`."
+    },
+    {
+      "ods": "tab",
+      "swiftui": "`TabView` or segmented `Picker`",
+      "compose": "`PrimaryTabRow`",
+      "note": "One `Tab` inside `TabView` or one segment / one `Tab`. `TabRow` is deprecated in Material 3."
+    },
+    {
+      "ods": "tableCell",
+      "swiftui": "A `TableColumn` content view",
+      "compose": "`Text` in a `Row` with `Modifier.weight`",
+      "note": "Material 3 has no table."
+    },
+    {
+      "ods": "tableContainer",
+      "swiftui": "`Table`",
+      "compose": "`LazyColumn` of `Row`s",
+      "note": "Material 3 has no table. A compact-width iPhone `Table` shows only its first column."
+    },
+    {
+      "ods": "tableHeader",
+      "swiftui": "The `Table` column headers (`TableColumn` titles)",
+      "compose": "A header `Row` as the first `LazyColumn` item",
+      "note": "Material 3 has no table."
+    },
+    {
+      "ods": "tableHeaderCell",
+      "swiftui": "A `TableColumn` title",
+      "compose": "`Text` in the header `Row`",
+      "note": "Material 3 has no table."
+    },
+    {
+      "ods": "tableRow",
+      "swiftui": "`TableRow`",
+      "compose": "`Row`",
+      "note": "Material 3 has no table."
+    },
+    {
+      "ods": "tabsContainer",
+      "swiftui": "`TabView` or segmented `Picker`",
+      "compose": "`PrimaryTabRow`",
+      "note": "`TabRow` is deprecated in Material 3."
+    },
+    {
+      "ods": "tag",
+      "swiftui": "ODS part (planned)",
+      "compose": "ODS part (planned)",
+      "note": "Until then: SwiftUI `.badge` for counts, else a `Label`; Compose `AssistChip` or `FilterChip`."
+    },
+    {
+      "ods": "textarea",
+      "swiftui": "`TextField(_:text:axis: .vertical)` or `TextEditor`",
+      "compose": "`OutlinedTextField` with `minLines`"
+    },
+    {
+      "ods": "textField",
+      "swiftui": "`TextField` (`SecureField` for passwords)",
+      "compose": "`OutlinedTextField` or `TextField`"
+    },
+    {
+      "ods": "timeStamp",
+      "swiftui": "`Text(_:style:)` (`.relative`) or `Text(_:format:)` (`.dateTime`)",
+      "compose": "`Text` with `DateUtils.getRelativeTimeSpanString` or `DateTimeFormatter.ofLocalizedDateTime`"
+    },
+    {
+      "ods": "tooltip",
+      "swiftui": "`.help`",
+      "compose": "`TooltipBox`",
+      "note": "`.help` shows on pointer hover only. `TooltipBox` needs `@OptIn(ExperimentalMaterial3Api::class)`."
+    },
+    {
+      "ods": "userImage",
+      "swiftui": "ODS part (planned)",
+      "compose": "ODS part (planned)",
+      "note": "Until then: SwiftUI `AsyncImage` clipped to a `Circle`, `person.crop.circle` placeholder; Compose `Image` clipped to `CircleShape`, `account_circle` placeholder."
+    }
+  ],
+  "typeRoles": {
+    "h1": "largeTitle",
+    "h2": "largeTitle",
+    "h3": "title",
+    "h4": "title2",
+    "h5": "title3",
+    "h6": "headline",
+    "subtitle1": "body",
+    "subtitle2": "subheadline",
+    "body1": "body",
+    "body2": "subheadline",
+    "caption": "caption",
+    "code": "callout.monospaced"
+  }
+}

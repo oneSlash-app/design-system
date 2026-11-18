@@ -122,3 +122,16 @@ test('native type roles cover every typography style', () => {
   );
   assert.deepEqual(Object.keys(typeRoles).sort(), styles.sort());
 });
+
+test('native mapping has exactly one row per component file', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { components } = require('../../native/mapping.js');
+  const files = fs.readdirSync(path.join(__dirname, '../../components'))
+    .filter((f) => f.endsWith('.tsx') && f !== 'sharedStyles.tsx')
+    .map((f) => f.replace(/\.tsx$/, ''));
+  assert.deepEqual((components || []).map((r) => r.ods).sort(), files.sort());
+  for (const r of components) {
+    assert.ok(r.swiftui && r.compose, r.ods);
+  }
+});

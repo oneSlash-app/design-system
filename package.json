@@ -15,6 +15,7 @@
       "default": "./dist/components/*.jsx"
     },
     "./tokens.json": "./dist/tokens.json",
+    "./native-mapping.json": "./dist/native-mapping.json",
     "./tokens": {
       "types": "./dist/designTokens.d.ts",
       "default": "./dist/designTokens.js"

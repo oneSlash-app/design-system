@@ -12,7 +12,7 @@ test('build-tokens writes the expected files into an output dir', () => {
                    'themes/forest-auto.css', 'tokens.css', 'tokens.json', 'theme.css', 'typography.css',
                    'tailwind-preset.js', 'theme-auto.css', 'tailwind-preset-auto.js',
                    'themes/clay.css', 'themes/clay-auto.css', 'themes/indigo.css', 'themes/indigo-auto.css',
-                   'themes/wine.css', 'themes/wine-auto.css']) {
+                   'themes/wine.css', 'themes/wine-auto.css', 'native-mapping.json']) {
     assert.ok(fs.existsSync(path.join(out, f)), f);
   }
 });

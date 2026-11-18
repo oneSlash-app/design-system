@@ -9,6 +9,7 @@ const { emitPreset } = require('./tokens/emit-preset');
 const { emitThemeV4, emitTypographyV4 } = require('./tokens/emit-v4');
 const { emitDtcg } = require('./tokens/emit-dtcg');
 const { emitSwiftColors, emitSwiftMetrics } = require('./tokens/emit-swift');
+const { components, typeRoles } = require('../native/mapping');
 
 // Each emitter returns the file contents.
 const emitters = {
@@ -29,6 +30,7 @@ const emitters = {
   'tokens.json': (t) => emitDtcg(t),
   'tailwind-preset.js': (t) => emitPreset(t),
   'tailwind-preset-auto.js': (t) => emitPreset(t, { auto: true }),
+  'native-mapping.json': () => `${JSON.stringify({ components, typeRoles }, null, 2)}\n`,
 };
 
 const nativeEmitters = {
