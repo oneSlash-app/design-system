@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.10.0] - 2026-11-18
+
+### Added
+
+- Swift package `OneSlashDesign` (iOS 26, macOS 26) for native apps, installed by the repository URL with `from: "2.10.0"`: colors for every theme (`ODSTheme.default`, `.forest`, `.clay`, `.indigo`, `.wine`, light and dark), `ODSSpacing`, `ODSRadius`, `ODSDuration`, the type roles as system text styles (`Font.ods(_:)`), `odsTheme(_:)` and `odsToolbarMenuLabel()`. `odsTheme(_:)` passes the theme through the environment and the three text levels as colors resolved for the current appearance; it sets no tint, so the app's `AccentColor` asset supplies the accent.
+- `dist/tokens.json`: all tokens in the W3C design tokens format. Values the format cannot express are left out and named in its `$description`.
+- `dist/DESIGN.md`: the generated design-system brief for agents, with the nine rules for keeping an app working across OS updates.
+- `dist/native-mapping.json`: which native control stands in for each web component (SwiftUI and Compose) and the type-role table.
+- `background.row` color in every theme (`--os-color-background-row`, `bg-background-row`, `ODSTheme.<theme>.background.row`): the opaque fill for grouped rows (`accent200` in light, `accent100` in dark).
+
 ## [2.9.0] - 2026-11-11
 
 ### Changed
