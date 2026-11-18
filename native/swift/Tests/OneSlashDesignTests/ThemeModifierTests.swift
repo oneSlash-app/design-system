@@ -20,17 +20,21 @@ private func renderedHex(_ style: HierarchicalShapeStyle, theme: ODSTheme, schem
     let renderer = ImageRenderer(content: view)
     renderer.scale = 1
     guard let cg = renderer.cgImage,
-          let data = cg.dataProvider?.data,
-          let bytes = CFDataGetBytePtr(data) else { return nil }
-    let bytesPerPixel: Int = cg.bitsPerPixel / 8
-    let row: Int = (cg.height / 2) * cg.bytesPerRow
-    let offset: Int = row + (cg.width / 2) * bytesPerPixel
-    // Premultiplied RGBA or BGRA depending on bitmap info; text colors are opaque.
-    let info = cg.bitmapInfo.intersection(.byteOrderMask)
-    let (r, g, b): (UInt8, UInt8, UInt8) = info == .byteOrder32Little
-        ? (bytes[offset + 2], bytes[offset + 1], bytes[offset])
-        : (bytes[offset], bytes[offset + 1], bytes[offset + 2])
-    return UInt32(r) << 16 | UInt32(g) << 8 | UInt32(b)
+          let space = CGColorSpace(name: CGColorSpace.sRGB) else { return nil }
+    // Redraw into a known 8-bit sRGB RGBA bitmap, so the readback does not depend on
+    // the renderer's pixel format or color space. Text colors are opaque.
+    var pixels = [UInt8](repeating: 0, count: cg.width * cg.height * 4)
+    let drawn: Bool = pixels.withUnsafeMutableBytes { buffer in
+        guard let context = CGContext(
+            data: buffer.baseAddress, width: cg.width, height: cg.height,
+            bitsPerComponent: 8, bytesPerRow: cg.width * 4, space: space,
+            bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue) else { return false }
+        context.draw(cg, in: CGRect(x: 0, y: 0, width: cg.width, height: cg.height))
+        return true
+    }
+    guard drawn else { return nil }
+    let offset: Int = ((cg.height / 2) * cg.width + cg.width / 2) * 4
+    return UInt32(pixels[offset]) << 16 | UInt32(pixels[offset + 1]) << 8 | UInt32(pixels[offset + 2])
 }
 
 @Test @MainActor func hierarchicalStylesResolveToTextTokens() {
