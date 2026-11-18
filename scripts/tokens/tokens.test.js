@@ -114,3 +114,11 @@ test('tooltip tokens are inverted surfaces derived from the opposite mode of the
   assert.equal(tokens.themes.forest.dark.misc.tooltipBg, '#F4F7EC');
   assert.equal(tokens.themes.forest.dark.misc.tooltipText, '#1C2213');
 });
+
+test('native type roles cover every typography style', () => {
+  const { typeRoles } = require('../../native/mapping.js');
+  const styles = Object.keys(tokens.typography).filter(
+    (k) => !['family', 'monoFamily', 'alignments'].includes(k),
+  );
+  assert.deepEqual(Object.keys(typeRoles).sort(), styles.sort());
+});
