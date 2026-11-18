@@ -197,6 +197,9 @@
   --color-background-panel: rgb(var(--os-color-background-panel));
   --color-light-background-panel: rgb(var(--os-color-background-panel));
   --color-dark-background-panel: rgb(var(--os-color-background-panel));
+  --color-background-row: rgb(var(--os-color-background-row));
+  --color-light-background-row: rgb(var(--os-color-background-row));
+  --color-dark-background-row: rgb(var(--os-color-background-row));
   --color-background-paper: rgb(var(--os-color-background-paper));
   --color-light-background-paper: rgb(var(--os-color-background-paper));
   --color-dark-background-paper: rgb(var(--os-color-background-paper));

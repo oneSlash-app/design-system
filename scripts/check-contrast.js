@@ -27,6 +27,9 @@ function pairsFor(set) {
       add(`text.${key} on background.${bg}`, set.text[key], set.background[bg], min, gatedOn.includes(bg));
     }
   }
+  add('text.primary on background.row', set.text.primary, set.background.row, 4.5, true);
+  add('text.secondary on background.row', set.text.secondary, set.background.row, 4.5, true);
+  add('error.text on background.row', set.error.text, set.background.row, 4.5, true);
   for (const s of STATUSES) {
     add(`${s}.onFill on ${s}.fill`, set[s].onFill, set[s].fill, 4.5, true);
     add(`${s}.text on background.default`, set[s].text, set.background.default, 4.5, true);

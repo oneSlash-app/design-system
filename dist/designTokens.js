@@ -340,7 +340,10 @@ function withSemanticKeys(set, mode) {
         secondary: __assign(__assign({}, set.secondary), { contrast: set.text.primary }), background: __assign(__assign({}, set.background), { elevated: isLight ? set.background.default : set.background.accent100, overlay: isLight ? set.background.accent300 : set.background.accent100, 
             // The surface a panel of content sits on, and a sheet of paper that stays
             // light in dark mode, for scans, drawings and specimens drawn in black.
-            panel: set.background.accent100, paper: '#FFFFFF' }), error: status(set.error, true), warning: status(set.warning, false), info: status(set.info, false), success: status(set.success, false) });
+            panel: set.background.accent100, 
+            // Opaque rows of a grouped list: they sit on `default` and stay readable in dark,
+            // where accent200 would leave secondary and error text under 4.5:1.
+            row: isLight ? set.background.accent200 : set.background.accent100, paper: '#FFFFFF' }), error: status(set.error, true), warning: status(set.warning, false), info: status(set.info, false), success: status(set.success, false) });
 }
 // Forest: the default set with these values replaced (group by group).
 /**

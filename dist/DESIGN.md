@@ -88,6 +88,7 @@ Use one semantic name, never a hex value. Each name resolves to a light and a da
 | background.elevated | #e8e8e8 | #333333 | #D9E5C7 | #27301B | #EDE0CC | #362A1F | #DDE6F0 | #1C263B | #EEE4E4 | #352833 |
 | background.overlay | #FFFFFF | #333333 | #F4F7EC | #27301B | #FCF8F2 | #362A1F | #F7F9FC | #1C263B | #FCF9F7 | #352833 |
 | background.panel | #f1f1f1 | #333333 | #E2ECD4 | #27301B | #F2E8D9 | #362A1F | #E6EDF5 | #1C263B | #F3EBEA | #352833 |
+| background.row | #f7f7f7 | #333333 | #EBF1E0 | #27301B | #F7F0E6 | #362A1F | #EEF3F9 | #1C263B | #F7F2F0 | #352833 |
 | background.paper | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF | #FFFFFF |
 | action.active | #888888 | #171717 | #888888 | #171717 | #888888 | #171717 | #888888 | #171717 | #888888 | #171717 |
 | action.hover | #F3F3F3 | #3D3D3D | #F3F3F3 | #3D3D3D | #F3F3F3 | #3D3D3D | #F3F3F3 | #3D3D3D | #F3F3F3 | #3D3D3D |

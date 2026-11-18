@@ -161,8 +161,9 @@ public struct ODSBackgroundColors: Sendable {
   public let elevated: Color
   public let overlay: Color
   public let panel: Color
+  public let row: Color
   public let paper: Color
-  public init(`default`: Color, accent100: Color, accent200: Color, accent300: Color, elevated: Color, overlay: Color, panel: Color, paper: Color) {
+  public init(`default`: Color, accent100: Color, accent200: Color, accent300: Color, elevated: Color, overlay: Color, panel: Color, row: Color, paper: Color) {
     self.`default` = `default`
     self.accent100 = accent100
     self.accent200 = accent200
@@ -170,6 +171,7 @@ public struct ODSBackgroundColors: Sendable {
     self.elevated = elevated
     self.overlay = overlay
     self.panel = panel
+    self.row = row
     self.paper = paper
   }
 }
@@ -344,6 +346,7 @@ public extension ODSTheme {
         elevated: Color(odsLight: 0xE8E8E8, dark: 0x333333),
         overlay: Color(odsLight: 0xFFFFFF, dark: 0x333333),
         panel: Color(odsLight: 0xF1F1F1, dark: 0x333333),
+        row: Color(odsLight: 0xF7F7F7, dark: 0x333333),
         paper: Color(odsLight: 0xFFFFFF, dark: 0xFFFFFF)
       ),
       action: ODSActionColors(
@@ -455,6 +458,7 @@ public extension ODSTheme {
         elevated: Color(odsLight: 0xD9E5C7, dark: 0x27301B),
         overlay: Color(odsLight: 0xF4F7EC, dark: 0x27301B),
         panel: Color(odsLight: 0xE2ECD4, dark: 0x27301B),
+        row: Color(odsLight: 0xEBF1E0, dark: 0x27301B),
         paper: Color(odsLight: 0xFFFFFF, dark: 0xFFFFFF)
       ),
       action: ODSActionColors(
@@ -566,6 +570,7 @@ public extension ODSTheme {
         elevated: Color(odsLight: 0xEDE0CC, dark: 0x362A1F),
         overlay: Color(odsLight: 0xFCF8F2, dark: 0x362A1F),
         panel: Color(odsLight: 0xF2E8D9, dark: 0x362A1F),
+        row: Color(odsLight: 0xF7F0E6, dark: 0x362A1F),
         paper: Color(odsLight: 0xFFFFFF, dark: 0xFFFFFF)
       ),
       action: ODSActionColors(
@@ -677,6 +682,7 @@ public extension ODSTheme {
         elevated: Color(odsLight: 0xDDE6F0, dark: 0x1C263B),
         overlay: Color(odsLight: 0xF7F9FC, dark: 0x1C263B),
         panel: Color(odsLight: 0xE6EDF5, dark: 0x1C263B),
+        row: Color(odsLight: 0xEEF3F9, dark: 0x1C263B),
         paper: Color(odsLight: 0xFFFFFF, dark: 0xFFFFFF)
       ),
       action: ODSActionColors(
@@ -788,6 +794,7 @@ public extension ODSTheme {
         elevated: Color(odsLight: 0xEEE4E4, dark: 0x352833),
         overlay: Color(odsLight: 0xFCF9F7, dark: 0x352833),
         panel: Color(odsLight: 0xF3EBEA, dark: 0x352833),
+        row: Color(odsLight: 0xF7F2F0, dark: 0x352833),
         paper: Color(odsLight: 0xFFFFFF, dark: 0xFFFFFF)
       ),
       action: ODSActionColors(
