@@ -34,3 +34,22 @@ test('a non-px spacing value is refused', () => {
   const t = structuredClone(tokens); t.spacing.small = '1rem';
   assert.throws(() => emitSwiftMetrics(t), /spacing\.small/);
 });
+
+test('a theme with groups and keys in another order still emits canonical argument order', () => {
+  const t = structuredClone(tokens);
+  for (const mode of ['light', 'dark']) {
+    const m = t.themes.forest[mode];
+    t.themes.forest[mode] = Object.fromEntries(
+      Object.entries(m).reverse().map(([g, keys]) => [g, Object.fromEntries(Object.entries(keys).reverse())]),
+    );
+  }
+  assert.equal(emitSwiftColors(t), colors);
+});
+test('a theme missing a key is refused, naming theme, group and key', () => {
+  const t = structuredClone(tokens); delete t.themes.forest.dark.text.primary;
+  assert.throws(() => emitSwiftColors(t), /forest.*dark\.text\.primary/);
+});
+test('a key that is not a Swift identifier is refused', () => {
+  const t = structuredClone(tokens); t.colors.light.text['bad-key'] = '#000';
+  assert.throws(() => emitSwiftColors(t), /bad-key/);
+});

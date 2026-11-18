@@ -11,7 +11,10 @@ const KEYWORDS = new Set([
   'throws', 'true', 'try', 'typealias', 'var', 'where', 'while',
 ]);
 
-const id = (name) => (KEYWORDS.has(name) ? `\`${name}\`` : name);
+function id(name) {
+  if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)) throw new Error(`"${name}" is not a valid Swift identifier`);
+  return KEYWORDS.has(name) ? `\`${name}\`` : name;
+}
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
 
 function hexLiteral(hex) {
@@ -31,10 +34,16 @@ function colorGroupStruct(group, keys) {
   ].join('\n');
 }
 
-function themeStatic(name, theme) {
-  const groups = Object.entries(theme.light).map(([group, keys]) => {
+// Swift needs labeled arguments in declaration order, so walk the canonical groups and keys.
+function themeStatic(name, theme, canonical) {
+  const lookup = (mode, group, key) => {
+    const hex = theme[mode] && theme[mode][group] && theme[mode][group][key];
+    if (hex === undefined) throw new Error(`theme "${name}" is missing ${mode}.${group}.${key}`);
+    return hexLiteral(hex);
+  };
+  const groups = Object.entries(canonical).map(([group, keys]) => {
     const args = Object.keys(keys).map(
-      (key) => `        ${id(key)}: Color(odsLight: ${hexLiteral(theme.light[group][key])}, dark: ${hexLiteral(theme.dark[group][key])})`,
+      (key) => `        ${id(key)}: Color(odsLight: ${lookup('light', group, key)}, dark: ${lookup('dark', group, key)})`,
     );
     return `      ${id(group)}: ODS${cap(group)}Colors(\n${args.join(',\n')}\n      )`;
   });
@@ -54,7 +63,7 @@ function emitSwiftColors(tokens) {
     '  }',
     '}',
   ].join('\n');
-  const statics = [['default', tokens.colors], ...Object.entries(tokens.themes)].map(([n, t]) => themeStatic(n, t));
+  const statics = [['default', tokens.colors], ...Object.entries(tokens.themes)].map(([n, t]) => themeStatic(n, t, tokens.colors.light));
   return [
     SWIFT_HEADER,
     'import SwiftUI',
