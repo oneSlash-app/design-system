@@ -9,8 +9,8 @@ const metrics = emitSwiftMetrics(tokens);
 test('starts with the generated header and imports SwiftUI', () => {
   assert.ok(colors.startsWith('// Generated from designTokens.js by scripts/build-tokens.js. Do not edit.\nimport SwiftUI\n'));
 });
-test('forest background.default carries both modes, key in backticks', () => {
-  assert.match(colors, /static let forest = ODSTheme\([\s\S]*?background: ODSBackgroundColors\([\s\S]*?`default`: Color\(odsLight: 0xD9E5C7, dark: 0x1C2213\)/);
+test('forest background.default carries both modes, key declared in backticks, plain argument label', () => {
+  assert.match(colors, /static let forest = ODSTheme\([\s\S]*?background: ODSBackgroundColors\([\s\S]*?\n +default: Color\(odsLight: 0xD9E5C7, dark: 0x1C2213\)/);
   assert.match(colors, /public let `default`: Color/);
 });
 test('every theme, group and key in the tokens is emitted', () => {

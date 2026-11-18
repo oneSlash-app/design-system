@@ -21,3 +21,25 @@ test('build-tokens --check exits 0 when dist is current', () => {
   execFileSync('node', ['scripts/build-tokens.js']);
   execFileSync('node', ['scripts/build-tokens.js', '--check']);
 });
+
+test('build-tokens writes the Swift files into --native-out', () => {
+  const out = fs.mkdtempSync(path.join(os.tmpdir(), 'tokens-'));
+  const nativeOut = fs.mkdtempSync(path.join(os.tmpdir(), 'native-'));
+  execFileSync('node', ['scripts/build-tokens.js', '--out', out, '--native-out', nativeOut]);
+  for (const f of ['ODSColors.generated.swift', 'ODSMetrics.generated.swift']) {
+    assert.ok(fs.existsSync(path.join(nativeOut, f)), f);
+  }
+});
+
+test('build-tokens --check exits 1 when a generated Swift file differs', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'tree-'));
+  const repo = path.resolve(__dirname, '..');
+  for (const f of ['scripts', 'designTokens.js', 'dist', 'native']) {
+    fs.cpSync(path.join(repo, f), path.join(root, f), { recursive: true });
+  }
+  const script = path.join(root, 'scripts/build-tokens.js');
+  execFileSync('node', [script, '--check'], { cwd: root });
+  const swift = path.join(root, 'native/swift/Sources/OneSlashDesign/Generated/ODSColors.generated.swift');
+  fs.appendFileSync(swift, '// drift\n');
+  assert.throws(() => execFileSync('node', [script, '--check'], { cwd: root, stdio: 'pipe' }), (e) => e.status === 1);
+});

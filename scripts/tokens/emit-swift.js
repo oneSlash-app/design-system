@@ -15,6 +15,8 @@ function id(name) {
   if (!/^[A-Za-z_][A-Za-z0-9_]*$/.test(name)) throw new Error(`"${name}" is not a valid Swift identifier`);
   return KEYWORDS.has(name) ? `\`${name}\`` : name;
 }
+// Argument labels only need escaping for inout, var and let; escaping other keywords draws a compiler warning.
+const label = (name) => (['inout', 'var', 'let'].includes(name) ? `\`${name}\`` : id(name).replace(/`/g, ''));
 const cap = (s) => s[0].toUpperCase() + s.slice(1);
 
 function hexLiteral(hex) {
@@ -43,9 +45,9 @@ function themeStatic(name, theme, canonical) {
   };
   const groups = Object.entries(canonical).map(([group, keys]) => {
     const args = Object.keys(keys).map(
-      (key) => `        ${id(key)}: Color(odsLight: ${lookup('light', group, key)}, dark: ${lookup('dark', group, key)})`,
+      (key) => `        ${label(key)}: Color(odsLight: ${lookup('light', group, key)}, dark: ${lookup('dark', group, key)})`,
     );
-    return `      ${id(group)}: ODS${cap(group)}Colors(\n${args.join(',\n')}\n      )`;
+    return `      ${label(group)}: ODS${cap(group)}Colors(\n${args.join(',\n')}\n      )`;
   });
   return `  static let ${id(name)} = ODSTheme(\n    name: "${name}",\n${groups.join(',\n')}\n  )`;
 }

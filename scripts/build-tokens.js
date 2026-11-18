@@ -7,6 +7,7 @@ const { emitThemeCss } = require('./tokens/emit-theme');
 const { emitTokensCss } = require('./tokens/emit-tokens-css');
 const { emitPreset } = require('./tokens/emit-preset');
 const { emitThemeV4, emitTypographyV4 } = require('./tokens/emit-v4');
+const { emitSwiftColors, emitSwiftMetrics } = require('./tokens/emit-swift');
 
 // Each emitter returns the file contents.
 const emitters = {
@@ -28,6 +29,18 @@ const emitters = {
   'tailwind-preset-auto.js': (t) => emitPreset(t, { auto: true }),
 };
 
+const nativeEmitters = {
+  'ODSColors.generated.swift': (t) => emitSwiftColors(t),
+  'ODSMetrics.generated.swift': (t) => emitSwiftMetrics(t),
+};
+
+function generateNative(tokens) {
+  validateTokens(tokens);
+  const files = {};
+  for (const [file, emit] of Object.entries(nativeEmitters)) files[file] = emit(tokens);
+  return files;
+}
+
 function generate(tokens) {
   validateTokens(tokens);
   const files = {};
@@ -41,24 +54,30 @@ function main(argv) {
   const out = outIdx === -1 ? 'dist' : argv[outIdx + 1];
   if (!out) throw new Error('--out requires a directory');
 
-  const files = generate(require('../designTokens.js'));
+  const nativeIdx = argv.indexOf('--native-out');
+  const nativeOut = nativeIdx === -1 ? 'native/swift/Sources/OneSlashDesign/Generated' : argv[nativeIdx + 1];
+  if (!nativeOut) throw new Error('--native-out requires a directory');
+
+  const tokens = require('../designTokens.js');
+  const sets = [[out, generate(tokens)], [nativeOut, generateNative(tokens)]];
 
   if (check) {
-    const differing = Object.keys(files).filter((f) => {
-      const p = path.join(out, f);
-      return !fs.existsSync(p) || fs.readFileSync(p, 'utf8') !== files[f];
-    });
-    differing.forEach((f) => console.log(path.join(out, f)));
+    const differing = sets.flatMap(([dir, files]) => Object.keys(files)
+      .map((f) => path.join(dir, f))
+      .filter((p, i) => !fs.existsSync(p) || fs.readFileSync(p, 'utf8') !== files[Object.keys(files)[i]]));
+    differing.forEach((p) => console.log(p));
     process.exit(differing.length ? 1 : 0);
   }
 
-  for (const [f, content] of Object.entries(files)) {
-    const p = path.join(out, f);
-    fs.mkdirSync(path.dirname(p), { recursive: true });
-    fs.writeFileSync(p, content);
+  for (const [dir, files] of sets) {
+    for (const [f, content] of Object.entries(files)) {
+      const p = path.join(dir, f);
+      fs.mkdirSync(path.dirname(p), { recursive: true });
+      fs.writeFileSync(p, content);
+    }
   }
 }
 
 if (require.main === module) main(process.argv.slice(2));
 
-module.exports = { generate };
+module.exports = { generate, generateNative };
