@@ -65,6 +65,16 @@ test('forest is a full set with the same keys as default', () => {
   assert.equal(tokens.themes.forest.light.error.main, tokens.colors.light.error.main);
 });
 
+test('background.row is the opaque grouped-row surface in every theme and mode', () => {
+  assert.equal(tokens.themes.forest.light.background.row, '#EBF1E0');
+  assert.equal(tokens.themes.forest.dark.background.row, '#27301B');
+  const all = { default: tokens.colors, ...tokens.themes };
+  for (const [name, modes] of Object.entries(all)) {
+    assert.equal(modes.light.background.row, modes.light.background.accent200, `${name} light`);
+    assert.equal(modes.dark.background.row, modes.dark.background.accent100, `${name} dark`);
+  }
+});
+
 test('forest overrides and derived keys follow forest groups', () => {
   const f = tokens.themes.forest;
   assert.equal(f.light.text.primary, '#1C2213');
@@ -74,7 +84,7 @@ test('forest overrides and derived keys follow forest groups', () => {
   assert.deepEqual(f.light.secondary, { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B', contrast: '#FFFFFF' });
   assert.deepEqual(
     { ...f.light.background },
-    { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC', elevated: '#D9E5C7', overlay: '#F4F7EC', panel: '#E2ECD4', paper: '#FFFFFF' }
+    { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC', elevated: '#D9E5C7', overlay: '#F4F7EC', panel: '#E2ECD4', row: '#EBF1E0', paper: '#FFFFFF' }
   );
   assert.equal(f.dark.text.primary, '#D9E5C7');
   assert.equal(f.dark.text.secondary, '#9DAA85');
@@ -83,7 +93,7 @@ test('forest overrides and derived keys follow forest groups', () => {
   assert.deepEqual(f.dark.secondary, { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B', contrast: '#FFFFFF' });
   assert.deepEqual(
     { ...f.dark.background },
-    { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34', elevated: '#27301B', overlay: '#27301B', panel: '#27301B', paper: '#FFFFFF' }
+    { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34', elevated: '#27301B', overlay: '#27301B', panel: '#27301B', row: '#27301B', paper: '#FFFFFF' }
   );
   assert.equal(f.dark.error.text, f.dark.error.light);
   assert.equal(f.light.success.fill, f.light.success.dark);

@@ -98,6 +98,7 @@ declare const defaultSets: {
             elevated: string;
             overlay: string;
             panel: string;
+            row: string;
             paper: string;
             default: string;
             accent100: string;
@@ -252,6 +253,7 @@ declare const defaultSets: {
             elevated: string;
             overlay: string;
             panel: string;
+            row: string;
             paper: string;
             default: string;
             accent100: string;
@@ -408,6 +410,7 @@ declare const forestSets: {
             elevated: string;
             overlay: string;
             panel: string;
+            row: string;
             paper: string;
             default: string;
             accent100: string;
@@ -562,6 +565,7 @@ declare const forestSets: {
             elevated: string;
             overlay: string;
             panel: string;
+            row: string;
             paper: string;
             default: string;
             accent100: string;
@@ -721,6 +725,7 @@ export declare namespace themes {
                 elevated: string;
                 overlay: string;
                 panel: string;
+                row: string;
                 paper: string;
                 default: string;
                 accent100: string;
@@ -875,6 +880,7 @@ export declare namespace themes {
                 elevated: string;
                 overlay: string;
                 panel: string;
+                row: string;
                 paper: string;
                 default: string;
                 accent100: string;
@@ -1031,6 +1037,7 @@ export declare namespace themes {
                 elevated: string;
                 overlay: string;
                 panel: string;
+                row: string;
                 paper: string;
                 default: string;
                 accent100: string;
@@ -1185,6 +1192,7 @@ export declare namespace themes {
                 elevated: string;
                 overlay: string;
                 panel: string;
+                row: string;
                 paper: string;
                 default: string;
                 accent100: string;
@@ -1341,6 +1349,7 @@ export declare namespace themes {
                 elevated: string;
                 overlay: string;
                 panel: string;
+                row: string;
                 paper: string;
                 default: string;
                 accent100: string;
@@ -1495,6 +1504,7 @@ export declare namespace themes {
                 elevated: string;
                 overlay: string;
                 panel: string;
+                row: string;
                 paper: string;
                 default: string;
                 accent100: string;
