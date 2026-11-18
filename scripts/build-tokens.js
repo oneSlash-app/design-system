@@ -9,7 +9,11 @@ const { emitPreset } = require('./tokens/emit-preset');
 const { emitThemeV4, emitTypographyV4 } = require('./tokens/emit-v4');
 const { emitDtcg } = require('./tokens/emit-dtcg');
 const { emitSwiftColors, emitSwiftMetrics } = require('./tokens/emit-swift');
-const { components, typeRoles } = require('../native/mapping');
+const { emitDesignMd } = require('./tokens/emit-design-md');
+const mapping = require('../native/mapping');
+
+const { components, typeRoles } = mapping;
+const designMdTemplate = fs.readFileSync(path.join(__dirname, 'tokens/design-md.src.md'), 'utf8');
 
 // Each emitter returns the file contents.
 const emitters = {
@@ -30,6 +34,7 @@ const emitters = {
   'tokens.json': (t) => emitDtcg(t),
   'tailwind-preset.js': (t) => emitPreset(t),
   'tailwind-preset-auto.js': (t) => emitPreset(t, { auto: true }),
+  'DESIGN.md': (t) => emitDesignMd(t, mapping, designMdTemplate),
   'native-mapping.json': () => `${JSON.stringify({ components, typeRoles }, null, 2)}\n`,
 };
 
