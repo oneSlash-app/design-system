@@ -54,9 +54,25 @@ private func centerHex(of view: some View) -> UInt32? {
     #expect(renderedHex(.secondary, theme: .forest, scheme: .dark) == 0x9DAA85)
 }
 
-@Test @MainActor func tintStyleRendersAccentMain() {
-    // The documented way to give a text-like control the accent under the modifier.
-    #expect(renderedHex(.tint, theme: .indigo, scheme: .light) == 0x204F8C)
+@Test @MainActor func themeSetsNoTint() {
+    // The accent comes from the app's AccentColor asset, not from the modifier. The system
+    // accent in a test host is not ours to know, so assert only that it is not the theme's.
+    #expect(renderedHex(.tint, theme: .indigo, scheme: .light) != 0x204F8C)
+}
+
+@Test @MainActor func themePrimaryLevelIsFixedColor() {
+    // Applied in one scheme and drawn inside the opposite one, the root primary level keeps the
+    // value resolved where the modifier sits: system toolbars and menus draw it that way.
+    func primary(modifierIn scheme: ColorScheme, drawnIn drawn: ColorScheme) -> UInt32? {
+        centerHex(of: Rectangle()
+            .foregroundStyle(.primary)
+            .frame(width: 8, height: 8)
+            .environment(\.colorScheme, drawn)
+            .odsTheme(.forest)
+            .environment(\.colorScheme, scheme))
+    }
+    #expect(primary(modifierIn: .dark, drawnIn: .light) == 0xD9E5C7)
+    #expect(primary(modifierIn: .light, drawnIn: .dark) == 0x1C2213)
 }
 
 @Test @MainActor func toolbarMenuLabelRendersFixedPrimaryText() {

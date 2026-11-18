@@ -66,7 +66,7 @@ Where a rule and the theme's look conflict, the rule wins and the conflict is re
 
 | Area | Treatment |
 |---|---|
-| Accent | `accent.main` as the app accent color |
+| Accent | `accent.main` as the app accent color, from the app's `AccentColor` asset |
 | Screen and window content background | `background.default` |
 | Raised content (cards, message bubbles, grouped rows) | `background.accent100` to `accent300`, as on the web |
 | Text | `text.primary` as the root foreground style; `text.secondary` and `text.disabled` for the lower levels |
@@ -83,14 +83,15 @@ Platforms: iOS 26 and macOS 26 and later.
 
 1. Add the package with Swift Package Manager: `.package(url: "https://github.com/oneSlash-app/design-system", from: "2.10.0")`. Add the `OneSlashDesign` product to the target. By URL the package identity is `design-system`, so a manifest writes `.product(name: "OneSlashDesign", package: "design-system")`.
 2. `import OneSlashDesign`.
-3. Apply one theme at the scene root: `.odsTheme(.forest)`. The themes are `ODSTheme.default`, `.forest`, `.clay`, `.indigo` and `.wine`. The modifier sets the `odsTheme` environment value, the tint (`accent.main`), and the primary, secondary and tertiary foreground styles from the theme's text colors. It sets no background. Under the modifier, text-like controls (borderless buttons, links) take `text.primary`, not the accent; to give one the accent, apply `.foregroundStyle(.tint)` to it. `text.disabled` is the tertiary level, so `.foregroundStyle(.tertiary)` is the disabled text color. Apply `.odsToolbarMenuLabel()` to the label of a toolbar `Menu`: without it, an iPhone toolbar menu draws its label white in both appearances. Menu item icons take the accent (the tint), not `text.primary`.
-4. Read the theme with `@Environment(\.odsTheme) private var theme` for backgrounds and status colors, for example `theme.background.default` and `theme.error.main`. Each color has the same group and key names as the color table above.
-5. Spacing, radius and motion are constants for our own content views: `ODSSpacing`, `ODSRadius` and `ODSDuration` (in seconds).
-6. Fonts: `Font.ods(_ role: ODSTextRole)` returns the system text style for a type role. See the type roles table below. Native apps use the system fonts with Dynamic Type; Inter and Fira Code stay on the web.
+3. Define an `AccentColor` color set in the app's asset catalog with the theme's `accent.main` values, light and dark, and name it as the app's global accent color (the `ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME` build setting, `AccentColor` by default in new Xcode projects). This is required: the package sets no tint, so this asset is what tints controls, alerts and selection. On macOS it yields to the user's system accent choice, by design.
+4. Apply one theme at the scene root: `.odsTheme(.forest)`. The themes are `ODSTheme.default`, `.forest`, `.clay`, `.indigo` and `.wine`. The modifier sets the `odsTheme` environment value and the primary, secondary and tertiary foreground styles from the theme's text colors. It sets no tint and no background. The foreground styles are fixed colors, resolved for the current appearance and resolved again when it changes: system toolbars and menus resolve a dynamic root color without the window's appearance, which draws dark glyphs on a dark toolbar. Under the modifier, text-like controls (borderless buttons, links) take `text.primary`, not the accent; to give one the accent, apply `.foregroundStyle(.tint)` to it (the tint is the `AccentColor` asset). `text.disabled` is the tertiary level, so `.foregroundStyle(.tertiary)` is the disabled text color. Apply `.odsToolbarMenuLabel()` to the label of a toolbar `Menu`: without it, an iPhone toolbar menu draws its label white in both appearances. Menu item icons take `text.primary`.
+5. Read the theme with `@Environment(\.odsTheme) private var theme` for backgrounds and status colors, for example `theme.background.default` and `theme.error.main`. Each color has the same group and key names as the color table above.
+6. Spacing, radius and motion are constants for our own content views: `ODSSpacing`, `ODSRadius` and `ODSDuration` (in seconds).
+7. Fonts: `Font.ods(_ role: ODSTextRole)` returns the system text style for a type role. See the type roles table below. Native apps use the system fonts with Dynamic Type; Inter and Fira Code stay on the web.
 
 Limits to know:
 
-- The accent the modifier sets reaches only what `.tint` reaches. System alerts and the macOS selection color still come from the app's `AccentColor` asset, which an app should keep in sync with its theme or leave to the system.
+- The package cannot set or check the accent: it is the app's `AccentColor` asset, which the app keeps equal to its theme's `accent.main`.
 - Each scene needs its own `.odsTheme`, for example a macOS `Settings` scene as well as the main window.
 - For motion, prefer the platform's springs. Use `ODSDuration` only for our own content views.
 

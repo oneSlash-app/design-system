@@ -372,6 +372,8 @@ Added 2026-11-17 after Tasks 1 to 7 merged (PR #75). Scindo found that a menu dr
 
 **Outcome (2026-11-17):** In a scratch app on the iOS 26.4 and iOS 27.2 simulators (Xcode 27.2), the icon bug did not reproduce under `odsTheme`. Menus draw their item icons in the tint, and the modifier's dynamic `.tint(accent.main)` resolves correctly in dark mode. The bug appears only when a root sets the foreground style without a tint, as Scindo's did: the icons then take `text.primary`'s light value. The toolbar menu label bug did reproduce under `odsTheme`: the label was white in both appearances. So `odsTheme(_:)` is unchanged, and only `odsToolbarMenuLabel()` was added, with a test and docs. The steps below record the original plan.
 
+**Superseded (2026-11-18):** A pixel comparison of 14 screenshots of the Scindo iPhone app (iOS 27.2 simulator), before and after it adopted `odsTheme(.forest)`, showed that dynamic root colors break dark-mode toolbar glyphs (near-white became dark green), and that an explicit tint changes bordered button fills, a picker's menu label and dark menu item icons. `odsTheme` now passes the three text colors resolved for the current environment as fixed colors and sets no tint; the accent is the app's `AccentColor` asset. In a scratch app, dark toolbar glyphs then render #F9F9F9 (#646A5B before) and menu item icons take `text.primary`.
+
 **Files:**
 - Modify: `native/swift/Sources/OneSlashDesign/ODSThemeModifier.swift`, `native/swift/Tests/OneSlashDesignTests/ThemeModifierTests.swift`, `scripts/tokens/design-md.src.md`
 

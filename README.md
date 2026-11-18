@@ -39,8 +39,9 @@ Use class names that mean the same thing in Tailwind v3 and v4 inside components
 The Swift package `OneSlashDesign` (iOS 26 and macOS 26 and later) is this repository: `https://github.com/oneSlash-app/design-system`.
 
 1. Add the package with Swift Package Manager (`.package(url: "https://github.com/oneSlash-app/design-system", from: "2.10.0")`) and the `OneSlashDesign` product to the target (`.product(name: "OneSlashDesign", package: "design-system")`; by URL the package identity is `design-system`), then `import OneSlashDesign`.
-2. Apply one theme at the scene root: `.odsTheme(.forest)`. It sets the tint and the text foreground styles, and no background.
-3. Read colors from `@Environment(\.odsTheme)`, for example `theme.background.default`, and use `ODSSpacing`, `ODSRadius`, `ODSDuration` and `Font.ods(_:)` for our own content views.
+2. Define an `AccentColor` color set in the app's asset catalog with the theme's `accent.main` values (light and dark) and name it as the app's global accent color. It is required: it tints controls, alerts and selection, and on macOS it yields to the user's system accent choice by design.
+3. Apply one theme at the scene root: `.odsTheme(.forest)`. It sets the text foreground styles, as fixed colors resolved for the current appearance, and no tint and no background.
+4. Read colors from `@Environment(\.odsTheme)`, for example `theme.background.default`, and use `ODSSpacing`, `ODSRadius`, `ODSDuration` and `Font.ods(_:)` for our own content views.
 
 [DESIGN.md](./dist/DESIGN.md) has the rules for a "100% ODS" native app and the table that maps each web component to its native control. The Compose theme is not built yet.
 
