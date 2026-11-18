@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.10.1] - 2026-11-18
+
+### Fixed
+
+- The default `Tag` and the default `Alert` now use `secondary.main` with `secondary.contrast` instead of `text.primary` on `secondary.light`. In dark mode `secondary.light` is the lightest secondary tone, so the label was 2.68:1 in Forest and 4.46:1 in Default; it is now 4.56:1 or better in every theme and mode. In dark mode the fill is darker, and Forest's light-mode label goes from 4.64:1 to 4.56:1. No token changes.
+
 ## [2.10.0] - 2026-11-18
 
 ### Added
