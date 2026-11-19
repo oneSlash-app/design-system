@@ -266,7 +266,15 @@ Behavior, navigation and features do not change.
 sets no tint, and the package verifies nothing about it. The check verifies its
 two values equal the theme's `accent.main`.
 
-**Named exceptions:** none yet. Filled in after the review.
+**Named exceptions** (kept by the owner after the 2026-11-18 review, which compared each customization side by side with the system version; Scindo PR #325). Each has an allow-list entry in `apps/apple/scripts/ods-allow.txt` and is looked at first in the yearly beta step:
+
+| Where | Rule | What it does | Why it stays |
+|---|---|---|---|
+| `Shared/ForestTheme.swift` `WindowBackground` (with `forestTitlebar`) | 4 | Colors the macOS window so a window without a toolbar (sign-in) has a page-colored title bar | Without it that window shows a white strip |
+| `Shared/Views/SignInView.swift` `DSButtonStyle` | 3 | Custom button style on the sign-in screen | The system bordered buttons turn grey-green and taller in dark mode and shift the sign-in layout |
+| `Shared/Views/InlineActionsView.swift` status dot | 2 | Fixed 6-point font size for the dot inside a Label icon | No system text style has a 6-point size |
+
+Also kept, as documented customizations that pass the check: the pane, field and rows surfaces (`forestPane`, `forestField`, `forestRows`). Removed after the review: the sheet surface (`forestSheet()`, 43 sites); sheets keep the system material and a sheet's screen brings its own surface with `forestScreen(Forest.sheet)`.
 
 The mapping table is also published as a page in the docs site
 (`oneSlash-app/design-system-docs`), which is in scope.
