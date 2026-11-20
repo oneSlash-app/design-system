@@ -10,7 +10,7 @@ test('starts with the generated header and imports SwiftUI', () => {
   assert.ok(colors.startsWith('// Generated from designTokens.js by scripts/build-tokens.js. Do not edit.\nimport SwiftUI\n'));
 });
 test('forest background.default carries both modes, key declared in backticks, plain argument label', () => {
-  assert.match(colors, /static let forest = ODSTheme\([\s\S]*?background: ODSBackgroundColors\([\s\S]*?\n +default: Color\(odsLight: 0xD9E5C7, dark: 0x1C2213\)/);
+  assert.match(colors, /static let forest = ODSTheme\([\s\S]*?background: ODSBackgroundColors\([\s\S]*?\n +default: Color\(odsLight: 0xD9E5C7, dark: 0x1C2213, lightIncreased: 0xD9E5C7, darkIncreased: 0x1C2213\)/);
   assert.match(colors, /public let `default`: Color/);
 });
 test('every theme, group and key in the tokens is emitted', () => {
@@ -46,10 +46,20 @@ test('a theme with groups and keys in another order still emits canonical argume
   assert.equal(emitSwiftColors(t), colors);
 });
 test('a theme missing a key is refused, naming theme, group and key', () => {
-  const t = structuredClone(tokens); delete t.themes.forest.dark.text.primary;
-  assert.throws(() => emitSwiftColors(t), /forest.*dark\.text\.primary/);
+  const sets = structuredClone(require('./increase-contrast').withIncreased(tokens));
+  delete sets.forest.dark.text.primary;
+  assert.throws(() => emitSwiftColors(tokens, sets), /forest.*dark\.text\.primary/);
+  delete sets.wine.darkIncreased.accent.main;
+  delete sets.forest;
+  assert.throws(() => emitSwiftColors(tokens, sets), /wine.*darkIncreased\.accent\.main/);
 });
 test('a key that is not a Swift identifier is refused', () => {
   const t = structuredClone(tokens); t.colors.light.text['bad-key'] = '#000';
   assert.throws(() => emitSwiftColors(t), /bad-key/);
+});
+
+test('every color carries its increased-contrast values', () => {
+  // forest text.secondary: #515E3C / #9DAA85, increased #414B2C / #B1BE98
+  assert.match(colors, /static let forest = ODSTheme\([\s\S]*?text: ODSTextColors\([\s\S]*?\n +secondary: Color\(odsLight: 0x515E3C, dark: 0x9DAA85, lightIncreased: 0x414B2C, darkIncreased: 0xB1BE98\)/);
+  assert.doesNotMatch(colors, /Color\(odsLight: 0x[0-9A-F]{6}, dark: 0x[0-9A-F]{6}\)/);
 });

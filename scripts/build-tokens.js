@@ -40,14 +40,15 @@ const emitters = {
 };
 
 const nativeEmitters = {
-  'ODSColors.generated.swift': (t) => emitSwiftColors(t),
+  'ODSColors.generated.swift': (t, inc) => emitSwiftColors(t, inc),
   'ODSMetrics.generated.swift': (t) => emitSwiftMetrics(t),
 };
 
 function generateNative(tokens) {
   validateTokens(tokens);
+  const increased = withIncreased(tokens);
   const files = {};
-  for (const [file, emit] of Object.entries(nativeEmitters)) files[file] = emit(tokens);
+  for (const [file, emit] of Object.entries(nativeEmitters)) files[file] = emit(tokens, increased);
   return files;
 }
 
