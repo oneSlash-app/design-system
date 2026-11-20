@@ -81,7 +81,7 @@ test('forest overrides and derived keys follow forest groups', () => {
   assert.equal(f.light.text.secondary, '#515E3C');
   assert.equal(f.light.text.disabled, '#8A9670');
   assert.deepEqual(f.light.accent, { main: '#1C2213', dark: '#2A331E', light: '#3A472B', contrast: '#E7ECDA' });
-  assert.deepEqual(f.light.secondary, { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B', contrast: '#FFFFFF' });
+  assert.deepEqual(f.light.secondary, { main: '#5D6849', dark: '#3B4628', light: '#6E7A5A', contrast: '#FFFFFF' });
   assert.deepEqual(
     { ...f.light.background },
     { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC', elevated: '#D9E5C7', overlay: '#F4F7EC', panel: '#E2ECD4', row: '#EBF1E0', paper: '#FFFFFF' }
@@ -90,7 +90,7 @@ test('forest overrides and derived keys follow forest groups', () => {
   assert.equal(f.dark.text.secondary, '#9DAA85');
   assert.equal(f.dark.text.disabled, '#6D7956');
   assert.deepEqual(f.dark.accent, { main: '#E7ECDA', dark: '#D6DEC3', light: '#F2F5EA', contrast: '#1C2213' });
-  assert.deepEqual(f.dark.secondary, { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B', contrast: '#FFFFFF' });
+  assert.deepEqual(f.dark.secondary, { main: '#5D6849', dark: '#3B4628', light: '#6E7A5A', contrast: '#FFFFFF' });
   assert.deepEqual(
     { ...f.dark.background },
     { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34', elevated: '#27301B', overlay: '#27301B', panel: '#27301B', row: '#27301B', paper: '#FFFFFF' }
@@ -144,4 +144,14 @@ test('native mapping has exactly one row per component file', () => {
   for (const r of components) {
     assert.ok(r.swiftui && r.compose, r.ods);
   }
+});
+
+test('the four parts rows no longer say planned for SwiftUI', () => {
+  const { components } = require('../../native/mapping.js');
+  const row = (ods) => components.find((r) => r.ods === ods);
+  assert.match(row('alert').swiftui, /`ODSBanner`/);
+  assert.match(row('tag').swiftui, /`ODSTag`/);
+  assert.match(row('userImage').swiftui, /`ODSAvatar`/);
+  assert.match(row('emptyBox').swiftui, /`ContentUnavailableView`/);
+  for (const ods of ['alert', 'tag', 'userImage', 'emptyBox']) assert.doesNotMatch(row(ods).swiftui, /planned/);
 });

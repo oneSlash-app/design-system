@@ -11,9 +11,14 @@ const { emitDtcg } = require('./tokens/emit-dtcg');
 const { emitSwiftColors, emitSwiftMetrics } = require('./tokens/emit-swift');
 const { emitDesignMd } = require('./tokens/emit-design-md');
 const { withIncreased } = require('./tokens/increase-contrast');
-const mapping = require('../native/mapping');
+const { emitSwiftParts } = require('./tokens/emit-swift-parts');
+const { parts } = require('../native/parts');
+const { withGeneratedNotes } = require('./tokens/button-note');
+const nativeMapping = require('../native/mapping');
 
-const { components, typeRoles } = mapping;
+const { typeRoles } = nativeMapping;
+// The mapping as it is published: notes that depend on the tokens are filled in.
+const mappingFor = (t) => ({ components: withGeneratedNotes(nativeMapping.components, t), typeRoles, parts });
 const designMdTemplate = fs.readFileSync(path.join(__dirname, 'tokens/design-md.src.md'), 'utf8');
 
 // Each emitter returns the file contents.
@@ -35,13 +40,14 @@ const emitters = {
   'tokens.json': (t, inc) => emitDtcg(t, inc),
   'tailwind-preset.js': (t) => emitPreset(t),
   'tailwind-preset-auto.js': (t) => emitPreset(t, { auto: true }),
-  'DESIGN.md': (t, inc) => emitDesignMd(t, mapping, designMdTemplate, inc),
-  'native-mapping.json': () => `${JSON.stringify({ components, typeRoles }, null, 2)}\n`,
+  'DESIGN.md': (t, inc) => emitDesignMd(t, mappingFor(t), designMdTemplate, inc),
+  'native-mapping.json': (t) => `${JSON.stringify({ components: mappingFor(t).components, typeRoles }, null, 2)}\n`,
 };
 
 const nativeEmitters = {
   'ODSColors.generated.swift': (t, inc) => emitSwiftColors(t, inc),
   'ODSMetrics.generated.swift': (t) => emitSwiftMetrics(t),
+  'ODSParts.generated.swift': () => emitSwiftParts(parts),
 };
 
 function generateNative(tokens) {

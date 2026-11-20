@@ -37,9 +37,9 @@ Use one semantic name, never a hex value. Each name resolves to a light and a da
 | primary.dark | #262626 | #E9E9E9 | #262626 | #E9E9E9 | #262626 | #E9E9E9 | #262626 | #E9E9E9 | #262626 | #E9E9E9 |
 | primary.light | #888888 | #9A9A9A | #888888 | #9A9A9A | #888888 | #9A9A9A | #888888 | #9A9A9A | #888888 | #9A9A9A |
 | primary.contrast | #ffffff | #000000 | #ffffff | #000000 | #ffffff | #000000 | #ffffff | #000000 | #ffffff | #000000 |
-| secondary.main | #B0B0B0 | #4F4F4F | #6E7A5A | #6E7A5A | #CDB49A | #5C4630 | #B4C6DC | #344566 | #D5BCC8 | #4E3346 |
-| secondary.dark | #888888 | #454545 | #5D6849 | #5D6849 | #B89A7C | #4D3A27 | #8EA6C4 | #2B3A57 | #BF93A8 | #43293C |
-| secondary.light | #D1D1D1 | #6D6D6D | #828D6B | #828D6B | #E2D1BE | #75593D | #CFDCEA | #44587F | #E6D4DC | #634257 |
+| secondary.main | #B0B0B0 | #4F4F4F | #5D6849 | #5D6849 | #CDB49A | #5C4630 | #B4C6DC | #344566 | #D5BCC8 | #4E3346 |
+| secondary.dark | #888888 | #454545 | #3B4628 | #3B4628 | #B89A7C | #4D3A27 | #8EA6C4 | #2B3A57 | #BF93A8 | #43293C |
+| secondary.light | #D1D1D1 | #6D6D6D | #6E7A5A | #6E7A5A | #E2D1BE | #75593D | #CFDCEA | #44587F | #E6D4DC | #634257 |
 | secondary.contrast | #000000 | #eeeeee | #FFFFFF | #FFFFFF | #2B1F12 | #F2E2CE | #111A2E | #E3ECF5 | #2A1622 | #F2EDE4 |
 | error.main | #D32F2F | #E74C4C | #D32F2F | #E74C4C | #D32F2F | #E74C4C | #D32F2F | #E74C4C | #D32F2F | #E74C4C |
 | error.dark | #A82121 | #B22323 | #A82121 | #B22323 | #A82121 | #B22323 | #A82121 | #B22323 | #A82121 | #B22323 |
@@ -110,7 +110,7 @@ Use one semantic name, never a hex value. Each name resolves to a light and a da
 
 ## Increased contrast
 
-Every color also has an increased-contrast value in light and in dark. The build derives them from the standard values; nobody picks them by hand, and they are not in `designTokens.js`.
+Every color also has an increased-contrast value in light and in dark. The build derives them from the standard values; nobody picks them by hand, and they are not in `designTokens.js`. One look was chosen by the owner: in forest dark the secondary fill takes the theme's dark ink as its label and gets lighter, where the derivation alone would have darkened it toward the page.
 
 - **Web:** each theme file answers `prefers-contrast: more`. Nothing to do per page or component.
 - **Apple:** each color in the Swift package follows the system's Increase Contrast setting. Nothing to do per screen.
@@ -217,13 +217,15 @@ Spacing and radius tokens apply to our own content views. System containers (lis
 
 Platforms: iOS 26 and macOS 26 and later.
 
-1. Add the package with Swift Package Manager: `.package(url: "https://github.com/oneSlash-app/design-system", from: "2.10.0")`. Add the `OneSlashDesign` product to the target. By URL the package identity is `design-system`, so a manifest writes `.product(name: "OneSlashDesign", package: "design-system")`.
+1. Add the package with Swift Package Manager: `.package(url: "https://github.com/oneSlash-app/design-system", from: "2.12.0")`. Add the `OneSlashDesign` product to the target. By URL the package identity is `design-system`, so a manifest writes `.product(name: "OneSlashDesign", package: "design-system")`.
 2. `import OneSlashDesign`.
 3. In the app's asset catalog, define the `AccentColor` color set with an "Any Appearance" value and a "Dark" value, both sRGB, replacing the empty default Xcode creates. Take the two values from the chosen theme's `accent.main` row in the color table above (its light and dark columns). Name it as the app's global accent color (the `ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME` build setting, `AccentColor` by default in new Xcode projects). This is required: the package sets no tint, so this asset is what tints controls, alerts and selection. On macOS it yields to the user's system accent choice, by design.
 4. Apply one theme at the scene root: `.odsTheme(.forest)`. The themes are `ODSTheme.default`, `.forest`, `.clay`, `.indigo` and `.wine`. The modifier sets the `odsTheme` environment value and the primary, secondary and tertiary foreground styles from the theme's text colors. It sets no tint and no background. The foreground styles are fixed colors, resolved for the current appearance and resolved again when it changes: system toolbars and menus resolve a dynamic root color without the window's appearance, which draws dark glyphs on a dark toolbar. Under the modifier, text-like controls (borderless buttons, links) take `text.primary`, not the accent; to give one the accent, apply `.foregroundStyle(.tint)` to it (the tint is the `AccentColor` asset). `text.disabled` is the tertiary level, so `.foregroundStyle(.tertiary)` is the disabled text color. Apply `.odsToolbarMenuLabel()` to the label of a toolbar `Menu`: without it, an iPhone toolbar menu draws its label white in both appearances. Menu item icons take `text.primary`.
 5. Read the theme with `@Environment(\.odsTheme) private var theme` for backgrounds and status colors, for example `theme.background.default` and `theme.error.main`. Each color has the same group and key names as the color table above.
 6. Spacing, radius and motion are constants for our own content views: `ODSSpacing`, `ODSRadius` and `ODSDuration` (in seconds).
-7. Fonts: `Font.ods(_ role: ODSTextRole)` returns the system text style for a type role. See the type roles table below. Native apps use the system fonts with Dynamic Type; Inter and Fira Code stay on the web.
+7. Prominent buttons: use `.odsProminentButton()` (or `.odsProminentButton(.glass)`) instead of `.buttonStyle(.borderedProminent)`. Under `.odsTheme` a prominent label takes `text.primary`, which is unreadable on the accent in most themes; the modifier keeps the system style and sets the label to `accent.contrast`. On the Mac, while the user has chosen their own system accent, the label is white.
+8. Parts: `ODSBanner`, `ODSTag` and `ODSAvatar` cover what SwiftUI has no control for. See "Parts" below. For an empty state use the system `ContentUnavailableView`.
+9. Fonts: `Font.ods(_ role: ODSTextRole)` returns the system text style for a type role. See the type roles table below. Native apps use the system fonts with Dynamic Type; Inter and Fira Code stay on the web.
 
 Limits to know:
 
@@ -253,14 +255,14 @@ ODS type roles map to system text styles, so they keep Dynamic Type. No font fil
 
 ### Component mapping
 
-For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
+For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet; an `ODS…` name is a part the package ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
 
 | ODS | SwiftUI | Compose | Note |
 | --- | --- | --- | --- |
-| alert | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `.alert` for messages that need a decision; Compose `Snackbar` in a `SnackbarHost` for toasts. |
-| button | `Button` with `.borderedProminent` or `.glassProminent` for accent, `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. A prominent button's system label is white; on themes whose accent is light (default, clay) that fails contrast in light mode, so set the label's `.foregroundStyle(theme.accent.contrast)`. Forest, indigo and wine pass as is. |
+| alert | `ODSBanner` for an inline message; `.alert` for one that needs a decision | ODS part (planned) | ODS has no native toast. Compose until the part exists: `Snackbar` in a `SnackbarHost`. |
+| button | `Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a `.borderedProminent` or `.glassProminent` button takes `text.primary`, not the system white, which is below 4.5:1 on the accent in default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark. In forest light it is the same color as the fill, so the label cannot be seen. The modifier keeps the system style and sets the label to `accent.contrast`. Compose needs nothing: `onPrimary` is `accent.contrast`. |
 | checkBox | `Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS) | `Checkbox` |  |
-| emptyBox | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `ContentUnavailableView`; Compose a centered `Icon` and `Text` in a `Column`. |
+| emptyBox | `ContentUnavailableView` | ODS part (planned) | The system has this control on Apple, so ODS adds no part there. Compose until the part exists: a centered `Icon` and `Text` in a `Column`. |
 | factsRow | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows. |
 | figure | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: an `Image` with a caption `Text` in the caption text style. |
 | heading | `Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)` | `Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }` |  |
@@ -292,9 +294,44 @@ For each web component, the table gives the native control to use. System contro
 | tableHeaderCell | A `TableColumn` title | `Text` in the header `Row` | Material 3 has no table. |
 | tableRow | `TableRow` | `Row` | Material 3 has no table. |
 | tabsContainer | `TabView` or segmented `Picker` | `PrimaryTabRow` | `TabRow` is deprecated in Material 3. |
-| tag | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `.badge` for counts, else a `Label`; Compose `AssistChip` or `FilterChip`. |
+| tag | `ODSTag` | ODS part (planned) | A count on a list row or tab stays `.badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style. Compose until the part exists: `AssistChip` or `FilterChip`. |
 | textarea | `TextField(_:text:axis: .vertical)` or `TextEditor` | `OutlinedTextField` with `minLines` |  |
 | textField | `TextField` (`SecureField` for passwords) | `OutlinedTextField` or `TextField` |  |
 | timeStamp | `Text(_:style:)` (`.relative`) or `Text(_:format:)` (`.dateTime`) | `Text` with `DateUtils.getRelativeTimeSpanString` or `DateTimeFormatter.ofLocalizedDateTime` |  |
 | tooltip | `.help` | `TooltipBox` | `.help` shows on pointer hover only. `TooltipBox` needs `@OptIn(ExperimentalMaterial3Api::class)`. |
-| userImage | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `AsyncImage` clipped to a `Circle`, `person.crop.circle` placeholder; Compose `Image` clipped to `CircleShape`, `account_circle` placeholder. |
+| userImage | `ODSAvatar` | ODS part (planned) | Load the picture yourself and pass it as an `Image`. Compose until the part exists: `Image` clipped to `CircleShape`, `account_circle` placeholder. |
+
+### Parts
+
+The parts ODS ships where the platform has no control of its own: `ODSBanner` (an inline message), `ODSTag` and `ODSAvatar` in the Swift package. They follow the OS-update rules: system text styles, Dynamic Type, SF Symbols, no fixed sizes. Their colors come from one table, `native/parts.js`, which the Swift code is generated from and the contrast gate checks, so a part has the same colors on every platform and on the web. Do not re-color a part.
+
+A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one color token.
+
+| Style | Fill | Label | Border | Dot |
+| --- | --- | --- | --- | --- |
+| `banner.default` | `secondary.main` | `secondary.contrast` |  |  |
+| `tag.contained.plain` | `background.accent300` | `text.primary` | `misc.divider` |  |
+| `tag.contained.selected` | `accent.main` | `accent.contrast` | `misc.divider` |  |
+| `tag.contained.default` | `secondary.main` | `secondary.contrast` | `misc.divider` |  |
+| `tag.textOnly.plain` |  | `text.primary` |  |  |
+| `tag.textOnly.selected` |  | `text.primary` | `accent.main` |  |
+| `tag.textOnly.default` |  | `text.secondary` |  |  |
+| `tag.dot.plain` |  | `text.primary` |  | `text.secondary` |
+| `tag.dot.selected` |  | `text.primary` |  | `text.secondary` |
+| `tag.dot.default` |  | `text.primary` |  | `text.secondary` |
+| `banner.error` | `error.alertBg` | `text.primary` |  |  |
+| `tag.contained.error` | `error.fill` | `error.onFill` | `error.fill` |  |
+| `tag.textOnly.error` |  | `error.text` | `error.fill` |  |
+| `tag.dot.error` |  | `text.primary` |  | `error.main` |
+| `banner.warning` | `warning.alertBg` | `text.primary` |  |  |
+| `tag.contained.warning` | `warning.fill` | `warning.onFill` | `warning.fill` |  |
+| `tag.textOnly.warning` |  | `warning.text` | `warning.fill` |  |
+| `tag.dot.warning` |  | `text.primary` |  | `warning.main` |
+| `banner.info` | `info.alertBg` | `text.primary` |  |  |
+| `tag.contained.info` | `info.fill` | `info.onFill` | `info.fill` |  |
+| `tag.textOnly.info` |  | `info.text` | `info.fill` |  |
+| `tag.dot.info` |  | `text.primary` |  | `info.main` |
+| `banner.success` | `success.alertBg` | `text.primary` |  |  |
+| `tag.contained.success` | `success.fill` | `success.onFill` | `success.fill` |  |
+| `tag.textOnly.success` |  | `success.text` | `success.fill` |  |
+| `tag.dot.success` |  | `text.primary` |  | `success.main` |

@@ -1,6 +1,7 @@
 const { contrastRatio } = require('./tokens/color.js');
-const { pairsFor, isReportOnly } = require('./tokens/contrast-pairs.js');
-const { increaseContrast } = require('./tokens/increase-contrast.js');
+const { pairsFor, partPairs, isReportOnly } = require('./tokens/contrast-pairs.js');
+const { parts } = require('../native/parts.js');
+const { increaseContrast, chosenRoles } = require('./tokens/increase-contrast.js');
 
 function checkContrast(tokens) {
   const failures = [];
@@ -20,14 +21,15 @@ function checkContrast(tokens) {
             continue;
           }
         }
-        for (const p of pairsFor(set, { increased })) {
+        for (const p of [...pairsFor(set, { increased }), ...partPairs(set, parts, { increased })]) {
           const { pair, min } = p;
           const gated = p.gated && !isReportOnly(theme, base, pair);
           const ratio = contrastRatio(p.fg, p.bg);
           report.push({ theme, mode, pair, ratio, min, gated });
           if (gated && ratio < min) failures.push({ theme, mode, pair, ratio, min });
           if (!increased) standard[pair] = ratio;
-          else if (gated && pair in standard && ratio < standard[pair] - 1e-9) {
+          else if (gated && pair in standard && ratio < standard[pair] - 1e-9
+            && !chosenRoles(theme, base).some((r) => r === p.fgRole || r === p.bgRole)) {
             failures.push({ theme, mode, pair: `${pair} (lower than standard)`, ratio, min: standard[pair] });
           }
         }

@@ -105,4 +105,4 @@ function emitSwiftMetrics(tokens) {
   ].join('\n') + '\n';
 }
 
-module.exports = { emitSwiftColors, emitSwiftMetrics };
+module.exports = { emitSwiftColors, emitSwiftMetrics, SWIFT_HEADER, id };

@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const tokens = require('../../designTokens.js');
 const { contrastRatio } = require('./color');
 const { pairsFor, isReportOnly } = require('./contrast-pairs');
-const { increaseContrast, withIncreased } = require('./increase-contrast');
+const { increaseContrast, withIncreased, chosenRoles } = require('./increase-contrast');
 
 const all = withIncreased(tokens);
 const each = (fn) => {
@@ -38,7 +38,9 @@ test('surfaces and disabled text never move', () => {
 test('no gated pair loses contrast', () => {
   each((theme, mode, std, inc) => {
     const before = Object.fromEntries(pairsFor(std, { increased: true }).map((p) => [p.pair, contrastRatio(p.fg, p.bg)]));
+    const chosen = chosenRoles(theme, mode);
     for (const p of driving(theme, mode, inc)) {
+      if (chosen.includes(p.fgRole) || chosen.includes(p.bgRole)) continue; // must reach its target, checked above
       assert.ok(contrastRatio(p.fg, p.bg) >= before[p.pair] - 1e-9, `${theme} ${mode} ${p.pair}`);
     }
   });
@@ -56,8 +58,8 @@ test('roles that already pass, or are in no pair, are unchanged', () => {
 test('a fill moves when its label is already white', () => {
   const { secondary } = all.forest.lightIncreased;
   assert.equal(secondary.contrast, '#FFFFFF');
-  assert.notEqual(secondary.main, '#6E7A5A');
-  assert.ok(contrastRatio('#000000', secondary.main) < contrastRatio('#000000', '#6E7A5A'));
+  assert.notEqual(secondary.main, '#5D6849');
+  assert.ok(contrastRatio('#000000', secondary.main) < contrastRatio('#000000', '#5D6849'));
 });
 
 test('text levels keep their order on the page background', () => {
@@ -88,4 +90,27 @@ test('a hover fill keeps its label at the increased target', () => {
       assert.ok(contrastRatio(inc[g].contrast, inc[g].dark) >= 7, `${theme} ${mode} ${g}`);
     }
   });
+});
+
+test('forest dark carries its secondary fill with a dark label on a lighter fill', () => {
+  const std = tokens.themes.forest.dark;
+  const inc = all.forest.darkIncreased;
+  // The label is the theme's dark ink (accent.contrast), kept as it is; the fill moves.
+  assert.equal(inc.secondary.contrast, std.accent.contrast);
+  assert.equal(inc.secondary.contrast, '#1C2213');
+  assert.ok(contrastRatio(inc.secondary.contrast, inc.secondary.main) >= 7);
+  assert.ok(contrastRatio(inc.secondary.contrast, inc.secondary.dark) >= 7);
+  // The fill stands further from the page than at standard contrast (3.57:1), not closer.
+  assert.ok(contrastRatio(inc.secondary.main, inc.background.default) > contrastRatio(std.secondary.main, std.background.default));
+});
+
+test('the forest dark choice touches nothing else', () => {
+  assert.deepEqual(chosenRoles('forest', 'dark'), ['secondary.contrast']);
+  assert.deepEqual(chosenRoles('forest', 'light'), []);
+  assert.deepEqual(chosenRoles('clay', 'dark'), []);
+  assert.equal(all.forest.lightIncreased.secondary.contrast, '#FFFFFF');
+  assert.equal(all.forest.lightIncreased.secondary.main, '#525D3F');
+  assert.equal(all.clay.darkIncreased.secondary.contrast, '#F3E3CE');
+  assert.equal(all.default.darkIncreased.secondary.main, tokens.colors.dark.secondary.main);
+  assert.equal(all.forest.darkIncreased.text.secondary, '#B1BE98');
 });

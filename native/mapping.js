@@ -22,14 +22,15 @@ const NA = 'Not applicable: web page pattern';
 const PLANNED = 'ODS part (planned)';
 
 const components = [
-  { ods: 'alert', swiftui: PLANNED, compose: PLANNED,
-    note: 'Until then: SwiftUI `.alert` for messages that need a decision; Compose `Snackbar` in a `SnackbarHost` for toasts.' },
-  { ods: 'button', swiftui: '`Button` with `.borderedProminent` or `.glassProminent` for accent, `.bordered` for primary',
+  { ods: 'alert', swiftui: '`ODSBanner` for an inline message; `.alert` for one that needs a decision', compose: PLANNED,
+    note: 'ODS has no native toast. Compose until the part exists: `Snackbar` in a `SnackbarHost`.' },
+  // {prominentLabel} is filled by the build from the tokens (scripts/tokens/button-note.js).
+  { ods: 'button', swiftui: '`Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary',
     compose: '`Button`, `OutlinedButton`',
-    note: 'Tertiary and text-only: `.borderless` / `TextButton`. A prominent button\'s system label is white; on themes whose accent is light (default, clay) that fails contrast in light mode, so set the label\'s `.foregroundStyle(theme.accent.contrast)`. Forest, indigo and wine pass as is.' },
+    note: 'Tertiary and text-only: `.borderless` / `TextButton`. {prominentLabel} Compose needs nothing: `onPrimary` is `accent.contrast`.' },
   { ods: 'checkBox', swiftui: '`Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS)', compose: '`Checkbox`' },
-  { ods: 'emptyBox', swiftui: PLANNED, compose: PLANNED,
-    note: 'Until then: SwiftUI `ContentUnavailableView`; Compose a centered `Icon` and `Text` in a `Column`.' },
+  { ods: 'emptyBox', swiftui: '`ContentUnavailableView`', compose: PLANNED,
+    note: 'The system has this control on Apple, so ODS adds no part there. Compose until the part exists: a centered `Icon` and `Text` in a `Column`.' },
   { ods: 'factsRow', swiftui: NA, compose: NA,
     note: 'In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows.' },
   { ods: 'figure', swiftui: NA, compose: NA,
@@ -83,16 +84,16 @@ const components = [
   { ods: 'tableRow', swiftui: '`TableRow`', compose: '`Row`', note: 'Material 3 has no table.' },
   { ods: 'tabsContainer', swiftui: '`TabView` or segmented `Picker`', compose: '`PrimaryTabRow`',
     note: '`TabRow` is deprecated in Material 3.' },
-  { ods: 'tag', swiftui: PLANNED, compose: PLANNED,
-    note: 'Until then: SwiftUI `.badge` for counts, else a `Label`; Compose `AssistChip` or `FilterChip`.' },
+  { ods: 'tag', swiftui: '`ODSTag`', compose: PLANNED,
+    note: 'A count on a list row or tab stays `.badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style. Compose until the part exists: `AssistChip` or `FilterChip`.' },
   { ods: 'textarea', swiftui: '`TextField(_:text:axis: .vertical)` or `TextEditor`', compose: '`OutlinedTextField` with `minLines`' },
   { ods: 'textField', swiftui: '`TextField` (`SecureField` for passwords)', compose: '`OutlinedTextField` or `TextField`' },
   { ods: 'timeStamp', swiftui: '`Text(_:style:)` (`.relative`) or `Text(_:format:)` (`.dateTime`)',
     compose: '`Text` with `DateUtils.getRelativeTimeSpanString` or `DateTimeFormatter.ofLocalizedDateTime`' },
   { ods: 'tooltip', swiftui: '`.help`', compose: '`TooltipBox`',
     note: '`.help` shows on pointer hover only. `TooltipBox` needs `@OptIn(ExperimentalMaterial3Api::class)`.' },
-  { ods: 'userImage', swiftui: PLANNED, compose: PLANNED,
-    note: 'Until then: SwiftUI `AsyncImage` clipped to a `Circle`, `person.crop.circle` placeholder; Compose `Image` clipped to `CircleShape`, `account_circle` placeholder.' },
+  { ods: 'userImage', swiftui: '`ODSAvatar`', compose: PLANNED,
+    note: 'Load the picture yourself and pass it as an `Image`. Compose until the part exists: `Image` clipped to `CircleShape`, `account_circle` placeholder.' },
 ];
 
 module.exports = { components, typeRoles };

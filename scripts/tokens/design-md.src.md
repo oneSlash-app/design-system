@@ -26,7 +26,7 @@ Use one semantic name, never a hex value. Each name resolves to a light and a da
 
 ## Increased contrast
 
-Every color also has an increased-contrast value in light and in dark. The build derives them from the standard values; nobody picks them by hand, and they are not in `designTokens.js`.
+Every color also has an increased-contrast value in light and in dark. The build derives them from the standard values; nobody picks them by hand, and they are not in `designTokens.js`. One look was chosen by the owner: in forest dark the secondary fill takes the theme's dark ink as its label and gets lighter, where the derivation alone would have darkened it toward the page.
 
 - **Web:** each theme file answers `prefers-contrast: more`. Nothing to do per page or component.
 - **Apple:** each color in the Swift package follows the system's Increase Contrast setting. Nothing to do per screen.
@@ -99,13 +99,15 @@ Spacing and radius tokens apply to our own content views. System containers (lis
 
 Platforms: iOS 26 and macOS 26 and later.
 
-1. Add the package with Swift Package Manager: `.package(url: "https://github.com/oneSlash-app/design-system", from: "2.10.0")`. Add the `OneSlashDesign` product to the target. By URL the package identity is `design-system`, so a manifest writes `.product(name: "OneSlashDesign", package: "design-system")`.
+1. Add the package with Swift Package Manager: `.package(url: "https://github.com/oneSlash-app/design-system", from: "2.12.0")`. Add the `OneSlashDesign` product to the target. By URL the package identity is `design-system`, so a manifest writes `.product(name: "OneSlashDesign", package: "design-system")`.
 2. `import OneSlashDesign`.
 3. In the app's asset catalog, define the `AccentColor` color set with an "Any Appearance" value and a "Dark" value, both sRGB, replacing the empty default Xcode creates. Take the two values from the chosen theme's `accent.main` row in the color table above (its light and dark columns). Name it as the app's global accent color (the `ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME` build setting, `AccentColor` by default in new Xcode projects). This is required: the package sets no tint, so this asset is what tints controls, alerts and selection. On macOS it yields to the user's system accent choice, by design.
 4. Apply one theme at the scene root: `.odsTheme(.forest)`. The themes are `ODSTheme.default`, `.forest`, `.clay`, `.indigo` and `.wine`. The modifier sets the `odsTheme` environment value and the primary, secondary and tertiary foreground styles from the theme's text colors. It sets no tint and no background. The foreground styles are fixed colors, resolved for the current appearance and resolved again when it changes: system toolbars and menus resolve a dynamic root color without the window's appearance, which draws dark glyphs on a dark toolbar. Under the modifier, text-like controls (borderless buttons, links) take `text.primary`, not the accent; to give one the accent, apply `.foregroundStyle(.tint)` to it (the tint is the `AccentColor` asset). `text.disabled` is the tertiary level, so `.foregroundStyle(.tertiary)` is the disabled text color. Apply `.odsToolbarMenuLabel()` to the label of a toolbar `Menu`: without it, an iPhone toolbar menu draws its label white in both appearances. Menu item icons take `text.primary`.
 5. Read the theme with `@Environment(\.odsTheme) private var theme` for backgrounds and status colors, for example `theme.background.default` and `theme.error.main`. Each color has the same group and key names as the color table above.
 6. Spacing, radius and motion are constants for our own content views: `ODSSpacing`, `ODSRadius` and `ODSDuration` (in seconds).
-7. Fonts: `Font.ods(_ role: ODSTextRole)` returns the system text style for a type role. See the type roles table below. Native apps use the system fonts with Dynamic Type; Inter and Fira Code stay on the web.
+7. Prominent buttons: use `.odsProminentButton()` (or `.odsProminentButton(.glass)`) instead of `.buttonStyle(.borderedProminent)`. Under `.odsTheme` a prominent label takes `text.primary`, which is unreadable on the accent in most themes; the modifier keeps the system style and sets the label to `accent.contrast`. On the Mac, while the user has chosen their own system accent, the label is white.
+8. Parts: `ODSBanner`, `ODSTag` and `ODSAvatar` cover what SwiftUI has no control for. See "Parts" below. For an empty state use the system `ContentUnavailableView`.
+9. Fonts: `Font.ods(_ role: ODSTextRole)` returns the system text style for a type role. See the type roles table below. Native apps use the system fonts with Dynamic Type; Inter and Fira Code stay on the web.
 
 Limits to know:
 
@@ -122,6 +124,14 @@ ODS type roles map to system text styles, so they keep Dynamic Type. No font fil
 
 ### Component mapping
 
-For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
+For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet; an `ODS…` name is a part the package ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
 
 <!-- native:components -->
+
+### Parts
+
+The parts ODS ships where the platform has no control of its own: `ODSBanner` (an inline message), `ODSTag` and `ODSAvatar` in the Swift package. They follow the OS-update rules: system text styles, Dynamic Type, SF Symbols, no fixed sizes. Their colors come from one table, `native/parts.js`, which the Swift code is generated from and the contrast gate checks, so a part has the same colors on every platform and on the web. Do not re-color a part.
+
+A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one color token.
+
+<!-- native:parts -->

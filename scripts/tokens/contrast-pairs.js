@@ -68,4 +68,21 @@ function pairsFor(set, { increased = false } = {}) {
   return pairs;
 }
 
-module.exports = { pairsFor, isReportOnly, REPORT_ONLY };
+// The pairs a parts contract (native/parts.js) adds: each label on its fill, or on the page when
+// the style has no fill. Pairs the core list already has are left out. These are checked by the
+// gate; they never drive the increased-contrast derivation.
+function partPairs(set, parts, { increased = false } = {}) {
+  const color = (role) => { const [g, k] = role.split('.'); return set[g][k]; };
+  const seen = new Set(pairsFor(set, { increased }).map((p) => p.pair));
+  const out = [];
+  for (const style of Object.values(parts)) {
+    const bgRole = style.fill || 'background.default';
+    const pair = `${style.label} on ${bgRole}`;
+    if (seen.has(pair)) continue;
+    seen.add(pair);
+    out.push({ pair, fgRole: style.label, bgRole, fg: color(style.label), bg: color(bgRole), min: increased ? 7 : 4.5, gated: true });
+  }
+  return out;
+}
+
+module.exports = { pairsFor, partPairs, isReportOnly, REPORT_ONLY };

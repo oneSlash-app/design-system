@@ -397,10 +397,10 @@ public extension ODSTheme {
         contrast: Color(odsLight: 0xFFFFFF, dark: 0x000000, lightIncreased: 0xFFFFFF, darkIncreased: 0x000000)
       ),
       secondary: ODSSecondaryColors(
-        main: Color(odsLight: 0x6E7A5A, dark: 0x6E7A5A, lightIncreased: 0x525D3F, darkIncreased: 0x525D3F),
-        dark: Color(odsLight: 0x5D6849, dark: 0x5D6849, lightIncreased: 0x525D3F, darkIncreased: 0x525D3F),
-        light: Color(odsLight: 0x828D6B, dark: 0x828D6B, lightIncreased: 0x828D6B, darkIncreased: 0x828D6B),
-        contrast: Color(odsLight: 0xFFFFFF, dark: 0xFFFFFF, lightIncreased: 0xFFFFFF, darkIncreased: 0xFFFFFF)
+        main: Color(odsLight: 0x5D6849, dark: 0x5D6849, lightIncreased: 0x525D3F, darkIncreased: 0xA2AF8D),
+        dark: Color(odsLight: 0x3B4628, dark: 0x3B4628, lightIncreased: 0x3B4628, darkIncreased: 0xA1AF8C),
+        light: Color(odsLight: 0x6E7A5A, dark: 0x6E7A5A, lightIncreased: 0x6E7A5A, darkIncreased: 0x6E7A5A),
+        contrast: Color(odsLight: 0xFFFFFF, dark: 0xFFFFFF, lightIncreased: 0xFFFFFF, darkIncreased: 0x1C2213)
       ),
       error: ODSErrorColors(
         main: Color(odsLight: 0xD32F2F, dark: 0xE74C4C, lightIncreased: 0xB60015, darkIncreased: 0xFD605E),

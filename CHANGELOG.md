@@ -7,6 +7,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.12.0] - 2026-11-20
+
+### Added
+
+- Swift package: three parts for what SwiftUI has no control for. Each uses system text styles, Dynamic Type and SF Symbols, and takes its colors from one table (`native/parts.js`) that the contrast gate checks.
+  - `ODSBanner`: an inline message (the Alert's `inline` variant) with five kinds, an optional second line and an optional Dismiss button. It is announced to assistive technology once. There is no native toast.
+  - `ODSTag`: contained, text-only and dot variants, the five status colors, a selected state, three sizes and an optional SF Symbol. It only displays; wrap it in a `Button` to make it act.
+  - `ODSAvatar`: a picture, or the person's initial on a color derived from their handle with the same rule as the web, so one person has one color everywhere.
+- Swift package: `odsProminentButton(_:)`. Use it instead of `.buttonStyle(.borderedProminent)` or `.glassProminent`.
+- `DESIGN.md`: a "Parts" section listing every part style and its tokens.
+
+### Fixed
+
+- Under `odsTheme(_:)`, a `.borderedProminent` or `.glassProminent` button drew its label in `text.primary`, not the system white. That is below 4.5:1 on the accent in eight of the ten theme and mode combinations, and in Forest light it is the same color as the fill, so the label could not be seen. `odsProminentButton(_:)` sets the label to `accent.contrast`. Apps must switch their prominent buttons to it; the package cannot fix an existing `.buttonStyle(.borderedProminent)` from the outside.
+
+### Changed
+
+- Forest's secondary ramp is one step darker in light and dark: `secondary.main` `#6E7A5A` → `#5D6849`, `secondary.dark` `#5D6849` → `#3B4628`, `secondary.light` `#828D6B` → `#6E7A5A`. The white label on `secondary.main` goes from 4.57:1 to 5.93:1 and hover is a visible step. Default tags, default alerts and secondary buttons look darker; in dark mode the fill is closer to the page (3.57:1 → 2.75:1).
+- Forest dark under increased contrast: the secondary fill (secondary button, default Tag, default Alert and banner) now has a dark label (`#1C2213`) on a lighter fill (`#A2AF8D`), 7:1 both for the label and against the page. In 2.11.0 it kept its white label and the fill darkened to `#525D3F`, which sat closer to the page (2.33:1) than at standard contrast. Standard values and every other theme and mode are unchanged.
+- Native mapping: Alert, Tag and UserImage now name their Swift parts, and EmptyBox maps to the system `ContentUnavailableView` for good. The Button note is generated from the tokens. The Compose column for the four parts still says planned.
+
 ## [2.11.0] - 2026-11-20
 
 ### Added
