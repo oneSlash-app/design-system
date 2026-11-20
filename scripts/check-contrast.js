@@ -1,5 +1,6 @@
 const { contrastRatio } = require('./tokens/color.js');
-const { pairsFor, isReportOnly } = require('./tokens/contrast-pairs.js');
+const { pairsFor, partPairs, isReportOnly } = require('./tokens/contrast-pairs.js');
+const { parts } = require('../native/parts.js');
 const { increaseContrast } = require('./tokens/increase-contrast.js');
 
 function checkContrast(tokens) {
@@ -20,7 +21,7 @@ function checkContrast(tokens) {
             continue;
           }
         }
-        for (const p of pairsFor(set, { increased })) {
+        for (const p of [...pairsFor(set, { increased }), ...partPairs(set, parts, { increased })]) {
           const { pair, min } = p;
           const gated = p.gated && !isReportOnly(theme, base, pair);
           const ratio = contrastRatio(p.fg, p.bg);

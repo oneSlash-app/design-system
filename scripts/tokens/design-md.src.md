@@ -122,6 +122,14 @@ ODS type roles map to system text styles, so they keep Dynamic Type. No font fil
 
 ### Component mapping
 
-For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
+For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet; an `ODS…` name is a part the package ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
 
 <!-- native:components -->
+
+### Parts
+
+The parts ODS ships where the platform has no control of its own: `ODSBanner` (an inline message), `ODSTag` and `ODSAvatar` in the Swift package. They follow the OS-update rules: system text styles, Dynamic Type, SF Symbols, no fixed sizes. Their colors come from one table, `native/parts.js`, which the Swift code is generated from and the contrast gate checks, so a part has the same colors on every platform and on the web. Do not re-color a part.
+
+A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one color token.
+
+<!-- native:parts -->

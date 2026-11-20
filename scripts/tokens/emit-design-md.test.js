@@ -65,3 +65,12 @@ test('a theme whose accent changes is marked for high-contrast asset variants', 
   const md = emitDesignMd(tokens, require('../../native/mapping'), '<!-- tokens:increased-accent -->', sets);
   assert.match(md, /^\| clay \|.*\| #FFFFFF \| add high-contrast variants \|$/m);
 });
+
+test('the parts section has one row per style key', () => {
+  const { emitDesignMd } = require('./emit-design-md');
+  const { parts } = require('../../native/parts');
+  const md = emitDesignMd(require('../../designTokens.js'), { ...require('../../native/mapping'), parts }, '<!-- native:parts -->');
+  assert.match(md, /\| Style \| Fill \| Label \| Border \| Dot \|/);
+  assert.match(md, /^\| `tag\.contained\.success` \| `success\.fill` \| `success\.onFill` \| `success\.fill` \|  \|$/m);
+  assert.equal((md.match(/^\| `(tag|banner)\./gm) || []).length, 26);
+});

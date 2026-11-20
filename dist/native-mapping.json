@@ -2,9 +2,9 @@
   "components": [
     {
       "ods": "alert",
-      "swiftui": "ODS part (planned)",
+      "swiftui": "`ODSBanner` for an inline message; `.alert` for one that needs a decision",
       "compose": "ODS part (planned)",
-      "note": "Until then: SwiftUI `.alert` for messages that need a decision; Compose `Snackbar` in a `SnackbarHost` for toasts."
+      "note": "ODS has no native toast. Compose until the part exists: `Snackbar` in a `SnackbarHost`."
     },
     {
       "ods": "button",
@@ -19,9 +19,9 @@
     },
     {
       "ods": "emptyBox",
-      "swiftui": "ODS part (planned)",
+      "swiftui": "`ContentUnavailableView`",
       "compose": "ODS part (planned)",
-      "note": "Until then: SwiftUI `ContentUnavailableView`; Compose a centered `Icon` and `Text` in a `Column`."
+      "note": "The system has this control on Apple, so ODS adds no part there. Compose until the part exists: a centered `Icon` and `Text` in a `Column`."
     },
     {
       "ods": "factsRow",
@@ -200,9 +200,9 @@
     },
     {
       "ods": "tag",
-      "swiftui": "ODS part (planned)",
+      "swiftui": "`ODSTag`",
       "compose": "ODS part (planned)",
-      "note": "Until then: SwiftUI `.badge` for counts, else a `Label`; Compose `AssistChip` or `FilterChip`."
+      "note": "A count on a list row or tab stays `.badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style. Compose until the part exists: `AssistChip` or `FilterChip`."
     },
     {
       "ods": "textarea",
@@ -227,9 +227,9 @@
     },
     {
       "ods": "userImage",
-      "swiftui": "ODS part (planned)",
+      "swiftui": "`ODSAvatar`",
       "compose": "ODS part (planned)",
-      "note": "Until then: SwiftUI `AsyncImage` clipped to a `Circle`, `person.crop.circle` placeholder; Compose `Image` clipped to `CircleShape`, `account_circle` placeholder."
+      "note": "Load the picture yourself and pass it as an `Image`. Compose until the part exists: `Image` clipped to `CircleShape`, `account_circle` placeholder."
     }
   ],
   "typeRoles": {

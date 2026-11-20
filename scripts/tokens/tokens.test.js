@@ -145,3 +145,13 @@ test('native mapping has exactly one row per component file', () => {
     assert.ok(r.swiftui && r.compose, r.ods);
   }
 });
+
+test('the four parts rows no longer say planned for SwiftUI', () => {
+  const { components } = require('../../native/mapping.js');
+  const row = (ods) => components.find((r) => r.ods === ods);
+  assert.match(row('alert').swiftui, /`ODSBanner`/);
+  assert.match(row('tag').swiftui, /`ODSTag`/);
+  assert.match(row('userImage').swiftui, /`ODSAvatar`/);
+  assert.match(row('emptyBox').swiftui, /`ContentUnavailableView`/);
+  for (const ods of ['alert', 'tag', 'userImage', 'emptyBox']) assert.doesNotMatch(row(ods).swiftui, /planned/);
+});

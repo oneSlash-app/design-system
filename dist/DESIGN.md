@@ -253,14 +253,14 @@ ODS type roles map to system text styles, so they keep Dynamic Type. No font fil
 
 ### Component mapping
 
-For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
+For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet; an `ODS…` name is a part the package ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
 
 | ODS | SwiftUI | Compose | Note |
 | --- | --- | --- | --- |
-| alert | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `.alert` for messages that need a decision; Compose `Snackbar` in a `SnackbarHost` for toasts. |
+| alert | `ODSBanner` for an inline message; `.alert` for one that needs a decision | ODS part (planned) | ODS has no native toast. Compose until the part exists: `Snackbar` in a `SnackbarHost`. |
 | button | `Button` with `.borderedProminent` or `.glassProminent` for accent, `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. A prominent button's system label is white; on themes whose accent is light (default, clay) that fails contrast in light mode, so set the label's `.foregroundStyle(theme.accent.contrast)`. Forest, indigo and wine pass as is. |
 | checkBox | `Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS) | `Checkbox` |  |
-| emptyBox | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `ContentUnavailableView`; Compose a centered `Icon` and `Text` in a `Column`. |
+| emptyBox | `ContentUnavailableView` | ODS part (planned) | The system has this control on Apple, so ODS adds no part there. Compose until the part exists: a centered `Icon` and `Text` in a `Column`. |
 | factsRow | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows. |
 | figure | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: an `Image` with a caption `Text` in the caption text style. |
 | heading | `Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)` | `Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }` |  |
@@ -292,9 +292,44 @@ For each web component, the table gives the native control to use. System contro
 | tableHeaderCell | A `TableColumn` title | `Text` in the header `Row` | Material 3 has no table. |
 | tableRow | `TableRow` | `Row` | Material 3 has no table. |
 | tabsContainer | `TabView` or segmented `Picker` | `PrimaryTabRow` | `TabRow` is deprecated in Material 3. |
-| tag | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `.badge` for counts, else a `Label`; Compose `AssistChip` or `FilterChip`. |
+| tag | `ODSTag` | ODS part (planned) | A count on a list row or tab stays `.badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style. Compose until the part exists: `AssistChip` or `FilterChip`. |
 | textarea | `TextField(_:text:axis: .vertical)` or `TextEditor` | `OutlinedTextField` with `minLines` |  |
 | textField | `TextField` (`SecureField` for passwords) | `OutlinedTextField` or `TextField` |  |
 | timeStamp | `Text(_:style:)` (`.relative`) or `Text(_:format:)` (`.dateTime`) | `Text` with `DateUtils.getRelativeTimeSpanString` or `DateTimeFormatter.ofLocalizedDateTime` |  |
 | tooltip | `.help` | `TooltipBox` | `.help` shows on pointer hover only. `TooltipBox` needs `@OptIn(ExperimentalMaterial3Api::class)`. |
-| userImage | ODS part (planned) | ODS part (planned) | Until then: SwiftUI `AsyncImage` clipped to a `Circle`, `person.crop.circle` placeholder; Compose `Image` clipped to `CircleShape`, `account_circle` placeholder. |
+| userImage | `ODSAvatar` | ODS part (planned) | Load the picture yourself and pass it as an `Image`. Compose until the part exists: `Image` clipped to `CircleShape`, `account_circle` placeholder. |
+
+### Parts
+
+The parts ODS ships where the platform has no control of its own: `ODSBanner` (an inline message), `ODSTag` and `ODSAvatar` in the Swift package. They follow the OS-update rules: system text styles, Dynamic Type, SF Symbols, no fixed sizes. Their colors come from one table, `native/parts.js`, which the Swift code is generated from and the contrast gate checks, so a part has the same colors on every platform and on the web. Do not re-color a part.
+
+A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one color token.
+
+| Style | Fill | Label | Border | Dot |
+| --- | --- | --- | --- | --- |
+| `banner.default` | `secondary.main` | `secondary.contrast` |  |  |
+| `tag.contained.plain` | `background.accent300` | `text.primary` | `misc.divider` |  |
+| `tag.contained.selected` | `accent.main` | `accent.contrast` |  |  |
+| `tag.contained.default` | `secondary.main` | `secondary.contrast` | `misc.divider` |  |
+| `tag.textOnly.plain` |  | `text.primary` |  |  |
+| `tag.textOnly.selected` |  | `text.primary` | `accent.main` |  |
+| `tag.textOnly.default` |  | `text.secondary` |  |  |
+| `tag.dot.plain` |  | `text.primary` |  | `text.secondary` |
+| `tag.dot.selected` |  | `text.primary` |  | `text.secondary` |
+| `tag.dot.default` |  | `text.primary` |  | `text.secondary` |
+| `banner.error` | `error.alertBg` | `text.primary` |  |  |
+| `tag.contained.error` | `error.fill` | `error.onFill` | `error.fill` |  |
+| `tag.textOnly.error` |  | `error.text` | `error.fill` |  |
+| `tag.dot.error` |  | `text.primary` |  | `error.main` |
+| `banner.warning` | `warning.alertBg` | `text.primary` |  |  |
+| `tag.contained.warning` | `warning.fill` | `warning.onFill` | `warning.fill` |  |
+| `tag.textOnly.warning` |  | `warning.text` | `warning.fill` |  |
+| `tag.dot.warning` |  | `text.primary` |  | `warning.main` |
+| `banner.info` | `info.alertBg` | `text.primary` |  |  |
+| `tag.contained.info` | `info.fill` | `info.onFill` | `info.fill` |  |
+| `tag.textOnly.info` |  | `info.text` | `info.fill` |  |
+| `tag.dot.info` |  | `text.primary` |  | `info.main` |
+| `banner.success` | `success.alertBg` | `text.primary` |  |  |
+| `tag.contained.success` | `success.fill` | `success.onFill` | `success.fill` |  |
+| `tag.textOnly.success` |  | `success.text` | `success.fill` |  |
+| `tag.dot.success` |  | `text.primary` |  | `success.main` |

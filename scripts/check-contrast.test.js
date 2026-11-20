@@ -102,3 +102,13 @@ test('the printed output names every failure, including those with no pair row',
   assert.match(lines(checkContrast(t2)).join('\n'), /default +darkIncreased +text levels out of order +FAIL/);
   assert.match(lines(checkContrast(tokens)).at(-1), /^820 pairs checked, 0 failed$/);
 });
+
+test('part pairs are checked but never change the derived sets', () => {
+  const { withIncreased } = require('./tokens/increase-contrast.js');
+  const { report, failures } = checkContrast(tokens);
+  assert.deepEqual(failures, []);
+  const keys = report.map((r) => `${r.theme}/${r.mode}/${r.pair}`);
+  assert.equal(new Set(keys).size, keys.length);
+  assert.equal(withIncreased(tokens).forest.darkIncreased.text.secondary, '#B1BE98');
+  assert.equal(withIncreased(tokens).forest.lightIncreased.secondary.main, '#525D3F');
+});

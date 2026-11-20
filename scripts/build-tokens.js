@@ -11,7 +11,9 @@ const { emitDtcg } = require('./tokens/emit-dtcg');
 const { emitSwiftColors, emitSwiftMetrics } = require('./tokens/emit-swift');
 const { emitDesignMd } = require('./tokens/emit-design-md');
 const { withIncreased } = require('./tokens/increase-contrast');
-const mapping = require('../native/mapping');
+const { emitSwiftParts } = require('./tokens/emit-swift-parts');
+const { parts } = require('../native/parts');
+const mapping = { ...require('../native/mapping'), parts };
 
 const { components, typeRoles } = mapping;
 const designMdTemplate = fs.readFileSync(path.join(__dirname, 'tokens/design-md.src.md'), 'utf8');
@@ -42,6 +44,7 @@ const emitters = {
 const nativeEmitters = {
   'ODSColors.generated.swift': (t, inc) => emitSwiftColors(t, inc),
   'ODSMetrics.generated.swift': (t) => emitSwiftMetrics(t),
+  'ODSParts.generated.swift': () => emitSwiftParts(parts),
 };
 
 function generateNative(tokens) {

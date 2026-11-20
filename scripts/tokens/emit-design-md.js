@@ -42,6 +42,10 @@ function typography(tokens) {
 const components = (m) => table(['ODS', 'SwiftUI', 'Compose', 'Note'],
   m.components.map((c) => [c.ods, c.swiftui, c.compose, c.note]));
 
+const code = (v) => (v ? `\`${v}\`` : '');
+const partsTable = (parts) => table(['Style', 'Fill', 'Label', 'Border', 'Dot'],
+  Object.entries(parts || {}).map(([key, s]) => [code(key), code(s.fill), code(s.label), code(s.border), code(s.dot)]));
+
 const typeRoles = (tokens, m) => table(['ODS role', 'Web size', 'System text style'],
   Object.entries(m.typeRoles).map(([role, style]) => [role, tokens.typography[role] && tokens.typography[role].size, `\`${style}\``]));
 
@@ -54,6 +58,7 @@ function emitDesignMd(tokens, mapping, template, increased = withIncreased(token
     'tokens:radius': () => scale(tokens.radius),
     'tokens:typography': () => typography(tokens),
     'native:components': () => components(mapping),
+    'native:parts': () => partsTable(mapping.parts),
     'native:type-roles': () => typeRoles(tokens, mapping),
   };
   const body = template.split('\n').map((line) => {
