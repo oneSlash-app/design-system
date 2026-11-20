@@ -1,6 +1,6 @@
 # Checks every pull request and every push to main: the Node package
 # (tests, contrast, committed dist/ and native/ output up to date) and the
-# Swift package (build, test, iOS simulator test).
+# Swift package (build, test, iOS simulator test), and the Android library (build, test, gallery).
 name: CI
 
 on:
@@ -58,4 +58,31 @@ jobs:
         with:
           name: parts-gallery
           path: ${{ runner.temp }}/parts-gallery
+          if-no-files-found: error
+
+  android:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: native/android
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: 21
+
+      # Builds the library, runs its tests and renders the gallery: real Material components
+      # and the oneSlash parts in every theme and appearance. The images are for looking at,
+      # not compared pixel by pixel.
+      - name: Build, test and render the gallery
+        env:
+          ODS_GALLERY_DIR: ${{ runner.temp }}/android-gallery
+        run: ./gradlew :oneslash-design:assembleRelease :oneslash-design:testDebugUnitTest
+
+      - uses: actions/upload-artifact@v7
+        with:
+          name: android-gallery
+          path: ${{ runner.temp }}/android-gallery
           if-no-files-found: error

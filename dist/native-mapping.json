@@ -3,8 +3,8 @@
     {
       "ods": "alert",
       "swiftui": "`ODSBanner` for an inline message; `.alert` for one that needs a decision",
-      "compose": "ODS part (planned)",
-      "note": "ODS has no native toast. Compose until the part exists: `Snackbar` in a `SnackbarHost`."
+      "compose": "`OdsBanner` for an inline message; `AlertDialog` for one that needs a decision",
+      "note": "ODS has no native toast: on Android use `Snackbar` in a `SnackbarHost`."
     },
     {
       "ods": "button",
@@ -20,8 +20,8 @@
     {
       "ods": "emptyBox",
       "swiftui": "`ContentUnavailableView`",
-      "compose": "ODS part (planned)",
-      "note": "The system has this control on Apple, so ODS adds no part there. Compose until the part exists: a centered `Icon` and `Text` in a `Column`."
+      "compose": "`OdsEmptyState`",
+      "note": "The system has this control on Apple, so ODS adds no part there. Material has none, so ODS does."
     },
     {
       "ods": "factsRow",
@@ -201,8 +201,8 @@
     {
       "ods": "tag",
       "swiftui": "`ODSTag`",
-      "compose": "ODS part (planned)",
-      "note": "A count on a list row or tab stays `.badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style. Compose until the part exists: `AssistChip` or `FilterChip`."
+      "compose": "`OdsTag`",
+      "note": "A count on a list row or tab stays `.badge` / `Badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style; on Android use a Material `AssistChip` or `FilterChip`, which are made to be pressed."
     },
     {
       "ods": "textarea",
@@ -228,8 +228,8 @@
     {
       "ods": "userImage",
       "swiftui": "`ODSAvatar`",
-      "compose": "ODS part (planned)",
-      "note": "Load the picture yourself and pass it as an `Image`. Compose until the part exists: `Image` clipped to `CircleShape`, `account_circle` placeholder."
+      "compose": "`OdsAvatar`",
+      "note": "Load the picture yourself and pass it as an `Image` / a `Painter`."
     }
   ],
   "typeRoles": {

@@ -1,5 +1,6 @@
 const { contrastRatio } = require('./tokens/color.js');
-const { pairsFor, partPairs, isReportOnly } = require('./tokens/contrast-pairs.js');
+const { pairsFor, partPairs, materialPairs, isReportOnly } = require('./tokens/contrast-pairs.js');
+const material = require('../native/material-roles.js');
 const { parts } = require('../native/parts.js');
 const { increaseContrast, chosenRoles } = require('./tokens/increase-contrast.js');
 
@@ -21,7 +22,14 @@ function checkContrast(tokens) {
             continue;
           }
         }
-        for (const p of [...pairsFor(set, { increased }), ...partPairs(set, parts, { increased })]) {
+        const rows = [...pairsFor(set, { increased }), ...partPairs(set, parts, { increased })];
+        for (const m of materialPairs(set, material.roles, material.pairs, { increased })) {
+          // A pair the list only reports becomes gated when Material draws it.
+          const existing = rows.find((r) => r.pair === m.pair);
+          if (existing) existing.gated = true;
+          else rows.push(m);
+        }
+        for (const p of rows) {
           const { pair, min } = p;
           const gated = p.gated && !isReportOnly(theme, base, pair);
           const ratio = contrastRatio(p.fg, p.bg);

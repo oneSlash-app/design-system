@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.13.0] - 2026-11-20
+
+### Added
+
+- Android library `io.github.oneslash-app:oneslash-design` (Jetpack Compose, Material 3; in `native/android`), generated from the same tokens as the web and the Swift package. Not on Maven Central until the owner has set up publishing (`native/android/PUBLISHING.md`); until then it is built from this repository.
+  - `OneSlashTheme(theme) { … }` fills the Material 3 color scheme from an ODS theme (`OdsTheme.Default`, `Forest`, `Clay`, `Indigo`, `Wine`) in light and dark, and in the increased-contrast values when the system's contrast setting is medium or high (Android 14 and later). Shapes and type are Material's own; dynamic color is not used. Material draws `primary` as text as well as a fill, so in the default and clay themes in light mode, where the accent is about 1.6:1 as text, `primary` is the neutral strong color and the accent is on `tertiaryContainer`.
+  - `OneSlashTheme.colors` gives every ODS color role, for the ones Material has no slot for (warning, info, success, the lighter surfaces).
+  - `OdsSpacing`, `OdsRadius`, `OdsDuration`.
+  - Parts: `OdsBanner`, `OdsTag`, `OdsAvatar` and `OdsEmptyState`, with the same colors as the web and Swift parts.
+- `native/material-roles.js`: which ODS role fills each Material 3 color-scheme role. The contrast gate checks its pairs, including secondary text on every surface container, in all four sets of every theme.
+- `DESIGN.md`: an Android section with the rules for a "100% ODS" Android app.
+
+### Changed
+
+- Native mapping: the Compose column names the four Android parts. No row says "planned" any more.
+
 ## [2.12.0] - 2026-11-20
 
 ### Added

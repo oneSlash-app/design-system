@@ -234,6 +234,36 @@ Limits to know:
 - Each scene needs its own `.odsTheme`, for example a macOS `Settings` scene as well as the main window.
 - For motion, prefer the platform's springs. Use `ODSDuration` only for our own content views.
 
+### The Android rules
+
+On Android the Material components ship inside the app, not the OS. These rules are the counterpart of the OS-update rules.
+
+1. Stable, public API only. No experimental opt-ins in shared code, no reflection, no internal Compose API.
+2. Material components keep their standard form. Color them through the theme, not per-call color overrides.
+3. System bars are the system's. Edge to edge; take insets from `WindowInsets`; set no bar colors.
+4. Brand enters only through the theme: the Material color scheme and the ODS extended colors.
+5. No fixed system metrics. No hard-coded bar heights or inset numbers.
+6. System type. The Material type scale with the device font, in `sp`, so font scaling works.
+7. Material Symbols for icons.
+8. Colors come from the theme. No branching on dark mode in screens.
+9. Build with the current SDK and the current Compose release, and check both once a year.
+
+### Adopting the Compose library
+
+Kotlin and Jetpack Compose with Material 3. The library is `io.github.oneslash-app:oneslash-design`, with the same version as the npm package. It is in `native/android` of the repository and is published to Maven Central once publishing is set up; check before depending on it by coordinates.
+
+1. Wrap the app's content once: `OneSlashTheme(theme = OdsTheme.Forest) { … }`. The themes are `OdsTheme.Default`, `Forest`, `Clay`, `Indigo` and `Wine`. It follows the system's dark mode, and takes the increased-contrast colors when the system's contrast setting is medium or high (Android 14 and later).
+2. Use Material 3 components as they are. `MaterialTheme.colorScheme` is filled from the theme: the surfaces are `background.default` and `background.accent100`, `onSurfaceVariant` is `text.secondary`, `error` is `error.text`. `primary` is `accent.main` with `accent.contrast` on it, except in the default and clay themes in light mode: Material draws `primary` as text as well as a fill, and those accents are about 1.6:1 as text, so there `primary` is the neutral strong color (`primary.dark`). The accent is a fill in every theme through `tertiaryContainer`, for example a floating action button's container color.
+3. Read the colors Material has no role for from `OneSlashTheme.colors`, for example `OneSlashTheme.colors.warningFill` or `backgroundAccent300`. The names are the color table's, in camel case.
+4. Shapes and type are Material's defaults. `OdsSpacing`, `OdsRadius` and `OdsDuration` are for our own content.
+5. Parts: `OdsBanner`, `OdsTag`, `OdsAvatar` and `OdsEmptyState`. `OdsAvatar` takes a `Painter`; load the picture with the app's own image library.
+6. Do not use dynamic color (Material You): the theme is the brand.
+
+Limits to know:
+
+- Material's surface containers stop at `background.accent100`. The lighter ODS surfaces are for our own content, where we choose the text on them: secondary text fails on them in dark mode.
+- Outlined borders (`outline`) are the web's outlined border, which is below 3:1 on the page in light mode and reaches it under increased contrast.
+
 ### Type roles
 
 ODS type roles map to system text styles, so they keep Dynamic Type. No font files ship with the native packages.
@@ -255,14 +285,14 @@ ODS type roles map to system text styles, so they keep Dynamic Type. No font fil
 
 ### Component mapping
 
-For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet; an `ODS…` name is a part the package ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
+For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. A name starting with `ODS` (Swift) or `Ods` (Compose) is a part ODS ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
 
 | ODS | SwiftUI | Compose | Note |
 | --- | --- | --- | --- |
-| alert | `ODSBanner` for an inline message; `.alert` for one that needs a decision | ODS part (planned) | ODS has no native toast. Compose until the part exists: `Snackbar` in a `SnackbarHost`. |
+| alert | `ODSBanner` for an inline message; `.alert` for one that needs a decision | `OdsBanner` for an inline message; `AlertDialog` for one that needs a decision | ODS has no native toast: on Android use `Snackbar` in a `SnackbarHost`. |
 | button | `Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a `.borderedProminent` or `.glassProminent` button takes `text.primary`, not the system white, which is below 4.5:1 on the accent in default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark. In forest light it is the same color as the fill, so the label cannot be seen. The modifier keeps the system style and sets the label to `accent.contrast`. Compose needs nothing: `onPrimary` is `accent.contrast`. |
 | checkBox | `Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS) | `Checkbox` |  |
-| emptyBox | `ContentUnavailableView` | ODS part (planned) | The system has this control on Apple, so ODS adds no part there. Compose until the part exists: a centered `Icon` and `Text` in a `Column`. |
+| emptyBox | `ContentUnavailableView` | `OdsEmptyState` | The system has this control on Apple, so ODS adds no part there. Material has none, so ODS does. |
 | factsRow | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows. |
 | figure | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: an `Image` with a caption `Text` in the caption text style. |
 | heading | `Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)` | `Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }` |  |
@@ -294,12 +324,12 @@ For each web component, the table gives the native control to use. System contro
 | tableHeaderCell | A `TableColumn` title | `Text` in the header `Row` | Material 3 has no table. |
 | tableRow | `TableRow` | `Row` | Material 3 has no table. |
 | tabsContainer | `TabView` or segmented `Picker` | `PrimaryTabRow` | `TabRow` is deprecated in Material 3. |
-| tag | `ODSTag` | ODS part (planned) | A count on a list row or tab stays `.badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style. Compose until the part exists: `AssistChip` or `FilterChip`. |
+| tag | `ODSTag` | `OdsTag` | A count on a list row or tab stays `.badge` / `Badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style; on Android use a Material `AssistChip` or `FilterChip`, which are made to be pressed. |
 | textarea | `TextField(_:text:axis: .vertical)` or `TextEditor` | `OutlinedTextField` with `minLines` |  |
 | textField | `TextField` (`SecureField` for passwords) | `OutlinedTextField` or `TextField` |  |
 | timeStamp | `Text(_:style:)` (`.relative`) or `Text(_:format:)` (`.dateTime`) | `Text` with `DateUtils.getRelativeTimeSpanString` or `DateTimeFormatter.ofLocalizedDateTime` |  |
 | tooltip | `.help` | `TooltipBox` | `.help` shows on pointer hover only. `TooltipBox` needs `@OptIn(ExperimentalMaterial3Api::class)`. |
-| userImage | `ODSAvatar` | ODS part (planned) | Load the picture yourself and pass it as an `Image`. Compose until the part exists: `Image` clipped to `CircleShape`, `account_circle` placeholder. |
+| userImage | `ODSAvatar` | `OdsAvatar` | Load the picture yourself and pass it as an `Image` / a `Painter`. |
 
 ### Parts
 

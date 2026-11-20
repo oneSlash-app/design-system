@@ -45,7 +45,7 @@ The Swift package `OneSlashDesign` (iOS 26 and macOS 26 and later) is this repos
 5. Use `.odsProminentButton()` instead of `.buttonStyle(.borderedProminent)`: under `.odsTheme` a prominent label is otherwise unreadable on most themes.
 6. `ODSBanner`, `ODSTag` and `ODSAvatar` are the parts SwiftUI has no control for.
 
-[DESIGN.md](./dist/DESIGN.md) has the rules for a "100% ODS" native app and the table that maps each web component to its native control. The Compose theme is not built yet.
+[DESIGN.md](./dist/DESIGN.md) has the rules for a "100% ODS" native app and the table that maps each web component to its native control. An Android app wraps its content in `OneSlashTheme(theme = OdsTheme.Forest) { … }` from the Compose library in `native/android` (`io.github.oneslash-app:oneslash-design`; see [PUBLISHING.md](./native/android/PUBLISHING.md) for whether it is on Maven Central yet).
 
 ## Building a page
 
