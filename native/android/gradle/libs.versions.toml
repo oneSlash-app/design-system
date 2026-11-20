@@ -6,6 +6,7 @@ composeBom = "2026.11.01"
 junit = "4.13.2"
 robolectric = "4.18.1"
 roborazzi = "1.79.0"
+mavenPublish = "0.37.0"
 
 [libraries]
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
@@ -22,3 +23,4 @@ roborazzi-compose = { module = "io.github.takahirom.roborazzi:roborazzi-compose"
 [plugins]
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+maven-publish = { id = "com.vanniktech.maven.publish", version.ref = "mavenPublish" }

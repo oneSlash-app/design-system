@@ -234,6 +234,36 @@ Limits to know:
 - Each scene needs its own `.odsTheme`, for example a macOS `Settings` scene as well as the main window.
 - For motion, prefer the platform's springs. Use `ODSDuration` only for our own content views.
 
+### The Android rules
+
+On Android the Material components ship inside the app, not the OS. These rules are the counterpart of the OS-update rules.
+
+1. Stable, public API only. No experimental opt-ins in shared code, no reflection, no internal Compose API.
+2. Material components keep their standard form. Color them through the theme, not per-call color overrides.
+3. System bars are the system's. Edge to edge; take insets from `WindowInsets`; set no bar colors.
+4. Brand enters only through the theme: the Material color scheme and the ODS extended colors.
+5. No fixed system metrics. No hard-coded bar heights or inset numbers.
+6. System type. The Material type scale with the device font, in `sp`, so font scaling works.
+7. Material Symbols for icons.
+8. Colors come from the theme. No branching on dark mode in screens.
+9. Build with the current SDK and the current Compose release, and check both once a year.
+
+### Adopting the Compose library
+
+Kotlin and Jetpack Compose with Material 3. The library is `io.github.oneslash-app:oneslash-design`, with the same version as the npm package. It is in `native/android` of the repository and is published to Maven Central once publishing is set up; check before depending on it by coordinates.
+
+1. Wrap the app's content once: `OneSlashTheme(theme = OdsTheme.Forest) { … }`. The themes are `OdsTheme.Default`, `Forest`, `Clay`, `Indigo` and `Wine`. It follows the system's dark mode, and takes the increased-contrast colors when the system's contrast setting is medium or high (Android 14 and later).
+2. Use Material 3 components as they are. `MaterialTheme.colorScheme` is filled from the theme: `primary` is `accent.main`, `onPrimary` is `accent.contrast`, the surfaces are `background.default` and `background.accent100`, `onSurfaceVariant` is `text.secondary`. A filled button's label is readable on every theme with nothing more to do.
+3. Read the colors Material has no role for from `OneSlashTheme.colors`, for example `OneSlashTheme.colors.warningFill` or `backgroundAccent300`. The names are the color table's, in camel case.
+4. Shapes and type are Material's defaults. `OdsSpacing`, `OdsRadius` and `OdsDuration` are for our own content.
+5. Parts: `OdsBanner`, `OdsTag`, `OdsAvatar` and `OdsEmptyState`. `OdsAvatar` takes a `Painter`; load the picture with the app's own image library.
+6. Do not use dynamic color (Material You): the theme is the brand.
+
+Limits to know:
+
+- Material's surface containers stop at `background.accent100`. The lighter ODS surfaces are for our own content, where we choose the text on them: secondary text fails on them in dark mode.
+- Outlined borders (`outline`) are the web's outlined border, which is below 3:1 on the page in light mode and reaches it under increased contrast.
+
 ### Type roles
 
 ODS type roles map to system text styles, so they keep Dynamic Type. No font files ship with the native packages.

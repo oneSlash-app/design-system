@@ -1,6 +1,6 @@
 # oneslash-design-system: Compose theme and Android
 
-Status: approved by the owner on 2026-11-20 (Kotlin and Compose, MIT). Not built. This is the "Compose
+Status: approved by the owner on 2026-11-20 (Kotlin and Compose, MIT). Built in release 2.13.0 (plan `docs/superpowers/plans/2026-11-20-compose-android.md`); not published to Maven Central until the owner's one-time setup. Rows of the role table that changed while building: `primaryContainer` is `accent.main`, `secondaryContainer` is `background.accent300`, `tertiary` is `primary.dark`; Material pairs are held to 4.5:1 in all four sets; `outline` is not gated at standard contrast. This is the "Compose
 theme and Android" doc outlined in `2026-11-17-native-platforms-design.md`
 ("the native spec"). It depends on `2026-11-19-native-gaps-design.md` ("the
 gaps doc") for increased contrast and the parts contract, and is built after
