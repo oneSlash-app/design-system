@@ -37,9 +37,9 @@ Use one semantic name, never a hex value. Each name resolves to a light and a da
 | primary.dark | #262626 | #E9E9E9 | #262626 | #E9E9E9 | #262626 | #E9E9E9 | #262626 | #E9E9E9 | #262626 | #E9E9E9 |
 | primary.light | #888888 | #9A9A9A | #888888 | #9A9A9A | #888888 | #9A9A9A | #888888 | #9A9A9A | #888888 | #9A9A9A |
 | primary.contrast | #ffffff | #000000 | #ffffff | #000000 | #ffffff | #000000 | #ffffff | #000000 | #ffffff | #000000 |
-| secondary.main | #B0B0B0 | #4F4F4F | #6E7A5A | #6E7A5A | #CDB49A | #5C4630 | #B4C6DC | #344566 | #D5BCC8 | #4E3346 |
-| secondary.dark | #888888 | #454545 | #5D6849 | #5D6849 | #B89A7C | #4D3A27 | #8EA6C4 | #2B3A57 | #BF93A8 | #43293C |
-| secondary.light | #D1D1D1 | #6D6D6D | #828D6B | #828D6B | #E2D1BE | #75593D | #CFDCEA | #44587F | #E6D4DC | #634257 |
+| secondary.main | #B0B0B0 | #4F4F4F | #5D6849 | #5D6849 | #CDB49A | #5C4630 | #B4C6DC | #344566 | #D5BCC8 | #4E3346 |
+| secondary.dark | #888888 | #454545 | #3B4628 | #3B4628 | #B89A7C | #4D3A27 | #8EA6C4 | #2B3A57 | #BF93A8 | #43293C |
+| secondary.light | #D1D1D1 | #6D6D6D | #6E7A5A | #6E7A5A | #E2D1BE | #75593D | #CFDCEA | #44587F | #E6D4DC | #634257 |
 | secondary.contrast | #000000 | #eeeeee | #FFFFFF | #FFFFFF | #2B1F12 | #F2E2CE | #111A2E | #E3ECF5 | #2A1622 | #F2EDE4 |
 | error.main | #D32F2F | #E74C4C | #D32F2F | #E74C4C | #D32F2F | #E74C4C | #D32F2F | #E74C4C | #D32F2F | #E74C4C |
 | error.dark | #A82121 | #B22323 | #A82121 | #B22323 | #A82121 | #B22323 | #A82121 | #B22323 | #A82121 | #B22323 |

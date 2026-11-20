@@ -56,8 +56,8 @@ test('roles that already pass, or are in no pair, are unchanged', () => {
 test('a fill moves when its label is already white', () => {
   const { secondary } = all.forest.lightIncreased;
   assert.equal(secondary.contrast, '#FFFFFF');
-  assert.notEqual(secondary.main, '#6E7A5A');
-  assert.ok(contrastRatio('#000000', secondary.main) < contrastRatio('#000000', '#6E7A5A'));
+  assert.notEqual(secondary.main, '#5D6849');
+  assert.ok(contrastRatio('#000000', secondary.main) < contrastRatio('#000000', '#5D6849'));
 });
 
 test('text levels keep their order on the page background', () => {

@@ -383,14 +383,14 @@ const baseColors = base.colors;
 const forestLight = override(baseColors.light, {
   text: { primary: '#1C2213', secondary: '#515E3C', disabled: '#8A9670' },
   accent: { main: '#1C2213', dark: '#2A331E', light: '#3A472B', contrast: '#E7ECDA' },
-  secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+  secondary: { main: '#5D6849', dark: '#3B4628', light: '#6E7A5A' },
   background: { default: '#D9E5C7', accent100: '#E2ECD4', accent200: '#EBF1E0', accent300: '#F4F7EC' },
 });
 
 const forestDark = override(baseColors.dark, {
   text: { primary: '#D9E5C7', secondary: '#9DAA85', disabled: '#6D7956' },
   accent: { main: '#E7ECDA', dark: '#D6DEC3', light: '#F2F5EA', contrast: '#1C2213' },
-  secondary: { main: '#6E7A5A', dark: '#5D6849', light: '#828D6B' },
+  secondary: { main: '#5D6849', dark: '#3B4628', light: '#6E7A5A' },
   background: { default: '#1C2213', accent100: '#27301B', accent200: '#364228', accent300: '#424F34' },
 });
 
@@ -449,8 +449,8 @@ const themeSets = (light, dark) => withTooltips(withSemanticKeys(light, 'light')
  */
 const withForestInfoText = (set) => ({ ...set, info: { ...set.info, text: '#0068A3', textHover: '#0068A3' } });
 
-// Forest's secondary.main (#6E7A5A) is mid-tone: its text.primary gives 3.5:1 and Scindo's cream 3.8:1, so the
-// label is white (4.56:1) in both modes.
+// Forest's secondary.main (#5D6849) takes a white label (5.93:1) in both modes: text.primary gives 2.75:1 on it
+// in light. The ramp was one step lighter until 2.12.0 (main #6E7A5A, 4.57:1).
 /**
  * @template {typeof base.colors.light} S
  * @param {S} set

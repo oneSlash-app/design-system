@@ -15,9 +15,9 @@
   --os-color-primary-dark: 38 38 38;
   --os-color-primary-light: 136 136 136;
   --os-color-primary-contrast: 255 255 255;
-  --os-color-secondary-main: 110 122 90;
-  --os-color-secondary-dark: 93 104 73;
-  --os-color-secondary-light: 130 141 107;
+  --os-color-secondary-main: 93 104 73;
+  --os-color-secondary-dark: 59 70 40;
+  --os-color-secondary-light: 110 122 90;
   --os-color-secondary-contrast: 255 255 255;
   --os-color-error-main: 211 47 47;
   --os-color-error-dark: 168 33 33;
@@ -100,9 +100,9 @@
   --os-color-primary-dark: 233 233 233;
   --os-color-primary-light: 154 154 154;
   --os-color-primary-contrast: 0 0 0;
-  --os-color-secondary-main: 110 122 90;
-  --os-color-secondary-dark: 93 104 73;
-  --os-color-secondary-light: 130 141 107;
+  --os-color-secondary-main: 93 104 73;
+  --os-color-secondary-dark: 59 70 40;
+  --os-color-secondary-light: 110 122 90;
   --os-color-secondary-contrast: 255 255 255;
   --os-color-error-main: 231 76 76;
   --os-color-error-dark: 178 35 35;
@@ -186,9 +186,9 @@
     --os-color-primary-dark: 233 233 233;
     --os-color-primary-light: 154 154 154;
     --os-color-primary-contrast: 0 0 0;
-    --os-color-secondary-main: 110 122 90;
-    --os-color-secondary-dark: 93 104 73;
-    --os-color-secondary-light: 130 141 107;
+    --os-color-secondary-main: 93 104 73;
+    --os-color-secondary-dark: 59 70 40;
+    --os-color-secondary-light: 110 122 90;
     --os-color-secondary-contrast: 255 255 255;
     --os-color-error-main: 231 76 76;
     --os-color-error-dark: 178 35 35;
@@ -262,7 +262,6 @@
   :root {
     --os-color-text-secondary: 65 75 44;
     --os-color-secondary-main: 82 93 63;
-    --os-color-secondary-dark: 82 93 63;
     --os-color-error-main: 182 0 21;
     --os-color-error-text: 128 0 10;
     --os-color-error-textHover: 148 1 14;
@@ -282,7 +281,6 @@
     --os-color-text-primary: 222 235 204;
     --os-color-text-secondary: 177 190 152;
     --os-color-secondary-main: 82 93 63;
-    --os-color-secondary-dark: 82 93 63;
     --os-color-error-main: 253 96 94;
     --os-color-error-dark: 247 102 93;
     --os-color-error-fill: 253 96 94;
@@ -306,7 +304,6 @@
     --os-color-text-primary: 222 235 204;
     --os-color-text-secondary: 177 190 152;
     --os-color-secondary-main: 82 93 63;
-    --os-color-secondary-dark: 82 93 63;
     --os-color-error-main: 253 96 94;
     --os-color-error-dark: 247 102 93;
     --os-color-error-fill: 253 96 94;
