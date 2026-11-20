@@ -110,7 +110,7 @@ Use one semantic name, never a hex value. Each name resolves to a light and a da
 
 ## Increased contrast
 
-Every color also has an increased-contrast value in light and in dark. The build derives them from the standard values; nobody picks them by hand, and they are not in `designTokens.js`.
+Every color also has an increased-contrast value in light and in dark. The build derives them from the standard values; nobody picks them by hand, and they are not in `designTokens.js`. One look was chosen by the owner: in forest dark the secondary fill takes the theme's dark ink as its label and gets lighter, where the derivation alone would have darkened it toward the page.
 
 - **Web:** each theme file answers `prefers-contrast: more`. Nothing to do per page or component.
 - **Apple:** each color in the Swift package follows the system's Increase Contrast setting. Nothing to do per screen.

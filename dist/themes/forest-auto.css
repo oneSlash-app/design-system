@@ -280,7 +280,9 @@
   .dark {
     --os-color-text-primary: 222 235 204;
     --os-color-text-secondary: 177 190 152;
-    --os-color-secondary-main: 82 93 63;
+    --os-color-secondary-main: 162 175 141;
+    --os-color-secondary-dark: 161 175 140;
+    --os-color-secondary-contrast: 28 34 19;
     --os-color-error-main: 253 96 94;
     --os-color-error-dark: 247 102 93;
     --os-color-error-fill: 253 96 94;
@@ -303,7 +305,9 @@
   :root:not(.light) {
     --os-color-text-primary: 222 235 204;
     --os-color-text-secondary: 177 190 152;
-    --os-color-secondary-main: 82 93 63;
+    --os-color-secondary-main: 162 175 141;
+    --os-color-secondary-dark: 161 175 140;
+    --os-color-secondary-contrast: 28 34 19;
     --os-color-error-main: 253 96 94;
     --os-color-error-dark: 247 102 93;
     --os-color-error-fill: 253 96 94;

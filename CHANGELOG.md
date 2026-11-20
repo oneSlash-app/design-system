@@ -25,6 +25,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Forest's secondary ramp is one step darker in light and dark: `secondary.main` `#6E7A5A` → `#5D6849`, `secondary.dark` `#5D6849` → `#3B4628`, `secondary.light` `#828D6B` → `#6E7A5A`. The white label on `secondary.main` goes from 4.57:1 to 5.93:1 and hover is a visible step. Default tags, default alerts and secondary buttons look darker; in dark mode the fill is closer to the page (3.57:1 → 2.75:1).
+- Forest dark under increased contrast: the secondary fill (secondary button, default Tag, default Alert and banner) now has a dark label (`#1C2213`) on a lighter fill (`#A2AF8D`), 7:1 both for the label and against the page. In 2.11.0 it kept its white label and the fill darkened to `#525D3F`, which sat closer to the page (2.33:1) than at standard contrast. Standard values and every other theme and mode are unchanged.
 - Native mapping: Alert, Tag and UserImage now name their Swift parts, and EmptyBox maps to the system `ContentUnavailableView` for good. The Button note is generated from the tokens. The Compose column for the four parts still says planned.
 
 ## [2.11.0] - 2026-11-20

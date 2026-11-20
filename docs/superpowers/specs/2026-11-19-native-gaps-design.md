@@ -236,6 +236,16 @@ control, so it is a part there (see the Android doc).
 - Exact padding and radius of the parts, read from the web components.
 - Whether the three releases ship as three versions or the last two as one.
 
+## Decided by the owner after seeing the result
+
+- **Forest dark, secondary fill (2026-11-20).** The derivation kept the white
+  label and darkened the fill toward the dark page (3.57:1 standard, 2.33:1
+  increased). The owner chose a dark label on a lighter fill instead: the
+  label takes `accent.contrast` and stays as it is, and the fill moves. This
+  is the first entry in the derivation's table of choices
+  (`scripts/tokens/increase-contrast.js`); a pair with a chosen role must
+  reach its target and is not compared with its standard ratio.
+
 ## My calls (not yet confirmed by the owner)
 
 - Derived, not hand-authored, increased-contrast values; no override
@@ -251,12 +261,6 @@ control, so it is a part there (see the Android doc).
 
 ## Left open
 
-- **Forest dark, secondary fill.** Forest's secondary label is white in both
-  modes. To carry it at 7:1 the fill darkens, and on the dark page it comes
-  closer to the background (3.57:1 standard, 2.33:1 increased). The label
-  itself is stronger. The gate reports this pair and does not fail on it. The
-  alternative is a dark label on a lighter fill for forest dark under
-  increased contrast, which is a look decision for the owner.
 - **Hover text inside alerts** is checked on the page background only, so
   under increased contrast it can be weaker than the resting text there.
 
