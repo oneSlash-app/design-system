@@ -1,6 +1,6 @@
 # oneslash-design-system: Compose theme and Android
 
-Status: draft for the owner's approval, 2026-11-19. This is the "Compose
+Status: approved by the owner on 2026-11-20 (Kotlin and Compose, MIT). Not built. This is the "Compose
 theme and Android" doc outlined in `2026-11-17-native-platforms-design.md`
 ("the native spec"). It depends on `2026-11-19-native-gaps-design.md` ("the
 gaps doc") for increased contrast and the parts contract, and is built after

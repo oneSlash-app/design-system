@@ -1,6 +1,6 @@
 # oneslash-design-system: closing the native gaps (contrast, parts, button label)
 
-Status: draft for the owner's approval, 2026-11-19. Follows
+Status: approved by the owner on 2026-11-20. Built: section 1, increased contrast (release 2.11.0, plan `docs/superpowers/plans/2026-11-20-increased-contrast.md`); sections 2 and 3 are not built. Follows
 `2026-11-17-native-platforms-design.md` (called "the native spec" below); its
 OS-update rules apply here unchanged. The Android half is in
 `2026-11-19-compose-android-design.md`.
