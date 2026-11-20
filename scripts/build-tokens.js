@@ -14,6 +14,8 @@ const { withIncreased } = require('./tokens/increase-contrast');
 const { emitSwiftParts } = require('./tokens/emit-swift-parts');
 const { parts } = require('../native/parts');
 const { withGeneratedNotes } = require('./tokens/button-note');
+const { emitKotlinColors, emitKotlinScheme, emitKotlinParts, emitKotlinMetrics } = require('./tokens/emit-kotlin');
+const material = require('../native/material-roles');
 const nativeMapping = require('../native/mapping');
 
 const { typeRoles } = nativeMapping;
@@ -50,6 +52,21 @@ const nativeEmitters = {
   'ODSParts.generated.swift': () => emitSwiftParts(parts),
 };
 
+const androidEmitters = {
+  'OdsColors.generated.kt': (t, inc) => emitKotlinColors(t, inc),
+  'OdsColorScheme.generated.kt': (t) => emitKotlinScheme(material.roles, t),
+  'OdsParts.generated.kt': (t) => emitKotlinParts(parts, t),
+  'OdsMetrics.generated.kt': (t) => emitKotlinMetrics(t),
+};
+
+function generateAndroid(tokens) {
+  validateTokens(tokens);
+  const increased = withIncreased(tokens);
+  const files = {};
+  for (const [file, emit] of Object.entries(androidEmitters)) files[file] = emit(tokens, increased);
+  return files;
+}
+
 function generateNative(tokens) {
   validateTokens(tokens);
   const increased = withIncreased(tokens);
@@ -76,8 +93,12 @@ function main(argv) {
   const nativeOut = nativeIdx === -1 ? 'native/swift/Sources/OneSlashDesign/Generated' : argv[nativeIdx + 1];
   if (!nativeOut) throw new Error('--native-out requires a directory');
 
+  const androidIdx = argv.indexOf('--android-out');
+  const androidOut = androidIdx === -1 ? 'native/android/oneslash-design/src/main/kotlin/app/oneslash/design/generated' : argv[androidIdx + 1];
+  if (!androidOut) throw new Error('--android-out requires a directory');
+
   const tokens = require('../designTokens.js');
-  const sets = [[out, generate(tokens)], [nativeOut, generateNative(tokens)]];
+  const sets = [[out, generate(tokens)], [nativeOut, generateNative(tokens)], [androidOut, generateAndroid(tokens)]];
 
   if (check) {
     const differing = sets.flatMap(([dir, files]) => Object.keys(files)
@@ -98,4 +119,4 @@ function main(argv) {
 
 if (require.main === module) main(process.argv.slice(2));
 
-module.exports = { generate, generateNative };
+module.exports = { generate, generateNative, generateAndroid };
