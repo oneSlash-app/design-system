@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.13.1] - 2026-11-20
+
+### Fixed
+
+- Swift package, macOS: the label of an `odsProminentButton(_:)` could not be read while its window was not the active one. The system then draws the button without the accent fill, and the label kept `accent.contrast`, the color made for that fill (1.15:1 in Forest light, 1.09:1 in Forest dark). While the window is inactive the label is now the theme's `text.primary`, which is how the system draws its own inactive prominent button: 8.26:1 and 6.91:1 with the bordered style. With the glass style the system also dims the label of an inactive window, so it is still faint: 1.67:1 in light and 2.01:1 in dark, up from 1.01:1 and 1.04:1; the system's own glass button without a theme is about 2.2:1 and 2.5:1. An active window is unchanged, including the white label on an accent the user chose, and so is iOS. No API change.
+
 ## [2.13.0] - 2026-11-20
 
 ### Added

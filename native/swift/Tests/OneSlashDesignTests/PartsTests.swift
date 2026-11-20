@@ -82,4 +82,12 @@ import AppKit
     #expect(!odsLabelUsesAppAccent(control: .systemBlue, app: app))
     #expect(odsLabelUsesAppAccent(control: .systemBlue, app: nil))
 }
+
+// An inactive window has no accent fill, so neither label made for an accent is used there.
+@Test func theLabelIsTheThemesTextWhileTheWindowIsInactive() {
+    #expect(odsProminentLabel(windowActive: true, appAccentInEffect: true) == .accentContrast)
+    #expect(odsProminentLabel(windowActive: true, appAccentInEffect: false) == .white)
+    #expect(odsProminentLabel(windowActive: false, appAccentInEffect: true) == .textPrimary)
+    #expect(odsProminentLabel(windowActive: false, appAccentInEffect: false) == .textPrimary)
+}
 #endif
