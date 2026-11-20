@@ -21,7 +21,9 @@ public extension View {
     /// system style and sets the label to the theme's `accent.contrast`.
     ///
     /// On the Mac the user can replace the app's accent with their own in System Settings. While
-    /// they have, the label is white, as the system draws it on its own accents.
+    /// they have, the label is white, as the system draws it on its own accents. This is decided
+    /// by comparing the system's control accent with the app's `AccentColor` asset, so the asset
+    /// must have that name. An app with no such asset keeps the theme's label.
     func odsProminentButton(_ style: ODSProminentStyle = .bordered) -> some View {
         modifier(ODSProminentButton(style: style))
     }
@@ -70,14 +72,19 @@ func odsSameColor(_ a: NSColor, _ b: NSColor?) -> Bool {
         && abs(a.blueComponent - b.blueComponent) <= tolerance
 }
 
-/// Whether controls are tinted with the app's `AccentColor` asset rather than an accent the
-/// user chose. With no such asset the tint is the system's.
+/// Whether a prominent label takes the theme's `accent.contrast`. It does unless the app's accent
+/// is known and the control accent differs from it, which means the user chose their own.
+/// With no `AccentColor` asset the app may tint with `.tint`, so the theme's label stays.
+func odsLabelUsesAppAccent(control: NSColor, app: NSColor?) -> Bool {
+    app == nil || odsSameColor(control, app)
+}
+
+/// `odsLabelUsesAppAccent` for the running app, under its current appearance.
 @MainActor func odsAppAccentInEffect() -> Bool {
-    guard let app = NSColor(named: "AccentColor") else { return false }
-    var same = false
+    var uses = true
     (NSApp?.effectiveAppearance ?? NSAppearance.currentDrawing()).performAsCurrentDrawingAppearance {
-        same = odsSameColor(NSColor.controlAccentColor, app)
+        uses = odsLabelUsesAppAccent(control: .controlAccentColor, app: NSColor(named: "AccentColor"))
     }
-    return same
+    return uses
 }
 #endif

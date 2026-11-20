@@ -5,16 +5,20 @@ const { contrastRatio } = require('./color');
 // so the mapping's Button note always matches the tokens.
 function prominentLabelNote(tokens) {
   const failing = [];
+  const same = [];
   for (const [theme, modes] of Object.entries({ default: tokens.colors, ...tokens.themes })) {
     for (const mode of ['light', 'dark']) {
-      if (contrastRatio(modes[mode].text.primary, modes[mode].accent.main) < 4.5) failing.push(`${theme} ${mode}`);
+      const ratio = contrastRatio(modes[mode].text.primary, modes[mode].accent.main);
+      if (ratio < 4.5) failing.push(`${theme} ${mode}`);
+      if (ratio < 1.005) same.push(`${theme} ${mode}`);
     }
   }
   const where = failing.length
-    ? `which is below 4.5:1 on the accent in ${failing.join(', ')} (in forest it is the same color, so the label disappears)`
+    ? `which is below 4.5:1 on the accent in ${failing.join(', ')}`
     : 'which passes 4.5:1 on the accent in every theme';
+  const unseen = same.length ? ` In ${same.join(', ')} it is the same color as the fill, so the label cannot be seen.` : '';
   return 'On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a '
-    + `\`.borderedProminent\` or \`.glassProminent\` button takes \`text.primary\`, not the system white, ${where}. `
+    + `\`.borderedProminent\` or \`.glassProminent\` button takes \`text.primary\`, not the system white, ${where}.${unseen} `
     + 'The modifier keeps the system style and sets the label to `accent.contrast`.';
 }
 

@@ -7,7 +7,7 @@ const STATUSES = ['error', 'warning', 'info', 'success'];
 const parts = {
   'banner.default': { fill: 'secondary.main', label: 'secondary.contrast' },
   'tag.contained.plain': { fill: 'background.accent300', label: 'text.primary', border: 'misc.divider' },
-  'tag.contained.selected': { fill: 'accent.main', label: 'accent.contrast' },
+  'tag.contained.selected': { fill: 'accent.main', label: 'accent.contrast', border: 'misc.divider' },
   'tag.contained.default': { fill: 'secondary.main', label: 'secondary.contrast', border: 'misc.divider' },
   'tag.textOnly.plain': { label: 'text.primary' },
   'tag.textOnly.selected': { label: 'text.primary', border: 'accent.main' },

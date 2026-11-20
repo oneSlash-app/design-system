@@ -20,7 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Under `odsTheme(_:)`, a `.borderedProminent` or `.glassProminent` button drew its label in `text.primary`, not the system white. That is below 4.5:1 on the accent in eight of the ten theme and mode combinations, and in Forest it is the same color as the fill, so the label could not be seen. `odsProminentButton(_:)` sets the label to `accent.contrast`. Apps must switch their prominent buttons to it; the package cannot fix an existing `.buttonStyle(.borderedProminent)` from the outside.
+- Under `odsTheme(_:)`, a `.borderedProminent` or `.glassProminent` button drew its label in `text.primary`, not the system white. That is below 4.5:1 on the accent in eight of the ten theme and mode combinations, and in Forest light it is the same color as the fill, so the label could not be seen. `odsProminentButton(_:)` sets the label to `accent.contrast`. Apps must switch their prominent buttons to it; the package cannot fix an existing `.buttonStyle(.borderedProminent)` from the outside.
 
 ### Changed
 

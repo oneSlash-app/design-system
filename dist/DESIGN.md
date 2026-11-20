@@ -260,7 +260,7 @@ For each web component, the table gives the native control to use. System contro
 | ODS | SwiftUI | Compose | Note |
 | --- | --- | --- | --- |
 | alert | `ODSBanner` for an inline message; `.alert` for one that needs a decision | ODS part (planned) | ODS has no native toast. Compose until the part exists: `Snackbar` in a `SnackbarHost`. |
-| button | `Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a `.borderedProminent` or `.glassProminent` button takes `text.primary`, not the system white, which is below 4.5:1 on the accent in default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark (in forest it is the same color, so the label disappears). The modifier keeps the system style and sets the label to `accent.contrast`. Compose needs nothing: `onPrimary` is `accent.contrast`. |
+| button | `Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a `.borderedProminent` or `.glassProminent` button takes `text.primary`, not the system white, which is below 4.5:1 on the accent in default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark. In forest light it is the same color as the fill, so the label cannot be seen. The modifier keeps the system style and sets the label to `accent.contrast`. Compose needs nothing: `onPrimary` is `accent.contrast`. |
 | checkBox | `Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS) | `Checkbox` |  |
 | emptyBox | `ContentUnavailableView` | ODS part (planned) | The system has this control on Apple, so ODS adds no part there. Compose until the part exists: a centered `Icon` and `Text` in a `Column`. |
 | factsRow | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows. |
@@ -311,7 +311,7 @@ A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one
 | --- | --- | --- | --- | --- |
 | `banner.default` | `secondary.main` | `secondary.contrast` |  |  |
 | `tag.contained.plain` | `background.accent300` | `text.primary` | `misc.divider` |  |
-| `tag.contained.selected` | `accent.main` | `accent.contrast` |  |  |
+| `tag.contained.selected` | `accent.main` | `accent.contrast` | `misc.divider` |  |
 | `tag.contained.default` | `secondary.main` | `secondary.contrast` | `misc.divider` |  |
 | `tag.textOnly.plain` |  | `text.primary` |  |  |
 | `tag.textOnly.selected` |  | `text.primary` | `accent.main` |  |

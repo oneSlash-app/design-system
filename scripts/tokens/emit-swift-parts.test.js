@@ -31,7 +31,7 @@ test('every role in the contract is a color token, and every style has a label',
 test('the contract matches the web components', () => {
   assert.deepEqual(parts['tag.contained.success'], { fill: 'success.fill', label: 'success.onFill', border: 'success.fill' });
   assert.deepEqual(parts['tag.contained.default'], { fill: 'secondary.main', label: 'secondary.contrast', border: 'misc.divider' });
-  assert.deepEqual(parts['tag.contained.selected'], { fill: 'accent.main', label: 'accent.contrast' });
+  assert.deepEqual(parts['tag.contained.selected'], { fill: 'accent.main', label: 'accent.contrast', border: 'misc.divider' }); // tag.tsx keeps the contained border when selected
   assert.deepEqual(parts['tag.textOnly.error'], { label: 'error.text', border: 'error.fill' });
   assert.deepEqual(parts['tag.dot.info'], { label: 'text.primary', dot: 'info.main' });
   assert.deepEqual(parts['banner.default'], { fill: 'secondary.main', label: 'secondary.contrast' });
@@ -59,4 +59,14 @@ test('part pairs are label on fill, or on the page when there is no fill, withou
   ]);
   assert.equal(partPairs(set, { 'x.a': { fill: 'accent.light', label: 'accent.contrast' } }, { increased: true })[0].min, 7);
   assert.ok(!pairsFor(set).some((p) => p.pair === 'accent.contrast on accent.light'));
+});
+
+test('every part in the contract is named in the mapping table', () => {
+  const { components } = require('../../native/mapping');
+  const names = [...new Set(Object.keys(parts).map((k) => k.split('.')[0]))];
+  assert.deepEqual(names.sort(), ['banner', 'tag']);
+  for (const name of names) {
+    const swift = `\`ODS${name[0].toUpperCase()}${name.slice(1)}\``;
+    assert.ok(components.some((r) => r.swiftui.includes(swift)), swift);
+  }
 });

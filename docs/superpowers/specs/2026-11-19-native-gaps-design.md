@@ -190,8 +190,8 @@ control, so it is a part there (see the Android doc).
 - **Found while building (2026-11-20), and worse than this section assumed.**
   Under `odsTheme(_:)` a prominent button's label is not the system white: it
   takes the root foreground style, `text.primary`. That fails on the accent in
-  eight of the ten theme and mode combinations, and in Forest it is the same
-  color as the fill. Confirmed in a running app on the iOS simulator. So the
+  eight of the ten theme and mode combinations, and in Forest light it is the
+  same color as the fill. Confirmed in a running app on the iOS simulator. So the
   helper is needed on every theme, and the generated note lists where the
   unhelped label fails.
 - **Helper.** A modifier that applies the system prominent style and sets the

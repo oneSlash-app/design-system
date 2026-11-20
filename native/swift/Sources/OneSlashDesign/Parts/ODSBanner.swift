@@ -19,6 +19,7 @@ public struct ODSBanner: View {
     @Environment(\.odsTheme) private var theme
     @ScaledMetric(relativeTo: .subheadline) private var padding = ODSSpacing.medium
     @State private var announced: String?
+    private let dismissReach: CGFloat = 12
 
     /// - Parameters:
     ///   - detail: A second line, drawn quieter.
@@ -47,6 +48,10 @@ public struct ODSBanner: View {
             if let onClose {
                 Button(action: onClose) {
                     Label("Dismiss", systemImage: "xmark")
+                        // A larger area to tap, without making the banner taller.
+                        .padding(dismissReach)
+                        .contentShape(.rect)
+                        .padding(-dismissReach)
                 }
                 .labelStyle(.iconOnly)
                 .buttonStyle(.borderless)

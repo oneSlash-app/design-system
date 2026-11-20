@@ -73,6 +73,13 @@ import AppKit
     #expect(odsSameColor(app, NSColor(srgbRed: 0x1C / 255, green: 0x22 / 255, blue: 0x13 / 255, alpha: 1)))
     #expect(odsSameColor(app, NSColor(srgbRed: 0x1D / 255, green: 0x22 / 255, blue: 0x12 / 255, alpha: 1)))
     #expect(!odsSameColor(app, NSColor.systemBlue))
-    #expect(!odsSameColor(app, nil))
+}
+
+// An app with no `AccentColor` asset may tint with `.tint`; the label then stays the theme's.
+@Test func theLabelIsWhiteOnlyWhenTheUsersAccentIsKnownToBeInEffect() {
+    let app = NSColor(srgbRed: 0x1C / 255, green: 0x22 / 255, blue: 0x13 / 255, alpha: 1)
+    #expect(odsLabelUsesAppAccent(control: app, app: app))
+    #expect(!odsLabelUsesAppAccent(control: .systemBlue, app: app))
+    #expect(odsLabelUsesAppAccent(control: .systemBlue, app: nil))
 }
 #endif

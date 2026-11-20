@@ -10,6 +10,9 @@ test('the note names every theme and mode where the themed label fails on the ac
   // text.primary on accent.main is 10.69 in default light and 8.05 in clay light; every other set is below 4.5.
   assert.match(note, /default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark/);
   assert.doesNotMatch(note, /default light|clay light/);
+  // 1.00:1 in forest light only; forest dark is 1.09.
+  assert.match(note, /In forest light it is the same color as the fill, so the label cannot be seen\./);
+  assert.doesNotMatch(note, /In forest light, forest dark|In forest it is/);
 });
 
 test('a theme whose label passes everywhere is not named', () => {
@@ -18,6 +21,7 @@ test('a theme whose label passes everywhere is not named', () => {
     for (const mode of ['light', 'dark']) set[mode].accent.main = set[mode].background.default;
   }
   assert.match(prominentLabelNote(t), /passes 4\.5:1 on the accent in every theme/);
+  assert.doesNotMatch(prominentLabelNote(t), /same color/);
 });
 
 test('the Button row carries the generated note and no placeholder is left', () => {

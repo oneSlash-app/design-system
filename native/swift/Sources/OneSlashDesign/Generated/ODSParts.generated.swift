@@ -14,7 +14,7 @@ extension ODSTheme {
     switch key {
     case "banner.default": ODSPartStyle(fill: secondary.main, label: secondary.contrast, border: nil, dot: nil)
     case "tag.contained.plain": ODSPartStyle(fill: background.accent300, label: text.primary, border: misc.divider, dot: nil)
-    case "tag.contained.selected": ODSPartStyle(fill: accent.main, label: accent.contrast, border: nil, dot: nil)
+    case "tag.contained.selected": ODSPartStyle(fill: accent.main, label: accent.contrast, border: misc.divider, dot: nil)
     case "tag.contained.default": ODSPartStyle(fill: secondary.main, label: secondary.contrast, border: misc.divider, dot: nil)
     case "tag.textOnly.plain": ODSPartStyle(fill: nil, label: text.primary, border: nil, dot: nil)
     case "tag.textOnly.selected": ODSPartStyle(fill: nil, label: text.primary, border: accent.main, dot: nil)

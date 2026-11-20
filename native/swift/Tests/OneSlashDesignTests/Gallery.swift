@@ -72,7 +72,8 @@ private let statusColors: [ODSTagColor] = [.success, .warning, .error, .info]
             ODSAvatar("Picture", image: Image(systemName: "person.fill"))
             ODSAvatar("Large", size: 40)
         }
-        // The largest text size: nothing may clip, and Dismiss stays reachable.
+        // A large accessibility text size: the banner wraps, Dismiss stays reachable, and the
+        // tags keep their whole labels.
         VStack(alignment: .leading, spacing: 12) {
             ODSBanner("Could not save your changes", detail: "Check your connection.", kind: .warning, onClose: {})
             HStack(spacing: 8) {

@@ -20,7 +20,8 @@ public enum ODSTagSize: CaseIterable, Sendable {
 
 /// A short label for a state or a category: the oneSlash Tag.
 ///
-/// It only displays. For a tag that acts, wrap it in a `Button` with the plain style.
+/// It only displays, and it always shows its whole label on one line: keep labels short.
+/// For a tag that acts, wrap it in a `Button` with the plain style.
 /// A count on a list row or a tab stays the system `.badge`.
 public struct ODSTag: View {
     private let label: String
@@ -62,8 +63,17 @@ public struct ODSTag: View {
     }
 
     public var body: some View {
+        // The whole label on one line at the tag's own width, as on the web: a row never cuts
+        // "Success" short to make room. Keep labels short; a tag does not shrink or wrap.
+        capsule
+            .fixedSize()
+            .accessibilityElement(children: .combine)
+            .accessibilityAddTraits(isSelected && color == .plain ? .isSelected : [])
+    }
+
+    private var capsule: some View {
         let style = theme.partStyle(Self.styleKey(variant: variant, color: color, isSelected: isSelected))
-        HStack(spacing: 4 * scale) {
+        return HStack(spacing: 4 * scale) {
             if variant == .dot {
                 Circle().fill(style?.dot ?? theme.text.secondary).frame(width: 12 * scale, height: 12 * scale)
             } else if let systemImage {
@@ -81,9 +91,5 @@ public struct ODSTag: View {
         .overlay {
             if let border = style?.border { Capsule(style: .circular).strokeBorder(border, lineWidth: 1) }
         }
-        // A tag keeps to one line at its own width, as on the web.
-        .fixedSize()
-        .accessibilityElement(children: .combine)
-        .accessibilityAddTraits(isSelected && color == .plain ? .isSelected : [])
     }
 }
