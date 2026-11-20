@@ -255,14 +255,14 @@ ODS type roles map to system text styles, so they keep Dynamic Type. No font fil
 
 ### Component mapping
 
-For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet; an `ODS…` name is a part the package ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
+For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. A name starting with `ODS` (Swift) or `Ods` (Compose) is a part ODS ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
 
 | ODS | SwiftUI | Compose | Note |
 | --- | --- | --- | --- |
-| alert | `ODSBanner` for an inline message; `.alert` for one that needs a decision | ODS part (planned) | ODS has no native toast. Compose until the part exists: `Snackbar` in a `SnackbarHost`. |
+| alert | `ODSBanner` for an inline message; `.alert` for one that needs a decision | `OdsBanner` for an inline message; `AlertDialog` for one that needs a decision | ODS has no native toast: on Android use `Snackbar` in a `SnackbarHost`. |
 | button | `Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a `.borderedProminent` or `.glassProminent` button takes `text.primary`, not the system white, which is below 4.5:1 on the accent in default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark. In forest light it is the same color as the fill, so the label cannot be seen. The modifier keeps the system style and sets the label to `accent.contrast`. Compose needs nothing: `onPrimary` is `accent.contrast`. |
 | checkBox | `Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS) | `Checkbox` |  |
-| emptyBox | `ContentUnavailableView` | ODS part (planned) | The system has this control on Apple, so ODS adds no part there. Compose until the part exists: a centered `Icon` and `Text` in a `Column`. |
+| emptyBox | `ContentUnavailableView` | `OdsEmptyState` | The system has this control on Apple, so ODS adds no part there. Material has none, so ODS does. |
 | factsRow | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows. |
 | figure | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: an `Image` with a caption `Text` in the caption text style. |
 | heading | `Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)` | `Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }` |  |
@@ -294,12 +294,12 @@ For each web component, the table gives the native control to use. System contro
 | tableHeaderCell | A `TableColumn` title | `Text` in the header `Row` | Material 3 has no table. |
 | tableRow | `TableRow` | `Row` | Material 3 has no table. |
 | tabsContainer | `TabView` or segmented `Picker` | `PrimaryTabRow` | `TabRow` is deprecated in Material 3. |
-| tag | `ODSTag` | ODS part (planned) | A count on a list row or tab stays `.badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style. Compose until the part exists: `AssistChip` or `FilterChip`. |
+| tag | `ODSTag` | `OdsTag` | A count on a list row or tab stays `.badge` / `Badge`. A tag that acts: wrap `ODSTag` in a `Button` with the plain style; on Android use a Material `AssistChip` or `FilterChip`, which are made to be pressed. |
 | textarea | `TextField(_:text:axis: .vertical)` or `TextEditor` | `OutlinedTextField` with `minLines` |  |
 | textField | `TextField` (`SecureField` for passwords) | `OutlinedTextField` or `TextField` |  |
 | timeStamp | `Text(_:style:)` (`.relative`) or `Text(_:format:)` (`.dateTime`) | `Text` with `DateUtils.getRelativeTimeSpanString` or `DateTimeFormatter.ofLocalizedDateTime` |  |
 | tooltip | `.help` | `TooltipBox` | `.help` shows on pointer hover only. `TooltipBox` needs `@OptIn(ExperimentalMaterial3Api::class)`. |
-| userImage | `ODSAvatar` | ODS part (planned) | Load the picture yourself and pass it as an `Image`. Compose until the part exists: `Image` clipped to `CircleShape`, `account_circle` placeholder. |
+| userImage | `ODSAvatar` | `OdsAvatar` | Load the picture yourself and pass it as an `Image` / a `Painter`. |
 
 ### Parts
 

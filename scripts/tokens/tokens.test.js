@@ -155,3 +155,15 @@ test('the four parts rows no longer say planned for SwiftUI', () => {
   assert.match(row('emptyBox').swiftui, /`ContentUnavailableView`/);
   for (const ods of ['alert', 'tag', 'userImage', 'emptyBox']) assert.doesNotMatch(row(ods).swiftui, /planned/);
 });
+
+test('no row of the native mapping says planned any more', () => {
+  const { components } = require('../../native/mapping.js');
+  for (const r of components) {
+    assert.doesNotMatch(`${r.swiftui} ${r.compose} ${r.note || ''}`, /planned/i, r.ods);
+  }
+  const row = (ods) => components.find((r) => r.ods === ods);
+  assert.match(row('alert').compose, /`OdsBanner`/);
+  assert.match(row('tag').compose, /`OdsTag`/);
+  assert.match(row('userImage').compose, /`OdsAvatar`/);
+  assert.match(row('emptyBox').compose, /`OdsEmptyState`/);
+});

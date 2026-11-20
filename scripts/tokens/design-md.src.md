@@ -124,7 +124,7 @@ ODS type roles map to system text styles, so they keep Dynamic Type. No font fil
 
 ### Component mapping
 
-For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. "ODS part (planned)" means ODS will provide the part and does not yet; an `ODS…` name is a part the package ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
+For each web component, the table gives the native control to use. System controls keep their standard styles; ODS supplies only tokens. A name starting with `ODS` (Swift) or `Ods` (Compose) is a part ODS ships. "Not applicable: web page pattern" means the web component has no native counterpart; use the note.
 
 <!-- native:components -->
 

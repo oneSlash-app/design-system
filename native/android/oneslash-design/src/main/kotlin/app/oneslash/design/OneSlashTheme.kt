@@ -19,6 +19,9 @@ internal val LocalOdsColors = staticCompositionLocalOf {
     OdsPalette.colors(OdsTheme.Default, dark = false, increased = false)
 }
 
+/** Whether the current theme is in dark mode. Parts whose colors are not tokens read it. */
+internal val LocalOdsDark = staticCompositionLocalOf { false }
+
 /**
  * Applies a oneSlash theme to Material 3.
  *
@@ -38,7 +41,7 @@ fun OneSlashTheme(
     val increased = usesIncreasedContrast(Build.VERSION.SDK_INT, systemContrast())
     val colors = remember(theme, darkTheme, increased) { OdsPalette.colors(theme, darkTheme, increased) }
     val scheme = remember(colors) { colors.toColorScheme(other = OdsPalette.colors(theme, !darkTheme, increased)) }
-    CompositionLocalProvider(LocalOdsColors provides colors) {
+    CompositionLocalProvider(LocalOdsColors provides colors, LocalOdsDark provides darkTheme) {
         MaterialTheme(colorScheme = scheme, content = content)
     }
 }
