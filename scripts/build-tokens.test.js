@@ -43,3 +43,12 @@ test('build-tokens --check exits 1 when a generated Swift file differs', () => {
   fs.appendFileSync(swift, '// drift\n');
   assert.throws(() => execFileSync('node', [script, '--check'], { cwd: root, stdio: 'pipe' }), (e) => e.status === 1);
 });
+
+test('generated theme files answer prefers-contrast', () => {
+  const { generate } = require('./build-tokens');
+  const files = generate(require('../designTokens.js'));
+  for (const name of ['default', 'forest', 'clay', 'indigo', 'wine']) {
+    assert.match(files[`themes/${name}.css`], /@media \(prefers-contrast: more\)/);
+    assert.match(files[`themes/${name}-auto.css`], /\(prefers-contrast: more\) and \(prefers-color-scheme: dark\)/);
+  }
+});

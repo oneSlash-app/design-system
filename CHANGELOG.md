@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.11.0] - 2026-11-20
+
+### Added
+
+- Increased-contrast colors in every theme. Each color role now has an increased-contrast value in light and in dark, derived by the build from the standard values and checked by `npm run check:contrast`. Text and status colors reach 7:1 where the standard value is held to 4.5:1, dividers and outlined borders reach 3:1, and a fill under a label moves when its label is already black or white. Surfaces (`background.*`) and `text.disabled` do not change, and no standard light or dark value changes.
+  - Web: each file in `themes/` answers `prefers-contrast: more`. People who have "more contrast" set in their OS see stronger text, status colors and borders after upgrading; nobody else sees a change. No class, prop or import changes.
+  - Swift package: every `ODSTheme` color follows the system's Increase Contrast setting. No API change. No theme's `accent.main` changes, so an app's `AccentColor` asset needs no new variants.
+  - `tokens.json`: each theme has `lightIncreased` and `darkIncreased` modes beside `light` and `dark`.
+  - `DESIGN.md`: an "Increased contrast" section.
+- MIT license (`LICENSE`, and `"license": "MIT"` in `package.json`).
+
 ## [2.10.1] - 2026-11-18
 
 ### Fixed

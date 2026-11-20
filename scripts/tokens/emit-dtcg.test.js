@@ -23,7 +23,7 @@ test('every theme, mode, group and key is present', () => {
         for (const k of Object.keys(keys)) assert.ok(out.color[name][mode][g][k], `${name}.${mode}.${g}.${k}`);
 });
 test('a new theme appears without an emitter change', () => {
-  const extra = emitDtcg({ ...tokens, themes: { ...tokens.themes, moss: tokens.themes.forest } });
+  const extra = emitDtcg({ ...tokens, themes: { ...tokens.themes, moss: tokens.themes.clay } });
   assert.ok(JSON.parse(extra).color.moss.dark);
 });
 test('dimensions, durations, easings, numbers', () => {
@@ -95,4 +95,11 @@ test('a three-argument cubic-bezier is omitted and named', () => {
 });
 test('a null typography entry does not throw', () => {
   assert.doesNotThrow(() => emitWith({ typography: { ...tokens.typography, gone: null } }));
+});
+
+test('each theme carries the two increased-contrast modes', () => {
+  assert.deepEqual(Object.keys(out.color.forest), ['light', 'dark', 'lightIncreased', 'darkIncreased']);
+  assert.equal(out.color.forest.darkIncreased.text.secondary.$value.hex, '#b1be98');
+  assert.equal(out.color.forest.lightIncreased.text.secondary.$value.hex, '#414b2c');
+  assert.deepEqual(out.color.wine.lightIncreased.background, out.color.wine.light.background);
 });

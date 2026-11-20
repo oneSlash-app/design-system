@@ -1,5 +1,6 @@
 const { HEADER } = require('./emit-theme');
 const { parseHex } = require('./color');
+const { withIncreased } = require('./increase-contrast');
 
 const DIMENSION = /^(-?\d*\.?\d+)(px|rem)$/;
 const DURATION = /^(-?\d*\.?\d+)(ms|s)$/;
@@ -37,7 +38,8 @@ function color(hex) {
   };
 }
 
-function emitDtcg(tokens) {
+// `increased` holds each theme's four sets: light, dark, lightIncreased, darkIncreased.
+function emitDtcg(tokens, increased = withIncreased(tokens)) {
   const omitted = [];
   const out = { $description: '' };
 
@@ -53,7 +55,7 @@ function emitDtcg(tokens) {
   };
 
   out.color = {};
-  for (const [theme, set] of Object.entries({ default: tokens.colors, ...tokens.themes })) {
+  for (const [theme, set] of Object.entries(increased)) {
     out.color[theme] = {};
     for (const [mode, groups] of Object.entries(set)) {
       out.color[theme][mode] = {};

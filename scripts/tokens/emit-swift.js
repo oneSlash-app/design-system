@@ -1,5 +1,6 @@
 const { parseHex } = require('./color');
 const { HEADER } = require('./emit-theme');
+const { withIncreased } = require('./increase-contrast');
 
 const SWIFT_HEADER = `// ${HEADER.replace(/^\/\* | \*\/$/g, '')}`;
 
@@ -37,6 +38,7 @@ function colorGroupStruct(group, keys) {
 }
 
 // Swift needs labeled arguments in declaration order, so walk the canonical groups and keys.
+// `theme` holds four sets: light, dark, lightIncreased, darkIncreased.
 function themeStatic(name, theme, canonical) {
   const lookup = (mode, group, key) => {
     const hex = theme[mode] && theme[mode][group] && theme[mode][group][key];
@@ -45,14 +47,14 @@ function themeStatic(name, theme, canonical) {
   };
   const groups = Object.entries(canonical).map(([group, keys]) => {
     const args = Object.keys(keys).map(
-      (key) => `        ${label(key)}: Color(odsLight: ${lookup('light', group, key)}, dark: ${lookup('dark', group, key)})`,
+      (key) => `        ${label(key)}: Color(odsLight: ${lookup('light', group, key)}, dark: ${lookup('dark', group, key)}, lightIncreased: ${lookup('lightIncreased', group, key)}, darkIncreased: ${lookup('darkIncreased', group, key)})`,
     );
     return `      ${label(group)}: ODS${cap(group)}Colors(\n${args.join(',\n')}\n      )`;
   });
   return `  static let ${id(name)} = ODSTheme(\n    name: "${name}",\n${groups.join(',\n')}\n  )`;
 }
 
-function emitSwiftColors(tokens) {
+function emitSwiftColors(tokens, increased = withIncreased(tokens)) {
   const groups = Object.keys(tokens.colors.light);
   const typed = groups.map((g) => `${id(g)}: ODS${cap(g)}Colors`);
   const theme = [
@@ -65,7 +67,7 @@ function emitSwiftColors(tokens) {
     '  }',
     '}',
   ].join('\n');
-  const statics = [['default', tokens.colors], ...Object.entries(tokens.themes)].map(([n, t]) => themeStatic(n, t, tokens.colors.light));
+  const statics = Object.entries(increased).map(([n, t]) => themeStatic(n, t, tokens.colors.light));
   return [
     SWIFT_HEADER,
     'import SwiftUI',

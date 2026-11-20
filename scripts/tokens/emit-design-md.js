@@ -1,4 +1,5 @@
 const { HEADER } = require('./emit-theme');
+const { withIncreased } = require('./increase-contrast');
 
 // An HTML comment, so it never matches a placeholder line (`<!-- tokens:... -->`).
 const MD_HEADER = `<!-- ${HEADER.replace(/^\/\* | \*\/$/g, '')} -->`;
@@ -19,6 +20,17 @@ function colors(tokens) {
   return table(head, rows);
 }
 
+// accent.main per theme in the four sets, and whether an Apple app's AccentColor asset needs
+// high-contrast variants (it does when either increased value differs from the standard one).
+function increasedAccent(increased) {
+  const hex = (set) => set.accent.main.toUpperCase();
+  return table(['Theme', 'Light', 'Light, increased', 'Dark', 'Dark, increased', 'AccentColor asset'],
+    Object.entries(increased).map(([name, s]) => {
+      const same = hex(s.light) === hex(s.lightIncreased) && hex(s.dark) === hex(s.darkIncreased);
+      return [name, hex(s.light), hex(s.lightIncreased), hex(s.dark), hex(s.darkIncreased), same ? 'same' : 'add high-contrast variants'];
+    }));
+}
+
 const scale = (obj) => table(['Token', 'Value'], Object.entries(obj).map(([k, v]) => [k, v]));
 
 function typography(tokens) {
@@ -34,9 +46,10 @@ const typeRoles = (tokens, m) => table(['ODS role', 'Web size', 'System text sty
   Object.entries(m.typeRoles).map(([role, style]) => [role, tokens.typography[role] && tokens.typography[role].size, `\`${style}\``]));
 
 // Fills each placeholder line of the template with a table built from the tokens and the native mapping.
-function emitDesignMd(tokens, mapping, template) {
+function emitDesignMd(tokens, mapping, template, increased = withIncreased(tokens)) {
   const fills = {
     'tokens:colors': () => colors(tokens),
+    'tokens:increased-accent': () => increasedAccent(increased),
     'tokens:spacing': () => scale(tokens.spacing),
     'tokens:radius': () => scale(tokens.radius),
     'tokens:typography': () => typography(tokens),

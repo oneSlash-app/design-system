@@ -24,6 +24,22 @@ Use one semantic name, never a hex value. Each name resolves to a light and a da
 
 <!-- tokens:colors -->
 
+## Increased contrast
+
+Every color also has an increased-contrast value in light and in dark. The build derives them from the standard values; nobody picks them by hand, and they are not in `designTokens.js`.
+
+- **Web:** each theme file answers `prefers-contrast: more`. Nothing to do per page or component.
+- **Apple:** each color in the Swift package follows the system's Increase Contrast setting. Nothing to do per screen.
+- **`tokens.json`:** each theme has `lightIncreased` and `darkIncreased` beside `light` and `dark`.
+
+What changes: text, status colors, fills under a label, dividers and outlined borders. Text reaches 7:1 where the standard value is held to 4.5:1; dividers and borders reach 3:1. What does not change: surfaces (`background.*`), so a theme keeps its look, and `text.disabled`.
+
+Do not branch on the setting in a view or a component. Use the same token name; the value follows the setting.
+
+An Apple app's `AccentColor` asset is the one color the package cannot supply. The table gives `accent.main` per theme. Where the last column says "add high-contrast variants", add the "High Contrast" appearances to the color set with the increased values.
+
+<!-- tokens:increased-accent -->
+
 ## Spacing
 
 <!-- tokens:spacing -->

@@ -258,3 +258,65 @@
     --os-color-misc-tooltipText: 0 0 0;
   }
 }
+@media (prefers-contrast: more) {
+  :root {
+    --os-color-text-secondary: 76 76 76;
+    --os-color-secondary-dark: 149 149 149;
+    --os-color-error-main: 182 0 21;
+    --os-color-error-text: 128 0 10;
+    --os-color-error-textHover: 154 13 20;
+    --os-color-warning-fill: 150 62 0;
+    --os-color-warning-text: 130 52 0;
+    --os-color-warning-textHover: 130 52 0;
+    --os-color-info-fill: 0 93 149;
+    --os-color-info-text: 0 79 129;
+    --os-color-info-textHover: 0 79 129;
+    --os-color-success-fill: 36 101 40;
+    --os-color-success-text: 20 88 26;
+    --os-color-success-textHover: 20 88 26;
+    --os-color-actionOutlinedBorder-enabled: 133 133 133;
+    --os-color-misc-divider: 133 133 133;
+  }
+  .dark {
+    --os-color-text-secondary: 193 193 193;
+    --os-color-secondary-dark: 69 69 69;
+    --os-color-error-main: 253 96 94;
+    --os-color-error-dark: 247 102 93;
+    --os-color-error-fill: 253 96 94;
+    --os-color-error-text: 255 171 167;
+    --os-color-error-textHover: 255 146 144;
+    --os-color-warning-fill: 255 140 10;
+    --os-color-warning-text: 255 151 57;
+    --os-color-warning-textHover: 255 167 50;
+    --os-color-info-fill: 0 175 255;
+    --os-color-info-text: 72 186 255;
+    --os-color-info-textHover: 44 193 255;
+    --os-color-success-fill: 70 169 74;
+    --os-color-success-text: 100 197 102;
+    --os-color-success-textHover: 105 196 109;
+    --os-color-actionOutlinedBorder-enabled: 123 123 123;
+    --os-color-misc-divider: 111 111 111;
+  }
+}
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --os-color-text-secondary: 193 193 193;
+    --os-color-secondary-dark: 69 69 69;
+    --os-color-error-main: 253 96 94;
+    --os-color-error-dark: 247 102 93;
+    --os-color-error-fill: 253 96 94;
+    --os-color-error-text: 255 171 167;
+    --os-color-error-textHover: 255 146 144;
+    --os-color-warning-fill: 255 140 10;
+    --os-color-warning-text: 255 151 57;
+    --os-color-warning-textHover: 255 167 50;
+    --os-color-info-fill: 0 175 255;
+    --os-color-info-text: 72 186 255;
+    --os-color-info-textHover: 44 193 255;
+    --os-color-success-fill: 70 169 74;
+    --os-color-success-text: 100 197 102;
+    --os-color-success-textHover: 105 196 109;
+    --os-color-actionOutlinedBorder-enabled: 123 123 123;
+    --os-color-misc-divider: 111 111 111;
+  }
+}

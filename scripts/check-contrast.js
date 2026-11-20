@@ -1,80 +1,69 @@
 const { contrastRatio } = require('./tokens/color.js');
-
-const BACKGROUNDS = ['default', 'accent100', 'accent200', 'accent300'];
-const STATUSES = ['error', 'warning', 'info', 'success'];
-
-// gated: [text token, backgrounds that fail the build]; the rest are report-only.
-const TEXT_RULES = [
-  { key: 'primary', min: 4.5, gatedOn: BACKGROUNDS },
-  { key: 'secondary', min: 4.5, gatedOn: ['default', 'accent100'] },
-  { key: 'disabled', min: 3.0, gatedOn: [] },
-];
-
-// Report-only per pair (theme/mode/pair, `theme` omitted = every theme): shown for the record, never fail the build.
-const REPORT_ONLY = [
-  { theme: 'forest', pair: 'text.primary on secondary.main', reason: 'Scindo secondary is mid-tone (3.57/3.48); components use secondary.contrast' },
-  { pair: 'error.main on background.default', reason: 'borders and dots only since 2.0.2; messages use error.text' },
-];
-
-const isReportOnly = (theme, mode, pair) =>
-  REPORT_ONLY.some((r) => r.pair === pair && (!r.theme || r.theme === theme) && (!r.mode || r.mode === mode));
-
-function pairsFor(set) {
-  const pairs = [];
-  const add = (pair, fg, bg, min, gated) => pairs.push({ pair, fg, bg, min, gated });
-  for (const { key, min, gatedOn } of TEXT_RULES) {
-    for (const bg of BACKGROUNDS) {
-      add(`text.${key} on background.${bg}`, set.text[key], set.background[bg], min, gatedOn.includes(bg));
-    }
-  }
-  add('text.primary on background.row', set.text.primary, set.background.row, 4.5, true);
-  add('text.secondary on background.row', set.text.secondary, set.background.row, 4.5, true);
-  add('error.text on background.row', set.error.text, set.background.row, 4.5, true);
-  for (const s of STATUSES) {
-    add(`${s}.onFill on ${s}.fill`, set[s].onFill, set[s].fill, 4.5, true);
-    add(`${s}.text on background.default`, set[s].text, set.background.default, 4.5, true);
-    add(`${s}.textHover on background.default`, set[s].textHover, set.background.default, 4.5, true);
-  }
-  add('text.primary on secondary.main', set.text.primary, set.secondary.main, 4.5, true);
-  add('error.contrast on error.main', set.error.contrast, set.error.main, 4.5, true);
-  add('error.text on error.alertBg', set.error.text, set.error.alertBg, 4.5, true);
-  add('error.main on background.default', set.error.main, set.background.default, 4.5, true);
-  for (const s of STATUSES) add(`text.primary on ${s}.alertBg`, set.text.primary, set[s].alertBg, 4.5, true);
-  add('accent.contrast on accent.main', set.accent.contrast, set.accent.main, 4.5, true);
-  add('primary.contrast on primary.dark', set.primary.contrast, set.primary.dark, 4.5, true);
-  add('secondary.contrast on secondary.main', set.secondary.contrast, set.secondary.main, 4.5, true);
-  return pairs;
-}
+const { pairsFor, isReportOnly } = require('./tokens/contrast-pairs.js');
+const { increaseContrast } = require('./tokens/increase-contrast.js');
 
 function checkContrast(tokens) {
-  const themes = { default: tokens.colors, ...tokens.themes };
   const failures = [];
   const report = [];
-  for (const [theme, modes] of Object.entries(themes)) {
-    for (const mode of ['light', 'dark']) {
-      for (const p of pairsFor(modes[mode])) {
-        const { pair, fg, bg, min } = p;
-        const gated = p.gated && !isReportOnly(theme, mode, pair);
-        const ratio = contrastRatio(fg, bg);
-        report.push({ theme, mode, pair, ratio, min, gated });
-        if (gated && ratio < min) failures.push({ theme, mode, pair, ratio, min });
+  for (const [theme, sets] of Object.entries({ default: tokens.colors, ...tokens.themes })) {
+    for (const base of ['light', 'dark']) {
+      const standard = {};
+      for (const mode of [base, `${base}Increased`]) {
+        const increased = mode !== base;
+        let set = sets[base];
+        if (increased) {
+          // A set that cannot be derived is a failure of its own; the standard rows above still stand.
+          try {
+            set = increaseContrast(set, { theme, mode: base });
+          } catch (e) {
+            failures.push({ theme, mode, pair: e.message, ratio: 0, min: 0 });
+            continue;
+          }
+        }
+        for (const p of pairsFor(set, { increased })) {
+          const { pair, min } = p;
+          const gated = p.gated && !isReportOnly(theme, base, pair);
+          const ratio = contrastRatio(p.fg, p.bg);
+          report.push({ theme, mode, pair, ratio, min, gated });
+          if (gated && ratio < min) failures.push({ theme, mode, pair, ratio, min });
+          if (!increased) standard[pair] = ratio;
+          else if (gated && pair in standard && ratio < standard[pair] - 1e-9) {
+            failures.push({ theme, mode, pair: `${pair} (lower than standard)`, ratio, min: standard[pair] });
+          }
+        }
+        if (increased) {
+          const [primary, secondary, disabled] = ['primary', 'secondary', 'disabled']
+            .map((k) => contrastRatio(set.text[k], set.background.default));
+          if (!(primary > secondary && secondary > disabled)) {
+            failures.push({ theme, mode, pair: 'text levels out of order', ratio: secondary, min: disabled });
+          }
+        }
       }
     }
   }
   return { failures, report };
 }
 
-function main() {
-  const { failures, report } = checkContrast(require('../designTokens.js'));
+// The printed report: one line per pair, then each failure that is not a pair below its
+// minimum (a set that cannot be derived, a pair lower than standard, text levels out of order).
+function lines({ failures, report }) {
   const pad = (v, n) => String(v).padEnd(n);
-  for (const r of report) {
+  const out = report.map((r) => {
     const status = !r.gated ? 'info' : r.ratio < r.min ? 'FAIL' : 'ok';
-    console.log(`${pad(r.theme, 8)} ${pad(r.mode, 6)} ${pad(r.pair, 44)} ${pad(r.ratio.toFixed(2), 6)} ${pad(r.min.toFixed(1), 4)} ${status}`);
-  }
-  console.log(`${report.length} pairs checked, ${failures.length} failed`);
-  if (failures.length) process.exit(1);
+    return `${pad(r.theme, 8)} ${pad(r.mode, 14)} ${pad(r.pair, 44)} ${pad(r.ratio.toFixed(2), 6)} ${pad(r.min.toFixed(1), 4)} ${status}`;
+  });
+  const hasRow = (f) => report.some((r) => r.theme === f.theme && r.mode === f.mode && r.pair === f.pair);
+  for (const f of failures.filter((f) => !hasRow(f))) out.push(`${pad(f.theme, 8)} ${pad(f.mode, 14)} ${f.pair} FAIL`);
+  out.push(`${report.length} pairs checked, ${failures.length} failed`);
+  return out;
+}
+
+function main() {
+  const result = checkContrast(require('../designTokens.js'));
+  console.log(lines(result).join('\n'));
+  if (result.failures.length) process.exit(1);
 }
 
 if (require.main === module) main();
 
-module.exports = { checkContrast };
+module.exports = { checkContrast, lines };

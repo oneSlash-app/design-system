@@ -10,6 +10,7 @@ const { emitThemeV4, emitTypographyV4 } = require('./tokens/emit-v4');
 const { emitDtcg } = require('./tokens/emit-dtcg');
 const { emitSwiftColors, emitSwiftMetrics } = require('./tokens/emit-swift');
 const { emitDesignMd } = require('./tokens/emit-design-md');
+const { withIncreased } = require('./tokens/increase-contrast');
 const mapping = require('../native/mapping');
 
 const { components, typeRoles } = mapping;
@@ -17,43 +18,45 @@ const designMdTemplate = fs.readFileSync(path.join(__dirname, 'tokens/design-md.
 
 // Each emitter returns the file contents.
 const emitters = {
-  'themes/default.css': (t) => emitThemeCss('default', t.colors, { auto: false }),
-  'themes/default-auto.css': (t) => emitThemeCss('default', t.colors, { auto: true }),
-  'themes/forest.css': (t) => emitThemeCss('forest', t.themes.forest, { auto: false }),
-  'themes/forest-auto.css': (t) => emitThemeCss('forest', t.themes.forest, { auto: true }),
-  'themes/clay.css': (t) => emitThemeCss('clay', t.themes.clay, { auto: false }),
-  'themes/clay-auto.css': (t) => emitThemeCss('clay', t.themes.clay, { auto: true }),
-  'themes/indigo.css': (t) => emitThemeCss('indigo', t.themes.indigo, { auto: false }),
-  'themes/indigo-auto.css': (t) => emitThemeCss('indigo', t.themes.indigo, { auto: true }),
-  'themes/wine.css': (t) => emitThemeCss('wine', t.themes.wine, { auto: false }),
-  'themes/wine-auto.css': (t) => emitThemeCss('wine', t.themes.wine, { auto: true }),
+  'themes/default.css': (t, inc) => emitThemeCss('default', inc['default'], { auto: false }),
+  'themes/default-auto.css': (t, inc) => emitThemeCss('default', inc['default'], { auto: true }),
+  'themes/forest.css': (t, inc) => emitThemeCss('forest', inc['forest'], { auto: false }),
+  'themes/forest-auto.css': (t, inc) => emitThemeCss('forest', inc['forest'], { auto: true }),
+  'themes/clay.css': (t, inc) => emitThemeCss('clay', inc['clay'], { auto: false }),
+  'themes/clay-auto.css': (t, inc) => emitThemeCss('clay', inc['clay'], { auto: true }),
+  'themes/indigo.css': (t, inc) => emitThemeCss('indigo', inc['indigo'], { auto: false }),
+  'themes/indigo-auto.css': (t, inc) => emitThemeCss('indigo', inc['indigo'], { auto: true }),
+  'themes/wine.css': (t, inc) => emitThemeCss('wine', inc['wine'], { auto: false }),
+  'themes/wine-auto.css': (t, inc) => emitThemeCss('wine', inc['wine'], { auto: true }),
   'tokens.css': (t) => emitTokensCss(t),
   'theme.css': (t) => emitThemeV4(t),
   'theme-auto.css': (t) => emitThemeV4(t, { auto: true }),
   'typography.css': (t) => emitTypographyV4(t),
-  'tokens.json': (t) => emitDtcg(t),
+  'tokens.json': (t, inc) => emitDtcg(t, inc),
   'tailwind-preset.js': (t) => emitPreset(t),
   'tailwind-preset-auto.js': (t) => emitPreset(t, { auto: true }),
-  'DESIGN.md': (t) => emitDesignMd(t, mapping, designMdTemplate),
+  'DESIGN.md': (t, inc) => emitDesignMd(t, mapping, designMdTemplate, inc),
   'native-mapping.json': () => `${JSON.stringify({ components, typeRoles }, null, 2)}\n`,
 };
 
 const nativeEmitters = {
-  'ODSColors.generated.swift': (t) => emitSwiftColors(t),
+  'ODSColors.generated.swift': (t, inc) => emitSwiftColors(t, inc),
   'ODSMetrics.generated.swift': (t) => emitSwiftMetrics(t),
 };
 
 function generateNative(tokens) {
   validateTokens(tokens);
+  const increased = withIncreased(tokens);
   const files = {};
-  for (const [file, emit] of Object.entries(nativeEmitters)) files[file] = emit(tokens);
+  for (const [file, emit] of Object.entries(nativeEmitters)) files[file] = emit(tokens, increased);
   return files;
 }
 
 function generate(tokens) {
   validateTokens(tokens);
+  const increased = withIncreased(tokens);
   const files = {};
-  for (const [file, emit] of Object.entries(emitters)) files[file] = emit(tokens);
+  for (const [file, emit] of Object.entries(emitters)) files[file] = emit(tokens, increased);
   return files;
 }
 
