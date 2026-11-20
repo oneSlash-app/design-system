@@ -38,7 +38,12 @@ fun OneSlashTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit,
 ) {
-    val increased = usesIncreasedContrast(Build.VERSION.SDK_INT, systemContrast())
+    OneSlashTheme(theme, darkTheme, usesIncreasedContrast(Build.VERSION.SDK_INT, systemContrast()), content)
+}
+
+/** The theme with the contrast level given, not read from the system. */
+@Composable
+internal fun OneSlashTheme(theme: OdsTheme, darkTheme: Boolean, increased: Boolean, content: @Composable () -> Unit) {
     val colors = remember(theme, darkTheme, increased) { OdsPalette.colors(theme, darkTheme, increased) }
     val scheme = remember(colors) { colors.toColorScheme(other = OdsPalette.colors(theme, !darkTheme, increased)) }
     CompositionLocalProvider(LocalOdsColors provides colors, LocalOdsDark provides darkTheme) {

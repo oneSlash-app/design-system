@@ -17,8 +17,10 @@ const roles = {
   inversePrimary: { otherMode: 'accent.main' },
   secondary: 'secondary.main',
   onSecondary: 'secondary.contrast',
-  // Selection: the navigation indicator, tonal buttons, selected chips.
-  secondaryContainer: 'action.selected',
+  // Selection: the navigation indicator, tonal buttons, selected chips. The theme's lightest
+  // surface, not action.selected: that is one neutral gray in every theme and looks foreign on a
+  // themed page.
+  secondaryContainer: 'background.accent300',
   onSecondaryContainer: 'text.primary',
   // ODS "primary" is the neutral strong color; Material's third slot carries it.
   tertiary: 'primary.dark',

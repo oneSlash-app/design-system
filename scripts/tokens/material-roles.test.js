@@ -49,15 +49,15 @@ test('material pairs are in ODS terms and leave out pairs the gate already has',
     assert.equal(r.gated, true);
   }
   assert.equal(new Set(rows.map((r) => r.pair)).size, rows.length);
-  assert.ok(rows.some((r) => r.pair === 'text.primary on action.selected' && r.min === 4.5));
+  assert.ok(rows.some((r) => r.pair === 'misc.tooltipText on misc.tooltipBg' && r.min === 4.5));
   // The same minimum under increased contrast: checked, not a driver.
-  assert.equal(materialPairs(set, roles, pairs, { increased: true }).find((r) => r.pair === 'text.primary on action.selected').min, 4.5);
+  assert.equal(materialPairs(set, roles, pairs, { increased: true }).find((r) => r.pair === 'misc.tooltipText on misc.tooltipBg').min, 4.5);
 });
 
 test('the gate passes with the Material pairs in it', () => {
   const { failures, report } = checkContrast(tokens);
   assert.deepEqual(failures, []);
-  assert.ok(report.some((r) => r.pair === 'text.primary on action.selected' && r.mode === 'darkIncreased' && r.gated));
+  assert.ok(report.some((r) => r.pair === 'misc.tooltipText on misc.tooltipBg' && r.mode === 'darkIncreased' && r.gated));
   assert.equal(new Set(report.map((r) => `${r.theme}/${r.mode}/${r.pair}`)).size, report.length);
 });
 

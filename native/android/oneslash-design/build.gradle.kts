@@ -34,6 +34,11 @@ android {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+            all {
+                // The gallery test writes images; it runs only when ODS_GALLERY_DIR is set.
+                it.systemProperty("roborazzi.test.record", "true")
+                it.maxHeapSize = "2g"
+            }
         }
     }
 }
@@ -48,5 +53,7 @@ dependencies {
     testImplementation(libs.kotlin.reflect)
     testImplementation(libs.robolectric)
     testImplementation(libs.compose.ui.test.junit4)
+    testImplementation(libs.roborazzi)
+    testImplementation(libs.roborazzi.compose)
     debugImplementation(libs.compose.ui.test.manifest)
 }
