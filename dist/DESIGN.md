@@ -108,6 +108,28 @@ Use one semantic name, never a hex value. Each name resolves to a light and a da
 | misc.tooltipBg | #4F4F4F | #FFFFFF | #424F34 | #F4F7EC | #514034 | #FCF8F2 | #33405A | #F7F9FC | #51404D | #FCF9F7 |
 | misc.tooltipText | #eeeeee | #000000 | #D9E5C7 | #1C2213 | #F2E2CE | #2B1F12 | #E3ECF5 | #111A2E | #F2EDE4 | #2A1622 |
 
+## Increased contrast
+
+Every color also has an increased-contrast value in light and in dark. The build derives them from the standard values; nobody picks them by hand, and they are not in `designTokens.js`.
+
+- **Web:** each theme file answers `prefers-contrast: more`. Nothing to do per page or component.
+- **Apple:** each color in the Swift package follows the system's Increase Contrast setting. Nothing to do per screen.
+- **`tokens.json`:** each theme has `lightIncreased` and `darkIncreased` beside `light` and `dark`.
+
+What changes: text, status colors, fills under a label, dividers and outlined borders. Text reaches 7:1 where the standard value is held to 4.5:1; dividers and borders reach 3:1. What does not change: surfaces (`background.*`), so a theme keeps its look, and `text.disabled`.
+
+Do not branch on the setting in a view or a component. Use the same token name; the value follows the setting.
+
+An Apple app's `AccentColor` asset is the one color the package cannot supply. The table gives `accent.main` per theme. Where the last column says "add high-contrast variants", add the "High Contrast" appearances to the color set with the increased values.
+
+| Theme | Light | Light, increased | Dark | Dark, increased | AccentColor asset |
+| --- | --- | --- | --- | --- | --- |
+| default | #EEAE03 | #EEAE03 | #FFCD29 | #FFCD29 | same |
+| forest | #1C2213 | #1C2213 | #E7ECDA | #E7ECDA | same |
+| clay | #D9B26A | #D9B26A | #F2D57E | #F2D57E | same |
+| indigo | #204F8C | #204F8C | #C2E0F2 | #C2E0F2 | same |
+| wine | #8C2668 | #8C2668 | #E2B4CC | #E2B4CC | same |
+
 ## Spacing
 
 | Token | Value |

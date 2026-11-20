@@ -32,10 +32,10 @@ const emitters = {
   'theme.css': (t) => emitThemeV4(t),
   'theme-auto.css': (t) => emitThemeV4(t, { auto: true }),
   'typography.css': (t) => emitTypographyV4(t),
-  'tokens.json': (t) => emitDtcg(t),
+  'tokens.json': (t, inc) => emitDtcg(t, inc),
   'tailwind-preset.js': (t) => emitPreset(t),
   'tailwind-preset-auto.js': (t) => emitPreset(t, { auto: true }),
-  'DESIGN.md': (t) => emitDesignMd(t, mapping, designMdTemplate),
+  'DESIGN.md': (t, inc) => emitDesignMd(t, mapping, designMdTemplate, inc),
   'native-mapping.json': () => `${JSON.stringify({ components, typeRoles }, null, 2)}\n`,
 };
 

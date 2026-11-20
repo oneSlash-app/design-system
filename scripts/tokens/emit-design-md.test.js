@@ -29,7 +29,7 @@ test('every theme gets light and dark columns, in token order', () => {
   assert.equal(head, `| Token | ${['default', ...Object.keys(tokens.themes)].flatMap((n) => [`${n} light`, `${n} dark`]).join(' | ')} |`);
 });
 test('a new theme appears with no emitter change', () => {
-  const extra = { ...tokens, themes: { ...tokens.themes, teal: tokens.themes.forest } };
+  const extra = { ...tokens, themes: { ...tokens.themes, teal: tokens.themes.clay } };
   assert.match(emitDesignMd(extra, mapping, '<!-- tokens:colors -->\n'), /teal light \| teal dark/);
 });
 test('a pipe in a cell is escaped', () => {
@@ -40,4 +40,28 @@ test('a pipe in a cell is escaped', () => {
 test('type roles list the system text style', () => {
   const md = emitDesignMd(tokens, mapping, '<!-- native:type-roles -->\n');
   assert.match(md, /\| body1 \| 16px \| `body` \|/);
+});
+
+test('the increased-contrast section lists accent.main for every theme', () => {
+  const fs = require('node:fs');
+  const path = require('node:path');
+  const { emitDesignMd } = require('./emit-design-md');
+  const tokens = require('../../designTokens.js');
+  const template = fs.readFileSync(path.join(__dirname, 'design-md.src.md'), 'utf8');
+  const md = emitDesignMd(tokens, require('../../native/mapping'), template);
+  assert.match(md, /^## Increased contrast$/m);
+  const section = md.slice(md.indexOf('## Increased contrast'));
+  assert.match(section, /\| Theme \| Light \| Light, increased \| Dark \| Dark, increased \| AccentColor asset \|/);
+  for (const name of ['default', 'forest', 'clay', 'indigo', 'wine']) assert.match(section, new RegExp(`^\\| ${name} \\|`, 'm'));
+  assert.match(section, /^\| forest \| #1C2213 \| #1C2213 \| #E7ECDA \| #E7ECDA \| same \|$/m);
+  assert.doesNotMatch(md, /<!-- (tokens|native):/);
+});
+
+test('a theme whose accent changes is marked for high-contrast asset variants', () => {
+  const { emitDesignMd } = require('./emit-design-md');
+  const tokens = require('../../designTokens.js');
+  const sets = structuredClone(require('./increase-contrast').withIncreased(tokens));
+  sets.clay.darkIncreased.accent.main = '#FFFFFF';
+  const md = emitDesignMd(tokens, require('../../native/mapping'), '<!-- tokens:increased-accent -->', sets);
+  assert.match(md, /^\| clay \|.*\| #FFFFFF \| add high-contrast variants \|$/m);
 });
