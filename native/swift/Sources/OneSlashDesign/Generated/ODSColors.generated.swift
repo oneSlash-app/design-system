@@ -286,13 +286,13 @@ public extension ODSTheme {
       ),
       secondary: ODSSecondaryColors(
         main: Color(odsLight: 0xB0B0B0, dark: 0x4F4F4F, lightIncreased: 0xB0B0B0, darkIncreased: 0x4F4F4F),
-        dark: Color(odsLight: 0x888888, dark: 0x454545, lightIncreased: 0x888888, darkIncreased: 0x454545),
+        dark: Color(odsLight: 0x888888, dark: 0x454545, lightIncreased: 0x959595, darkIncreased: 0x454545),
         light: Color(odsLight: 0xD1D1D1, dark: 0x6D6D6D, lightIncreased: 0xD1D1D1, darkIncreased: 0x6D6D6D),
         contrast: Color(odsLight: 0x000000, dark: 0xEEEEEE, lightIncreased: 0x000000, darkIncreased: 0xEEEEEE)
       ),
       error: ODSErrorColors(
         main: Color(odsLight: 0xD32F2F, dark: 0xE74C4C, lightIncreased: 0xB60015, darkIncreased: 0xFD605E),
-        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xB22323),
+        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xF7665D),
         light: Color(odsLight: 0xF27777, dark: 0xF27777, lightIncreased: 0xF27777, darkIncreased: 0xF27777),
         alertBg: Color(odsLight: 0xF2C4C4, dark: 0x5C1A1A, lightIncreased: 0xF2C4C4, darkIncreased: 0x5C1A1A),
         contrast: Color(odsLight: 0xFFFFFF, dark: 0x000000, lightIncreased: 0xFFFFFF, darkIncreased: 0x000000),
@@ -398,13 +398,13 @@ public extension ODSTheme {
       ),
       secondary: ODSSecondaryColors(
         main: Color(odsLight: 0x6E7A5A, dark: 0x6E7A5A, lightIncreased: 0x525D3F, darkIncreased: 0x525D3F),
-        dark: Color(odsLight: 0x5D6849, dark: 0x5D6849, lightIncreased: 0x5D6849, darkIncreased: 0x5D6849),
+        dark: Color(odsLight: 0x5D6849, dark: 0x5D6849, lightIncreased: 0x525D3F, darkIncreased: 0x525D3F),
         light: Color(odsLight: 0x828D6B, dark: 0x828D6B, lightIncreased: 0x828D6B, darkIncreased: 0x828D6B),
         contrast: Color(odsLight: 0xFFFFFF, dark: 0xFFFFFF, lightIncreased: 0xFFFFFF, darkIncreased: 0xFFFFFF)
       ),
       error: ODSErrorColors(
         main: Color(odsLight: 0xD32F2F, dark: 0xE74C4C, lightIncreased: 0xB60015, darkIncreased: 0xFD605E),
-        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xB22323),
+        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xF7665D),
         light: Color(odsLight: 0xF27777, dark: 0xF27777, lightIncreased: 0xF27777, darkIncreased: 0xF27777),
         alertBg: Color(odsLight: 0xF2C4C4, dark: 0x5C1A1A, lightIncreased: 0xF2C4C4, darkIncreased: 0x5C1A1A),
         contrast: Color(odsLight: 0xFFFFFF, dark: 0x000000, lightIncreased: 0xFFFFFF, darkIncreased: 0x000000),
@@ -500,7 +500,7 @@ public extension ODSTheme {
         main: Color(odsLight: 0xD9B26A, dark: 0xF2D57E, lightIncreased: 0xD9B26A, darkIncreased: 0xF2D57E),
         dark: Color(odsLight: 0xB8904A, dark: 0xD9B26A, lightIncreased: 0xB8904A, darkIncreased: 0xD9B26A),
         light: Color(odsLight: 0xF2D57E, dark: 0xF7E4A8, lightIncreased: 0xF2D57E, darkIncreased: 0xF7E4A8),
-        contrast: Color(odsLight: 0x2B1F12, dark: 0x2B1F12, lightIncreased: 0x2B1F12, darkIncreased: 0x2B1F12)
+        contrast: Color(odsLight: 0x2B1F12, dark: 0x2B1F12, lightIncreased: 0x070200, darkIncreased: 0x2B1F12)
       ),
       primary: ODSPrimaryColors(
         main: Color(odsLight: 0x454545, dark: 0xD5D5D5, lightIncreased: 0x454545, darkIncreased: 0xD5D5D5),
@@ -512,11 +512,11 @@ public extension ODSTheme {
         main: Color(odsLight: 0xCDB49A, dark: 0x5C4630, lightIncreased: 0xCDB49A, darkIncreased: 0x5C4630),
         dark: Color(odsLight: 0xB89A7C, dark: 0x4D3A27, lightIncreased: 0xB89A7C, darkIncreased: 0x4D3A27),
         light: Color(odsLight: 0xE2D1BE, dark: 0x75593D, lightIncreased: 0xE2D1BE, darkIncreased: 0x75593D),
-        contrast: Color(odsLight: 0x2B1F12, dark: 0xF2E2CE, lightIncreased: 0x2B1F12, darkIncreased: 0xF3E3CE)
+        contrast: Color(odsLight: 0x2B1F12, dark: 0xF2E2CE, lightIncreased: 0x1D1105, darkIncreased: 0xF3E3CE)
       ),
       error: ODSErrorColors(
         main: Color(odsLight: 0xD32F2F, dark: 0xE74C4C, lightIncreased: 0xB60015, darkIncreased: 0xFD605E),
-        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xB22323),
+        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xF7665D),
         light: Color(odsLight: 0xF27777, dark: 0xF27777, lightIncreased: 0xF27777, darkIncreased: 0xF27777),
         alertBg: Color(odsLight: 0xF2C4C4, dark: 0x5C1A1A, lightIncreased: 0xF2C4C4, darkIncreased: 0x5C1A1A),
         contrast: Color(odsLight: 0xFFFFFF, dark: 0x000000, lightIncreased: 0xFFFFFF, darkIncreased: 0x000000),
@@ -624,11 +624,11 @@ public extension ODSTheme {
         main: Color(odsLight: 0xB4C6DC, dark: 0x344566, lightIncreased: 0xB4C6DC, darkIncreased: 0x344566),
         dark: Color(odsLight: 0x8EA6C4, dark: 0x2B3A57, lightIncreased: 0x8EA6C4, darkIncreased: 0x2B3A57),
         light: Color(odsLight: 0xCFDCEA, dark: 0x44587F, lightIncreased: 0xCFDCEA, darkIncreased: 0x44587F),
-        contrast: Color(odsLight: 0x111A2E, dark: 0xE3ECF5, lightIncreased: 0x111A2E, darkIncreased: 0xE3ECF5)
+        contrast: Color(odsLight: 0x111A2E, dark: 0xE3ECF5, lightIncreased: 0x10192D, darkIncreased: 0xE3ECF5)
       ),
       error: ODSErrorColors(
         main: Color(odsLight: 0xD32F2F, dark: 0xE74C4C, lightIncreased: 0xB60015, darkIncreased: 0xFD605E),
-        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xB22323),
+        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xF7665D),
         light: Color(odsLight: 0xF27777, dark: 0xF27777, lightIncreased: 0xF27777, darkIncreased: 0xF27777),
         alertBg: Color(odsLight: 0xF2C4C4, dark: 0x5C1A1A, lightIncreased: 0xF2C4C4, darkIncreased: 0x5C1A1A),
         contrast: Color(odsLight: 0xFFFFFF, dark: 0x000000, lightIncreased: 0xFFFFFF, darkIncreased: 0x000000),
@@ -724,7 +724,7 @@ public extension ODSTheme {
         main: Color(odsLight: 0x8C2668, dark: 0xE2B4CC, lightIncreased: 0x8C2668, darkIncreased: 0xE2B4CC),
         dark: Color(odsLight: 0x6E1D52, dark: 0xBF93A8, lightIncreased: 0x6E1D52, darkIncreased: 0xBF93A8),
         light: Color(odsLight: 0xA66086, dark: 0xF0D2E1, lightIncreased: 0xA66086, darkIncreased: 0xF0D2E1),
-        contrast: Color(odsLight: 0xF2EDE4, dark: 0x2C1A26, lightIncreased: 0xF3EEE4, darkIncreased: 0x2C1A26)
+        contrast: Color(odsLight: 0xF2EDE4, dark: 0x2C1A26, lightIncreased: 0xF3EEE4, darkIncreased: 0x1F0E1A)
       ),
       primary: ODSPrimaryColors(
         main: Color(odsLight: 0x454545, dark: 0xD5D5D5, lightIncreased: 0x454545, darkIncreased: 0xD5D5D5),
@@ -736,11 +736,11 @@ public extension ODSTheme {
         main: Color(odsLight: 0xD5BCC8, dark: 0x4E3346, lightIncreased: 0xD5BCC8, darkIncreased: 0x4E3346),
         dark: Color(odsLight: 0xBF93A8, dark: 0x43293C, lightIncreased: 0xBF93A8, darkIncreased: 0x43293C),
         light: Color(odsLight: 0xE6D4DC, dark: 0x634257, lightIncreased: 0xE6D4DC, darkIncreased: 0x634257),
-        contrast: Color(odsLight: 0x2A1622, dark: 0xF2EDE4, lightIncreased: 0x2A1622, darkIncreased: 0xF2EDE4)
+        contrast: Color(odsLight: 0x2A1622, dark: 0xF2EDE4, lightIncreased: 0x210D19, darkIncreased: 0xF2EDE4)
       ),
       error: ODSErrorColors(
         main: Color(odsLight: 0xD32F2F, dark: 0xE74C4C, lightIncreased: 0xB60015, darkIncreased: 0xFD605E),
-        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xB22323),
+        dark: Color(odsLight: 0xA82121, dark: 0xB22323, lightIncreased: 0xA82121, darkIncreased: 0xF7665D),
         light: Color(odsLight: 0xF27777, dark: 0xF27777, lightIncreased: 0xF27777, darkIncreased: 0xF27777),
         alertBg: Color(odsLight: 0xF2C4C4, dark: 0x5C1A1A, lightIncreased: 0xF2C4C4, darkIncreased: 0x5C1A1A),
         contrast: Color(odsLight: 0xFFFFFF, dark: 0x000000, lightIncreased: 0xFFFFFF, darkIncreased: 0x000000),

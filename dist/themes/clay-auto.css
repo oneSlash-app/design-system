@@ -261,6 +261,8 @@
 @media (prefers-contrast: more) {
   :root {
     --os-color-text-secondary: 88 68 48;
+    --os-color-accent-contrast: 7 2 0;
+    --os-color-secondary-contrast: 29 17 5;
     --os-color-error-main: 182 0 21;
     --os-color-error-text: 128 0 10;
     --os-color-error-textHover: 149 3 15;
@@ -279,8 +281,10 @@
   .dark {
     --os-color-text-primary: 243 227 206;
     --os-color-text-secondary: 202 181 154;
+    --os-color-accent-contrast: 43 31 18;
     --os-color-secondary-contrast: 243 227 206;
     --os-color-error-main: 253 96 94;
+    --os-color-error-dark: 247 102 93;
     --os-color-error-fill: 253 96 94;
     --os-color-error-text: 255 168 165;
     --os-color-error-textHover: 255 139 138;
@@ -301,8 +305,10 @@
   :root:not(.light) {
     --os-color-text-primary: 243 227 206;
     --os-color-text-secondary: 202 181 154;
+    --os-color-accent-contrast: 43 31 18;
     --os-color-secondary-contrast: 243 227 206;
     --os-color-error-main: 253 96 94;
+    --os-color-error-dark: 247 102 93;
     --os-color-error-fill: 253 96 94;
     --os-color-error-text: 255 168 165;
     --os-color-error-textHover: 255 139 138;

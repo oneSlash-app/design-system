@@ -96,7 +96,9 @@ its hue, until the pair meets the target against *every* partner it has in
 the list. Targets: 7:1 where the standard gate asks 4.5:1, and 4.5:1 where it
 asks 3:1. New pairs for dividers and outlined borders
 (`misc.divider`, `actionOutlinedBorder.enabled` on `background.default`) get
-3:1 in the increased set only; they are not gated in the standard set. A role
+3:1 in the increased set only; they are not gated in the standard set. The
+hover fills under a label (`accent.dark`, `secondary.dark`, `error.dark`) are
+held to 7:1 in the increased set, so hovering a button never undoes the gain. A role
 whose pairs already meet the target is unchanged. Roles in no pair are
 unchanged. The result is deterministic and is never written into
 `designTokens.js`.
@@ -241,6 +243,15 @@ control, so it is a part there (see the Android doc).
 - The derived sets are not exported from `designTokens.js`.
 
 ## Left open
+
+- **Forest dark, secondary fill.** Forest's secondary label is white in both
+  modes. To carry it at 7:1 the fill darkens, and on the dark page it comes
+  closer to the background (3.57:1 standard, 2.33:1 increased). The label
+  itself is stronger. The gate reports this pair and does not fail on it. The
+  alternative is a dark label on a lighter fill for forest dark under
+  increased contrast, which is a look decision for the owner.
+- **Hover text inside alerts** is checked on the page background only, so
+  under increased contrast it can be weaker than the resting text there.
 
 - **Reduced contrast** (`prefers-contrast: less`, the Android negative
   levels): nobody has asked.

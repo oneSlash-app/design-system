@@ -81,3 +81,11 @@ test('a pair that cannot reach its target fails and is named', () => {
     /default.*light.*on background\.default/,
   );
 });
+
+test('a hover fill keeps its label at the increased target', () => {
+  each((theme, mode, std, inc) => {
+    for (const g of ['accent', 'secondary', 'error']) {
+      assert.ok(contrastRatio(inc[g].contrast, inc[g].dark) >= 7, `${theme} ${mode} ${g}`);
+    }
+  });
+});

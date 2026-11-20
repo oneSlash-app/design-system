@@ -1,6 +1,6 @@
 # Checks every pull request and every push to main: the Node package
 # (tests, contrast, committed dist/ and native/ output up to date) and the
-# Swift package (build, test, iOS build).
+# Swift package (build, test, iOS simulator test).
 name: CI
 
 on:
@@ -45,5 +45,9 @@ jobs:
 
       - run: swift test
 
-      - name: Build for iOS
-        run: xcodebuild -scheme OneSlashDesign -destination 'generic/platform=iOS' build
+      # The iOS run is the one that exercises the Increase Contrast trait: macOS only builds its
+      # high-contrast appearance while that system setting is on.
+      - name: Test on an iOS simulator
+        run: |
+          id=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
+          xcodebuild test -scheme OneSlashDesign -destination "platform=iOS Simulator,id=$id"

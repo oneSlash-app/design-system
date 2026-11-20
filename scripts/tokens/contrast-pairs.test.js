@@ -43,7 +43,18 @@ test('the increased list raises the minimums and adds the border pairs', () => {
     assert.deepEqual([by[pair].min, by[pair].gated, by[pair].moves], [3, true, 'fg']);
     assert.ok(!std.some((p) => p.pair === pair));
   }
-  assert.equal(inc.length, std.length + 2);
+  assert.equal(inc.length, std.length + 6);
+});
+
+test('the increased list covers the hover fills under a label', () => {
+  const std = pairsFor(tokens.colors.light);
+  const by = Object.fromEntries(pairsFor(tokens.colors.light, { increased: true }).map((p) => [p.pair, p]));
+  for (const pair of ['accent.contrast on accent.dark', 'secondary.contrast on secondary.dark', 'error.contrast on error.dark']) {
+    assert.deepEqual([by[pair].min, by[pair].gated, by[pair].moves], [7, true, 'fgThenBg'], pair);
+    assert.ok(!std.some((p) => p.pair === pair));
+  }
+  // Reported for the record: a fill that darkens under its label can come closer to the page.
+  assert.deepEqual([by['secondary.main on background.default'].min, by['secondary.main on background.default'].gated], [3, false]);
 });
 
 test('surfaces never move; fills may move after their label', () => {

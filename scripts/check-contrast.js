@@ -44,17 +44,26 @@ function checkContrast(tokens) {
   return { failures, report };
 }
 
-function main() {
-  const { failures, report } = checkContrast(require('../designTokens.js'));
+// The printed report: one line per pair, then each failure that is not a pair below its
+// minimum (a set that cannot be derived, a pair lower than standard, text levels out of order).
+function lines({ failures, report }) {
   const pad = (v, n) => String(v).padEnd(n);
-  for (const r of report) {
+  const out = report.map((r) => {
     const status = !r.gated ? 'info' : r.ratio < r.min ? 'FAIL' : 'ok';
-    console.log(`${pad(r.theme, 8)} ${pad(r.mode, 14)} ${pad(r.pair, 44)} ${pad(r.ratio.toFixed(2), 6)} ${pad(r.min.toFixed(1), 4)} ${status}`);
-  }
-  console.log(`${report.length} pairs checked, ${failures.length} failed`);
-  if (failures.length) process.exit(1);
+    return `${pad(r.theme, 8)} ${pad(r.mode, 14)} ${pad(r.pair, 44)} ${pad(r.ratio.toFixed(2), 6)} ${pad(r.min.toFixed(1), 4)} ${status}`;
+  });
+  const hasRow = (f) => report.some((r) => r.theme === f.theme && r.mode === f.mode && r.pair === f.pair);
+  for (const f of failures.filter((f) => !hasRow(f))) out.push(`${pad(f.theme, 8)} ${pad(f.mode, 14)} ${f.pair} FAIL`);
+  out.push(`${report.length} pairs checked, ${failures.length} failed`);
+  return out;
+}
+
+function main() {
+  const result = checkContrast(require('../designTokens.js'));
+  console.log(lines(result).join('\n'));
+  if (result.failures.length) process.exit(1);
 }
 
 if (require.main === module) main();
 
-module.exports = { checkContrast };
+module.exports = { checkContrast, lines };

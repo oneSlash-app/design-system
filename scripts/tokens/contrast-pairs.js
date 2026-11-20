@@ -26,16 +26,17 @@ const increasedMin = (min) => (min >= 4.5 ? 7 : 4.5);
 function pairsFor(set, { increased = false } = {}) {
   const pairs = [];
   const color = (role) => { const [g, k] = role.split('.'); return set[g][k]; };
-  const add = (fgRole, bgRole, min, gated) => pairs.push({
+  const push = (fgRole, bgRole, min, gated) => pairs.push({
     pair: `${fgRole} on ${bgRole}`,
     fgRole,
     bgRole,
     fg: color(fgRole),
     bg: color(bgRole),
-    min: increased ? increasedMin(min) : min,
+    min,
     gated,
     moves: bgRole.startsWith('background.') ? 'fg' : 'fgThenBg',
   });
+  const add = (fgRole, bgRole, min, gated) => push(fgRole, bgRole, increased ? increasedMin(min) : min, gated);
   for (const { key, min, gatedOn } of TEXT_RULES) {
     for (const bg of BACKGROUNDS) add(`text.${key}`, `background.${bg}`, min, gatedOn.includes(bg));
   }
@@ -56,10 +57,13 @@ function pairsFor(set, { increased = false } = {}) {
   add('primary.contrast', 'primary.dark', 4.5, true);
   add('secondary.contrast', 'secondary.main', 4.5, true);
   if (increased) {
-    // Dividers and outlined borders reach 3:1 under increased contrast only.
-    for (const role of ['misc.divider', 'actionOutlinedBorder.enabled']) {
-      pairs.push({ pair: `${role} on background.default`, fgRole: role, bgRole: 'background.default', fg: color(role), bg: color('background.default'), min: 3, gated: true, moves: 'fg' });
-    }
+    // Checked under increased contrast only.
+    // Dividers and outlined borders reach 3:1.
+    for (const role of ['misc.divider', 'actionOutlinedBorder.enabled']) push(role, 'background.default', 3, true);
+    // A button's hover fill keeps its label at 7:1, so hovering never undoes the gain.
+    for (const g of ['accent', 'secondary', 'error']) push(`${g}.contrast`, `${g}.dark`, 7, true);
+    // For the record: a fill that darkens under a white label can come closer to a dark page.
+    push('secondary.main', 'background.default', 3, false);
   }
   return pairs;
 }

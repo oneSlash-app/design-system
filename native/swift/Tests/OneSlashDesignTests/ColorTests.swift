@@ -84,8 +84,9 @@ import AppKit
     #expect(variant(nil, true) == 3)
 }
 
-@Test @MainActor func standardAndVibrantAppearancesResolveThroughTheColor() throws {
-    try #require(!NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast)
+// Skipped while the system's Increase Contrast is on: every appearance then resolves to an increased value.
+@Test(.enabled(if: !NSWorkspace.shared.accessibilityDisplayShouldIncreaseContrast))
+@MainActor func standardAndVibrantAppearancesResolveThroughTheColor() {
     let color = odsPlatformColor(light: 0x515E3C, dark: 0x9DAA85, lightIncreased: 0x414B2C, darkIncreased: 0xB1BE98)
     #expect(hex(color, under: .aqua) == 0x515E3C)
     #expect(hex(color, under: .darkAqua) == 0x9DAA85)

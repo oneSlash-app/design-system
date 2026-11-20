@@ -175,6 +175,7 @@
   :root {
     --os-color-text-secondary: 96 66 84;
     --os-color-accent-contrast: 243 238 228;
+    --os-color-secondary-contrast: 33 13 25;
     --os-color-error-main: 182 0 21;
     --os-color-error-text: 128 0 10;
     --os-color-error-textHover: 153 10 19;
@@ -192,8 +193,10 @@
   }
   .dark {
     --os-color-text-secondary: 202 177 189;
-    --os-color-accent-contrast: 44 26 38;
+    --os-color-accent-contrast: 31 14 26;
+    --os-color-secondary-contrast: 242 237 228;
     --os-color-error-main: 253 96 94;
+    --os-color-error-dark: 247 102 93;
     --os-color-error-fill: 253 96 94;
     --os-color-error-text: 255 168 165;
     --os-color-error-textHover: 255 139 137;
