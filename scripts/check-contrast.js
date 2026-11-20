@@ -1,50 +1,5 @@
 const { contrastRatio } = require('./tokens/color.js');
-
-const BACKGROUNDS = ['default', 'accent100', 'accent200', 'accent300'];
-const STATUSES = ['error', 'warning', 'info', 'success'];
-
-// gated: [text token, backgrounds that fail the build]; the rest are report-only.
-const TEXT_RULES = [
-  { key: 'primary', min: 4.5, gatedOn: BACKGROUNDS },
-  { key: 'secondary', min: 4.5, gatedOn: ['default', 'accent100'] },
-  { key: 'disabled', min: 3.0, gatedOn: [] },
-];
-
-// Report-only per pair (theme/mode/pair, `theme` omitted = every theme): shown for the record, never fail the build.
-const REPORT_ONLY = [
-  { theme: 'forest', pair: 'text.primary on secondary.main', reason: 'Scindo secondary is mid-tone (3.57/3.48); components use secondary.contrast' },
-  { pair: 'error.main on background.default', reason: 'borders and dots only since 2.0.2; messages use error.text' },
-];
-
-const isReportOnly = (theme, mode, pair) =>
-  REPORT_ONLY.some((r) => r.pair === pair && (!r.theme || r.theme === theme) && (!r.mode || r.mode === mode));
-
-function pairsFor(set) {
-  const pairs = [];
-  const add = (pair, fg, bg, min, gated) => pairs.push({ pair, fg, bg, min, gated });
-  for (const { key, min, gatedOn } of TEXT_RULES) {
-    for (const bg of BACKGROUNDS) {
-      add(`text.${key} on background.${bg}`, set.text[key], set.background[bg], min, gatedOn.includes(bg));
-    }
-  }
-  add('text.primary on background.row', set.text.primary, set.background.row, 4.5, true);
-  add('text.secondary on background.row', set.text.secondary, set.background.row, 4.5, true);
-  add('error.text on background.row', set.error.text, set.background.row, 4.5, true);
-  for (const s of STATUSES) {
-    add(`${s}.onFill on ${s}.fill`, set[s].onFill, set[s].fill, 4.5, true);
-    add(`${s}.text on background.default`, set[s].text, set.background.default, 4.5, true);
-    add(`${s}.textHover on background.default`, set[s].textHover, set.background.default, 4.5, true);
-  }
-  add('text.primary on secondary.main', set.text.primary, set.secondary.main, 4.5, true);
-  add('error.contrast on error.main', set.error.contrast, set.error.main, 4.5, true);
-  add('error.text on error.alertBg', set.error.text, set.error.alertBg, 4.5, true);
-  add('error.main on background.default', set.error.main, set.background.default, 4.5, true);
-  for (const s of STATUSES) add(`text.primary on ${s}.alertBg`, set.text.primary, set[s].alertBg, 4.5, true);
-  add('accent.contrast on accent.main', set.accent.contrast, set.accent.main, 4.5, true);
-  add('primary.contrast on primary.dark', set.primary.contrast, set.primary.dark, 4.5, true);
-  add('secondary.contrast on secondary.main', set.secondary.contrast, set.secondary.main, 4.5, true);
-  return pairs;
-}
+const { pairsFor, isReportOnly } = require('./tokens/contrast-pairs.js');
 
 function checkContrast(tokens) {
   const themes = { default: tokens.colors, ...tokens.themes };
