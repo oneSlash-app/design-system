@@ -85,4 +85,26 @@ function partPairs(set, parts, { increased = false } = {}) {
   return out;
 }
 
-module.exports = { pairsFor, partPairs, isReportOnly, REPORT_ONLY };
+// The pairs the Material 3 role table (native/material-roles.js) adds, in ODS role terms. Pairs
+// the core list already has are left out, and so is a pair whose two roles are the same ODS color
+// source in another mode. Checked by the gate at the same minimum in every set; never drivers of
+// the derivation, so they cannot ask an increased set for more than its core pairs give.
+function materialPairs(set, roles, pairs, { increased = false } = {}) {
+  const color = (role) => { const [g, k] = role.split('.'); return set[g][k]; };
+  // A core pair that is only reported (secondary text on the lighter surfaces) is not left out:
+  // Material draws it, so here it is gated.
+  const seen = new Set(pairsFor(set, { increased }).filter((p) => p.gated).map((p) => p.pair));
+  const out = [];
+  for (const [fg, bg, min] of pairs) {
+    const fgRole = roles[fg];
+    const bgRole = roles[bg];
+    if (typeof fgRole !== 'string' || typeof bgRole !== 'string') continue;
+    const pair = `${fgRole} on ${bgRole}`;
+    if (seen.has(pair)) continue;
+    seen.add(pair);
+    out.push({ pair, fgRole, bgRole, fg: color(fgRole), bg: color(bgRole), min, gated: true });
+  }
+  return out;
+}
+
+module.exports = { pairsFor, partPairs, materialPairs, isReportOnly, REPORT_ONLY };
