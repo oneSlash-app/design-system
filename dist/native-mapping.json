@@ -8,9 +8,9 @@
     },
     {
       "ods": "button",
-      "swiftui": "`Button` with `.borderedProminent` or `.glassProminent` for accent, `.bordered` for primary",
+      "swiftui": "`Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary",
       "compose": "`Button`, `OutlinedButton`",
-      "note": "Tertiary and text-only: `.borderless` / `TextButton`. A prominent button's system label is white; on themes whose accent is light (default, clay) that fails contrast in light mode, so set the label's `.foregroundStyle(theme.accent.contrast)`. Forest, indigo and wine pass as is."
+      "note": "Tertiary and text-only: `.borderless` / `TextButton`. On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a `.borderedProminent` or `.glassProminent` button takes `text.primary`, not the system white, which is below 4.5:1 on the accent in default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark (in forest it is the same color, so the label disappears). The modifier keeps the system style and sets the label to `accent.contrast`. Compose needs nothing: `onPrimary` is `accent.contrast`."
     },
     {
       "ods": "checkBox",

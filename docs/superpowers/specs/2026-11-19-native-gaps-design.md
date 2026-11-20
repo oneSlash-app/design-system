@@ -1,6 +1,6 @@
 # oneslash-design-system: closing the native gaps (contrast, parts, button label)
 
-Status: approved by the owner on 2026-11-20. Built: section 1, increased contrast (release 2.11.0, plan `docs/superpowers/plans/2026-11-20-increased-contrast.md`); sections 2 and 3 are not built. Follows
+Status: approved by the owner on 2026-11-20. Built: section 1, increased contrast (release 2.11.0, plan `docs/superpowers/plans/2026-11-20-increased-contrast.md`); sections 2 and 3, Apple parts and the prominent button (release 2.12.0, plan `docs/superpowers/plans/2026-11-20-apple-parts.md`). Follows
 `2026-11-17-native-platforms-design.md` (called "the native spec" below); its
 OS-update rules apply here unchanged. The Android half is in
 `2026-11-19-compose-android-design.md`.
@@ -187,6 +187,13 @@ control, so it is a part there (see the Android doc).
 
 ### 3. Prominent label (with the second release)
 
+- **Found while building (2026-11-20), and worse than this section assumed.**
+  Under `odsTheme(_:)` a prominent button's label is not the system white: it
+  takes the root foreground style, `text.primary`. That fails on the accent in
+  eight of the ten theme and mode combinations, and in Forest it is the same
+  color as the fill. Confirmed in a running app on the iOS simulator. So the
+  helper is needed on every theme, and the generated note lists where the
+  unhelped label fails.
 - **Helper.** A modifier that applies the system prominent style and sets the
   label's foreground to the theme's `accent.contrast`. Whether it sits on the
   button or on the label is the builder's call, decided by what the system

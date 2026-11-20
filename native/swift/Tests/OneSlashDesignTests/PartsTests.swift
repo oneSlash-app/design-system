@@ -63,3 +63,16 @@ private let themes: [ODSTheme] = [.default, .forest, .clay, .indigo, .wine]
     #expect(odsAvatarBackground(hue: 153, grayscale: false) == (light: 0xA3F5D0, dark: 0x0F8A53))
     #expect(odsAvatarBackground(hue: 153, grayscale: true) == (light: 0xCCCCCC, dark: 0x4D4D4D))
 }
+
+#if canImport(AppKit) && !canImport(UIKit)
+import AppKit
+
+// On the Mac the user can replace the app's accent with their own; the label follows.
+@Test func theAppAccentIsRecognisedWithinRounding() {
+    let app = NSColor(srgbRed: 0x1C / 255, green: 0x22 / 255, blue: 0x13 / 255, alpha: 1)
+    #expect(odsSameColor(app, NSColor(srgbRed: 0x1C / 255, green: 0x22 / 255, blue: 0x13 / 255, alpha: 1)))
+    #expect(odsSameColor(app, NSColor(srgbRed: 0x1D / 255, green: 0x22 / 255, blue: 0x12 / 255, alpha: 1)))
+    #expect(!odsSameColor(app, NSColor.systemBlue))
+    #expect(!odsSameColor(app, nil))
+}
+#endif

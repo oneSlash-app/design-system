@@ -41,6 +41,8 @@ public struct ODSBanner: View {
                 }
             }
             .font(.ods(.body2))
+            // The message wraps; it is never cut short.
+            .fixedSize(horizontal: false, vertical: true)
             .frame(maxWidth: .infinity, alignment: .leading)
             if let onClose {
                 Button(action: onClose) {

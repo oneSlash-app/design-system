@@ -69,18 +69,20 @@ public struct ODSTag: View {
             } else if let systemImage {
                 Image(systemName: systemImage).imageScale(.small)
             }
-            Text(label)
+            Text(label).lineLimit(1)
         }
         .font(font)
         .foregroundStyle(style?.label ?? theme.text.primary)
         .padding(.horizontal, insets.horizontal * scale)
         .padding(.vertical, insets.vertical * scale)
         .background {
-            if let fill = style?.fill { Capsule().fill(fill) }
+            if let fill = style?.fill { Capsule(style: .circular).fill(fill) }
         }
         .overlay {
-            if let border = style?.border { Capsule().strokeBorder(border, lineWidth: 1) }
+            if let border = style?.border { Capsule(style: .circular).strokeBorder(border, lineWidth: 1) }
         }
+        // A tag keeps to one line at its own width, as on the web.
+        .fixedSize()
         .accessibilityElement(children: .combine)
         .accessibilityAddTraits(isSelected && color == .plain ? .isSelected : [])
     }

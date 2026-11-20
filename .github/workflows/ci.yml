@@ -50,4 +50,12 @@ jobs:
       - name: Test on an iOS simulator
         run: |
           id=$(xcrun simctl list devices available -j | python3 -c "import json,sys; d=json.load(sys.stdin)['devices']; print(next(x['udid'] for k in sorted(d, reverse=True) if 'iOS' in k for x in d[k] if x['name'].startswith('iPhone')))")
-          xcodebuild test -scheme OneSlashDesign -destination "platform=iOS Simulator,id=$id"
+          TEST_RUNNER_ODS_GALLERY_DIR="$RUNNER_TEMP/parts-gallery" xcodebuild test -scheme OneSlashDesign -destination "platform=iOS Simulator,id=$id"
+
+      # Every part in every theme and appearance, to look at. Not compared pixel by pixel:
+      # system rendering changes between OS versions and must not break the build.
+      - uses: actions/upload-artifact@v7
+        with:
+          name: parts-gallery
+          path: ${{ runner.temp }}/parts-gallery
+          if-no-files-found: error

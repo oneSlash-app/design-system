@@ -24,9 +24,10 @@ const PLANNED = 'ODS part (planned)';
 const components = [
   { ods: 'alert', swiftui: '`ODSBanner` for an inline message; `.alert` for one that needs a decision', compose: PLANNED,
     note: 'ODS has no native toast. Compose until the part exists: `Snackbar` in a `SnackbarHost`.' },
-  { ods: 'button', swiftui: '`Button` with `.borderedProminent` or `.glassProminent` for accent, `.bordered` for primary',
+  // {prominentLabel} is filled by the build from the tokens (scripts/tokens/button-note.js).
+  { ods: 'button', swiftui: '`Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary',
     compose: '`Button`, `OutlinedButton`',
-    note: 'Tertiary and text-only: `.borderless` / `TextButton`. A prominent button\'s system label is white; on themes whose accent is light (default, clay) that fails contrast in light mode, so set the label\'s `.foregroundStyle(theme.accent.contrast)`. Forest, indigo and wine pass as is.' },
+    note: 'Tertiary and text-only: `.borderless` / `TextButton`. {prominentLabel} Compose needs nothing: `onPrimary` is `accent.contrast`.' },
   { ods: 'checkBox', swiftui: '`Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS)', compose: '`Checkbox`' },
   { ods: 'emptyBox', swiftui: '`ContentUnavailableView`', compose: PLANNED,
     note: 'The system has this control on Apple, so ODS adds no part there. Compose until the part exists: a centered `Icon` and `Text` in a `Column`.' },

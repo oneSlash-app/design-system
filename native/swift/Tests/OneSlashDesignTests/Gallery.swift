@@ -29,18 +29,74 @@ import UIKit
     try image.pngData()!.write(to: URL(fileURLWithPath: dir).appendingPathComponent("\(name).png"))
 }
 
-@Test @MainActor func gallerySpike() throws {
-    for (name, style, contrast) in [("spike-light", UIUserInterfaceStyle.light, UIAccessibilityContrast.normal), ("spike-dark-increased", .dark, .high)] {
-        try renderGallery(name, style: style, contrast: contrast) {
-            VStack(alignment: .leading, spacing: 12) {
-                Text("Primary").foregroundStyle(ODSTheme.forest.text.primary)
-                Text("Secondary").foregroundStyle(ODSTheme.forest.text.secondary)
-                Button("Save") {}.buttonStyle(.borderedProminent)
-                Button("Cancel") {}.buttonStyle(.bordered)
+private let galleryThemes: [ODSTheme] = [.default, .forest, .clay, .indigo, .wine]
+private let statusColors: [ODSTagColor] = [.success, .warning, .error, .info]
+
+@MainActor private func tagRows(_ variant: ODSTagVariant) -> some View {
+    VStack(alignment: .leading, spacing: 6) {
+        HStack(spacing: 6) {
+            ODSTag("Plain", variant: variant)
+            ODSTag("Selected", variant: variant, isSelected: true)
+            ODSTag("Default", variant: variant, color: .default)
+        }
+        HStack(spacing: 6) {
+            ForEach(statusColors, id: \.self) { ODSTag($0.rawValue.capitalized, variant: variant, color: $0) }
+        }
+    }
+}
+
+/// Every part in every variant, as one page per theme and appearance.
+@MainActor private func partsGallery(_ theme: ODSTheme) -> some View {
+    VStack(alignment: .leading, spacing: 12) {
+        ForEach(ODSBannerKind.allCases, id: \.self) { kind in
+            ODSBanner("\(kind.rawValue.capitalized) banner", kind: kind)
+        }
+        ODSBanner("Could not save", detail: "Check your connection and try again.", kind: .error, onClose: {})
+        ForEach(ODSTagVariant.allCases, id: \.self) { tagRows($0) }
+        HStack(spacing: 6) {
+            ODSTag("Medium", color: .info, size: .medium, systemImage: "bolt.fill")
+            ODSTag("Small", color: .info, size: .small, systemImage: "bolt.fill")
+            ODSTag("Tiny", color: .info, size: .tiny, systemImage: "bolt.fill")
+        }
+        // The glass style is left out: this renderer cannot draw Liquid Glass.
+        HStack(spacing: 8) {
+            Button("Prominent") {}.odsProminentButton()
+            Button("Disabled") {}.odsProminentButton().disabled(true)
+            Button("Bordered") {}.buttonStyle(.bordered)
+        }
+        HStack(spacing: 8) {
+            ODSAvatar("Jin Kim")
+            ODSAvatar("Ada Lovelace")
+            ODSAvatar("김진환")
+            ODSAvatar("Grace", grayscale: true)
+            ODSAvatar("Picture", image: Image(systemName: "person.fill"))
+            ODSAvatar("Large", size: 40)
+        }
+        // The largest text size: nothing may clip, and Dismiss stays reachable.
+        VStack(alignment: .leading, spacing: 12) {
+            ODSBanner("Could not save your changes", detail: "Check your connection.", kind: .warning, onClose: {})
+            HStack(spacing: 8) {
+                ODSTag("Success", color: .success)
+                ODSTag("Dot", variant: .dot, color: .error)
+                ODSAvatar("Jin Kim")
             }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(ODSTheme.forest.background.default)
+        }
+        .dynamicTypeSize(.accessibility3)
+    }
+    .padding(16)
+    .frame(maxWidth: .infinity, alignment: .leading)
+    .background(theme.background.default)
+    .odsTheme(theme)
+    // A package has no AccentColor asset; the tint stands in for the app's.
+    .tint(theme.accent.main)
+}
+
+@Test @MainActor func partsGalleryRendersForEveryThemeAndAppearance() throws {
+    for theme in galleryThemes {
+        for (mode, style) in [("light", UIUserInterfaceStyle.light), ("dark", .dark)] {
+            for (level, contrast) in [("standard", UIAccessibilityContrast.normal), ("increased", .high)] {
+                try renderGallery("parts-\(theme.name)-\(mode)-\(level)", style: style, contrast: contrast) { partsGallery(theme) }
+            }
         }
     }
 }
