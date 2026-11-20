@@ -35,10 +35,12 @@ test('each theme has four sets with its values as opaque ARGB', () => {
 });
 
 test('the color scheme follows the role table', () => {
-  assert.match(scheme, /\n    primary = accentMain,/);
-  assert.match(scheme, /\n    onPrimary = accentContrast,/);
+  assert.match(scheme, /\n    primary = if \(accentReadsAsText\) accentMain else primaryDark,/);
+  assert.match(scheme, /\n    onPrimary = if \(accentReadsAsText\) accentContrast else primaryContrast,/);
+  assert.match(scheme, /internal fun OdsColors\.toColorScheme\(other: OdsColors, accentReadsAsText: Boolean\): ColorScheme/);
   assert.match(scheme, /\n    surfaceContainerHigh = backgroundAccent100,/);
-  assert.match(scheme, /\n    inversePrimary = other\.accentMain,/);
+  assert.match(scheme, /\n    inversePrimary = miscTooltipText,/);
+  assert.match(emitKotlinScheme({ inversePrimary: { otherMode: 'accent.main' } }, tokens), /\n    inversePrimary = other\.accentMain,/);
   for (const role of Object.keys(material.roles)) assert.match(scheme, new RegExp(`\\n    ${role} = `), role);
   assert.match(scheme, new RegExp(`internal val materialRoleNames = listOf\\(${Object.keys(material.roles).map((r) => `"${r}"`).join(', ')}\\)`));
 });
@@ -59,4 +61,11 @@ test('metrics: dp and milliseconds', () => {
   assert.match(kt, /object OdsSpacing \{[\s\S]*val small = 4\.dp/);
   assert.match(kt, /object OdsRadius \{[\s\S]*val container = 12\.dp/);
   assert.match(kt, /object OdsDuration \{[\s\S]*const val fast = 150\b/);
+});
+
+test('each set records whether its accent reads as text', () => {
+  assert.match(colors, /fun accentReadsAsText\(theme: OdsTheme, dark: Boolean, increased: Boolean\): Boolean/);
+  assert.match(colors, /OdsTheme\.Default -> dark\n/);
+  assert.match(colors, /OdsTheme\.Clay -> dark\n/);
+  assert.match(colors, /OdsTheme\.Forest -> true\n/);
 });

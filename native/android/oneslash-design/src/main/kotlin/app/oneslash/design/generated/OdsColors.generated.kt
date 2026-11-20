@@ -103,6 +103,15 @@ internal object OdsPalette {
         OdsTheme.Wine -> if (dark) (if (increased) wineDarkIncreased else wineDark) else (if (increased) wineLightIncreased else wineLight)
     }
 
+    /** Whether the accent is readable as text on a surface in this set. See native/material-roles.js. */
+    fun accentReadsAsText(theme: OdsTheme, dark: Boolean, increased: Boolean): Boolean = when (theme) {
+        OdsTheme.Default -> dark
+        OdsTheme.Forest -> true
+        OdsTheme.Clay -> dark
+        OdsTheme.Indigo -> true
+        OdsTheme.Wine -> true
+    }
+
     private val defaultLight by lazy {
         OdsColors(
             textPrimary = Color(0xFF000000),

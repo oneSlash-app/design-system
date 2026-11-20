@@ -11,6 +11,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 class ContrastTest {
     @Test
@@ -54,10 +55,36 @@ class OneSlashThemeTest {
         assertEquals(Color(0xFFE7ECDA), scheme!!.onPrimary)
         assertEquals(Color(0xFFD9E5C7), scheme!!.surface)
         assertEquals(Color(0xFFE2ECD4), scheme!!.surfaceContainerHigh)
-        // The accent of the same theme in dark mode.
-        assertEquals(Color(0xFFE7ECDA), scheme!!.inversePrimary)
         assertEquals(Color(0xFFA84600), colors!!.warningFill)
         assertEquals(Color(0xFFF4F7EC), colors!!.backgroundAccent300)
+    }
+
+    // Yellow reads as a fill, not as text on light gray: a text button would be 1.6:1.
+    @Test
+    fun primaryIsTheAccentOnlyWhereItReadsAsText() {
+        var light: ColorScheme? = null
+        var dark: ColorScheme? = null
+        rule.setContent {
+            OneSlashTheme(theme = OdsTheme.Default, darkTheme = false) { light = MaterialTheme.colorScheme }
+            OneSlashTheme(theme = OdsTheme.Default, darkTheme = true) { dark = MaterialTheme.colorScheme }
+        }
+        rule.waitForIdle()
+        assertEquals(Color(0xFF262626), light!!.primary)
+        assertEquals(Color(0xFFFFFFFF), light!!.onPrimary)
+        // The accent is still there as a fill.
+        assertEquals(Color(0xFFEEAE03), light!!.tertiaryContainer)
+        assertEquals(Color(0xFFFFCD29), dark!!.primary)
+        assertEquals(Color(0xFF000000), dark!!.onPrimary)
+    }
+
+    // Before Android 14 there is no system contrast setting: standard colors, no crash.
+    @Test
+    @Config(sdk = [26])
+    fun onAnOldAndroidTheThemeUsesTheStandardColors() {
+        var colors: OdsColors? = null
+        rule.setContent { OneSlashTheme(theme = OdsTheme.Forest, darkTheme = true) { colors = OneSlashTheme.colors } }
+        rule.waitForIdle()
+        assertEquals(Color(0xFF9DAA85), colors!!.textSecondary)
     }
 
     @Test

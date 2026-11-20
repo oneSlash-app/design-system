@@ -8,15 +8,25 @@
 // Surface containers stop at accent100: Material draws secondary text (onSurfaceVariant) on its
 // containers, and in dark mode that text is below 4.5:1 on accent200 and accent300. The lighter
 // surfaces stay available to our own content through the extended colors.
+//
+// Material draws `primary` both as a fill (a filled button) and as text on a surface (a text
+// button, a focused field's label, a selected tab). An ODS accent is a fill: in default light and
+// clay light it is 1.5 to 1.6:1 as text. So `primary` is the accent only in a set where the accent
+// reads as text (accentReadsAsText); elsewhere it is the neutral strong color. The accent stays
+// available as a fill everywhere through `tertiaryContainer` and the extended colors.
+// `secondary` is drawn as text too (a selected navigation label), so it is the primary text color.
 const roles = {
-  primary: 'accent.main',
-  onPrimary: 'accent.contrast',
-  // accent.light under accent.contrast is below 4.5:1 in indigo and wine, so the container is the accent itself.
-  primaryContainer: 'accent.main',
-  onPrimaryContainer: 'accent.contrast',
-  inversePrimary: { otherMode: 'accent.main' },
-  secondary: 'secondary.main',
-  onSecondary: 'secondary.contrast',
+  primary: { accent: 'accent.main', otherwise: 'primary.dark' },
+  onPrimary: { accent: 'accent.contrast', otherwise: 'primary.contrast' },
+  // A light themed surface with primary text on it. It cannot be the accent: Material draws an
+  // onPrimaryContainer icon on an onPrimary switch thumb, so the two "on" colors must differ.
+  primaryContainer: 'background.accent300',
+  onPrimaryContainer: 'text.primary',
+  // The action of a snackbar, drawn on inverseSurface. The other mode's accent is 1.9:1 there in
+  // default and clay dark, so it is the tooltip text color.
+  inversePrimary: 'misc.tooltipText',
+  secondary: 'text.primary',
+  onSecondary: 'background.default',
   // Selection: the navigation indicator, tonal buttons, selected chips. The theme's lightest
   // surface, not action.selected: that is one neutral gray in every theme and looks foreign on a
   // themed page.
@@ -25,8 +35,10 @@ const roles = {
   // ODS "primary" is the neutral strong color; Material's third slot carries it.
   tertiary: 'primary.dark',
   onTertiary: 'primary.contrast',
-  tertiaryContainer: 'background.accent200', // no ODS role; a quiet raised surface
-  onTertiaryContainer: 'text.primary',
+  // The accent as a fill, in every theme: for a floating action button or a highlight, pass
+  // tertiaryContainer as its container color.
+  tertiaryContainer: 'accent.main',
+  onTertiaryContainer: 'accent.contrast',
   background: 'background.default',
   onBackground: 'text.primary',
   surface: 'background.default',
@@ -37,8 +49,10 @@ const roles = {
   surfaceTint: 'background.default',
   inverseSurface: 'misc.tooltipBg',
   inverseOnSurface: 'misc.tooltipText',
-  error: 'error.fill',
-  onError: 'error.onFill',
+  // Material draws `error` as text (a field's error message) more than as a fill, so it is the
+  // error text color; error.fill is below 4.5:1 as text in dark mode.
+  error: 'error.text',
+  onError: 'background.default',
   errorContainer: 'error.alertBg',
   onErrorContainer: 'text.primary',
   outline: 'actionOutlinedBorder.enabled',
@@ -84,14 +98,33 @@ const pairs = [
   ['onError', 'error', 4.5],
   ['onErrorContainer', 'errorContainer', 4.5],
   ['inverseOnSurface', 'inverseSurface', 4.5],
+  ['inversePrimary', 'inverseSurface', 4.5],
+  // A checked switch draws an onPrimaryContainer icon on its onPrimary thumb.
+  ['onPrimaryContainer', 'onPrimary', 4.5],
   ['onPrimaryFixed', 'primaryFixed', 4.5],
   ['onPrimaryFixed', 'primaryFixedDim', 4.5],
   ['onSecondaryFixed', 'secondaryFixed', 4.5],
   ['onSecondaryFixed', 'secondaryFixedDim', 4.5],
   ['onTertiaryFixed', 'tertiaryFixed', 4.5],
   ...SURFACES.flatMap((s) => [['onSurface', s, 4.5], ['onSurfaceVariant', s, 4.5]]),
+  // Roles Material also draws as text on a surface.
+  ...['primary', 'secondary', 'error'].flatMap((fg) => SURFACES.map((s) => [fg, s, 4.5])),
 ];
 // `outline` is not paired here: it is the web's outlined border (2.7 to 2.9:1 on the page in light
 // mode), which the gate holds to 3:1 under increased contrast only, on every platform alike.
 
-module.exports = { roles, pairs };
+const { contrastRatio } = require('../scripts/tokens/color');
+
+// Whether a set's accent is readable as text on the surfaces Material uses.
+function accentReadsAsText(set) {
+  return ['default', 'accent100'].every((s) => contrastRatio(set.accent.main, set.background[s]) >= 4.5);
+}
+
+// The ODS role a table entry means in one color set; null for an entry that reads the other mode.
+function resolveRole(entry, set) {
+  if (typeof entry === 'string') return entry;
+  if (entry.accent) return accentReadsAsText(set) ? entry.accent : entry.otherwise;
+  return null;
+}
+
+module.exports = { roles, pairs, accentReadsAsText, resolveRole };

@@ -27,7 +27,11 @@ internal val LocalOdsDark = staticCompositionLocalOf { false }
  *
  * Every Material component inside takes its colors from the theme, in light and dark, and in the
  * increased-contrast values when the system's contrast setting asks for them (Android 14 and
- * later). Shapes and type are Material's own. Dynamic color is not used: the theme is the brand.
+ * later).
+ *
+ * Material draws `primary` as a fill and as text. Where a theme's accent cannot be read as text
+ * (Default and Clay in light mode), `primary` is the neutral strong color; the accent is on
+ * `tertiaryContainer` and in [OneSlashTheme.colors]. Shapes and type are Material's own. Dynamic color is not used: the theme is the brand.
  *
  * The colors Material has no role for (warning, info, success, the lighter surfaces) are read
  * from [OneSlashTheme.colors].
@@ -45,7 +49,12 @@ fun OneSlashTheme(
 @Composable
 internal fun OneSlashTheme(theme: OdsTheme, darkTheme: Boolean, increased: Boolean, content: @Composable () -> Unit) {
     val colors = remember(theme, darkTheme, increased) { OdsPalette.colors(theme, darkTheme, increased) }
-    val scheme = remember(colors) { colors.toColorScheme(other = OdsPalette.colors(theme, !darkTheme, increased)) }
+    val scheme = remember(colors) {
+        colors.toColorScheme(
+            other = OdsPalette.colors(theme, !darkTheme, increased),
+            accentReadsAsText = OdsPalette.accentReadsAsText(theme, darkTheme, increased),
+        )
+    }
     CompositionLocalProvider(LocalOdsColors provides colors, LocalOdsDark provides darkTheme) {
         MaterialTheme(colorScheme = scheme, content = content)
     }

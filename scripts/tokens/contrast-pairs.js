@@ -96,9 +96,10 @@ function materialPairs(set, roles, pairs, { increased = false } = {}) {
   const seen = new Set(pairsFor(set, { increased }).filter((p) => p.gated).map((p) => p.pair));
   const out = [];
   for (const [fg, bg, min] of pairs) {
-    const fgRole = roles[fg];
-    const bgRole = roles[bg];
-    if (typeof fgRole !== 'string' || typeof bgRole !== 'string') continue;
+    const { resolveRole } = require('../../native/material-roles');
+    const fgRole = resolveRole(roles[fg], set);
+    const bgRole = resolveRole(roles[bg], set);
+    if (!fgRole || !bgRole || fgRole === bgRole) continue;
     const pair = `${fgRole} on ${bgRole}`;
     if (seen.has(pair)) continue;
     seen.add(pair);

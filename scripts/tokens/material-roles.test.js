@@ -5,27 +5,29 @@ const { roles, pairs } = require('../../native/material-roles');
 const { pairsFor, materialPairs } = require('./contrast-pairs');
 const { checkContrast } = require('../check-contrast');
 
-const ods = (entry) => (typeof entry === 'string' ? entry : entry.otherMode);
+const ods = (entry) => (typeof entry === 'string' ? [entry] : Object.values(entry));
 
 test('every Material role names an ODS color role', () => {
   for (const [role, entry] of Object.entries(roles)) {
-    const [g, k] = ods(entry).split('.');
-    assert.ok(tokens.colors.light[g] && tokens.colors.light[g][k], `${role} = ${ods(entry)}`);
+    for (const name of ods(entry)) {
+      const [g, k] = name.split('.');
+      assert.ok(tokens.colors.light[g] && tokens.colors.light[g][k], `${role} = ${name}`);
+    }
   }
 });
 
 test('the rows the design fixes', () => {
   const fixed = {
-    primary: 'accent.main', onPrimary: 'accent.contrast', secondary: 'secondary.main', onSecondary: 'secondary.contrast',
+    secondary: 'text.primary', onSecondary: 'background.default',
     background: 'background.default', surface: 'background.default', onBackground: 'text.primary', onSurface: 'text.primary',
     onSurfaceVariant: 'text.secondary', surfaceContainerLowest: 'background.default', surfaceContainerLow: 'background.default',
     surfaceContainer: 'background.accent100', surfaceContainerHigh: 'background.accent100', surfaceContainerHighest: 'background.accent100',
-    outline: 'actionOutlinedBorder.enabled', outlineVariant: 'misc.divider', error: 'error.fill', onError: 'error.onFill',
+    outline: 'actionOutlinedBorder.enabled', outlineVariant: 'misc.divider', error: 'error.text', onError: 'background.default',
     errorContainer: 'error.alertBg', onErrorContainer: 'text.primary', inverseSurface: 'misc.tooltipBg',
     inverseOnSurface: 'misc.tooltipText', scrim: 'misc.scrim',
   };
   for (const [role, value] of Object.entries(fixed)) assert.equal(roles[role], value, role);
-  assert.deepEqual(roles.inversePrimary, { otherMode: 'accent.main' });
+  assert.equal(roles.inversePrimary, 'misc.tooltipText');
 });
 
 test('every pair names Material roles that are in the table', () => {
@@ -89,4 +91,39 @@ test('a core pair that is only reported becomes gated when Material uses it', ()
   } finally {
     material.roles.surfaceContainerHigh = saved;
   }
+});
+
+test('Material draws primary, secondary and error as text on surfaces, so those are checked too', () => {
+  const surfaces = ['surface', 'surfaceContainer', 'surfaceContainerHigh', 'surfaceContainerHighest'];
+  for (const fg of ['primary', 'secondary', 'error']) {
+    for (const s of surfaces) assert.ok(pairs.some(([f, b]) => f === fg && b === s), `${fg} on ${s}`);
+  }
+});
+
+test('secondary is a color that reads as text', () => {
+  assert.equal(roles.secondary, 'text.primary');
+  assert.equal(roles.onSecondary, 'background.default');
+});
+
+test('primary is the accent where the accent reads as text, and the neutral strong color where it does not', () => {
+  const { resolveRole, accentReadsAsText } = require('../../native/material-roles');
+  // Yellow on light gray is 1.60:1; tan on cream is 1.53:1.
+  assert.equal(accentReadsAsText(tokens.colors.light), false);
+  assert.equal(accentReadsAsText(tokens.themes.clay.light), false);
+  assert.equal(accentReadsAsText(tokens.colors.dark), true);
+  for (const name of ['forest', 'indigo', 'wine']) {
+    assert.equal(accentReadsAsText(tokens.themes[name].light), true, name);
+    assert.equal(accentReadsAsText(tokens.themes[name].dark), true, name);
+  }
+  assert.equal(resolveRole(roles.primary, tokens.themes.forest.light), 'accent.main');
+  assert.equal(resolveRole(roles.onPrimary, tokens.themes.forest.light), 'accent.contrast');
+  assert.equal(resolveRole(roles.primary, tokens.colors.light), 'primary.dark');
+  assert.equal(resolveRole(roles.onPrimary, tokens.colors.light), 'primary.contrast');
+  assert.equal(resolveRole(roles.surface, tokens.colors.light), 'background.default');
+  // The accent stays available as a fill in every theme.
+  assert.equal(roles.tertiaryContainer, 'accent.main');
+  assert.equal(roles.onTertiaryContainer, 'accent.contrast');
+  // A checked switch's icon and thumb are different colors.
+  assert.ok(pairs.some(([f, b]) => f === 'onPrimaryContainer' && b === 'onPrimary'));
+  assert.ok(pairs.some(([f, b]) => f === 'inversePrimary' && b === 'inverseSurface'));
 });

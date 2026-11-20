@@ -65,7 +65,7 @@ test('the increased sets are checked at their higher minimums', () => {
   assert.deepEqual([row.min, row.gated], [7, true]);
   assert.ok(report.some((r) => r.mode === 'lightIncreased' && r.pair === 'misc.divider on background.default' && r.ratio >= 3));
   assert.ok(!report.some((r) => r.mode === 'light' && r.pair === 'misc.divider on background.default'));
-  assert.equal(report.length, 860);
+  assert.equal(report.length, 980);
 });
 
 test('report-only pairs stay report-only in the increased sets', () => {
@@ -100,7 +100,7 @@ test('the printed output names every failure, including those with no pair row',
   const t2 = structuredClone(tokens);
   t2.colors.dark.text.disabled = '#FFFFFF';
   assert.match(lines(checkContrast(t2)).join('\n'), /default +darkIncreased +text levels out of order +FAIL/);
-  assert.match(lines(checkContrast(tokens)).at(-1), /^860 pairs checked, 0 failed$/);
+  assert.match(lines(checkContrast(tokens)).at(-1), /^980 pairs checked, 0 failed$/);
 });
 
 test('part pairs are checked but never change the derived sets', () => {

@@ -18,7 +18,14 @@ function property(role, tokens, where) {
 
 const argb = (hex) => `Color(0xFF${parseHex(hex).map((v) => v.toString(16).toUpperCase().padStart(2, '0')).join('')})`;
 
-function emitKotlinColors(tokens, increased = withIncreased(tokens)) {
+// Whether each set's accent reads as text, as a Kotlin expression of `dark` and `increased`.
+function readsAsTextExpr(sets, accentReadsAsText) {
+  const [l, d, li, di] = ['light', 'dark', 'lightIncreased', 'darkIncreased'].map((m) => accentReadsAsText(sets[m]));
+  if (l === li && d === di) return l === d ? String(l) : (d ? 'dark' : '!dark');
+  return `if (dark) (if (increased) ${di} else ${d}) else (if (increased) ${li} else ${l})`;
+}
+
+function emitKotlinColors(tokens, increased = withIncreased(tokens), accentReadsAsText = require('../../native/material-roles').accentReadsAsText) {
   const names = Object.entries(tokens.colors.light).flatMap(([g, keys]) => Object.keys(keys).map((k) => [g, k, g + cap(k)]));
   const themes = Object.keys(increased);
   const set = (theme, mode) => {
@@ -49,6 +56,11 @@ function emitKotlinColors(tokens, increased = withIncreased(tokens)) {
     ...themes.map(pick),
     '    }',
     '',
+    '    /** Whether the accent is readable as text on a surface in this set. See native/material-roles.js. */',
+    '    fun accentReadsAsText(theme: OdsTheme, dark: Boolean, increased: Boolean): Boolean = when (theme) {',
+    ...themes.map((t) => `        OdsTheme.${cap(t)} -> ${readsAsTextExpr(increased[t], accentReadsAsText)}`),
+    '    }',
+    '',
     themes.flatMap((t) => ['light', 'dark', 'lightIncreased', 'darkIncreased'].map((m) => set(t, m))).join('\n\n'),
     '}',
   ].join('\n') + '\n';
@@ -57,9 +69,10 @@ function emitKotlinColors(tokens, increased = withIncreased(tokens)) {
 // The Material 3 color scheme, from native/material-roles.js.
 function emitKotlinScheme(roles, tokens) {
   const lines = Object.entries(roles).map(([role, entry]) => {
-    const value = typeof entry === 'string'
-      ? property(entry, tokens, role)
-      : `other.${property(entry.otherMode, tokens, role)}`;
+    let value;
+    if (typeof entry === 'string') value = property(entry, tokens, role);
+    else if (entry.accent) value = `if (accentReadsAsText) ${property(entry.accent, tokens, role)} else ${property(entry.otherwise, tokens, role)}`;
+    else value = `other.${property(entry.otherMode, tokens, role)}`;
     return `    ${role} = ${value},`;
   });
   return [
@@ -69,8 +82,11 @@ function emitKotlinScheme(roles, tokens) {
     '/** Every Material 3 color-scheme role the theme fills. A test checks none is missing. */',
     `internal val materialRoleNames = listOf(${Object.keys(roles).map((r) => `"${r}"`).join(', ')})`,
     '',
-    '/** The Material 3 color scheme for these colors. `other` is the same theme in the opposite mode. */',
-    'internal fun OdsColors.toColorScheme(other: OdsColors): ColorScheme = ColorScheme(',
+    '/**',
+    ' * The Material 3 color scheme for these colors. `other` is the same theme in the opposite mode.',
+    ' * `primary` is the accent only where the accent reads as text; see native/material-roles.js.',
+    ' */',
+    'internal fun OdsColors.toColorScheme(other: OdsColors, accentReadsAsText: Boolean): ColorScheme = ColorScheme(',
     ...lines,
     ')',
   ].join('\n') + '\n';
