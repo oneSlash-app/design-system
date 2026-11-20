@@ -258,3 +258,60 @@
     --os-color-misc-tooltipText: 17 26 46;
   }
 }
+@media (prefers-contrast: more) {
+  :root {
+    --os-color-text-secondary: 63 74 100;
+    --os-color-error-main: 182 0 21;
+    --os-color-error-text: 128 0 10;
+    --os-color-error-textHover: 152 8 18;
+    --os-color-warning-fill: 150 62 0;
+    --os-color-warning-text: 127 51 0;
+    --os-color-warning-textHover: 127 51 0;
+    --os-color-info-fill: 0 93 149;
+    --os-color-info-text: 0 77 126;
+    --os-color-info-textHover: 0 77 126;
+    --os-color-success-fill: 36 101 40;
+    --os-color-success-text: 18 86 24;
+    --os-color-success-textHover: 18 86 24;
+    --os-color-actionOutlinedBorder-enabled: 131 131 131;
+    --os-color-misc-divider: 131 131 131;
+  }
+  .dark {
+    --os-color-text-secondary: 163 178 200;
+    --os-color-error-main: 253 96 94;
+    --os-color-error-fill: 253 96 94;
+    --os-color-error-text: 255 168 165;
+    --os-color-error-textHover: 254 129 129;
+    --os-color-warning-fill: 255 140 10;
+    --os-color-warning-text: 255 140 10;
+    --os-color-warning-textHover: 255 167 50;
+    --os-color-info-fill: 0 175 255;
+    --os-color-info-text: 9 176 255;
+    --os-color-info-textHover: 44 193 255;
+    --os-color-success-fill: 70 169 74;
+    --os-color-success-text: 89 187 92;
+    --os-color-success-textHover: 103 193 107;
+    --os-color-actionOutlinedBorder-enabled: 123 123 123;
+    --os-color-misc-divider: 103 103 103;
+  }
+}
+@media (prefers-contrast: more) and (prefers-color-scheme: dark) {
+  :root:not(.light) {
+    --os-color-text-secondary: 163 178 200;
+    --os-color-error-main: 253 96 94;
+    --os-color-error-fill: 253 96 94;
+    --os-color-error-text: 255 168 165;
+    --os-color-error-textHover: 254 129 129;
+    --os-color-warning-fill: 255 140 10;
+    --os-color-warning-text: 255 140 10;
+    --os-color-warning-textHover: 255 167 50;
+    --os-color-info-fill: 0 175 255;
+    --os-color-info-text: 9 176 255;
+    --os-color-info-textHover: 44 193 255;
+    --os-color-success-fill: 70 169 74;
+    --os-color-success-text: 89 187 92;
+    --os-color-success-textHover: 103 193 107;
+    --os-color-actionOutlinedBorder-enabled: 123 123 123;
+    --os-color-misc-divider: 103 103 103;
+  }
+}

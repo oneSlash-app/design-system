@@ -35,3 +35,49 @@ test('theme files declare the mode they render, first in each block', () => {
   assert.match(auto, /:root:not\(\.light\) \{\n    --os-mode: dark;\n/);
   assert.equal((css.match(/--os-mode:/g) || []).length, 2);
 });
+
+const { withIncreased } = require('./increase-contrast');
+const increased = withIncreased(tokens);
+const contrastBlock = (out) => out.slice(out.indexOf('@media (prefers-contrast: more)'));
+
+test('increased sets add a prefers-contrast block after the unchanged standard output', () => {
+  const plain = emitThemeCss('forest', tokens.themes.forest, { auto: false });
+  const out = emitThemeCss('forest', increased.forest, { auto: false });
+  assert.ok(out.startsWith(plain));
+  const block = out.slice(plain.length);
+  assert.match(block, /^@media \(prefers-contrast: more\) \{\n  :root \{\n/);
+  assert.match(block, /:root \{[^}]*--os-color-text-secondary: 65 75 44;/); // #414B2C
+  assert.match(block, /\.dark \{[^}]*--os-color-text-secondary: 177 190 152;/); // #B1BE98
+  assert.doesNotMatch(block, /--os-mode|--os-color-background-|prefers-color-scheme/);
+});
+
+test('the auto variant also covers OS dark with more contrast', () => {
+  const out = emitThemeCss('forest', increased.forest, { auto: true });
+  assert.match(out, /@media \(prefers-contrast: more\) and \(prefers-color-scheme: dark\) \{\n  :root:not\(\.light\) \{[^}]*--os-color-text-secondary: 177 190 152;/);
+});
+
+test('a variable changed only in light is restated with its dark value in the dark blocks', () => {
+  const theme = structuredClone(increased.default);
+  theme.lightIncreased = structuredClone(theme.light);
+  theme.darkIncreased = structuredClone(theme.dark);
+  theme.lightIncreased.text.secondary = '#111111';
+  const out = contrastBlock(emitThemeCss('default', theme, { auto: true }));
+  assert.match(out, /:root \{\n    --os-color-text-secondary: 17 17 17;\n  \}/);
+  assert.match(out, /\.dark \{\n    --os-color-text-secondary: 176 176 176;\n  \}/);
+  assert.match(out, /:root:not\(\.light\) \{\n    --os-color-text-secondary: 176 176 176;\n  \}/);
+});
+
+test('a variable changed only in dark leaves the light block out', () => {
+  const theme = structuredClone(increased.default);
+  theme.lightIncreased = structuredClone(theme.light);
+  theme.darkIncreased = structuredClone(theme.dark);
+  theme.darkIncreased.text.secondary = '#DDDDDD';
+  const out = contrastBlock(emitThemeCss('default', theme, { auto: false }));
+  assert.doesNotMatch(out, /:root \{/);
+  assert.match(out, /\.dark \{\n    --os-color-text-secondary: 221 221 221;\n  \}/);
+});
+
+test('increased sets equal to the standard ones add nothing', () => {
+  const theme = { ...tokens.colors, lightIncreased: tokens.colors.light, darkIncreased: tokens.colors.dark };
+  assert.equal(emitThemeCss('default', theme, { auto: true }), emitThemeCss('default', tokens.colors, { auto: true }));
+});
