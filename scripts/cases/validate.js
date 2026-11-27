@@ -29,6 +29,7 @@ function checkCase(problems, c) {
   for (const key of ['title', 'situation']) {
     if (!text(c[key])) problems.push(`${at} needs ${key}`);
   }
+  if (c.notBuiltYet !== undefined && !text(c.notBuiltYet)) problems.push(`${at}: notBuiltYet must be a non-empty string`);
   if (!Array.isArray(c.seenIn) || c.seenIn.length === 0) {
     problems.push(`${at}: seenIn needs at least one entry`);
   } else {

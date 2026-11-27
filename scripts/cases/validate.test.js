@@ -96,3 +96,11 @@ test('an option with no example is reported by the validator', () => {
   const o = option('a', { example: '' });
   assert.throws(() => validateCases([design({ options: [o, option('b')] })]), /option a needs example/);
 });
+
+test('notBuiltYet, when present, must be a non-empty string', () => {
+  assert.doesNotThrow(() => validateCases([rule({ notBuiltYet: 'No product does this yet.' })]));
+  assert.doesNotThrow(() => validateCases([design({ notBuiltYet: 'Not yet.' })]));
+  for (const bad of ['', '  ', 3, ['x'], null]) {
+    assert.throws(() => validateCases([rule({ notBuiltYet: bad })]), /save-rule: notBuiltYet must be a non-empty string/);
+  }
+});

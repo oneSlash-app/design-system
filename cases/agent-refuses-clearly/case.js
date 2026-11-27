@@ -14,9 +14,10 @@ module.exports = {
     "Let the person close the refusal without acting, with a button such as 'Not Now'.",
   ],
   dont: [
-    'Do not show a general error for a refusal; name the limit.',
+    'Do not show a general error message for a refusal.',
     'Do not show an Upgrade button to someone who cannot upgrade.',
   ],
+  notBuiltYet: "Scindo on the web does not follow this yet: it shows the Upgrade button to everyone. Scindo's Apple app shows it only to admins.",
   native: 'On Apple the refusal is a row above the composer, with an Upgrade or Change Budget Cap button for admins and never a link to a web page.',
   seenIn: [
     { product: 'Scindo', path: 'apps/web/src/components/billing/UpgradePrompt.tsx' },

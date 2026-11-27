@@ -379,7 +379,9 @@ A design case has a few options, each with a working example. Open the file name
 
 The agent is about to do something that changes shared work or is hard to undo.
 
-Answer: Risky means opening or merging a pull request, deleting files, closing an issue, rolling back a release, or carrying out a plan of several changes. Before any of these the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. Nothing happens until the person presses the approve button.
+Answer: Treat these as risky: opening or merging a pull request, deleting files, closing an issue, rolling back a release, and carrying out a plan of several changes. Before any of them the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. The agent does nothing until the person presses the approve button.
+
+**Not built yet:** In Scindo the agent asks before carrying out a plan, opening a pull request and merging one. It does not yet ask before deleting files, closing an issue or rolling back a release.
 
 Why: A person can only approve what they can see, and an agent's mistake in shared work costs other people.
 
@@ -399,7 +401,9 @@ Don't:
 
 The agent has asked a question or proposed an action, and nobody answers.
 
-Answer: The agent never takes silence as a yes: while a question or proposal waits, it does nothing that depends on the answer. After a waiting time the product sets, it cancels the request, marks the card Cancelled, and posts one line saying what it did not do. Questions still open are listed as open questions in the work they belong to.
+Answer: The agent never takes silence as a yes: while a question or proposal waits, it does nothing that depends on the answer. After a set waiting time, the agent cancels the request, marks the card Cancelled, and posts one line saying what it did not do. Questions the agent asked before writing a plan, and nobody answered, go into that plan as open questions.
+
+**Not built yet:** No product cancels a waiting request on its own yet. In Scindo a request waits until a person answers, cancels or skips it, and the waiting time is not decided.
 
 Why: An agent that acts on silence does work nobody approved, and one that waits forever leaves work stuck without saying so.
 
@@ -407,7 +411,7 @@ Do:
 - Keep the card and its buttons open until someone answers or the request is cancelled.
 - Notify the person who asked when the agent needs their answer.
 - When a request is cancelled, mark the card Cancelled and post one line on what was not done.
-- List unanswered questions as open questions in the work they belong to.
+- List questions asked before a plan that nobody answered as open questions in that plan.
 
 Don't:
 - Do not treat no answer as approval.
@@ -419,6 +423,8 @@ The product will not let the agent answer a request, for example because the wor
 
 Answer: The refusal says in one plain sentence which limit was reached, and either who can change it or when to try again. A person who can lift the limit gets the one button that does it, such as Upgrade or Change Budget Cap. Everyone else is told to ask a workspace admin.
 
+**Not built yet:** Scindo on the web does not follow this yet: it shows the Upgrade button to everyone. Scindo's Apple app shows it only to admins.
+
 Why: A person who is refused needs to know why and what to do next, or they will just send the request again.
 
 Do:
@@ -428,14 +434,14 @@ Do:
 - Let the person close the refusal without acting, with a button such as 'Not Now'.
 
 Don't:
-- Do not show a general error for a refusal; name the limit.
+- Do not show a general error message for a refusal.
 - Do not show an Upgrade button to someone who cannot upgrade.
 
 ### An agent says what it is
 
 The agent posts in a thread where people also write, or replies to a person.
 
-Answer: Every agent message carries marks no person's message has: an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.
+Answer: Every agent message has marks no person's message has. It shows an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.
 
 Why: People must see at a glance whether a person or an agent wrote what they are reading, and whose agent it is.
 
@@ -443,7 +449,7 @@ Do:
 - Show the agent with an icon avatar, never a photo or an initial.
 - Name the agent in the message header: its role or given name, or 'Agent' when it has none.
 - Show the model name next to the time when the product knows it.
-- Give an agent from outside the product a plain bot icon, not the product's logo.
+- Show the product's logo on the product's own agent and a plain bot icon on an agent from outside, so people see whose agent it is.
 
 Don't:
 - Do not show a photo for an agent, even when one is set.

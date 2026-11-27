@@ -5,7 +5,8 @@ module.exports = {
   level: 'rule',
   area: 'agent',
   situation: 'The agent is about to do something that changes shared work or is hard to undo.',
-  answer: 'Risky means opening or merging a pull request, deleting files, closing an issue, rolling back a release, or carrying out a plan of several changes. Before any of these the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. Nothing happens until the person presses the approve button.',
+  answer: 'Treat these as risky: opening or merging a pull request, deleting files, closing an issue, rolling back a release, and carrying out a plan of several changes. Before any of them the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. The agent does nothing until the person presses the approve button.',
+  notBuiltYet: 'In Scindo the agent asks before carrying out a plan, opening a pull request and merging one. It does not yet ask before deleting files, closing an issue or rolling back a release.',
   why: "A person can only approve what they can see, and an agent's mistake in shared work costs other people.",
   do: [
     'List every step in the card, in the order the agent will do them.',

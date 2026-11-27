@@ -42,12 +42,12 @@ module.exports = {
   ],
   native: 'On Apple use `SignInWithAppleButton` for Apple, a grouped form for the fields, and system buttons.',
   seenIn: [
-    { product: 'Commentify app', path: 'src/app/(auth)/layout.tsx' },
-    { product: 'Commentify app', path: 'src/app/(auth)/login/[[...login]]/page.tsx' },
-    { product: 'Scindo web', path: 'apps/web/src/app/(auth)/layout.tsx' },
-    { product: 'Scindo web', path: 'apps/web/src/app/(auth)/login/page.tsx' },
-    { product: 'Scindo web', path: 'apps/web/src/app/(auth)/cli-login/page.tsx' },
-    { product: 'Scindo Apple', path: 'apps/apple/Shared/Views/SignInView.swift' },
+    { product: 'Commentify', path: 'src/app/(auth)/layout.tsx' },
+    { product: 'Commentify', path: 'src/app/(auth)/login/[[...login]]/page.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/app/(auth)/layout.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/app/(auth)/login/page.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/app/(auth)/cli-login/page.tsx' },
+    { product: 'Scindo', path: 'apps/apple/Shared/Views/SignInView.swift' },
     { product: 'Commentify admin', path: 'src/app/login/page.tsx' },
   ],
 };

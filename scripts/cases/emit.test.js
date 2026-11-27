@@ -153,3 +153,23 @@ test('a build into a temp dir removes a stale cases/<id>.md and a stale cases/<i
   assert.equal(JSON.parse(fs.readFileSync(path.join(tmp, 'cases.json'), 'utf8')).cases.length, 0);
   execFileSync('node', [...args, '--check']);
 });
+
+test('notBuiltYet prints right after the Answer in a rule file and the DESIGN.md block', () => {
+  const r = { ...rule, notBuiltYet: 'No product asks yet.' };
+  const md = emitCaseMd(r);
+  assert.match(md, /## Answer\n\nAsk first\.\n\n\*\*Not built yet:\*\* No product asks yet\.\n\n## Why/);
+  const section = emitCasesSection([r]);
+  assert.match(section, /Answer: Ask first\.\n\n\*\*Not built yet:\*\* No product asks yet\.\n\nWhy: It is permanent\./);
+  assert.doesNotMatch(emitCaseMd(rule), /Not built yet/);
+  assert.doesNotMatch(emitCasesSection([rule]), /Not built yet/);
+});
+
+test('notBuiltYet prints right after the situation in a design case file', () => {
+  const md = emitCaseMd({ ...design, notBuiltYet: 'Nobody ships it.' });
+  assert.match(md, /Second line\.\n\n\*\*Not built yet:\*\* Nobody ships it\.\n\n## Option: Provider first/);
+});
+
+test('cases.json keeps notBuiltYet as a field', () => {
+  const data = JSON.parse(emitCasesJson([{ ...rule, notBuiltYet: 'No product asks yet.' }]));
+  assert.equal(data.cases[0].notBuiltYet, 'No product asks yet.');
+});

@@ -4,7 +4,7 @@ The agent posts in a thread where people also write, or replies to a person.
 
 ## Answer
 
-Every agent message carries marks no person's message has: an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.
+Every agent message has marks no person's message has. It shows an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.
 
 ## Why
 
@@ -15,7 +15,7 @@ People must see at a glance whether a person or an agent wrote what they are rea
 - Show the agent with an icon avatar, never a photo or an initial.
 - Name the agent in the message header: its role or given name, or 'Agent' when it has none.
 - Show the model name next to the time when the product knows it.
-- Give an agent from outside the product a plain bot icon, not the product's logo.
+- Show the product's logo on the product's own agent and a plain bot icon on an agent from outside, so people see whose agent it is.
 
 ## Don't
 

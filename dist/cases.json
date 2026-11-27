@@ -7,7 +7,8 @@
       "level": "rule",
       "area": "agent",
       "situation": "The agent is about to do something that changes shared work or is hard to undo.",
-      "answer": "Risky means opening or merging a pull request, deleting files, closing an issue, rolling back a release, or carrying out a plan of several changes. Before any of these the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. Nothing happens until the person presses the approve button.",
+      "answer": "Treat these as risky: opening or merging a pull request, deleting files, closing an issue, rolling back a release, and carrying out a plan of several changes. Before any of them the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. The agent does nothing until the person presses the approve button.",
+      "notBuiltYet": "In Scindo the agent asks before carrying out a plan, opening a pull request and merging one. It does not yet ask before deleting files, closing an issue or rolling back a release.",
       "why": "A person can only approve what they can see, and an agent's mistake in shared work costs other people.",
       "do": [
         "List every step in the card, in the order the agent will do them.",
@@ -32,13 +33,14 @@
       "level": "rule",
       "area": "agent",
       "situation": "The agent has asked a question or proposed an action, and nobody answers.",
-      "answer": "The agent never takes silence as a yes: while a question or proposal waits, it does nothing that depends on the answer. After a waiting time the product sets, it cancels the request, marks the card Cancelled, and posts one line saying what it did not do. Questions still open are listed as open questions in the work they belong to.",
+      "answer": "The agent never takes silence as a yes: while a question or proposal waits, it does nothing that depends on the answer. After a set waiting time, the agent cancels the request, marks the card Cancelled, and posts one line saying what it did not do. Questions the agent asked before writing a plan, and nobody answered, go into that plan as open questions.",
+      "notBuiltYet": "No product cancels a waiting request on its own yet. In Scindo a request waits until a person answers, cancels or skips it, and the waiting time is not decided.",
       "why": "An agent that acts on silence does work nobody approved, and one that waits forever leaves work stuck without saying so.",
       "do": [
         "Keep the card and its buttons open until someone answers or the request is cancelled.",
         "Notify the person who asked when the agent needs their answer.",
         "When a request is cancelled, mark the card Cancelled and post one line on what was not done.",
-        "List unanswered questions as open questions in the work they belong to."
+        "List questions asked before a plan that nobody answered as open questions in that plan."
       ],
       "dont": [
         "Do not treat no answer as approval.",
@@ -64,9 +66,10 @@
         "Let the person close the refusal without acting, with a button such as 'Not Now'."
       ],
       "dont": [
-        "Do not show a general error for a refusal; name the limit.",
+        "Do not show a general error message for a refusal.",
         "Do not show an Upgrade button to someone who cannot upgrade."
       ],
+      "notBuiltYet": "Scindo on the web does not follow this yet: it shows the Upgrade button to everyone. Scindo's Apple app shows it only to admins.",
       "native": "On Apple the refusal is a row above the composer, with an Upgrade or Change Budget Cap button for admins and never a link to a web page.",
       "seenIn": [
         "Scindo"
@@ -79,13 +82,13 @@
       "level": "rule",
       "area": "agent",
       "situation": "The agent posts in a thread where people also write, or replies to a person.",
-      "answer": "Every agent message carries marks no person's message has: an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.",
+      "answer": "Every agent message has marks no person's message has. It shows an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.",
       "why": "People must see at a glance whether a person or an agent wrote what they are reading, and whose agent it is.",
       "do": [
         "Show the agent with an icon avatar, never a photo or an initial.",
         "Name the agent in the message header: its role or given name, or 'Agent' when it has none.",
         "Show the model name next to the time when the product knows it.",
-        "Give an agent from outside the product a plain bot icon, not the product's logo."
+        "Show the product's logo on the product's own agent and a plain bot icon on an agent from outside, so people see whose agent it is."
       ],
       "dont": [
         "Do not show a photo for an agent, even when one is set.",
@@ -243,10 +246,9 @@
       ],
       "native": "On Apple use `SignInWithAppleButton` for Apple, a grouped form for the fields, and system buttons.",
       "seenIn": [
+        "Commentify",
         "Commentify admin",
-        "Commentify app",
-        "Scindo Apple",
-        "Scindo web"
+        "Scindo"
       ]
     }
   ]

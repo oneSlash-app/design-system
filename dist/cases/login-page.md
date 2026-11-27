@@ -217,4 +217,4 @@ export default function LoginEmailOnly() {
 
 On Apple use `SignInWithAppleButton` for Apple, a grouped form for the fields, and system buttons.
 
-Seen in: Commentify admin, Commentify app, Scindo Apple, Scindo web.
+Seen in: Commentify, Commentify admin, Scindo.

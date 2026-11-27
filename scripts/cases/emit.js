@@ -6,6 +6,7 @@ const products = (c) => [...new Set(c.seenIn.map((s) => s.product))].sort();
 const oneLine = (v) => String(v).replace(/\s*[\r\n]+\s*/g, ' ');
 const bullets = (items) => items.map((i) => `- ${i}`).join('\n');
 const isRule = (c) => c.kind === 'rule';
+const notBuilt = (c) => (c.notBuiltYet ? [`**Not built yet:** ${c.notBuiltYet}`] : []);
 
 function emitCasesJson(cases) {
   const out = cases.map((c) => ({ ...c, seenIn: products(c) }));
@@ -24,8 +25,9 @@ function emitOption(o) {
 function emitCaseMd(c) {
   const parts = [`# ${c.title}`, c.situation];
   if (isRule(c)) {
-    parts.push(`## Answer\n\n${c.answer}`, `## Why\n\n${c.why}`, `## Do\n\n${bullets(c.do)}`, `## Don't\n\n${bullets(c.dont)}`);
+    parts.push(`## Answer\n\n${c.answer}`, ...notBuilt(c), `## Why\n\n${c.why}`, `## Do\n\n${bullets(c.do)}`, `## Don't\n\n${bullets(c.dont)}`);
   } else {
+    parts.push(...notBuilt(c));
     if (c.do && c.do.length) parts.push(`## Do\n\n${bullets(c.do)}`);
     if (c.dont && c.dont.length) parts.push(`## Don't\n\n${bullets(c.dont)}`);
     parts.push(...c.options.map(emitOption));
@@ -41,7 +43,7 @@ function emitCasesSection(cases) {
   const designs = cases.filter((c) => !isRule(c));
   if (rules.length === 0 && designs.length === 0) return 'There are no design cases yet.';
   const parts = rules.map((c) => [
-    `### ${c.title}`, c.situation, `Answer: ${c.answer}`, `Why: ${c.why}`,
+    `### ${c.title}`, c.situation, `Answer: ${c.answer}`, ...notBuilt(c), `Why: ${c.why}`,
     `Do:\n${bullets(c.do)}`, `Don't:\n${bullets(c.dont)}`,
   ].join('\n\n'));
   if (designs.length > 0) {
