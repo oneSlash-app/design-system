@@ -32,6 +32,8 @@ import { Plus } from 'lucide-react';
 <IconButton color="primary" state="enabled" size="medium" icon={Plus} ariaLabel="Add" />
 ```
 
+A Server Component cannot hand a component to a client component, so there pass the element: `decoIcon={<Plus />}`. It is sized like the component unless it has a `className` of its own.
+
 Prefer the component in an app. Only the icons you import are bundled, and the icon is there on the first render. A name is looked up in the whole Lucide set, which loads in its own chunk the first time any name is used.
 
 ### IconButton

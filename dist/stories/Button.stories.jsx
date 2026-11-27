@@ -163,12 +163,14 @@ export var AriaExpanded = {
     },
 };
 // An icon can be a component or an element instead of a name. A component is sized like a
-// named icon and only that icon is bundled; an element is rendered as given.
+// named icon and only that icon is bundled. So is an element without a className (what a
+// Server Component passes); an element with a className is rendered as given.
 export var IconComponents = {
     render: function () { return (<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
       <Button size="medium" type="primary" state="enabled" label="Component" decoIcon={Star} actionIcon={ChevronRight}/>
       <Button size="medium" type="secondary" state="enabled" label="By name" decoIcon="Star" actionIcon="ChevronRight"/>
       <Button size="medium" type="tertiary" state="enabled" label="Element" decoIcon={<span className="w-5 h-5 rounded-full bg-accent-main flex-shrink-0"/>}/>
+      <Button size="medium" type="tertiary" state="enabled" label="Icon element" decoIcon={<Star />} actionIcon={<ChevronRight />}/>
     </div>); },
 };
 // `href` renders a link with the button's look: next/link for a path, a plain <a> for another site

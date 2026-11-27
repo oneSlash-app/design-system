@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.14.1] - 2026-11-27
+
+### Fixed
+
+- An icon passed as an element without a `className` (`decoIcon={<Plus />}`) is now sized and stroked like the same icon passed as a component. In 2.14.0 it was drawn at its own default size (24px for a Lucide icon), so a Server Component, which can pass an element but not a component, had to copy the button's icon size classes. An element with a `className` is still rendered as given. Applies to every icon prop that takes an element: `Button` `decoIcon` / `actionIcon`, and `icon` on `IconButton` and `Tag`.
+- `Icon`: `icon` also takes an element, for the same reason.
+
 ## [2.14.0] - 2026-11-27
 
 Web components only. Found while moving Viskit to this package: each item replaces a workaround an app had to carry.

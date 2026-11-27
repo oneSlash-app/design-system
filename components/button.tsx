@@ -16,9 +16,9 @@ interface ButtonProps extends React.AriaAttributes {
   state: 'enabled' | 'hovered' | 'focused' | 'disabled' | 'selected';
   label: string;
   secondLabel?: string;
-  /** A Lucide icon name, an icon component (only that icon is bundled) or an element */
+  /** A Lucide icon name, an icon component (only that icon is bundled) or an element (`<Plus />`, the form a Server Component can pass) */
   decoIcon?: IconSource;
-  /** A Lucide icon name, an icon component (only that icon is bundled) or an element */
+  /** A Lucide icon name, an icon component (only that icon is bundled) or an element (`<Plus />`, the form a Server Component can pass) */
   actionIcon?: IconSource;
   onClickButton?: any;
   onClickActionIcon?: () => void;

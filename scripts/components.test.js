@@ -91,10 +91,28 @@ test('Button link: other sites are a plain <a>, a new tab is opt-in, disabled ha
 
 test('an icon given as a component or an element renders at once, without the icon set', () => {
   assert.match(html(h(Button, { ...base, decoIcon: Plus })), /<svg[^>]*class="lucide lucide-plus w-5 h-5 flex-shrink-0"/);
-  assert.match(html(h(Button, { ...base, decoIcon: h('i', { id: 'mark' }) })), /<i id="mark"><\/i>/);
+  assert.match(html(h(Button, { ...base, decoIcon: h('i', { id: 'mark', className: 'own' }) })), /<i id="mark" class="own"><\/i>/);
   assert.match(html(h(IconButton, { color: 'primary', state: 'enabled', size: 'medium', icon: Plus, ariaLabel: 'Add' })), /^<button [^>]*aria-label="Add"[^>]*><svg[^>]*lucide-plus size-6/);
   assert.match(html(h(Tag, { variant: 'contained', size: 'medium', label: 'New', icon: Plus })), /lucide-plus w-4 h-4/);
   assert.match(html(h(Icon, { icon: Plus, size: 'small' })), /<svg[^>]*width="16" height="16"[^>]*lucide-plus text-fg-primary/);
+});
+
+test('an element icon without a class is sized like a component; with a class it is left alone', () => {
+  // What a Server Component passes: it cannot hand a component to a client component
+  assert.equal(html(h(Button, { ...base, decoIcon: h(Plus) })), html(h(Button, { ...base, decoIcon: Plus })));
+  assert.equal(html(h(Button, { ...base, actionIcon: h(Plus) })), html(h(Button, { ...base, actionIcon: Plus })));
+  assert.equal(
+    html(h(IconButton, { color: 'primary', state: 'enabled', size: 'small', icon: h(Plus), ariaLabel: 'Add' })),
+    html(h(IconButton, { color: 'primary', state: 'enabled', size: 'small', icon: Plus, ariaLabel: 'Add' })),
+  );
+  assert.equal(html(h(Tag, { variant: 'contained', size: 'medium', label: 'New', icon: h(Plus) })), html(h(Tag, { variant: 'contained', size: 'medium', label: 'New', icon: Plus })));
+  assert.equal(html(h(Icon, { icon: h(Plus), size: 'small' })), html(h(Icon, { icon: Plus, size: 'small' })));
+  // The caller's own class and stroke win
+  const own = html(h(Button, { ...base, decoIcon: h(Plus, { className: 'w-8 h-8' }) }));
+  assert.match(own, /class="lucide lucide-plus w-8 h-8"/);
+  assert.match(html(h(Button, { ...base, decoIcon: h(Plus, { strokeWidth: 1 }) })), /stroke-width="1"[^>]*class="lucide lucide-plus w-5 h-5 flex-shrink-0"/);
+  // A plain tag gets the size class and nothing else
+  assert.match(html(h(Button, { ...base, decoIcon: h('i') })), /<i class="w-5 h-5 flex-shrink-0"><\/i>/);
 });
 
 test('an icon given by name still renders, and is the same icon', async () => {
