@@ -207,3 +207,7 @@ test('Line with a label renders the label between two lines', () => {
   assert.match(out, />or</);
 });
 test('Line without a label is unchanged', () => assert.equal(html(h(Line, {})), '<div class="bg-misc-divider h-px w-full "></div>'));
+test('Form is a client component', () => {
+  const first = fs.readFileSync(path.join(dist, 'components', 'form.jsx'), 'utf8').split('\n')[0];
+  assert.match(first, /^['"]use client['"];?$/);
+});
