@@ -156,3 +156,16 @@ export var Autofill = {
         size: "medium",
     },
 };
+// `maxLength`, `minLength` and `spellCheck` reach the <input>: the browser enforces them
+export var LengthLimits = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "length-textfield",
+        label: "Display name (3 to 20 characters)",
+        value: "Viskit",
+        minLength: 3,
+        maxLength: 20,
+        spellCheck: false,
+        size: "medium",
+    },
+};

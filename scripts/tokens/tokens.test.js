@@ -138,7 +138,8 @@ test('native mapping has exactly one row per component file', () => {
   const path = require('node:path');
   const { components } = require('../../native/mapping.js');
   const files = fs.readdirSync(path.join(__dirname, '../../components'))
-    .filter((f) => f.endsWith('.tsx') && f !== 'sharedStyles.tsx')
+    // Not components: class strings, and the icon lookup the components share
+    .filter((f) => f.endsWith('.tsx') && !['sharedStyles.tsx', 'iconSlot.tsx', 'namedIcon.tsx'].includes(f))
     .map((f) => f.replace(/\.tsx$/, ''));
   assert.deepEqual((components || []).map((r) => r.ods).sort(), files.sort());
   for (const r of components) {

@@ -1,4 +1,4 @@
-import { JSX } from 'react';
+import React from 'react';
 export interface SelectOption {
     value: string;
     label: string;
@@ -15,5 +15,5 @@ interface SelectProps {
     multiple?: boolean;
     className?: string;
 }
-export default function Select({ value, options, onChange, disabled, placeholder, decoIconName, width, multiple, className, }: SelectProps): JSX.Element;
+export default function Select({ value, options, onChange, disabled, placeholder, decoIconName, width, multiple, className, }: SelectProps): React.JSX.Element;
 export { Select };

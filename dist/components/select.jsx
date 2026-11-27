@@ -11,7 +11,7 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 import React, { useState, useEffect, useRef, useId, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
-import * as LucideIcons from 'lucide-react';
+import IconSlot from './iconSlot';
 import { ChevronDown } from 'lucide-react';
 import Menu from './menu';
 import MenuItem from './menuItem';
@@ -60,7 +60,6 @@ export default function Select(_a) {
     var listboxId = useId();
     var optionId = function (index) { return "".concat(listboxId, "-option-").concat(index); };
     // Synchronous lookup so the icon renders on the first paint
-    var DecoIcon = decoIconName ? LucideIcons[decoIconName] : null;
     // Close menu when clicking outside
     useEffect(function () {
         var handleClickOutside = function (event) {
@@ -215,7 +214,7 @@ export default function Select(_a) {
           {/* Content Container */}
           <div className="flex items-center gap-2 flex-1 overflow-hidden">
             {/* Optional Decoration Icon */}
-            {DecoIcon && (<DecoIcon className={"w-6 h-6 flex-shrink-0 ".concat(getIconColor())} strokeWidth={2}/>)}
+            <IconSlot icon={decoIconName} className={"w-6 h-6 flex-shrink-0 ".concat(getIconColor())}/>
 
             {/* Display Text */}
             <span className="text-body1 truncate">

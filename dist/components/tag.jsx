@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { icons } from 'lucide-react';
+import IconSlot from './iconSlot';
 import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 // Filled tags use the status `fill` with `onFill` text (the default tag: `secondary.main` with
 // `secondary.contrast`); text-only tags use the status `text` token.
@@ -48,9 +48,7 @@ var colorConfig = {
     },
 };
 export default function Tag(_a) {
-    var variant = _a.variant, size = _a.size, _b = _a.state, state = _b === void 0 ? 'enabled' : _b, color = _a.color, label = _a.label, secondLabel = _a.secondLabel, iconName = _a.iconName, onClick = _a.onClick, _c = _a.disabled, disabled = _c === void 0 ? false : _c;
-    // Get icon directly from icons map
-    var Icon = iconName ? icons[iconName] : null;
+    var variant = _a.variant, size = _a.size, _b = _a.state, state = _b === void 0 ? 'enabled' : _b, color = _a.color, label = _a.label, secondLabel = _a.secondLabel, iconName = _a.iconName, icon = _a.icon, onClick = _a.onClick, _c = _a.disabled, disabled = _c === void 0 ? false : _c;
     // Size and padding
     var sizeClasses = {
         medium: 'text-body2 px-2 py-1',
@@ -141,7 +139,7 @@ export default function Tag(_a) {
         : {};
     return (<div className={"".concat(baseClasses, " ").concat(sizeClasses, " ").concat(bgClasses, " ").concat(fontClasses, " ").concat(borderClasses, " ").concat(hoverClasses, " ").concat(cursorClass, " ").concat(onClick ? focusRing : '', " ").concat(onClick && !isDisabled ? pressFeedbackAny : '')} {...interactiveProps}>
       {variant === 'dot' && (<span className={"w-3 h-3 rounded-full flex-shrink-0 ".concat(dotColor)}/>)}
-      {Icon && variant !== 'dot' && <Icon className={"".concat(size === 'tiny' ? 'w-3 h-3' : 'w-4 h-4', " flex-shrink-0")} strokeWidth={2}/>}
+      {variant !== 'dot' && <IconSlot icon={icon !== null && icon !== void 0 ? icon : iconName} className={"".concat(size === 'tiny' ? 'w-3 h-3' : 'w-4 h-4', " flex-shrink-0")}/>}
       <div className="flex flex-col text-center">
         <span>{label}</span>
         {secondLabel && (<span className="text-caption opacity-70">{secondLabel}</span>)}

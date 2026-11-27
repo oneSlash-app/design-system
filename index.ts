@@ -1,4 +1,3 @@
-import './index.css';
 import './designTokens';
 
 export * from './components/alert';

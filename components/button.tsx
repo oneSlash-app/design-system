@@ -1,10 +1,11 @@
 'use client';
 import React from 'react';
-import * as LucideIcons from 'lucide-react';
+import NextLink from 'next/link';
+import IconSlot, { type IconSource } from './iconSlot';
 import { LoadingSmall } from './loadingScreen';
-import { focusRing, focusRingDanger, pressFeedback, stateTransition } from './sharedStyles';
+import { focusRing, focusRingDanger, pressFeedback, pressFeedbackAny, stateTransition } from './sharedStyles';
 
-/** `aria-*`, `data-*`, `id` and `title` are forwarded to the rendered `<button>` */
+/** `aria-*`, `data-*`, `id` and `title` are forwarded to the rendered `<button>` (or `<a>` when `href` is set) */
 interface ButtonProps extends React.AriaAttributes {
   id?: string;
   title?: string;
@@ -15,16 +16,24 @@ interface ButtonProps extends React.AriaAttributes {
   state: 'enabled' | 'hovered' | 'focused' | 'disabled' | 'selected';
   label: string;
   secondLabel?: string;
-  decoIcon?: string;
-  actionIcon?: string;
+  /** A Lucide icon name, an icon component (only that icon is bundled) or an element */
+  decoIcon?: IconSource;
+  /** A Lucide icon name, an icon component (only that icon is bundled) or an element */
+  actionIcon?: IconSource;
   onClickButton?: any;
   onClickActionIcon?: () => void;
   className?: string;
   /** Shows a spinner in the icon slot, keeps the label, and disables the button */
   loading?: boolean;
+  /** Renders a link that looks like the button. A path goes through `next/link`; an `http(s)://` URL is a plain `<a>`. */
+  href?: string;
+  /** With `href`: open the link in a new tab */
+  openInNewTab?: boolean;
+  /** With `href` to a path: replace the current history entry instead of adding one */
+  replace?: boolean;
+  /** The `<button>`'s own `type`. Use `submit` for a form's submit button. Defaults to `button`. */
+  htmlType?: 'button' | 'submit' | 'reset';
 }
-
-type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
 
 export default function Button({
   size,
@@ -39,11 +48,13 @@ export default function Button({
   onClickActionIcon,
   className = '',
   loading = false,
+  href,
+  openInNewTab = false,
+  replace,
+  htmlType = 'button',
   ...rest
 }: ButtonProps) {
-  // Synchronous lookup so icons render on the first paint
-  const IconLeft = decoIcon ? (LucideIcons[decoIcon as keyof typeof LucideIcons] as IconType) : null;
-  const IconRight = actionIcon ? (LucideIcons[actionIcon as keyof typeof LucideIcons] as IconType) : null;
+  const isLink = href !== undefined;
 
   // Horizontal padding sits on the button so an icon and the label are inset equally
   const sizeClasses = {
@@ -109,9 +120,17 @@ export default function Button({
     selected: 'cursor-pointer bg-primary-dark text-primary-contrast',
   };
 
+  // A lone label is centered, which shows once the button is wider than its content (`w-full`).
+  // With an action icon the label stays at the start and the icon at the far edge.
+  const justify = actionIcon ? 'justify-between' : 'justify-center';
+
+  // A <button> shrinks to its content and `enabled:` matches it. An <a> does neither, so a link
+  // gets the press feedback for non-buttons and a zero-specificity fit width that `w-full` overrides.
+  const linkClasses = state === 'disabled' || loading ? '[:where(&)]:w-fit' : `[:where(&)]:w-fit ${pressFeedbackAny}`;
+
   // Hover is pure CSS; `state="hovered"` and `state="focused"` only exist to show those states in docs
   const buttonClasses = `
-    flex flex-row items-center rounded-control justify-between ${stateTransition} ${pressFeedback}
+    flex flex-row items-center rounded-control ${justify} ${stateTransition} ${isLink ? linkClasses : pressFeedback}
     ${color === 'danger' ? focusRingDanger : focusRing}
     ${sizeClasses}
     ${state === 'selected' ? stateClasses.selected : ''}
@@ -121,21 +140,14 @@ export default function Button({
     ${className}
   `;
 
-  return (
-    <button
-      {...rest}
-      type="button"
-      className={buttonClasses}
-      disabled={state === 'disabled' || loading}
-      aria-busy={loading || undefined}
-      onClick={onClickButton}
-    >
+  const content = (
+    <>
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className={`flex items-center ${size === 'tiny' ? 'gap-0.5' : 'gap-1'}`}>
         {loading ? (
           <LoadingSmall size={spinnerSize} />
         ) : (
-          IconLeft && <IconLeft className={`${sizeIcon} flex-shrink-0`} strokeWidth={2} />
+          <IconSlot icon={decoIcon} className={`${sizeIcon} flex-shrink-0`} />
         )}
         <div className={`flex flex-col text-center px-1`}>
           <span className="whitespace-nowrap overflow-hidden truncate">{label}</span>
@@ -144,18 +156,54 @@ export default function Button({
           )}
         </div>
       </div>
-      {IconRight && (
+      {actionIcon && (
         <span
           onClick={(e) => {
-            // Don't also trigger the button's own click
+            // Don't also trigger the button's own click, or follow the link
             e.stopPropagation();
+            if (isLink && onClickActionIcon) e.preventDefault();
             onClickActionIcon?.();
           }}
           className="cursor-pointer"
         >
-          <IconRight className={`${sizeIcon} flex-shrink-0`} strokeWidth={2} />
+          <IconSlot icon={actionIcon} className={`${sizeIcon} flex-shrink-0`} />
         </span>
       )}
+    </>
+  );
+
+  if (isLink) {
+    // A link cannot be disabled: without an href it is not focusable and does nothing
+    if (state === 'disabled' || loading) {
+      return (
+        <a {...rest} role="link" aria-disabled="true" aria-busy={loading || undefined} className={buttonClasses}>
+          {content}
+        </a>
+      );
+    }
+    const linkProps = {
+      ...rest,
+      className: buttonClasses,
+      onClick: onClickButton,
+      ...(openInNewTab && { target: '_blank', rel: 'noopener noreferrer' }),
+    };
+    // Same rule as Link: next/link for paths, a plain <a> for another site
+    if (href.startsWith('http://') || href.startsWith('https://')) {
+      return <a href={href} {...linkProps}>{content}</a>;
+    }
+    return <NextLink href={href} replace={replace} {...linkProps}>{content}</NextLink>;
+  }
+
+  return (
+    <button
+      {...rest}
+      type={htmlType}
+      className={buttonClasses}
+      disabled={state === 'disabled' || loading}
+      aria-busy={loading || undefined}
+      onClick={onClickButton}
+    >
+      {content}
     </button>
   );
 }

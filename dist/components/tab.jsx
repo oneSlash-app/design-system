@@ -1,14 +1,11 @@
 'use client';
 import React, { useContext } from 'react';
-import * as LucideIcons from 'lucide-react';
+import IconSlot from './iconSlot';
 import { TabsContainerContext } from './tabsContainer';
 import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 export default function Tab(_a) {
     var label = _a.label, secondLabel = _a.secondLabel, href = _a.href, isSelected = _a.isSelected, onClickTab = _a.onClickTab, onClickActionIcon = _a.onClickActionIcon, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, router = _a.router, _b = _a.size, size = _b === void 0 ? 'medium' : _b;
     var inContainer = useContext(TabsContainerContext);
-    // Synchronous lookup so icons render on the first paint
-    var IconLeft = decoIcon ? LucideIcons[decoIcon] : null;
-    var IconRight = actionIcon ? LucideIcons[actionIcon] : null;
     var handleClick = function () {
         onClickTab();
         if (href && router) {
@@ -34,7 +31,7 @@ export default function Tab(_a) {
         }} className={"\n        relative flex items-center space-x-1 rounded-control cursor-pointer justify-start ".concat(stateTransition, " ").concat(pressFeedbackAny, " ").concat(focusRing, "\n        ").concat(sizeClasses.tab, "\n        ").concat(isSelected
             ? selectedClasses
             : 'text-fg-primary hover:bg-background-accent200', "\n      ")} onClick={handleClick}>
-      {IconLeft && <IconLeft className={sizeClasses.icon} strokeWidth={2}/>}
+      <IconSlot icon={decoIcon} className={sizeClasses.icon}/>
       <div className={"flex flex-col text-center ".concat(sizeClasses.label)}>
         <span className="whitespace-nowrap">
           {label}
@@ -43,12 +40,12 @@ export default function Tab(_a) {
             {secondLabel}
           </span>)}
       </div>
-      {IconRight && (<span onClick={function (e) {
+      {actionIcon && (<span onClick={function (e) {
                 // Don't also select the tab
                 e.stopPropagation();
                 onClickActionIcon === null || onClickActionIcon === void 0 ? void 0 : onClickActionIcon(e);
             }} className="cursor-pointer">
-          <IconRight className={sizeClasses.icon} strokeWidth={2}/>
+          <IconSlot icon={actionIcon} className={sizeClasses.icon}/>
         </span>)}
     </div>);
 }

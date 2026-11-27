@@ -22,6 +22,10 @@ interface TextareaProps {
     /** Browser autofill hint. Defaults to "off". */
     autoComplete?: string;
     tabIndex?: number;
+    /** Passed to the `<textarea>`: the browser stops typing at this many characters */
+    maxLength?: number;
+    /** Passed to the `<textarea>`. Left to the browser's default when not set. */
+    spellCheck?: boolean;
 }
-export default function Textarea({ id, label, value, onChange, onBlur, onFocus, onKeyDown, onCompositionStart, onCompositionEnd, onSubmit, autoFocus, maxRows, disabled, error, errorText, size, placeholder, name, autoComplete, tabIndex, }: TextareaProps): React.JSX.Element;
+export default function Textarea({ id, label, value, onChange, onBlur, onFocus, onKeyDown, onCompositionStart, onCompositionEnd, onSubmit, autoFocus, maxRows, disabled, error, errorText, size, placeholder, name, autoComplete, tabIndex, maxLength, spellCheck, }: TextareaProps): React.JSX.Element;
 export {};

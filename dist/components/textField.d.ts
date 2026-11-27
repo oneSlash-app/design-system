@@ -23,6 +23,12 @@ interface TextFieldProps {
     /** Browser autofill hint, e.g. "username" or "current-password". Defaults to "off". */
     autoComplete?: string;
     tabIndex?: number;
+    /** Passed to the `<input>` or `<textarea>`: the browser stops typing at this many characters */
+    maxLength?: number;
+    /** Passed to the `<input>` or `<textarea>`: the browser blocks a form submit below this many characters */
+    minLength?: number;
+    /** Passed to the `<input>` or `<textarea>`. Left to the browser's default when not set. */
+    spellCheck?: boolean;
 }
-export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, error, errorText, required, size, placeholder, name, autoComplete, tabIndex, }: TextFieldProps): React.JSX.Element;
+export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, error, errorText, required, size, placeholder, name, autoComplete, tabIndex, maxLength, minLength, spellCheck, }: TextFieldProps): React.JSX.Element;
 export {};

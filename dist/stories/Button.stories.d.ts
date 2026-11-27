@@ -18,3 +18,7 @@ export declare const DangerTextOnly: Story;
 export declare const DangerVariants: Story;
 export declare const Loading: Story;
 export declare const AriaExpanded: Story;
+export declare const IconComponents: Story;
+export declare const AsLink: Story;
+export declare const Submit: Story;
+export declare const FullWidth: Story;

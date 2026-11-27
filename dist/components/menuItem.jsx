@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import * as LucideIcons from 'lucide-react';
+import IconSlot from './iconSlot';
 import NextLink from 'next/link';
 import UserImage from './userImage';
 import Tag from './tag';
@@ -8,9 +8,6 @@ import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 export default function MenuItem(_a) {
     var _b;
     var href = _a.href, iconName = _a.iconName, icon = _a.icon, userHandle = _a.userHandle, userImgUrl = _a.userImgUrl, label = _a.label, secondLabel = _a.secondLabel, isSelected = _a.isSelected, onClick = _a.onClick, _c = _a.className, className = _c === void 0 ? '' : _c, _d = _a.size, size = _d === void 0 ? 'medium' : _d, tag = _a.tag, iconRight = _a.iconRight, rightAction = _a.rightAction, _e = _a.role, role = _e === void 0 ? 'menuitem' : _e, id = _a.id, _f = _a.isActive, isActive = _f === void 0 ? false : _f, _g = _a.tabIndex, tabIndex = _g === void 0 ? 0 : _g;
-    // Synchronous lookup so icons render on the first paint
-    var IconLeft = iconName ? LucideIcons[iconName] : null;
-    var IconRight = iconRight ? LucideIcons[iconRight] : null;
     // Size-based icon and text classes
     var iconSize = { tiny: 'w-4 h-4', small: 'w-5 h-5', medium: 'w-6 h-6' }[size];
     var labelClass = { tiny: 'text-caption', small: 'text-body2', medium: 'text-body1' }[size];
@@ -30,7 +27,7 @@ export default function MenuItem(_a) {
         }}>
       {/* Left group: icon/userImg + label with 8px gap */}
       <div className="flex items-center gap-2 min-w-0">
-        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : icon ? (<span className={"".concat(iconSize, " flex-shrink-0 flex items-center justify-center")}>{icon}</span>) : (IconLeft && (<IconLeft className={"".concat(iconSize, " flex-shrink-0 ").concat(isSelected ? 'text-primary-contrast' : 'text-fg-secondary')} strokeWidth={2}/>))}
+        {userImgUrl ? (<UserImage userHandle={userHandle || ''} userImgUrl={userImgUrl}/>) : icon ? (<span className={"".concat(iconSize, " flex-shrink-0 flex items-center justify-center")}>{icon}</span>) : (<IconSlot icon={iconName} className={"".concat(iconSize, " flex-shrink-0 ").concat(isSelected ? 'text-primary-contrast' : 'text-fg-secondary')}/>)}
         <div className="flex flex-col min-w-0">
           <span className={"truncate ".concat(labelClass, " ").concat(isSelected ? 'text-primary-contrast' : 'text-fg-primary')}>
             {label}
@@ -46,7 +43,7 @@ export default function MenuItem(_a) {
         {tag && (<Tag variant={tag.variant || 'contained'} size={tagSize} label={tag.label} iconName={tag.iconName} 
         // 'default' has a fill that stays visible on the menu background
         color={(_b = tag.color) !== null && _b !== void 0 ? _b : 'default'}/>)}
-        {IconRight && (<IconRight className={"".concat(iconSize, " ").concat(isSelected ? 'text-primary-contrast' : 'text-fg-secondary', " flex-shrink-0")} strokeWidth={2}/>)}
+        <IconSlot icon={iconRight} className={"".concat(iconSize, " ").concat(isSelected ? 'text-primary-contrast' : 'text-fg-secondary', " flex-shrink-0")}/>
         {rightAction && (<div onClick={function (e) { return e.stopPropagation(); }}>
             {rightAction}
           </div>)}

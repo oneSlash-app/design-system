@@ -1,12 +1,11 @@
 'use client';
-import React, { SVGProps, JSX } from 'react';
-import * as LucideIcons from 'lucide-react';
+import React from 'react';
+import IconSlot from './iconSlot';
 import NextLink from 'next/link';
 import UserImage from './userImage';
 import Tag from './tag';
 import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 
-type IconType = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
 interface MenuItemProps {
   href?: string;
@@ -57,10 +56,6 @@ export default function MenuItem({
   isActive = false,
   tabIndex = 0,
 }: MenuItemProps) {
-  // Synchronous lookup so icons render on the first paint
-  const IconLeft = iconName ? (LucideIcons[iconName as keyof typeof LucideIcons] as IconType) : null;
-  const IconRight = iconRight ? (LucideIcons[iconRight as keyof typeof LucideIcons] as IconType) : null;
-
   // Size-based icon and text classes
   const iconSize = { tiny: 'w-4 h-4', small: 'w-5 h-5', medium: 'w-6 h-6' }[size];
   const labelClass = { tiny: 'text-caption', small: 'text-body2', medium: 'text-body1' }[size];
@@ -99,12 +94,10 @@ export default function MenuItem({
         ) : icon ? (
           <span className={`${iconSize} flex-shrink-0 flex items-center justify-center`}>{icon}</span>
         ) : (
-          IconLeft && (
-            <IconLeft
-              className={`${iconSize} flex-shrink-0 ${isSelected ? 'text-primary-contrast' : 'text-fg-secondary'}`}
-              strokeWidth={2}
-            />
-          )
+          <IconSlot
+            icon={iconName}
+            className={`${iconSize} flex-shrink-0 ${isSelected ? 'text-primary-contrast' : 'text-fg-secondary'}`}
+          />
         )}
         <div className="flex flex-col min-w-0">
           <span className={`truncate ${labelClass} ${isSelected ? 'text-primary-contrast' : 'text-fg-primary'}`}>
@@ -130,12 +123,10 @@ export default function MenuItem({
             color={tag.color ?? 'default'}
           />
         )}
-        {IconRight && (
-          <IconRight
-            className={`${iconSize} ${isSelected ? 'text-primary-contrast' : 'text-fg-secondary'} flex-shrink-0`}
-            strokeWidth={2}
-          />
-        )}
+        <IconSlot
+          icon={iconRight}
+          className={`${iconSize} ${isSelected ? 'text-primary-contrast' : 'text-fg-secondary'} flex-shrink-0`}
+        />
         {rightAction && (
           <div onClick={(e) => e.stopPropagation()}>
             {rightAction}

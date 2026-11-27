@@ -1,11 +1,15 @@
 'use client';
 import React from 'react';
-import { icons } from 'lucide-react';
+import type { icons } from 'lucide-react';
+import IconSlot, { type IconComponent } from './iconSlot';
 
 type IconName = keyof typeof icons;
 
 interface IconProps {
-  name: IconName;
+  /** A Lucide icon name. Give this or `icon`. */
+  name?: IconName;
+  /** An icon component, e.g. `Plus` from `lucide-react`: only that icon is bundled. Wins over `name`. */
+  icon?: IconComponent;
   size?: 'tiny' | 'small' | 'medium' | 'large' | number;
   color?: 'primary' | 'secondary' | 'disabled' | 'error' | 'warning' | 'success' | 'info' | 'accent' | 'inherit';
   strokeWidth?: number;
@@ -33,26 +37,22 @@ const colorMap = {
 
 export default function Icon({
   name,
+  icon,
   size = 'medium',
   color = 'primary',
   strokeWidth = 2,
   className = '',
 }: IconProps) {
-  const LucideIcon = icons[name];
-
-  if (!LucideIcon) {
-    console.warn(`Icon "${name}" not found in Lucide icons`);
-    return null;
-  }
-
   const iconSize = typeof size === 'number' ? size : sizeMap[size];
   const colorClass = colorMap[color];
 
   return (
-    <LucideIcon
+    <IconSlot
+      icon={icon ?? name}
       size={iconSize}
       strokeWidth={strokeWidth}
       className={`${colorClass} ${className}`.trim()}
+      warnIfMissing
     />
   );
 }

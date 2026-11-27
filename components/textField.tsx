@@ -26,6 +26,12 @@ interface TextFieldProps {
   /** Browser autofill hint, e.g. "username" or "current-password". Defaults to "off". */
   autoComplete?: string;
   tabIndex?: number;
+  /** Passed to the `<input>` or `<textarea>`: the browser stops typing at this many characters */
+  maxLength?: number;
+  /** Passed to the `<input>` or `<textarea>`: the browser blocks a form submit below this many characters */
+  minLength?: number;
+  /** Passed to the `<input>` or `<textarea>`. Left to the browser's default when not set. */
+  spellCheck?: boolean;
 }
 
 export default function TextField({
@@ -50,6 +56,9 @@ export default function TextField({
   name,
   autoComplete = 'off',
   tabIndex,
+  maxLength,
+  minLength,
+  spellCheck,
 }: TextFieldProps) {
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     // Ctrl+Enter or Cmd+Enter to submit
@@ -146,6 +155,9 @@ export default function TextField({
             name={name}
             autoComplete={autoComplete}
             tabIndex={tabIndex}
+            maxLength={maxLength}
+            minLength={minLength}
+            spellCheck={spellCheck}
             {...errorProps}
           />
         ) : (
@@ -166,6 +178,9 @@ export default function TextField({
             name={name}
             autoComplete={autoComplete}
             tabIndex={tabIndex}
+            maxLength={maxLength}
+            minLength={minLength}
+            spellCheck={spellCheck}
             {...errorProps}
           />
         )}

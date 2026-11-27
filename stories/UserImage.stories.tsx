@@ -57,3 +57,16 @@ export const MixedWithImages: Story = {
     </div>
   ),
 };
+
+// `size` is the diameter in pixels; the initial scales with it. `referrerPolicy` reaches the <img>.
+export const Sizes: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+      <UserImage userHandle="Alice Brown" size={16} />
+      <UserImage userHandle="Alice Brown" />
+      <UserImage userHandle="Alice Brown" size={32} />
+      <UserImage userHandle="Alice Brown" size={48} />
+      <UserImage userHandle="Jane Smith" userImgUrl="https://i.pravatar.cc/150?img=5" size={48} referrerPolicy="no-referrer" />
+    </div>
+  ),
+};

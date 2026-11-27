@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.14.0] - 2026-11-27
+
+Web components only. Found while moving Viskit to this package: each item replaces a workaround an app had to carry.
+
+### Added
+
+- Icons can be passed as a component or an element, not only by name. An app that passes components no longer ships the whole Lucide set.
+  - `Button`: `decoIcon` and `actionIcon` take a name (`"Plus"`), a component (`Plus` from `lucide-react`) or an element (`<Logo />`). A component is sized and stroked like a named icon; an element is rendered as given.
+  - `IconButton`, `Tag` and `Icon`: a new `icon` prop takes a component (and, for `IconButton` and `Tag`, an element). `iconName` / `name` keep working and are now optional. With `icon`, pass `ariaLabel` to `IconButton`: there is no icon name to read out.
+  - The types are exported from `components/iconSlot` as `IconSource` and `IconComponent`.
+- `Button` and `IconButton`: `href` renders a link with the same classes and the same inside. A path goes through `next/link` (`replace` is passed on); an `http(s)://` URL is a plain `<a>`. `openInNewTab` adds `target="_blank" rel="noopener noreferrer"`; unlike `Link`, another site does not open in a new tab on its own, so a sign-in redirect stays in the tab. A disabled or loading link is an `<a role="link" aria-disabled="true">` without an `href`. A link fits its content like a button does, and a width class such as `w-full` stretches it.
+- `Button`: `htmlType` (`button`, `submit` or `reset`; default `button`) sets the `<button>`'s own type, so a Button can submit a form.
+- `TextField`: `maxLength`, `minLength` and `spellCheck`. `Textarea`: `maxLength` and `spellCheck`. Each is passed straight to the element and left out when not set.
+- `UserImage`: `size` (diameter in pixels, default 24; the initial keeps its 2:3 ratio) and `referrerPolicy`, passed to the `<img>`.
+- Tests that render the compiled components (`scripts/components.test.js`), and a story for each addition.
+
+### Changed
+
+- The components no longer import all of `lucide-react`. `Button`, `IconButton`, `Tag`, `Icon`, `Tab`, `MenuItem` and `Select` looked icons up by name in the whole set, which put every icon (about 170 KB gzipped) into any app that used one of them. The lookup now lives in one file that is loaded on demand, the first time an icon is given by name. In a Next.js test page with a Button and an IconButton, first-load JS went from 273 kB to 98 kB.
+  - Server-rendered pages are unchanged: a named icon is in the HTML as before.
+  - On a first client-only render (a modal opened later, a test that renders once and reads the markup at once), a named icon appears a moment after its button; an empty box of the icon's size holds its place, so nothing moves. Pass a component where that matters.
+- `Button`: a label with no action icon is centered when the button is wider than its content (for example with `className="w-full"`); before, it sat at the left edge. A button at its natural width looks the same, and a button with an action icon still has the label at the start and the icon at the far edge.
+- `Button` and `IconButton` now import `next/link`, as `Link`, `LinkCard` and `MenuItem` already do.
+
+### Fixed
+
+- Importing the package root (`import … from "oneslash-design-system"`) failed in an app: `dist/index.js` imported `./index.css`, which is Storybook's stylesheet and is not in the package. The import is gone. Apps load styles through a theme file, as before.
+
 ## [2.13.1] - 2026-11-20
 
 ### Fixed

@@ -1,6 +1,6 @@
 'use client';
 import React, { useContext } from 'react';
-import * as LucideIcons from 'lucide-react';
+import IconSlot from './iconSlot';
 import { TabsContainerContext } from './tabsContainer';
 import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 
@@ -21,8 +21,6 @@ type TabProps = {
   size?: 'medium' | 'small' | 'tiny';
 };
 
-type IconType = React.ComponentType<React.SVGProps<SVGSVGElement>>;
-
 export default function Tab({
   label,
   secondLabel,
@@ -36,10 +34,6 @@ export default function Tab({
   size = 'medium',
 }: TabProps) {
   const inContainer = useContext(TabsContainerContext);
-  
-  // Synchronous lookup so icons render on the first paint
-  const IconLeft = decoIcon ? (LucideIcons[decoIcon as keyof typeof LucideIcons] as IconType) : null;
-  const IconRight = actionIcon ? (LucideIcons[actionIcon as keyof typeof LucideIcons] as IconType) : null;
 
   const handleClick = () => {
     onClickTab();
@@ -81,7 +75,7 @@ export default function Tab({
       `}
       onClick={handleClick}
     >
-      {IconLeft && <IconLeft className={sizeClasses.icon} strokeWidth={2} />}
+      <IconSlot icon={decoIcon} className={sizeClasses.icon} />
       <div className={`flex flex-col text-center ${sizeClasses.label}`}>
         <span className="whitespace-nowrap">
           {label}
@@ -92,7 +86,7 @@ export default function Tab({
           </span>
         )}
       </div>
-      {IconRight && (
+      {actionIcon && (
         <span
           onClick={(e) => {
             // Don't also select the tab
@@ -101,7 +95,7 @@ export default function Tab({
           }}
           className="cursor-pointer"
         >
-          <IconRight className={sizeClasses.icon} strokeWidth={2} />
+          <IconSlot icon={actionIcon} className={sizeClasses.icon} />
         </span>
       )}
     </div>
