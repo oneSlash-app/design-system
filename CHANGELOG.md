@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.15.0] - 2026-11-27
+
+Design cases: one design situation, oneSlash's answer, and a working example built only from this package. Web only.
+
+### Added
+
+- Seven cases. `login-page` has four options (centered column, brand beside the form, provider first, email only). Six rules for an agent: it says what it is, shows its sources, asks before a risky action, shows progress, cancels when nobody answers, and refuses clearly. A rule that no product follows yet says so under "Not built yet".
+- The cases are published as `oneslash-design-system/cases.json`, `oneslash-design-system/cases/<id>.md`, a compiled example at `oneslash-design-system/cases/<id>/<option>.jsx`, and a Cases section in `DESIGN.md`. The build fails when an example uses anything that is not an ODS part.
+- `Form` (`components/form`): a `<form noValidate>` that calls `onSubmit` and lays its children out in a column.
+- `Image` (`components/image`): an `<img>` with `fit` and `loading`.
+- `BrandIcon` (`components/brandIcon`): the Google, GitHub and Apple marks for sign-in buttons.
+- `Center` and `Split` in `components/layout`. `Center` holds a column in the middle of the page (`width="form"` is 24rem). `Split` puts a brand side beside the content and hides it on a phone.
+- `Line`: `label` puts a word such as "or" in the middle of the line.
+- Token `container.form` (24rem), as the class `max-w-form`.
+
+### Fixed
+
+- `TabsContainer` and `Tooltip` no longer log a `useLayoutEffect` warning when rendered on the server.
+
 ## [2.14.2] - 2026-11-27
 
 ### Fixed
