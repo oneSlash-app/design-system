@@ -34,6 +34,12 @@ test('loads each folder that has a case.js, sorted by id, with each example sour
   assert.equal(Object.keys(cases[0]).includes('folder'), false);
 });
 
+test('loads from a path relative to the working directory, as the build passes it', () => {
+  const dir = fixture({ 'a-case': { 'case.js': caseJs('a-case', 'one.tsx'), 'one.tsx': tsx } });
+  const cases = loadCases(path.relative(process.cwd(), dir));
+  assert.deepEqual(cases.map((c) => c.id), ['a-case']);
+});
+
 test('sets uses from the example source, and only where there is a source', () => {
   const src = "import Button from '../../components/button';\nimport { Stack } from '../../components/layout';\n";
   const dir = fixture({

@@ -74,6 +74,14 @@ test('a design case file has one fenced example per option, in order', () => {
   assert.match(md, /Use when: One provider/);
 });
 
+test('a design case file prints its own Do and Don\'t before the options', () => {
+  const md = emitCaseMd({ ...design, do: ['Put the error above the fields'], dont: ['Clear the email'] });
+  const headings = md.split('\n').filter((l) => l.startsWith('## '));
+  assert.deepEqual(headings, ['## Do', "## Don't", '## Option: Provider first', '## Option: Email first', '## Native']);
+  assert.match(md, /^- Put the error above the fields$/m);
+  assert.match(md, /^- Clear the email$/m);
+});
+
 test('a rule file has Answer, Why, Do and Don\'t', () => {
   const headings = emitCaseMd(rule).split('\n').filter((l) => l.startsWith('## '));
   assert.deepEqual(headings, ['## Answer', '## Why', '## Do', "## Don't"]);

@@ -13,6 +13,8 @@ const config: StorybookConfig = {
       define: {
         "process.env": {},
       },
+      // The automatic JSX runtime, as Next.js uses: a design case example does not import React.
+      esbuild: { jsx: "automatic" },
     });
   },
 };

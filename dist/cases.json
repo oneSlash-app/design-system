@@ -1,3 +1,108 @@
 {
-  "cases": []
+  "cases": [
+    {
+      "id": "login-page",
+      "title": "Login page",
+      "kind": "design",
+      "level": "page",
+      "area": "auth",
+      "situation": "A person who already has an account opens the product and is not signed in.",
+      "options": [
+        {
+          "id": "centered",
+          "title": "Centered column",
+          "useWhen": "The product has one way in, and most people sign in with email and a password.",
+          "example": "centered.tsx",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Image from '../../components/image';\nimport TabsContainer from '../../components/tabsContainer';\nimport Tab from '../../components/tab';\nimport Form from '../../components/form';\nimport Alert from '../../components/alert';\nimport TextField from '../../components/textField';\nimport Button from '../../components/button';\nimport Line from '../../components/line';\nimport BrandIcon from '../../components/brandIcon';\nimport { Center } from '../../components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\nexport default function LoginCentered() {\n  const [tab, setTab] = useState<'login' | 'signup'>('login');\n  const [email, setEmail] = useState('ada@example.com');\n  const [password, setPassword] = useState('');\n  const [error, setError] = useState('');\n\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <TabsContainer>\n        <Tab label=\"Log In\" isSelected={tab === 'login'} onClickTab={() => setTab('login')} />\n        <Tab label=\"Sign Up\" isSelected={tab === 'signup'} onClickTab={() => setTab('signup')} />\n      </TabsContainer>\n      <Form aria-label=\"Log in\" onSubmit={() => setError('That email and password do not match.')}>\n        {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n        <TextField id=\"login-email\" label=\"Email\" type=\"email\" autoComplete=\"username\" value={email} onChange={(e) => setEmail(e.target.value)} />\n        <TextField id=\"login-password\" label=\"Password\" type=\"password\" autoComplete=\"current-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n        <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Log In\" htmlType=\"submit\" />\n        <Button size=\"medium\" type=\"textOnly\" state=\"enabled\" label=\"Forgot password?\" />\n      </Form>\n      <Line label=\"or\" />\n      <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with Google\" decoIcon={<BrandIcon name=\"google\" />} />\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "BrandIcon",
+            "Button",
+            "Center",
+            "Form",
+            "Image",
+            "Line",
+            "Tab",
+            "TabsContainer",
+            "TextField"
+          ]
+        },
+        {
+          "id": "split",
+          "title": "Brand beside the form",
+          "useWhen": "First-time visitors land here and need one line on what the product is.",
+          "example": "split.tsx",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Image from '../../components/image';\nimport Heading from '../../components/heading';\nimport Paragraph from '../../components/paragraph';\nimport Form from '../../components/form';\nimport Alert from '../../components/alert';\nimport TextField from '../../components/textField';\nimport Button from '../../components/button';\nimport Line from '../../components/line';\nimport Link from '../../components/link';\nimport BrandIcon from '../../components/brandIcon';\nimport { Center, Cluster, Split, Stack } from '../../components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\nexport default function LoginSplit() {\n  const [email, setEmail] = useState('ada@example.com');\n  const [password, setPassword] = useState('');\n  const [error, setError] = useState('');\n\n  return (\n    <Split\n      fill\n      aside={\n        <Stack gap=\"large\">\n          <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n          <Heading level={2} size=\"h4\">Plan the week with your whole team.</Heading>\n          <Paragraph tone=\"secondary\" measure=\"lede\">\n            Acme keeps tasks, notes and decisions in one place.\n          </Paragraph>\n        </Stack>\n      }\n    >\n      <Center fill>\n        <Heading level={2} size=\"h5\">Log in to Acme</Heading>\n        <Form aria-label=\"Log in\" onSubmit={() => setError('That email and password do not match.')}>\n          {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n          <TextField id=\"split-email\" label=\"Email\" type=\"email\" autoComplete=\"username\" value={email} onChange={(e) => setEmail(e.target.value)} />\n          <TextField id=\"split-password\" label=\"Password\" type=\"password\" autoComplete=\"current-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n          <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Log In\" htmlType=\"submit\" />\n          <Button size=\"medium\" type=\"textOnly\" state=\"enabled\" label=\"Forgot password?\" />\n        </Form>\n        <Line label=\"or\" />\n        <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with Google\" decoIcon={<BrandIcon name=\"google\" />} />\n        <Cluster gap=\"small\">\n          <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">New here?</Paragraph>\n          <Link href=\"/signup\" size=\"body2\">Create an account</Link>\n        </Cluster>\n      </Center>\n    </Split>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "BrandIcon",
+            "Button",
+            "Center",
+            "Cluster",
+            "Form",
+            "Heading",
+            "Image",
+            "Line",
+            "Link",
+            "Paragraph",
+            "Split",
+            "Stack",
+            "TextField"
+          ]
+        },
+        {
+          "id": "provider-first",
+          "title": "Provider first",
+          "useWhen": "Most people sign in with Google, GitHub or Apple; email is the fallback.",
+          "example": "provider-first.tsx",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Heading from '../../components/heading';\nimport Form from '../../components/form';\nimport Alert from '../../components/alert';\nimport TextField from '../../components/textField';\nimport Button from '../../components/button';\nimport Line from '../../components/line';\nimport BrandIcon from '../../components/brandIcon';\nimport { Center, Stack } from '../../components/layout';\n\nexport default function LoginProviderFirst() {\n  const [email, setEmail] = useState('ada@example.com');\n  const [password, setPassword] = useState('');\n  const [error, setError] = useState('');\n\n  return (\n    <Center fill>\n      <Heading level={2} size=\"h5\">Sign in to Acme</Heading>\n      <Stack gap=\"medium\">\n        <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with Google\" decoIcon={<BrandIcon name=\"google\" />} />\n        <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with GitHub\" decoIcon={<BrandIcon name=\"github\" />} />\n        <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with Apple\" decoIcon={<BrandIcon name=\"apple\" />} />\n      </Stack>\n      <Line label=\"or\" />\n      <Form aria-label=\"Sign in with email\" onSubmit={() => setError('That email and password do not match.')}>\n        {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n        <TextField id=\"provider-email\" label=\"Email\" type=\"email\" autoComplete=\"username\" value={email} onChange={(e) => setEmail(e.target.value)} />\n        <TextField id=\"provider-password\" label=\"Password\" type=\"password\" autoComplete=\"current-password\" value={password} onChange={(e) => setPassword(e.target.value)} />\n        <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Sign in with email\" htmlType=\"submit\" />\n      </Form>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "BrandIcon",
+            "Button",
+            "Center",
+            "Form",
+            "Heading",
+            "Line",
+            "Stack",
+            "TextField"
+          ]
+        },
+        {
+          "id": "email-only",
+          "title": "Email only",
+          "useWhen": "An internal tool with no passwords: the person gets a sign-in link by email.",
+          "example": "email-only.tsx",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Surface from '../../components/surface';\nimport Heading from '../../components/heading';\nimport Paragraph from '../../components/paragraph';\nimport Form from '../../components/form';\nimport Alert from '../../components/alert';\nimport TextField from '../../components/textField';\nimport Button from '../../components/button';\nimport { Center, Stack } from '../../components/layout';\n\nexport default function LoginEmailOnly() {\n  const [email, setEmail] = useState('ada@example.com');\n  const [sent, setSent] = useState(false);\n\n  return (\n    <Center fill>\n      <Surface padding=\"large\">\n        <Stack gap=\"xlarge\">\n          <Stack gap=\"small\">\n            <Heading level={2} size=\"h5\">Log in</Heading>\n            <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">We will email you a link to sign in.</Paragraph>\n          </Stack>\n          <Form aria-label=\"Log in\" onSubmit={() => setSent(true)}>\n            {sent && <Alert type=\"success\" variant=\"inline\" message={`We sent a sign-in link to ${email}.`} />}\n            <TextField id=\"email-only-email\" label=\"Email\" type=\"email\" autoComplete=\"username\" value={email} onChange={(e) => setEmail(e.target.value)} />\n            <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Send sign-in link\" htmlType=\"submit\" />\n          </Form>\n        </Stack>\n      </Surface>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "Button",
+            "Center",
+            "Form",
+            "Heading",
+            "Paragraph",
+            "Stack",
+            "Surface",
+            "TextField"
+          ]
+        }
+      ],
+      "do": [
+        "Put the error above the fields, in an inline Alert.",
+        "Keep 'Forgot password?' next to the password field's button, as a text-only Button.",
+        "Name the provider on its button: 'Continue with Google'."
+      ],
+      "dont": [
+        "Do not clear the email field after a failed attempt.",
+        "Do not show sign-up fields on the login page; link or tab to sign-up."
+      ],
+      "native": "On Apple use `SignInWithAppleButton` for Apple, a grouped form for the fields, and system buttons.",
+      "seenIn": [
+        "Commentify admin",
+        "Commentify app",
+        "Scindo Apple",
+        "Scindo web"
+      ]
+    }
+  ]
 }

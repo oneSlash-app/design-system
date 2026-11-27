@@ -26,6 +26,8 @@ function emitCaseMd(c) {
   if (isRule(c)) {
     parts.push(`## Answer\n\n${c.answer}`, `## Why\n\n${c.why}`, `## Do\n\n${bullets(c.do)}`, `## Don't\n\n${bullets(c.dont)}`);
   } else {
+    if (c.do && c.do.length) parts.push(`## Do\n\n${bullets(c.do)}`);
+    if (c.dont && c.dont.length) parts.push(`## Don't\n\n${bullets(c.dont)}`);
     parts.push(...c.options.map(emitOption));
   }
   if (c.native) parts.push(`## Native\n\n${c.native}`);

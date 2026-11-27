@@ -4,24 +4,10 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { Writable } = require('node:stream');
-const ts = require('typescript');
 const React = require('react');
-const { renderToPipeableStream, renderToStaticMarkup } = require('react-dom/server');
+const { renderToStaticMarkup } = require('react-dom/server');
 const { Plus } = require('lucide-react');
-
-const dist = path.join(__dirname, '..', 'dist');
-
-// dist/ is ESM with JSX left in (.jsx), for the app's bundler. Compile it to CommonJS on require.
-const compile = (module, file) => {
-  const { outputText } = ts.transpileModule(fs.readFileSync(file, 'utf8'), {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.React, esModuleInterop: true },
-  });
-  module._compile(outputText, file);
-};
-require.extensions['.jsx'] = compile;
-const defaultJs = require.extensions['.js'];
-require.extensions['.js'] = (module, file) => (file.startsWith(dist + path.sep) ? compile(module, file) : defaultJs(module, file));
+const { dist, htmlWhenReady } = require('./compile-dist');
 
 const load = (name) => require(path.join(dist, 'components', `${name}.jsx`)).default;
 const BrandIcon = load('brandIcon');
@@ -39,22 +25,6 @@ const { Center, Split } = require(path.join(dist, 'components', 'layout.jsx'));
 
 const h = React.createElement;
 const html = (element) => renderToStaticMarkup(element);
-// Waits for lazy parts (an icon looked up by name), as a streaming server render does
-const htmlWhenReady = (element) =>
-  new Promise((resolve, reject) => {
-    let out = '';
-    const sink = new Writable({
-      write(chunk, _enc, done) {
-        out += chunk;
-        done();
-      },
-      final(done) {
-        resolve(out);
-        done();
-      },
-    });
-    const stream = renderToPipeableStream(element, { onAllReady: () => stream.pipe(sink), onError: reject });
-  });
 
 const base = { size: 'medium', type: 'primary', state: 'enabled', label: 'Save' };
 const classOf = (markup) => markup.match(/class="([^"]*)"/)[1].split(/\s+/).filter(Boolean);

@@ -375,4 +375,6 @@ A case answers one design question the way oneSlash does, such as how to confirm
 
 A design case has a few options, each with a working example. Open the file named in the table for the one you need.
 
-There are no design cases yet.
+| Case | When | File |
+| --- | --- | --- |
+| Login page | A person who already has an account opens the product and is not signed in. | cases/login-page.md |

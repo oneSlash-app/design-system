@@ -4,7 +4,7 @@ const path = require('node:path');
 const { usedComponents } = require('./ods-only');
 
 function loadCase(dir, folder) {
-  const file = path.join(dir, folder, 'case.js');
+  const file = path.resolve(dir, folder, 'case.js');
   if (!fs.existsSync(file)) throw new Error(`cases/${folder} has no case.js`);
   const data = require(file);
   // Malformed options are left as they are; validateCases reports them.
