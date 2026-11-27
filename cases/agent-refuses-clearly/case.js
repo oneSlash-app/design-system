@@ -5,7 +5,7 @@ module.exports = {
   level: 'rule',
   area: 'agent',
   situation: 'The product will not let the agent answer a request, for example because the workspace used all its agent replies for the month, reached its spending cap, or sent too many requests at once.',
-  answer: 'The refusal says in one plain sentence which limit was reached, and either who can change it or when to try again. A person who can lift the limit gets the one button that does it, such as Upgrade or Change Budget Cap. Everyone else is told to ask a workspace admin.',
+  answer: 'The refusal says in one plain sentence which limit was reached, and either who can change it or when to try again. A person who can lift the limit gets the one button that does it, such as Upgrade or Change Budget Cap. When an admin can lift the limit, everyone else is told to ask a workspace admin. A limit that passes with time says when to try again instead.',
   why: 'A person who is refused needs to know why and what to do next, or they will just send the request again.',
   do: [
     "Say which limit was reached, with the number when there is one: 'You've used all 50 AI agent responses this month.'",

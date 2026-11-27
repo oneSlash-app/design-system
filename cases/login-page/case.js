@@ -33,7 +33,7 @@ module.exports = {
   ],
   do: [
     'Put the error above the fields, in an inline Alert.',
-    "Keep 'Forgot password?' next to the password field's button, as a text-only Button.",
+    "When there is a password, put a text-only 'Forgot password?' Button right under the submit Button.",
     "Name the provider on its button: 'Continue with Google'.",
   ],
   dont: [

@@ -107,15 +107,27 @@ function generateCases(dir) {
   return casesFiles(readCases(dir));
 }
 
-// Paths under <out>/cases/ that the run does not produce: *.md files, and folders whose id is not a case.
-// tsc writes dist/cases/<id>/ for a current case, so only other folders are stale.
+// Paths under <out>/cases/ that the run does not produce: *.md files, folders whose id is not a design case,
+// and files in a design case's folder that are not one of its options. tsc writes a <option>.jsx, .d.ts and .js
+// for each current option, so only those names are kept.
 function staleCasePaths(out, files, cases) {
   const dir = path.join(out, 'cases');
   if (!fs.existsSync(dir)) return [];
-  const ids = new Set(cases.map((c) => c.id));
-  return fs.readdirSync(dir, { withFileTypes: true })
-    .filter((e) => (e.isDirectory() ? !ids.has(e.name) : /\.md$/.test(e.name) && !(`cases/${e.name}` in files)))
-    .map((e) => path.join(dir, e.name));
+  const designs = new Map(cases.filter((c) => c.kind !== 'rule').map((c) => [c.id, new Set(c.options.map((o) => o.id))]));
+  const stale = [];
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    const p = path.join(dir, e.name);
+    if (!e.isDirectory()) {
+      if (/\.md$/.test(e.name) && !(`cases/${e.name}` in files)) stale.push(p);
+    } else if (!designs.has(e.name)) {
+      stale.push(p);
+    } else {
+      for (const f of fs.readdirSync(p)) {
+        if (!designs.get(e.name).has(f.replace(/(\.d\.ts|\.jsx|\.js)$/, ''))) stale.push(path.join(p, f));
+      }
+    }
+  }
+  return stale;
 }
 
 function main(argv) {

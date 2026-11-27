@@ -4,7 +4,7 @@ The agent is about to do something that changes shared work or is hard to undo.
 
 ## Answer
 
-Treat these as risky: opening or merging a pull request, deleting files, closing an issue, rolling back a release, and carrying out a plan of several changes. Before any of them the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. The agent does nothing until the person presses the approve button.
+An action is risky when it changes shared work or is hard to undo. In a product that works with code, that includes opening or merging a pull request, deleting files, closing an issue and rolling back a release. Carrying out a plan of several changes is risky too. Before a risky action the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. The agent does nothing until the person presses the approve button.
 
 **Not built yet:** In Scindo the agent asks before carrying out a plan, opening a pull request and merging one. It does not yet ask before deleting files, closing an issue or rolling back a release.
 

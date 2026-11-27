@@ -49,6 +49,7 @@ export function Center(_a) {
     </div>);
 }
 // A page of two equal halves from the medium breakpoint up. Below it, only the children.
+// Put a `<Center fill>` in the second half to center a form in it.
 export function Split(_a) {
     var aside = _a.aside, children = _a.children, _b = _a.fill, fill = _b === void 0 ? false : _b;
     return (<div className={"grid grid-cols-1 md:grid-cols-2 ".concat(fill ? 'min-h-screen' : '')}>

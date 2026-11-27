@@ -4,6 +4,10 @@ const KINDS = ['rule', 'design'];
 const LEVELS = ['rule', 'organism', 'page'];
 const AREAS = ['agent', 'auth', 'chat', 'confirm', 'state', 'settings', 'menu', 'shell', 'dashboard', 'content', 'marketing'];
 
+const CASE_KEYS = ['id', 'title', 'kind', 'level', 'area', 'situation', 'answer', 'why', 'do', 'dont', 'native', 'notBuiltYet', 'seenIn', 'options'];
+// source and uses are added by the loader.
+const OPTION_KEYS = ['id', 'title', 'useWhen', 'example', 'do', 'dont', 'source', 'uses'];
+
 const text = (v) => typeof v === 'string' && v.trim() !== '';
 const list = (v) => Array.isArray(v) && v.length > 0 && v.every(text);
 
@@ -17,6 +21,12 @@ function checkOption(problems, caseId, option) {
   for (const key of ['title', 'useWhen', 'example']) {
     if (!text(option[key])) problems.push(`${at} needs ${key}`);
   }
+  if (text(option.example) && text(option.id) && option.example !== `${option.id}.tsx`) {
+    problems.push(`${at}: example must be ${option.id}.tsx`);
+  }
+  for (const key of Object.keys(option)) {
+    if (!OPTION_KEYS.includes(key)) problems.push(`${at}: unknown key ${key}`);
+  }
 }
 
 function checkCase(problems, c) {
@@ -26,6 +36,11 @@ function checkCase(problems, c) {
   if (!KINDS.includes(c.kind)) problems.push(`${at}: kind ${JSON.stringify(c.kind)} is not one of ${KINDS.join(', ')}`);
   if (!LEVELS.includes(c.level)) problems.push(`${at}: level ${JSON.stringify(c.level)} is not one of ${LEVELS.join(', ')}`);
   if (!AREAS.includes(c.area)) problems.push(`${at}: area ${JSON.stringify(c.area)} is not one of ${AREAS.join(', ')}`);
+  for (const key of Object.keys(c)) {
+    if (!CASE_KEYS.includes(key)) problems.push(`${at}: unknown key ${key}`);
+  }
+  if (c.kind === 'rule' && c.level !== 'rule') problems.push(`${at}: a rule has level rule`);
+  if (c.kind === 'design' && c.level !== 'organism' && c.level !== 'page') problems.push(`${at}: a design case has level organism or page`);
   for (const key of ['title', 'situation']) {
     if (!text(c[key])) problems.push(`${at} needs ${key}`);
   }

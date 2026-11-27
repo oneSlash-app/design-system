@@ -1,4 +1,4 @@
-// Generated from designTokens.js by scripts/build-tokens.js. Do not edit.
+// Generated from cases/ by npm run build. Do not edit.
 import React from "react";
 import LoginPage_CenteredExample from "../cases/login-page/centered";
 import LoginPage_SplitExample from "../cases/login-page/split";

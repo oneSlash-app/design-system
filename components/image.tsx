@@ -7,7 +7,7 @@ interface ImageProps {
   /** Pixel size of the file. Set both so the browser keeps the space before the image loads. */
   width?: number;
   height?: number;
-  /** How the image fills its box. Not set, the browser default applies. */
+  /** How the image fills its box. Not set, the browser default applies. Inside a `Figure` with `crop`, the figure fills the frame and `fit` has no effect. */
   fit?: 'cover' | 'contain';
   loading?: 'lazy' | 'eager';
 }

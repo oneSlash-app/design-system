@@ -94,6 +94,7 @@ interface SplitProps {
 }
 
 // A page of two equal halves from the medium breakpoint up. Below it, only the children.
+// Put a `<Center fill>` in the second half to center a form in it.
 export function Split({ aside, children, fill = false }: SplitProps) {
   return (
     <div className={`grid grid-cols-1 md:grid-cols-2 ${fill ? 'min-h-screen' : ''}`}>

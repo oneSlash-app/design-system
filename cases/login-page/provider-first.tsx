@@ -28,6 +28,7 @@ export default function LoginProviderFirst() {
         <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
         <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <Button size="medium" type="primary" state="enabled" label="Sign in with email" htmlType="submit" />
+        <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
       </Form>
     </Center>
   );

@@ -3,6 +3,8 @@
 
 ODS is the oneSlash design system. One source, `designTokens.js`, defines every color, spacing step, radius and type role. The build turns it into CSS themes and Tailwind presets for the web, a Swift package for Apple apps, and `tokens.json` in the W3C design tokens format. The tables in this file are generated from the same source, so they match the tokens exactly.
 
+Before you lay out a page or an agent behaviour, check the Cases section at the end of this file.
+
 ## Using ODS on the web
 
 The package ships Tailwind class names, CSS variables and untranspiled `.jsx`. Each app compiles the components itself and picks one theme.
@@ -371,15 +373,15 @@ A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one
 
 ## Cases
 
-A case answers one design question the way oneSlash does, such as how to confirm a delete or how to lay out a login page. A rule gives one answer and is printed here in full.
+A case answers one design question the way oneSlash does, such as how to lay out a login page or how an agent asks before a risky action. A rule gives one answer and is printed here in full.
 
-A design case has a few options, each with a working example. Open the file named in the table for the one you need.
+A design case has a few options, each with a working example. Open the file named in the table for the one you need. In an app, import a component like this: `import Button from 'oneslash-design-system/components/button'`.
 
 ### An agent asks before a risky action
 
 The agent is about to do something that changes shared work or is hard to undo.
 
-Answer: Treat these as risky: opening or merging a pull request, deleting files, closing an issue, rolling back a release, and carrying out a plan of several changes. Before any of them the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. The agent does nothing until the person presses the approve button.
+Answer: An action is risky when it changes shared work or is hard to undo. In a product that works with code, that includes opening or merging a pull request, deleting files, closing an issue and rolling back a release. Carrying out a plan of several changes is risky too. Before a risky action the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. The agent does nothing until the person presses the approve button.
 
 **Not built yet:** In Scindo the agent asks before carrying out a plan, opening a pull request and merging one. It does not yet ask before deleting files, closing an issue or rolling back a release.
 
@@ -401,7 +403,7 @@ Don't:
 
 The agent has asked a question or proposed an action, and nobody answers.
 
-Answer: The agent never takes silence as a yes: while a question or proposal waits, it does nothing that depends on the answer. After a set waiting time, the agent cancels the request, marks the card Cancelled, and posts one line saying what it did not do. Questions the agent asked before writing a plan, and nobody answered, go into that plan as open questions.
+Answer: The agent never takes silence as a yes: while a question or proposal waits, it does nothing that depends on the answer. Each product sets the waiting time and shows it on the waiting card. When the time is up, the agent cancels the request, marks the card Cancelled, and posts one line saying what it did not do. The agent may write a plan that lists the unanswered questions as open questions. It may not carry out anything that depends on an answer.
 
 **Not built yet:** No product cancels a waiting request on its own yet. In Scindo a request waits until a person answers, cancels or skips it, and the waiting time is not decided.
 
@@ -421,7 +423,7 @@ Don't:
 
 The product will not let the agent answer a request, for example because the workspace used all its agent replies for the month, reached its spending cap, or sent too many requests at once.
 
-Answer: The refusal says in one plain sentence which limit was reached, and either who can change it or when to try again. A person who can lift the limit gets the one button that does it, such as Upgrade or Change Budget Cap. Everyone else is told to ask a workspace admin.
+Answer: The refusal says in one plain sentence which limit was reached, and either who can change it or when to try again. A person who can lift the limit gets the one button that does it, such as Upgrade or Change Budget Cap. When an admin can lift the limit, everyone else is told to ask a workspace admin. A limit that passes with time says when to try again instead.
 
 **Not built yet:** Scindo on the web does not follow this yet: it shows the Upgrade button to everyone. Scindo's Apple app shows it only to admins.
 

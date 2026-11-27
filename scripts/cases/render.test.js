@@ -13,8 +13,18 @@ for (const c of cases) {
   for (const o of c.options || []) {
     test(`${c.id}/${o.id} renders on the server`, async () => {
       const Example = require(path.join(dist, 'cases', c.id, `${o.id}.jsx`)).default;
-      const out = await htmlWhenReady(h(Example));
+      // React logs through console.error when a server render runs into something it cannot do.
+      const errors = [];
+      const original = console.error;
+      console.error = (...args) => errors.push(args.join(' '));
+      let out;
+      try {
+        out = await htmlWhenReady(h(Example));
+      } finally {
+        console.error = original;
+      }
       assert.ok(out.length > 200);
+      assert.deepEqual(errors, []);
     });
   }
 }

@@ -5,7 +5,7 @@ A person who already has an account opens the product and is not signed in.
 ## Do
 
 - Put the error above the fields, in an inline Alert.
-- Keep 'Forgot password?' next to the password field's button, as a text-only Button.
+- When there is a password, put a text-only 'Forgot password?' Button right under the submit Button.
 - Name the provider on its button: 'Continue with Google'.
 
 ## Don't
@@ -22,23 +22,25 @@ Uses: `Alert`, `BrandIcon`, `Button`, `Center`, `Form`, `Image`, `Line`, `Tab`, 
 ```tsx
 'use client';
 import { useState } from 'react';
-import Image from '../../components/image';
-import TabsContainer from '../../components/tabsContainer';
-import Tab from '../../components/tab';
-import Form from '../../components/form';
-import Alert from '../../components/alert';
-import TextField from '../../components/textField';
-import Button from '../../components/button';
-import Line from '../../components/line';
-import BrandIcon from '../../components/brandIcon';
-import { Center } from '../../components/layout';
+import Image from 'oneslash-design-system/components/image';
+import TabsContainer from 'oneslash-design-system/components/tabsContainer';
+import Tab from 'oneslash-design-system/components/tab';
+import Form from 'oneslash-design-system/components/form';
+import Alert from 'oneslash-design-system/components/alert';
+import TextField from 'oneslash-design-system/components/textField';
+import Button from 'oneslash-design-system/components/button';
+import Line from 'oneslash-design-system/components/line';
+import BrandIcon from 'oneslash-design-system/components/brandIcon';
+import { Center } from 'oneslash-design-system/components/layout';
 
 // The product's mark. A real app passes its own file.
 const productMark =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E";
 
+// A real app passes the router from its framework, such as Next's useRouter().
+const router = { push: (url: string) => console.info(`Go to ${url}`) };
+
 export default function LoginCentered() {
-  const [tab, setTab] = useState<'login' | 'signup'>('login');
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -47,8 +49,8 @@ export default function LoginCentered() {
     <Center fill>
       <Image src={productMark} alt="Acme" width={40} height={40} />
       <TabsContainer>
-        <Tab label="Log In" isSelected={tab === 'login'} onClickTab={() => setTab('login')} />
-        <Tab label="Sign Up" isSelected={tab === 'signup'} onClickTab={() => setTab('signup')} />
+        <Tab label="Log In" isSelected onClickTab={() => {}} />
+        <Tab label="Sign Up" isSelected={false} href="/sign-up" router={router} onClickTab={() => {}} />
       </TabsContainer>
       <Form aria-label="Log in" onSubmit={() => setError('That email and password do not match.')}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
@@ -73,17 +75,17 @@ Uses: `Alert`, `BrandIcon`, `Button`, `Center`, `Cluster`, `Form`, `Heading`, `I
 ```tsx
 'use client';
 import { useState } from 'react';
-import Image from '../../components/image';
-import Heading from '../../components/heading';
-import Paragraph from '../../components/paragraph';
-import Form from '../../components/form';
-import Alert from '../../components/alert';
-import TextField from '../../components/textField';
-import Button from '../../components/button';
-import Line from '../../components/line';
-import Link from '../../components/link';
-import BrandIcon from '../../components/brandIcon';
-import { Center, Cluster, Split, Stack } from '../../components/layout';
+import Image from 'oneslash-design-system/components/image';
+import Heading from 'oneslash-design-system/components/heading';
+import Paragraph from 'oneslash-design-system/components/paragraph';
+import Form from 'oneslash-design-system/components/form';
+import Alert from 'oneslash-design-system/components/alert';
+import TextField from 'oneslash-design-system/components/textField';
+import Button from 'oneslash-design-system/components/button';
+import Line from 'oneslash-design-system/components/line';
+import Link from 'oneslash-design-system/components/link';
+import BrandIcon from 'oneslash-design-system/components/brandIcon';
+import { Center, Cluster, Split, Stack } from 'oneslash-design-system/components/layout';
 
 // The product's mark. A real app passes its own file.
 const productMark =
@@ -137,14 +139,14 @@ Uses: `Alert`, `BrandIcon`, `Button`, `Center`, `Form`, `Heading`, `Line`, `Stac
 ```tsx
 'use client';
 import { useState } from 'react';
-import Heading from '../../components/heading';
-import Form from '../../components/form';
-import Alert from '../../components/alert';
-import TextField from '../../components/textField';
-import Button from '../../components/button';
-import Line from '../../components/line';
-import BrandIcon from '../../components/brandIcon';
-import { Center, Stack } from '../../components/layout';
+import Heading from 'oneslash-design-system/components/heading';
+import Form from 'oneslash-design-system/components/form';
+import Alert from 'oneslash-design-system/components/alert';
+import TextField from 'oneslash-design-system/components/textField';
+import Button from 'oneslash-design-system/components/button';
+import Line from 'oneslash-design-system/components/line';
+import BrandIcon from 'oneslash-design-system/components/brandIcon';
+import { Center, Stack } from 'oneslash-design-system/components/layout';
 
 export default function LoginProviderFirst() {
   const [email, setEmail] = useState('ada@example.com');
@@ -165,6 +167,7 @@ export default function LoginProviderFirst() {
         <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
         <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <Button size="medium" type="primary" state="enabled" label="Sign in with email" htmlType="submit" />
+        <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
       </Form>
     </Center>
   );
@@ -180,14 +183,14 @@ Uses: `Alert`, `Button`, `Center`, `Form`, `Heading`, `Paragraph`, `Stack`, `Sur
 ```tsx
 'use client';
 import { useState } from 'react';
-import Surface from '../../components/surface';
-import Heading from '../../components/heading';
-import Paragraph from '../../components/paragraph';
-import Form from '../../components/form';
-import Alert from '../../components/alert';
-import TextField from '../../components/textField';
-import Button from '../../components/button';
-import { Center, Stack } from '../../components/layout';
+import Surface from 'oneslash-design-system/components/surface';
+import Heading from 'oneslash-design-system/components/heading';
+import Paragraph from 'oneslash-design-system/components/paragraph';
+import Form from 'oneslash-design-system/components/form';
+import Alert from 'oneslash-design-system/components/alert';
+import TextField from 'oneslash-design-system/components/textField';
+import Button from 'oneslash-design-system/components/button';
+import { Center, Stack } from 'oneslash-design-system/components/layout';
 
 export default function LoginEmailOnly() {
   const [email, setEmail] = useState('ada@example.com');

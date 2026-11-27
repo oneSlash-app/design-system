@@ -8,8 +8,27 @@ const bullets = (items) => items.map((i) => `- ${i}`).join('\n');
 const isRule = (c) => c.kind === 'rule';
 const notBuilt = (c) => (c.notBuiltYet ? [`**Not built yet:** ${c.notBuiltYet}`] : []);
 
+// Published examples import from the package; the files in cases/ import relative paths.
+const publishedSource = (source) => source.replace(
+  /(from\s+)(['"])\.\.\/\.\.\/components\/([^'"]+)\2/g, '$1$2oneslash-design-system/components/$3$2');
+
+const CASE_FIELDS = ['id', 'title', 'kind', 'level', 'area', 'situation', 'answer', 'why', 'do', 'dont', 'native', 'notBuiltYet'];
+const OPTION_FIELDS = ['id', 'title', 'useWhen', 'do', 'dont'];
+const pick = (from, keys) => Object.fromEntries(keys.filter((k) => from[k] !== undefined).map((k) => [k, from[k]]));
+
+function jsonOption(o) {
+  const out = pick(o, OPTION_FIELDS);
+  if (o.source !== undefined) out.source = publishedSource(o.source);
+  if (o.uses !== undefined) out.uses = o.uses;
+  return out;
+}
+
 function emitCasesJson(cases) {
-  const out = cases.map((c) => ({ ...c, seenIn: products(c) }));
+  const out = cases.map((c) => {
+    const json = { ...pick(c, CASE_FIELDS), seenIn: products(c) };
+    if (c.options !== undefined) json.options = c.options.map(jsonOption);
+    return json;
+  });
   return `${JSON.stringify({ cases: out }, null, 2)}\n`;
 }
 
@@ -18,7 +37,7 @@ function emitOption(o) {
   if (o.do && o.do.length) parts.push(`Do:\n${bullets(o.do)}`);
   if (o.dont && o.dont.length) parts.push(`Don't:\n${bullets(o.dont)}`);
   parts.push(`Uses: ${o.uses.map((u) => `\`${u}\``).join(', ')}`);
-  parts.push(`\`\`\`tsx\n${o.source.replace(/\n$/, '')}\n\`\`\``);
+  parts.push(`\`\`\`tsx\n${publishedSource(o.source).replace(/\n$/, '')}\n\`\`\``);
   return parts.join('\n\n');
 }
 
@@ -61,7 +80,7 @@ const pascal = (id) => id.split('-').map((w) => w.charAt(0).toUpperCase() + w.sl
 const ident = (s) => (/^\d/.test(s) ? `_${s}` : s);
 
 function emitCaseStories(cases) {
-  const header = '// Generated from designTokens.js by scripts/build-tokens.js. Do not edit.';
+  const header = '// Generated from cases/ by npm run build. Do not edit.';
   const examples = cases.filter((c) => !isRule(c)).flatMap((c) => c.options.map((o) => ({
     name: ident(`${pascal(c.id)}_${pascal(o.id)}`), from: `../cases/${c.id}/${o.id}`,
   })));

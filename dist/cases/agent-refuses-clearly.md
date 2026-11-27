@@ -4,7 +4,7 @@ The product will not let the agent answer a request, for example because the wor
 
 ## Answer
 
-The refusal says in one plain sentence which limit was reached, and either who can change it or when to try again. A person who can lift the limit gets the one button that does it, such as Upgrade or Change Budget Cap. Everyone else is told to ask a workspace admin.
+The refusal says in one plain sentence which limit was reached, and either who can change it or when to try again. A person who can lift the limit gets the one button that does it, such as Upgrade or Change Budget Cap. When an admin can lift the limit, everyone else is told to ask a workspace admin. A limit that passes with time says when to try again instead.
 
 **Not built yet:** Scindo on the web does not follow this yet: it shows the Upgrade button to everyone. Scindo's Apple app shows it only to admins.
 

@@ -136,21 +136,41 @@ test('generateCases returns cases.json, one md per case and the stories file', (
   assert.deepEqual(Object.keys(stories), ['Cases.generated.stories.tsx']);
 });
 
-test('a build into a temp dir removes a stale cases/<id>.md and a stale cases/<id>/ folder', () => {
+test('a build into a temp dir removes stale case files and keeps current ones', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'out-'));
+  const casesDir = fs.mkdtempSync(path.join(os.tmpdir(), 'cases-'));
+  caseFolder(casesDir, 'kept-case', "import Button from '../../components/button';\nexport default function A() { return <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Go\" />; }\n");
+  fs.mkdirSync(path.join(casesDir, 'a-rule'));
+  fs.writeFileSync(path.join(casesDir, 'a-rule/case.js'), `module.exports = ${JSON.stringify({
+    id: 'a-rule', title: 'T', kind: 'rule', level: 'rule', area: 'agent', situation: 's', answer: 'a', why: 'w',
+    do: ['d'], dont: ['n'], seenIn: [{ product: 'P', path: 'p' }],
+  })};\n`);
   const args = ['scripts/build-tokens.js', '--out', tmp,
     '--native-out', fs.mkdtempSync(path.join(os.tmpdir(), 'native-')),
     '--android-out', fs.mkdtempSync(path.join(os.tmpdir(), 'android-')),
     '--stories-out', fs.mkdtempSync(path.join(os.tmpdir(), 'stories-')),
-    '--cases-dir', fs.mkdtempSync(path.join(os.tmpdir(), 'cases-'))];
-  fs.mkdirSync(path.join(tmp, 'cases/old-case'), { recursive: true });
-  fs.writeFileSync(path.join(tmp, 'cases/old-case.md'), 'old');
-  fs.writeFileSync(path.join(tmp, 'cases/old-case/one.jsx'), 'old');
-  assert.throws(() => execFileSync('node', [...args, '--check'], { stdio: 'pipe' }), (e) => e.status === 1 && /old-case/.test(String(e.stdout)));
+    '--cases-dir', casesDir];
+  const put = (rel) => {
+    fs.mkdirSync(path.dirname(path.join(tmp, rel)), { recursive: true });
+    fs.writeFileSync(path.join(tmp, rel), 'x');
+  };
+  for (const rel of ['cases/old-case.md', 'cases/old-case/one.jsx', 'cases/kept-case/removed.jsx', 'cases/kept-case/removed.d.ts',
+    'cases/kept-case/removed.js', 'cases/a-rule/leftover.jsx', 'cases/kept-case/one.jsx', 'cases/kept-case/one.d.ts']) put(rel);
+  const listed = (() => {
+    try { execFileSync('node', [...args, '--check'], { stdio: 'pipe' }); return ''; } catch (e) { return String(e.stdout); }
+  })();
+  for (const gone of ['old-case.md', 'old-case', 'kept-case/removed.jsx', 'kept-case/removed.d.ts', 'kept-case/removed.js', 'a-rule']) {
+    assert.ok(listed.includes(path.join(tmp, 'cases', gone)), `--check lists ${gone}`);
+  }
+  assert.ok(!listed.includes(path.join(tmp, 'cases/kept-case/one.jsx')));
   execFileSync('node', args);
-  assert.ok(!fs.existsSync(path.join(tmp, 'cases/old-case.md')));
-  assert.ok(!fs.existsSync(path.join(tmp, 'cases/old-case')));
-  assert.equal(JSON.parse(fs.readFileSync(path.join(tmp, 'cases.json'), 'utf8')).cases.length, 0);
+  for (const gone of ['old-case.md', 'old-case', 'kept-case/removed.jsx', 'kept-case/removed.d.ts', 'kept-case/removed.js', 'a-rule']) {
+    assert.ok(!fs.existsSync(path.join(tmp, 'cases', gone)), `${gone} is removed`);
+  }
+  assert.ok(fs.existsSync(path.join(tmp, 'cases/kept-case/one.jsx')));
+  assert.ok(fs.existsSync(path.join(tmp, 'cases/kept-case/one.d.ts')));
+  assert.ok(fs.existsSync(path.join(tmp, 'cases/kept-case.md')));
+  assert.equal(JSON.parse(fs.readFileSync(path.join(tmp, 'cases.json'), 'utf8')).cases.length, 2);
   execFileSync('node', [...args, '--check']);
 });
 
@@ -172,4 +192,39 @@ test('notBuiltYet prints right after the situation in a design case file', () =>
 test('cases.json keeps notBuiltYet as a field', () => {
   const data = JSON.parse(emitCasesJson([{ ...rule, notBuiltYet: 'No product asks yet.' }]));
   assert.equal(data.cases[0].notBuiltYet, 'No product asks yet.');
+});
+
+const importing = {
+  ...design,
+  options: [
+    { ...design.options[0], source: "import Button from '../../components/button';\nimport Tab from \"../../components/tab\";\nimport { Mail } from 'lucide-react';\nexport default function A() { return null; }\n" },
+    design.options[1],
+  ],
+};
+
+test('published example source imports from the package, in the markdown and in cases.json', () => {
+  const md = emitCaseMd(importing);
+  assert.match(md, /from 'oneslash-design-system\/components\/button'/);
+  assert.match(md, /from "oneslash-design-system\/components\/tab"/);
+  assert.match(md, /from 'lucide-react'/);
+  assert.doesNotMatch(md, /\.\.\/\.\.\/components/);
+  const json = emitCasesJson([importing]);
+  assert.doesNotMatch(json, /\.\.\/\.\.\/components/);
+  assert.match(JSON.parse(json).cases[0].options[0].source, /from 'oneslash-design-system\/components\/button'/);
+});
+
+test('cases.json emits only the allowed fields and no example file name', () => {
+  const noisy = { ...design, folder: 'x', extra: 1, options: design.options.map((o) => ({ ...o, extra: 2 })) };
+  const data = JSON.parse(emitCasesJson([noisy]));
+  assert.equal(data.cases[0].extra, undefined);
+  assert.equal(data.cases[0].options[0].extra, undefined);
+  assert.equal(data.cases[0].options[0].example, undefined);
+  assert.deepEqual(Object.keys(data.cases[0].options[0]).sort(), ['do', 'id', 'source', 'title', 'useWhen', 'uses']);
+  assert.deepEqual(Object.keys(data.cases[0]).sort(), ['area', 'id', 'kind', 'level', 'native', 'options', 'seenIn', 'situation', 'title']);
+});
+
+test('the stories file says it is generated from cases/', () => {
+  const src = emitCaseStories(cases);
+  assert.match(src, /^\/\/ Generated from cases\/ by npm run build\. Do not edit\./);
+  assert.doesNotMatch(src, /designTokens/);
 });

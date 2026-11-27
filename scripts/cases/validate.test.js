@@ -104,3 +104,22 @@ test('notBuiltYet, when present, must be a non-empty string', () => {
     assert.throws(() => validateCases([rule({ notBuiltYet: bad })]), /save-rule: notBuiltYet must be a non-empty string/);
   }
 });
+
+test('an option example must be named <option id>.tsx', () => {
+  const o = option('a', { example: 'other.tsx' });
+  assert.throws(() => validateCases([design({ options: [o, option('b')] })]), /option a: example must be a\.tsx/);
+});
+
+test('rejects keys that are not part of the format', () => {
+  assert.throws(() => validateCases([rule({ extra: 1 })]), /case save-rule: unknown key extra/);
+  const o = option('a', { colour: 'red' });
+  assert.throws(() => validateCases([design({ options: [o, option('b')] })]), /option a: unknown key colour/);
+  const withOwn = option('a', { do: ['d'], dont: ['n'], uses: ['Button'] });
+  assert.doesNotThrow(() => validateCases([design({ options: [withOwn, option('b')], native: 'n', notBuiltYet: 'x' })]));
+});
+
+test('kind and level must agree', () => {
+  assert.throws(() => validateCases([rule({ level: 'page' })]), /save-rule: a rule has level rule/);
+  assert.throws(() => validateCases([design({ level: 'rule' })]), /login-page: a design case has level organism or page/);
+  assert.doesNotThrow(() => validateCases([design({ level: 'organism' })]));
+});
