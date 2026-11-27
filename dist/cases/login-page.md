@@ -60,6 +60,10 @@ export default function LoginCentered() {
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (loading) return;
+    setError('');
+    setEmailError('');
+    setPasswordError('');
     if (!email.trim()) {
       setEmailError('Enter your email.');
       return;
@@ -68,13 +72,10 @@ export default function LoginCentered() {
       setEmailError('Enter a valid email address.');
       return;
     }
-    setEmailError('');
     if (!password) {
       setPasswordError('Enter your password.');
       return;
     }
-    setPasswordError('');
-    setError('');
     setLoading(true);
     // Stands in for the request to the server.
     setTimeout(() => {
@@ -143,6 +144,10 @@ export default function LoginSplit() {
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (loading) return;
+    setError('');
+    setEmailError('');
+    setPasswordError('');
     if (!email.trim()) {
       setEmailError('Enter your email.');
       return;
@@ -151,13 +156,10 @@ export default function LoginSplit() {
       setEmailError('Enter a valid email address.');
       return;
     }
-    setEmailError('');
     if (!password) {
       setPasswordError('Enter your password.');
       return;
     }
-    setPasswordError('');
-    setError('');
     setLoading(true);
     // Stands in for the request to the server.
     setTimeout(() => {
@@ -232,6 +234,10 @@ export default function LoginProviderFirst() {
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (loading) return;
+    setError('');
+    setEmailError('');
+    setPasswordError('');
     if (!email.trim()) {
       setEmailError('Enter your email.');
       return;
@@ -240,13 +246,10 @@ export default function LoginProviderFirst() {
       setEmailError('Enter a valid email address.');
       return;
     }
-    setEmailError('');
     if (!password) {
       setPasswordError('Enter your password.');
       return;
     }
-    setPasswordError('');
-    setError('');
     setLoading(true);
     // Stands in for the request to the server.
     setTimeout(() => {
@@ -301,11 +304,14 @@ function looksLikeEmail(value: string) {
 
 export default function LoginEmailOnly() {
   const [email, setEmail] = useState('ada@example.com');
-  const [sent, setSent] = useState(false);
+  const [sentTo, setSentTo] = useState('');
   const [emailError, setEmailError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (loading) return;
+    setEmailError('');
+    setSentTo('');
     if (!email.trim()) {
       setEmailError('Enter your email.');
       return;
@@ -314,12 +320,12 @@ export default function LoginEmailOnly() {
       setEmailError('Enter a valid email address.');
       return;
     }
-    setEmailError('');
     setLoading(true);
+    const address = email.trim();
     // Stands in for the request to the server.
     setTimeout(() => {
       setLoading(false);
-      setSent(true);
+      setSentTo(address);
     }, 1200);
   }
 
@@ -332,7 +338,7 @@ export default function LoginEmailOnly() {
             <Paragraph tone="secondary" size="body2" measure="none">We will email you a link to sign in.</Paragraph>
           </Stack>
           <Form aria-label="Log in" onSubmit={handleSubmit}>
-            {sent && <Alert type="success" variant="inline" message={`We sent a sign-in link to ${email}.`} />}
+            {sentTo && <Alert type="success" variant="inline" message={`We sent a sign-in link to ${sentTo}.`} showCloseButton onClose={() => setSentTo('')} />}
             <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
             <Button size="medium" type="primary" state="enabled" label="Send sign-in link" htmlType="submit" loading={loading} />
           </Form>

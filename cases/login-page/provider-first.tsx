@@ -23,6 +23,10 @@ export default function LoginProviderFirst() {
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (loading) return;
+    setError('');
+    setEmailError('');
+    setPasswordError('');
     if (!email.trim()) {
       setEmailError('Enter your email.');
       return;
@@ -31,13 +35,10 @@ export default function LoginProviderFirst() {
       setEmailError('Enter a valid email address.');
       return;
     }
-    setEmailError('');
     if (!password) {
       setPasswordError('Enter your password.');
       return;
     }
-    setPasswordError('');
-    setError('');
     setLoading(true);
     // Stands in for the request to the server.
     setTimeout(() => {
