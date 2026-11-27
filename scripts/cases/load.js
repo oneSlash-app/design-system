@@ -1,6 +1,7 @@
 // Reads cases/<id>/case.js and attaches each option's example source.
 const fs = require('node:fs');
 const path = require('node:path');
+const { usedComponents } = require('./ods-only');
 
 function loadCase(dir, folder) {
   const file = path.join(dir, folder, 'case.js');
@@ -13,7 +14,8 @@ function loadCase(dir, folder) {
     if (!fs.existsSync(example)) {
       throw new Error(`case ${data.id}: option ${option.id} example ${option.example} is missing`);
     }
-    return { ...option, source: fs.readFileSync(example, 'utf8') };
+    const source = fs.readFileSync(example, 'utf8');
+    return { ...option, source, uses: usedComponents(source) };
   });
   const loaded = { ...data };
   if (options !== undefined) loaded.options = options;

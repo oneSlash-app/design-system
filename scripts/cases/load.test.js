@@ -34,6 +34,19 @@ test('loads each folder that has a case.js, sorted by id, with each example sour
   assert.equal(Object.keys(cases[0]).includes('folder'), false);
 });
 
+test('sets uses from the example source, and only where there is a source', () => {
+  const src = "import Button from '../../components/button';\nimport { Stack } from '../../components/layout';\n";
+  const dir = fixture({
+    'a-case': {
+      'case.js': `module.exports = ${JSON.stringify({ id: 'a-case', options: [{ id: 'one', example: 'one.tsx' }, { id: 'two' }] })};\n`,
+      'one.tsx': src,
+    },
+  });
+  const [c] = loadCases(dir);
+  assert.deepEqual(c.options[0].uses, ['Button', 'Stack']);
+  assert.equal('uses' in c.options[1], false);
+});
+
 test('ignores loose files and names starting with a dot or underscore', () => {
   const dir = fixture({
     'a-case': { 'case.js': caseJs('a-case', 'one.tsx'), 'one.tsx': tsx },
