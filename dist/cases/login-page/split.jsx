@@ -17,6 +17,16 @@ export default function LoginSplit() {
     var _a = useState('ada@example.com'), email = _a[0], setEmail = _a[1];
     var _b = useState(''), password = _b[0], setPassword = _b[1];
     var _c = useState(''), error = _c[0], setError = _c[1];
+    var _d = useState(false), loading = _d[0], setLoading = _d[1];
+    function handleSubmit() {
+        setError('');
+        setLoading(true);
+        // Stands in for the request to the server.
+        setTimeout(function () {
+            setLoading(false);
+            setError('That email and password do not match.');
+        }, 1200);
+    }
     return (<Split fill aside={<Stack gap="large">
           <Image src={productMark} alt="Acme" width={40} height={40}/>
           <Heading level={2} size="h4">Plan the week with your whole team.</Heading>
@@ -26,11 +36,11 @@ export default function LoginSplit() {
         </Stack>}>
       <Center fill>
         <Heading level={2} size="h5">Log in to Acme</Heading>
-        <Form aria-label="Log in" onSubmit={function () { return setError('That email and password do not match.'); }}>
+        <Form aria-label="Log in" onSubmit={handleSubmit}>
           {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={function () { return setError(''); }}/>}
           <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} onChange={function (e) { return setEmail(e.target.value); }}/>
           <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={function (e) { return setPassword(e.target.value); }}/>
-          <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit"/>
+          <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading}/>
           <Button size="medium" type="textOnly" state="enabled" label="Forgot password?"/>
         </Form>
         <Line label="or"/>

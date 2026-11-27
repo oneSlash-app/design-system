@@ -20,6 +20,17 @@ export default function LoginSplit() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  function handleSubmit() {
+    setError('');
+    setLoading(true);
+    // Stands in for the request to the server.
+    setTimeout(() => {
+      setLoading(false);
+      setError('That email and password do not match.');
+    }, 1200);
+  }
 
   return (
     <Split
@@ -36,11 +47,11 @@ export default function LoginSplit() {
     >
       <Center fill>
         <Heading level={2} size="h5">Log in to Acme</Heading>
-        <Form aria-label="Log in" onSubmit={() => setError('That email and password do not match.')}>
+        <Form aria-label="Log in" onSubmit={handleSubmit}>
           {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
           <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
           <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" />
+          <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
           <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
         </Form>
         <Line label="or" />

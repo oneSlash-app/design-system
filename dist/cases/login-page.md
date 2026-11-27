@@ -2,16 +2,20 @@
 
 A person who already has an account opens the product and is not signed in.
 
+**Not built yet:** Commentify and Scindo on the web replace the form with a spinner while signing in. They do not use the Button's loading state yet.
+
 ## Do
 
 - Put the error above the fields, in an inline Alert.
 - When there is a password, put a text-only 'Forgot password?' Button right under the submit Button.
 - Name the provider on its button: 'Continue with Google'.
+- While signing in, show the loading state on the submit Button and keep the form in place.
 
 ## Don't
 
 - Do not clear the email field after a failed attempt.
 - Do not show sign-up fields on the login page; link or tab to sign-up.
+- Do not replace the form with a spinner while signing in.
 
 ## Option: Centered column
 
@@ -44,6 +48,17 @@ export default function LoginCentered() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  function handleSubmit() {
+    setError('');
+    setLoading(true);
+    // Stands in for the request to the server.
+    setTimeout(() => {
+      setLoading(false);
+      setError('That email and password do not match.');
+    }, 1200);
+  }
 
   return (
     <Center fill>
@@ -52,11 +67,11 @@ export default function LoginCentered() {
         <Tab label="Log In" isSelected onClickTab={() => {}} />
         <Tab label="Sign Up" isSelected={false} href="/sign-up" router={router} onClickTab={() => {}} />
       </TabsContainer>
-      <Form aria-label="Log in" onSubmit={() => setError('That email and password do not match.')}>
+      <Form aria-label="Log in" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
         <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
         <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" />
+        <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
         <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
       </Form>
       <Line label="or" />
@@ -95,6 +110,17 @@ export default function LoginSplit() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  function handleSubmit() {
+    setError('');
+    setLoading(true);
+    // Stands in for the request to the server.
+    setTimeout(() => {
+      setLoading(false);
+      setError('That email and password do not match.');
+    }, 1200);
+  }
 
   return (
     <Split
@@ -111,11 +137,11 @@ export default function LoginSplit() {
     >
       <Center fill>
         <Heading level={2} size="h5">Log in to Acme</Heading>
-        <Form aria-label="Log in" onSubmit={() => setError('That email and password do not match.')}>
+        <Form aria-label="Log in" onSubmit={handleSubmit}>
           {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
           <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
           <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
-          <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" />
+          <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
           <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
         </Form>
         <Line label="or" />
@@ -152,6 +178,17 @@ export default function LoginProviderFirst() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  function handleSubmit() {
+    setError('');
+    setLoading(true);
+    // Stands in for the request to the server.
+    setTimeout(() => {
+      setLoading(false);
+      setError('That email and password do not match.');
+    }, 1200);
+  }
 
   return (
     <Center fill>
@@ -162,11 +199,11 @@ export default function LoginProviderFirst() {
         <Button size="medium" type="secondary" state="enabled" label="Continue with Apple" decoIcon={<BrandIcon name="apple" />} />
       </Stack>
       <Line label="or" />
-      <Form aria-label="Sign in with email" onSubmit={() => setError('That email and password do not match.')}>
+      <Form aria-label="Sign in with email" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
         <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
         <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <Button size="medium" type="primary" state="enabled" label="Sign in with email" htmlType="submit" />
+        <Button size="medium" type="primary" state="enabled" label="Sign in with email" htmlType="submit" loading={loading} />
         <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
       </Form>
     </Center>
@@ -195,6 +232,16 @@ import { Center, Stack } from 'oneslash-design-system/components/layout';
 export default function LoginEmailOnly() {
   const [email, setEmail] = useState('ada@example.com');
   const [sent, setSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  function handleSubmit() {
+    setLoading(true);
+    // Stands in for the request to the server.
+    setTimeout(() => {
+      setLoading(false);
+      setSent(true);
+    }, 1200);
+  }
 
   return (
     <Center fill>
@@ -204,10 +251,10 @@ export default function LoginEmailOnly() {
             <Heading level={2} size="h5">Log in</Heading>
             <Paragraph tone="secondary" size="body2" measure="none">We will email you a link to sign in.</Paragraph>
           </Stack>
-          <Form aria-label="Log in" onSubmit={() => setSent(true)}>
+          <Form aria-label="Log in" onSubmit={handleSubmit}>
             {sent && <Alert type="success" variant="inline" message={`We sent a sign-in link to ${email}.`} />}
             <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
-            <Button size="medium" type="primary" state="enabled" label="Send sign-in link" htmlType="submit" />
+            <Button size="medium" type="primary" state="enabled" label="Send sign-in link" htmlType="submit" loading={loading} />
           </Form>
         </Stack>
       </Surface>
