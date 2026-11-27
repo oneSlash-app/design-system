@@ -13,7 +13,9 @@ export type IconComponent = React.ComponentType<any>;
  * - a Lucide icon name (`"Plus"`). The icon set loads in its own chunk the first time a name is used.
  * - an icon component (`Plus` from `lucide-react`). Sized and stroked like a named icon, and only
  *   that icon is bundled.
- * - an element (`<Logo />`). Rendered as given; the caller sizes it.
+ * - an element (`<Plus />`, `<Logo />`). The only form a Server Component can pass. An element
+ *   without a `className` is sized and stroked like a named icon; one with a `className` is
+ *   rendered as given, so the caller's own size wins.
  */
 export type IconSource = string | IconComponent | React.ReactElement;
 
@@ -30,7 +32,17 @@ interface IconSlotProps {
 
 export default function IconSlot({ icon, className, strokeWidth = 2, size, warnIfMissing }: IconSlotProps) {
   if (!icon) return null;
-  if (React.isValidElement(icon)) return icon;
+  if (React.isValidElement(icon)) {
+    const own = icon.props as { className?: string; strokeWidth?: number; size?: number };
+    // The caller's own classes win: merging two size classes would leave the result to CSS order
+    if (own.className !== undefined) return icon;
+    // `strokeWidth` and `size` are props of an icon component, not attributes of a plain tag
+    const iconProps = typeof icon.type === 'string' ? {} : {
+      strokeWidth: own.strokeWidth ?? strokeWidth,
+      ...(size !== undefined && own.size === undefined ? { size } : {}),
+    };
+    return React.cloneElement(icon as React.ReactElement<any>, { className, ...iconProps });
+  }
   if (typeof icon === 'string') {
     return (
       // The empty box holds the icon's place until the icon set has loaded
