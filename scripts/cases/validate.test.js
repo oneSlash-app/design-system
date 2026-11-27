@@ -85,3 +85,14 @@ test('reports every problem in one error', () => {
   const c = design({ kind: 'x', area: 'y' });
   assert.throws(() => validateCases([c]), (err) => /kind/.test(err.message) && /area/.test(err.message));
 });
+
+test('reports a non-object option or non-array options as a problem naming the case', () => {
+  assert.throws(() => validateCases([design({ options: [null, option('split')] })]), /case login-page.*option must be an object/);
+  assert.throws(() => validateCases([design({ options: [null, null] })]), /case login-page.*option must be an object/);
+  assert.throws(() => validateCases([design({ options: 'nope' })]), /case login-page needs 2 to 4 options/);
+});
+
+test('an option with no example is reported by the validator', () => {
+  const o = option('a', { example: '' });
+  assert.throws(() => validateCases([design({ options: [o, option('b')] })]), /option a needs example/);
+});

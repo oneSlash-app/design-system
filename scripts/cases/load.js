@@ -6,7 +6,9 @@ function loadCase(dir, folder) {
   const file = path.join(dir, folder, 'case.js');
   if (!fs.existsSync(file)) throw new Error(`cases/${folder} has no case.js`);
   const data = require(file);
-  const options = (data.options || []).map((option) => {
+  // Malformed options are left as they are; validateCases reports them.
+  const options = !Array.isArray(data.options) ? data.options : data.options.map((option) => {
+    if (!option || typeof option !== 'object' || typeof option.example !== 'string' || option.example === '') return option;
     const example = path.join(dir, folder, option.example);
     if (!fs.existsSync(example)) {
       throw new Error(`case ${data.id}: option ${option.id} example ${option.example} is missing`);
@@ -14,7 +16,7 @@ function loadCase(dir, folder) {
     return { ...option, source: fs.readFileSync(example, 'utf8') };
   });
   const loaded = { ...data };
-  if (data.options) loaded.options = options;
+  if (options !== undefined) loaded.options = options;
   Object.defineProperty(loaded, 'folder', { value: folder, enumerable: false });
   return loaded;
 }

@@ -8,6 +8,10 @@ const text = (v) => typeof v === 'string' && v.trim() !== '';
 const list = (v) => Array.isArray(v) && v.length > 0 && v.every(text);
 
 function checkOption(problems, caseId, option) {
+  if (!option || typeof option !== 'object') {
+    problems.push(`case ${caseId}: every option must be an object`);
+    return;
+  }
   const at = `case ${caseId}: option ${option.id}`;
   if (!ID.test(option.id)) problems.push(`case ${caseId}: option id ${JSON.stringify(option.id)} must be lower-case words joined by hyphens`);
   for (const key of ['title', 'useWhen', 'example']) {
@@ -48,8 +52,9 @@ function checkCase(problems, c) {
     }
     const seen = new Set();
     for (const option of options) {
-      if (seen.has(option.id)) problems.push(`${at}: duplicate option id ${option.id}`);
-      seen.add(option.id);
+      const id = option && option.id;
+      if (seen.has(id)) problems.push(`${at}: duplicate option id ${id}`);
+      seen.add(id);
       checkOption(problems, c.id, option);
     }
   }

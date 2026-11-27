@@ -53,3 +53,12 @@ test('an option whose example file is missing stops the load and names the case 
   const dir = fixture({ 'a-case': { 'case.js': caseJs('a-case', 'missing.tsx') } });
   assert.throws(() => loadCases(dir), /a-case.*missing\.tsx/);
 });
+
+test('a malformed option does not crash the load; it is left for the validator', () => {
+  const bad = (options) => `module.exports = ${JSON.stringify({ id: 'a-case', options })};\n`;
+  for (const options of [[{ id: 'one' }], [{ id: 'one', example: '' }], [null], 'nope']) {
+    const dir = fixture({ 'a-case': { 'case.js': bad(options) } });
+    const [c] = loadCases(dir);
+    assert.deepEqual(c.options, options);
+  }
+});
