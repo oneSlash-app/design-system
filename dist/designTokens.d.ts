@@ -1583,6 +1583,7 @@ export declare namespace measure {
 export declare let container: {
     page: string;
     'page-wide': string;
+    form: string;
 };
 export declare namespace stage {
     let short: string;

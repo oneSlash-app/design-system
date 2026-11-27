@@ -41,7 +41,7 @@ const components = [
   { ods: 'icon', swiftui: '`Image(systemName:)` (SF Symbols)', compose: 'Material Symbols' },
   { ods: 'iconButton', swiftui: '`Button` with a `Label` and `.labelStyle(.iconOnly)`', compose: '`IconButton`' },
   { ods: 'layout', swiftui: NA, compose: NA,
-    note: 'In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`.' },
+    note: 'In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`. `Center` and `Split` are for web pages; a native screen is already one column.' },
   { ods: 'line', swiftui: '`Divider`', compose: '`HorizontalDivider`, `VerticalDivider`' },
   { ods: 'link', swiftui: '`Link`', compose: '`Text` with a `LinkAnnotation.Url` in its `AnnotatedString`' },
   { ods: 'linkCard', swiftui: NA, compose: NA,

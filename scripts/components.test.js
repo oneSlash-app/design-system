@@ -33,6 +33,7 @@ const Tag = load('tag');
 const TextField = load('textField');
 const Textarea = load('textarea');
 const UserImage = load('userImage');
+const { Center, Split } = require(path.join(dist, 'components', 'layout.jsx'));
 
 const h = React.createElement;
 const html = (element) => renderToStaticMarkup(element);
@@ -210,4 +211,24 @@ test('Line without a label is unchanged', () => assert.equal(html(h(Line, {})), 
 test('Form is a client component', () => {
   const first = fs.readFileSync(path.join(dist, 'components', 'form.jsx'), 'utf8').split('\n')[0];
   assert.match(first, /^['"]use client['"];?$/);
+});
+
+test('Center is a centered column at the form width by default', () => {
+  const c = classOf(html(h(Center, { children: 'x' })));
+  for (const k of ['mx-auto', 'w-full', 'max-w-form', 'px-xlarge', 'gap-xlarge']) assert.ok(c.includes(k), k);
+  assert.ok(!c.includes('min-h-screen'));
+});
+test('Center takes the page width, and with fill the window height', () => {
+  assert.ok(classOf(html(h(Center, { width: 'page', children: 'x' }))).includes('max-w-page'));
+  const outer = classOf(html(h(Center, { fill: true, children: 'x' })));
+  for (const k of ['min-h-screen', 'justify-center']) assert.ok(outer.includes(k), k);
+});
+test('Split shows the aside only from md up', () => {
+  const out = html(h(Split, { aside: 'A', children: 'B' }));
+  assert.match(out, /hidden md:flex[^"]*"[^>]*>A</);
+  assert.match(out, /md:grid-cols-2/);
+  assert.match(out, /bg-background-panel/);
+  assert.match(out, />B</);
+  assert.ok(!classOf(out).includes('min-h-screen'));
+  assert.ok(classOf(html(h(Split, { aside: 'A', fill: true, children: 'B' }))).includes('min-h-screen'));
 });

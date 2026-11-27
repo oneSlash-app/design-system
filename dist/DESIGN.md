@@ -299,7 +299,7 @@ For each web component, the table gives the native control to use. System contro
 | heading | `Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)` | `Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }` |  |
 | icon | `Image(systemName:)` (SF Symbols) | Material Symbols |  |
 | iconButton | `Button` with a `Label` and `.labelStyle(.iconOnly)` | `IconButton` |  |
-| layout | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`. |
+| layout | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`. `Center` and `Split` are for web pages; a native screen is already one column. |
 | line | `Divider` | `HorizontalDivider`, `VerticalDivider` |  |
 | link | `Link` | `Text` with a `LinkAnnotation.Url` in its `AnnotatedString` |  |
 | linkCard | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: a `NavigationLink` row in a `List` / a clickable `ListItem`. |

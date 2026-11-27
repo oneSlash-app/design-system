@@ -10,7 +10,7 @@ import FactsRow from "../components/factsRow";
 import LinkCard from "../components/linkCard";
 import Figure from "../components/figure";
 import Tag from "../components/tag";
-import { Cluster, Grid, PageSection, Stack } from "../components/layout";
+import { Center, Cluster, Grid, PageSection, Split, Stack } from "../components/layout";
 
 const meta: Meta = {
   title: "Pages/Page components",
@@ -95,5 +95,25 @@ export const FactsAndFigures: Story = {
         </Figure>
       </Grid>
     </Stack>
+  ),
+};
+
+export const CenteredColumn: Story = {
+  render: () => (
+    <Center>
+      <SectionIntro name="Sign in" />
+      <Paragraph tone="secondary">A narrow column in the middle of the page.</Paragraph>
+    </Center>
+  ),
+};
+
+export const TwoHalves: Story = {
+  render: () => (
+    <Split aside={<Paragraph>The aside shows from the medium breakpoint up.</Paragraph>}>
+      <Center fill>
+        <SectionIntro name="Sign in" />
+        <Paragraph tone="secondary">The other half holds the page.</Paragraph>
+      </Center>
+    </Split>
   ),
 };

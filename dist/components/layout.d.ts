@@ -20,4 +20,21 @@ interface GridProps extends LayoutProps {
 }
 export declare function Grid({ children, columns, compact, align, gap, className }: GridProps): React.JSX.Element;
 export declare function PageSection({ children, gap, className }: LayoutProps): React.JSX.Element;
+interface CenterProps {
+    children: React.ReactNode;
+    /** `form` is a narrow column, `page` the width of a page. */
+    width?: 'form' | 'page';
+    /** Take at least the window height and center the column vertically too. */
+    fill?: boolean;
+    gap?: Gap;
+}
+export declare function Center({ children, width, fill, gap }: CenterProps): React.JSX.Element;
+interface SplitProps {
+    /** The first half, on a panel. It is not shown below the medium breakpoint. */
+    aside: React.ReactNode;
+    children: React.ReactNode;
+    /** Take at least the window height. */
+    fill?: boolean;
+}
+export declare function Split({ aside, children, fill }: SplitProps): React.JSX.Element;
 export {};

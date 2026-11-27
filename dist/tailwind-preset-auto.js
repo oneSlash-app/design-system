@@ -290,7 +290,8 @@ module.exports = {
         "measure-body": "var(--os-measure-body)",
         "measure-wide": "var(--os-measure-wide)",
         "page": "var(--os-container-page)",
-        "page-wide": "var(--os-container-page-wide)"
+        "page-wide": "var(--os-container-page-wide)",
+        "form": "var(--os-container-form)"
       },
       "fontSize": {
         "h1": [

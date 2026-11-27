@@ -59,6 +59,7 @@ test('preset maps page spacing, text measures and the page column', () => {
   assert.equal(e.maxWidth['measure-statement'], 'var(--os-measure-statement)');
   assert.equal(e.maxWidth.page, 'var(--os-container-page)');
   assert.equal(e.maxWidth['page-wide'], 'var(--os-container-page-wide)');
+  assert.equal(e.maxWidth.form, 'var(--os-container-form)');
 });
 
 test('auto preset uses a variant darkMode with an OS media query', () => {

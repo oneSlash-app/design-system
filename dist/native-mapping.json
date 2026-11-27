@@ -60,7 +60,7 @@
       "ods": "layout",
       "swiftui": "Not applicable: web page pattern",
       "compose": "Not applicable: web page pattern",
-      "note": "In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`."
+      "note": "In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`. `Center` and `Split` are for web pages; a native screen is already one column."
     },
     {
       "ods": "line",
