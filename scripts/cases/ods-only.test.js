@@ -26,7 +26,7 @@ import type { Tag } from '../../components/tag';`;
 test('reports an import from outside react, lucide-react and ../../components', () => {
   for (const spec of ['next/link', './helper', '../../designTokens', 'oneslash-design-system/components/button',
     '../../components/button.tsx', '../../components/a/b', '../../components', '../components/button']) {
-    const out = check(`import X from '${spec}';\n${body('<X />')}`);
+    const out = check(`import X from '${spec}';\nexport const x = X;`);
     assert.equal(out.length, 1, spec);
     assert.match(out[0], /^a\.tsx:1 /, spec);
   }
@@ -99,4 +99,48 @@ test('reports dangerouslySetInnerHTML', () => {
 
 test('a type-only import is allowed', () => {
   assert.deepEqual(check(`import type { ReactNode } from 'react';\nexport type P = { c: ReactNode };`), []);
+});
+
+test('bypass: an aliased createElement import', () => {
+  assert.ok(check(`import { createElement as h } from 'react';\nh('div', { className: 'x' });`).length >= 1);
+});
+
+test('bypass: element access and detached references on React', () => {
+  assert.equal(check(`import React from 'react';\nReact['createElement']('div');`).length, 1);
+  assert.ok(check(`import React from 'react';\nconst ce = React.createElement;\nce('div');`).length >= 1);
+  assert.equal(check(`import React from 'react';\nconst R = React;`).length, 1);
+});
+
+test('bypass: a local string or component used as a tag', () => {
+  assert.equal(check(`const Tag = 'div';\n${body('<Tag>x</Tag>')}`).length, 1);
+  const out = check(`const Local = () => null;\n${body('<Local />')}`);
+  assert.equal(out.length, 1);
+  assert.match(out[0], /define no components/);
+});
+
+test('bypass: DOM globals, innerHTML and cloneElement', () => {
+  assert.ok(check(`document.body.innerHTML = '<b>x</b>';`).length >= 2);
+  assert.equal(check(`window.alert(1);`).length, 1);
+  assert.equal(check(`const g = globalThis;`).length, 1);
+  assert.equal(check(`const a = { outerHTML: 'x' };`).length, 1);
+  assert.equal(check(`import React from 'react';\nReact.cloneElement(<></>, { style: {} });`).length, 1);
+  assert.equal(check(`import { cloneElement } from 'react';`).length, 1);
+});
+
+test('a named react import must be a hook, Fragment or a type', () => {
+  assert.equal(check(`import { Children } from 'react';`).length, 1);
+  assert.deepEqual(check(`import { useState, useId, Fragment, type ReactNode } from 'react';`), []);
+  assert.deepEqual(check(`import { Fragment } from 'react';\n${body('<Fragment>x</Fragment>')}`), []);
+});
+
+test('hooks on React and a lucide icon tag pass', () => {
+  assert.deepEqual(check(`import React, { useState } from 'react';
+import { Plus } from 'lucide-react';
+export default function A() { const [a] = useState(0); const [b] = React.useState(1); return <Plus size={a + b} />; }`), []);
+});
+
+test('a parse error is reported with its line', () => {
+  const out = check(`import Stack from '../../components/stack';\n${body('<Stack>')}`);
+  assert.ok(out.length >= 1);
+  assert.match(out[0], /^a\.tsx:2 syntax error/);
 });
