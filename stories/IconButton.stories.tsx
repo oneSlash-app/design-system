@@ -1,5 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { Plus, Settings } from "lucide-react";
 import IconButton from "../components/iconButton";
 
 const meta: Meta<typeof IconButton> = {
@@ -115,4 +116,33 @@ export const AriaExpanded: Story = {
     "aria-controls": "details-panel",
     "data-testid": "details-trigger",
   },
+};
+
+// `icon` takes a component or an element instead of a name: only that icon is bundled.
+// There is no name to read out, so pass `ariaLabel`.
+export const IconComponent: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <IconButton color="primary" state="enabled" size="medium" icon={Plus} ariaLabel="Add" />
+      <IconButton color="tertiary" state="enabled" size="medium" icon={Settings} ariaLabel="Settings" />
+      <IconButton
+        color="iconOnly"
+        state="enabled"
+        size="medium"
+        icon={<span className="size-6 rounded-full bg-accent-main" />}
+        ariaLabel="Account"
+      />
+    </div>
+  ),
+};
+
+// `href` renders a link with the icon button's look
+export const AsLink: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <IconButton color="tertiary" state="enabled" size="small" icon={Settings} ariaLabel="Settings" href="/settings" />
+      <IconButton color="primary" state="enabled" size="medium" iconName="ExternalLink" ariaLabel="Open example.com" href="https://example.com" openInNewTab />
+      <IconButton color="secondary" state="disabled" size="medium" iconName="Settings" href="/settings" />
+    </div>
+  ),
 };

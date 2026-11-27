@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
-import { icons } from 'lucide-react';
+import type { icons } from 'lucide-react';
+import IconSlot, { type IconComponent } from './iconSlot';
 import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 
 type IconName = keyof typeof icons;
@@ -13,6 +14,8 @@ interface TagProps {
   label: React.ReactNode;
   secondLabel?: string;
   iconName?: IconName;
+  /** An icon component (only that icon is bundled) or an element. Wins over `iconName`. */
+  icon?: IconComponent | React.ReactElement;
   onClick?: React.MouseEventHandler<HTMLDivElement>;
   /** Only applies to a clickable tag: dims it, drops it from the tab order and ignores clicks */
   disabled?: boolean;
@@ -72,11 +75,10 @@ export default function Tag({
   label,
   secondLabel,
   iconName,
+  icon,
   onClick,
   disabled = false,
 }: TagProps): JSX.Element {
-  // Get icon directly from icons map
-  const Icon = iconName ? icons[iconName] : null;
 
   // Size and padding
   const sizeClasses = {
@@ -175,7 +177,7 @@ export default function Tag({
       {variant === 'dot' && (
         <span className={`w-3 h-3 rounded-full flex-shrink-0 ${dotColor}`} />
       )}
-      {Icon && variant !== 'dot' && <Icon className={`${size === 'tiny' ? 'w-3 h-3' : 'w-4 h-4'} flex-shrink-0`} strokeWidth={2} />}
+      {variant !== 'dot' && <IconSlot icon={icon ?? iconName} className={`${size === 'tiny' ? 'w-3 h-3' : 'w-4 h-4'} flex-shrink-0`} />}
       <div className="flex flex-col text-center">
         <span>{label}</span>
         {secondLabel && (

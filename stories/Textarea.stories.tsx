@@ -116,3 +116,16 @@ export const Named: Story = {
     size: "medium",
   },
 };
+
+// `maxLength` and `spellCheck` reach the <textarea>
+export const MaxLength: Story = {
+  render: (args) => <TextareaWrapper {...args} />,
+  args: {
+    id: "maxlength-textarea",
+    label: "Comment (up to 280 characters)",
+    value: "",
+    maxLength: 280,
+    spellCheck: false,
+    size: "medium",
+  },
+};

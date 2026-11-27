@@ -5,6 +5,10 @@ interface UserImageProps {
   userHandle: string;
   userImgUrl?: string;
   grayscale?: boolean;
+  /** Diameter in pixels. Defaults to 24. The initial scales with it. */
+  size?: number;
+  /** Passed to the `<img>`, e.g. `no-referrer` for hosts that refuse requests carrying a referrer */
+  referrerPolicy?: React.HTMLAttributeReferrerPolicy;
 }
 
 function getColorSeed(userHandle: string): string {
@@ -32,6 +36,8 @@ export default function UserImage({
   userHandle,
   userImgUrl,
   grayscale = false,
+  size,
+  referrerPolicy,
 }: UserImageProps) {
   const displayInitial = userHandle.charAt(0).toUpperCase() || 'A';
   const seed = getColorSeed(userHandle);
@@ -52,6 +58,8 @@ export default function UserImage({
       style={{
         '--light-bg': lightBg,
         '--dark-bg': darkBg,
+        // The classes below set the default 24px; a size overrides them, with the initial at the same 2:3 ratio
+        ...(size !== undefined && { width: size, height: size, fontSize: (size * 2) / 3 }),
       } as React.CSSProperties}
       className="flex items-center justify-center w-6 h-6 rounded-full overflow-hidden bg-[var(--light-bg)] dark:bg-[var(--dark-bg)] text-fg-primary"
     >
@@ -59,10 +67,11 @@ export default function UserImage({
         <img
           src={userImgUrl}
           alt={userHandle}
+          referrerPolicy={referrerPolicy}
           className="w-full h-full object-cover rounded-full"
         />
       ) : (
-        <span className="text-body1 text-fg-primary">
+        <span className={`${size === undefined ? 'text-body1' : 'leading-none'} text-fg-primary`}>
           {displayInitial}
         </span>
       )}

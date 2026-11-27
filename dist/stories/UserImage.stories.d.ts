@@ -8,3 +8,4 @@ export declare const SingleName: Story;
 export declare const WithImage: Story;
 export declare const DifferentUsers: Story;
 export declare const MixedWithImages: Story;
+export declare const Sizes: Story;

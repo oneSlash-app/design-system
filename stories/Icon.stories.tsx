@@ -1,5 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { Star } from "lucide-react";
 import Icon from "../components/icon";
 
 const meta: Meta<typeof Icon> = {
@@ -147,4 +148,16 @@ export const StrokeWidths: Story = {
     size: "large",
     color: "primary",
   },
+};
+
+// `icon` takes a component instead of a name: only that icon is bundled
+export const FromComponent: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <Icon icon={Star} size="small" />
+      <Icon icon={Star} />
+      <Icon icon={Star} size="large" color="accent" />
+      <Icon name="Star" size="large" color="accent" />
+    </div>
+  ),
 };

@@ -1,4 +1,5 @@
 import React from "react";
+import { Check } from "lucide-react";
 import Tag from "../components/tag";
 var meta = {
     title: "Components/Tag",
@@ -175,5 +176,12 @@ export var DotColors = {
       <Tag variant="dot" size="medium" color="warning" label="Away"/>
       <Tag variant="dot" size="medium" color="error" label="Offline"/>
       <Tag variant="dot" size="medium" color="info" label="Busy"/>
+    </div>); },
+};
+// `icon` takes a component instead of a name: only that icon is bundled
+export var IconComponent = {
+    render: function () { return (<div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+      <Tag variant="contained" size="medium" label="Component" icon={Check}/>
+      <Tag variant="contained" size="medium" label="By name" iconName="Check"/>
     </div>); },
 };

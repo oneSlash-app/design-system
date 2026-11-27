@@ -1,4 +1,5 @@
 import React from "react";
+import { Star } from "lucide-react";
 import Icon from "../components/icon";
 var meta = {
     title: "Components/Icon",
@@ -127,4 +128,13 @@ export var StrokeWidths = {
         size: "large",
         color: "primary",
     },
+};
+// `icon` takes a component instead of a name: only that icon is bundled
+export var FromComponent = {
+    render: function () { return (<div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <Icon icon={Star} size="small"/>
+      <Icon icon={Star}/>
+      <Icon icon={Star} size="large" color="accent"/>
+      <Icon name="Star" size="large" color="accent"/>
+    </div>); },
 };

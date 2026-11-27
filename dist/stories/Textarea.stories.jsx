@@ -95,3 +95,15 @@ export var Named = {
         size: "medium",
     },
 };
+// `maxLength` and `spellCheck` reach the <textarea>
+export var MaxLength = {
+    render: function (args) { return <TextareaWrapper {...args}/>; },
+    args: {
+        id: "maxlength-textarea",
+        label: "Comment (up to 280 characters)",
+        value: "",
+        maxLength: 280,
+        spellCheck: false,
+        size: "medium",
+    },
+};

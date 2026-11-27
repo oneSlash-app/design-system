@@ -11,3 +11,4 @@ export declare const AllColors: Story;
 export declare const AllSizes: Story;
 export declare const CommonIcons: Story;
 export declare const StrokeWidths: Story;
+export declare const FromComponent: Story;

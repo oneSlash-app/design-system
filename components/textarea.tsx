@@ -25,6 +25,10 @@ interface TextareaProps {
   /** Browser autofill hint. Defaults to "off". */
   autoComplete?: string;
   tabIndex?: number;
+  /** Passed to the `<textarea>`: the browser stops typing at this many characters */
+  maxLength?: number;
+  /** Passed to the `<textarea>`. Left to the browser's default when not set. */
+  spellCheck?: boolean;
 }
 
 export default function Textarea({
@@ -48,6 +52,8 @@ export default function Textarea({
   name,
   autoComplete = 'off',
   tabIndex,
+  maxLength,
+  spellCheck,
 }: TextareaProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -151,6 +157,8 @@ export default function Textarea({
           name={name}
           autoComplete={autoComplete}
           tabIndex={tabIndex}
+          maxLength={maxLength}
+          spellCheck={spellCheck}
           aria-invalid={error || undefined}
           aria-describedby={error ? errorId : undefined}
         />

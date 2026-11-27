@@ -12,3 +12,5 @@ export declare const Disabled: Story;
 export declare const Loading: Story;
 export declare const AllSizes: Story;
 export declare const AriaExpanded: Story;
+export declare const IconComponent: Story;
+export declare const AsLink: Story;

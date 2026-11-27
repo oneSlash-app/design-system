@@ -1,4 +1,15 @@
 'use client';
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -11,14 +22,13 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import React from 'react';
-import * as LucideIcons from 'lucide-react';
+import NextLink from 'next/link';
+import IconSlot from './iconSlot';
 import { LoadingSmall } from './loadingScreen';
-import { focusRing, focusRingDanger, pressFeedback, stateTransition } from './sharedStyles';
+import { focusRing, focusRingDanger, pressFeedback, pressFeedbackAny, stateTransition } from './sharedStyles';
 export default function Button(_a) {
-    var size = _a.size, type = _a.type, _b = _a.color, color = _b === void 0 ? 'default' : _b, state = _a.state, label = _a.label, secondLabel = _a.secondLabel, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _c = _a.className, className = _c === void 0 ? '' : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, rest = __rest(_a, ["size", "type", "color", "state", "label", "secondLabel", "decoIcon", "actionIcon", "onClickButton", "onClickActionIcon", "className", "loading"]);
-    // Synchronous lookup so icons render on the first paint
-    var IconLeft = decoIcon ? LucideIcons[decoIcon] : null;
-    var IconRight = actionIcon ? LucideIcons[actionIcon] : null;
+    var size = _a.size, type = _a.type, _b = _a.color, color = _b === void 0 ? 'default' : _b, state = _a.state, label = _a.label, secondLabel = _a.secondLabel, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, onClickButton = _a.onClickButton, onClickActionIcon = _a.onClickActionIcon, _c = _a.className, className = _c === void 0 ? '' : _c, _d = _a.loading, loading = _d === void 0 ? false : _d, href = _a.href, _e = _a.openInNewTab, openInNewTab = _e === void 0 ? false : _e, replace = _a.replace, _f = _a.htmlType, htmlType = _f === void 0 ? 'button' : _f, rest = __rest(_a, ["size", "type", "color", "state", "label", "secondLabel", "decoIcon", "actionIcon", "onClickButton", "onClickActionIcon", "className", "loading", "href", "openInNewTab", "replace", "htmlType"]);
+    var isLink = href !== undefined;
     // Horizontal padding sits on the button so an icon and the label are inset equally
     var sizeClasses = {
         large: 'text-body1 py-2 px-3 gap-1',
@@ -76,23 +86,48 @@ export default function Button(_a) {
             : 'cursor-not-allowed text-fg-disabled bg-actionBackground-disabled',
         selected: 'cursor-pointer bg-primary-dark text-primary-contrast',
     };
+    // A lone label is centered, which shows once the button is wider than its content (`w-full`).
+    // With an action icon the label stays at the start and the icon at the far edge.
+    var justify = actionIcon ? 'justify-between' : 'justify-center';
+    // A <button> shrinks to its content and `enabled:` matches it. An <a> does neither, so a link
+    // gets the press feedback for non-buttons and a zero-specificity fit width that `w-full` overrides.
+    var linkClasses = state === 'disabled' || loading ? '[:where(&)]:w-fit' : "[:where(&)]:w-fit ".concat(pressFeedbackAny);
     // Hover is pure CSS; `state="hovered"` and `state="focused"` only exist to show those states in docs
-    var buttonClasses = "\n    flex flex-row items-center rounded-control justify-between ".concat(stateTransition, " ").concat(pressFeedback, "\n    ").concat(color === 'danger' ? focusRingDanger : focusRing, "\n    ").concat(sizeClasses, "\n    ").concat(state === 'selected' ? stateClasses.selected : '', "\n    ").concat(state === 'enabled' || state === 'hovered' ? "".concat(baseTypeClasses, " ").concat(loading ? 'cursor-wait' : "".concat(stateClasses.enabled, " ").concat(hoverTypeClasses)) : '', "\n    ").concat(state === 'focused' ? "".concat(baseTypeClasses, " ").concat(hoverTypeClasses, " ").concat(stateClasses.focused) : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : '', "\n    ").concat(className, "\n  ");
-    return (<button {...rest} type="button" className={buttonClasses} disabled={state === 'disabled' || loading} aria-busy={loading || undefined} onClick={onClickButton}>
+    var buttonClasses = "\n    flex flex-row items-center rounded-control ".concat(justify, " ").concat(stateTransition, " ").concat(isLink ? linkClasses : pressFeedback, "\n    ").concat(color === 'danger' ? focusRingDanger : focusRing, "\n    ").concat(sizeClasses, "\n    ").concat(state === 'selected' ? stateClasses.selected : '', "\n    ").concat(state === 'enabled' || state === 'hovered' ? "".concat(baseTypeClasses, " ").concat(loading ? 'cursor-wait' : "".concat(stateClasses.enabled, " ").concat(hoverTypeClasses)) : '', "\n    ").concat(state === 'focused' ? "".concat(baseTypeClasses, " ").concat(hoverTypeClasses, " ").concat(stateClasses.focused) : '', "\n    ").concat(state === 'disabled' ? stateClasses.disabled : '', "\n    ").concat(className, "\n  ");
+    var content = (<>
       {/* Group IconLeft and label in a flex container for left alignment */}
       <div className={"flex items-center ".concat(size === 'tiny' ? 'gap-0.5' : 'gap-1')}>
-        {loading ? (<LoadingSmall size={spinnerSize}/>) : (IconLeft && <IconLeft className={"".concat(sizeIcon, " flex-shrink-0")} strokeWidth={2}/>)}
+        {loading ? (<LoadingSmall size={spinnerSize}/>) : (<IconSlot icon={decoIcon} className={"".concat(sizeIcon, " flex-shrink-0")}/>)}
         <div className={"flex flex-col text-center px-1"}>
           <span className="whitespace-nowrap overflow-hidden truncate">{label}</span>
           {secondLabel && (<span className={"whitespace-nowrap overflow-hidden truncate ".concat(size === 'tiny' ? 'text-caption' : 'text-body2', " opacity-70")}>{secondLabel}</span>)}
         </div>
       </div>
-      {IconRight && (<span onClick={function (e) {
-                // Don't also trigger the button's own click
+      {actionIcon && (<span onClick={function (e) {
+                // Don't also trigger the button's own click, or follow the link
                 e.stopPropagation();
+                if (isLink && onClickActionIcon)
+                    e.preventDefault();
                 onClickActionIcon === null || onClickActionIcon === void 0 ? void 0 : onClickActionIcon();
             }} className="cursor-pointer">
-          <IconRight className={"".concat(sizeIcon, " flex-shrink-0")} strokeWidth={2}/>
+          <IconSlot icon={actionIcon} className={"".concat(sizeIcon, " flex-shrink-0")}/>
         </span>)}
+    </>);
+    if (isLink) {
+        // A link cannot be disabled: without an href it is not focusable and does nothing
+        if (state === 'disabled' || loading) {
+            return (<a {...rest} role="link" aria-disabled="true" aria-busy={loading || undefined} className={buttonClasses}>
+          {content}
+        </a>);
+        }
+        var linkProps = __assign(__assign(__assign({}, rest), { className: buttonClasses, onClick: onClickButton }), (openInNewTab && { target: '_blank', rel: 'noopener noreferrer' }));
+        // Same rule as Link: next/link for paths, a plain <a> for another site
+        if (href.startsWith('http://') || href.startsWith('https://')) {
+            return <a href={href} {...linkProps}>{content}</a>;
+        }
+        return <NextLink href={href} replace={replace} {...linkProps}>{content}</NextLink>;
+    }
+    return (<button {...rest} type={htmlType} className={buttonClasses} disabled={state === 'disabled' || loading} aria-busy={loading || undefined} onClick={onClickButton}>
+      {content}
     </button>);
 }

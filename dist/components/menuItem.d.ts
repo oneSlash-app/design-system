@@ -1,4 +1,4 @@
-import React, { JSX } from 'react';
+import React from 'react';
 interface MenuItemProps {
     href?: string;
     iconName?: string;
@@ -27,5 +27,5 @@ interface MenuItemProps {
     /** Select keeps focus on its trigger and passes -1 */
     tabIndex?: number;
 }
-export default function MenuItem({ href, iconName, icon, userHandle, userImgUrl, label, secondLabel, isSelected, onClick, className, size, tag, iconRight, rightAction, role, id, isActive, tabIndex, }: MenuItemProps): JSX.Element;
+export default function MenuItem({ href, iconName, icon, userHandle, userImgUrl, label, secondLabel, isSelected, onClick, className, size, tag, iconRight, rightAction, role, id, isActive, tabIndex, }: MenuItemProps): React.JSX.Element;
 export {};

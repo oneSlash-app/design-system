@@ -1,4 +1,15 @@
 'use client';
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
 var __rest = (this && this.__rest) || function (s, e) {
     var t = {};
     for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
@@ -11,15 +22,16 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 import React from 'react';
-import * as LucideIcons from 'lucide-react';
+import NextLink from 'next/link';
+import IconSlot from './iconSlot';
 import { LoadingSmall } from './loadingScreen';
-import { focusRing, pressFeedback, stateTransition } from './sharedStyles';
+import { focusRing, pressFeedback, pressFeedbackAny, stateTransition } from './sharedStyles';
 export default function IconButton(_a) {
-    var color = _a.color, state = _a.state, size = _a.size, iconName = _a.iconName, onClick = _a.onClick, _b = _a.loading, loading = _b === void 0 ? false : _b, // Default to false
-    ariaLabel = _a.ariaLabel, rest = __rest(_a, ["color", "state", "size", "iconName", "onClick", "loading", "ariaLabel"]);
-    var Icon = LucideIcons[iconName];
+    var color = _a.color, state = _a.state, size = _a.size, iconName = _a.iconName, icon = _a.icon, onClick = _a.onClick, _b = _a.loading, loading = _b === void 0 ? false : _b, // Default to false
+    ariaLabel = _a.ariaLabel, href = _a.href, _c = _a.openInNewTab, openInNewTab = _c === void 0 ? false : _c, replace = _a.replace, rest = __rest(_a, ["color", "state", "size", "iconName", "icon", "onClick", "loading", "ariaLabel", "href", "openInNewTab", "replace"]);
+    var isLink = href !== undefined;
     // "ChevronDown" -> "Chevron Down"
-    var label = ariaLabel !== null && ariaLabel !== void 0 ? ariaLabel : String(iconName).replace(/([a-z])([A-Z0-9])/g, '$1 $2');
+    var label = ariaLabel !== null && ariaLabel !== void 0 ? ariaLabel : (iconName ? String(iconName).replace(/([a-z])([A-Z0-9])/g, '$1 $2') : undefined);
     var isDisabled = state === 'disabled';
     // Size-based classes
     var sizeClasses = {
@@ -48,16 +60,26 @@ export default function IconButton(_a) {
                     : color === 'tertiary'
                         ? 'bg-background-accent100' // Tertiary
                         : ' '; // iconOnly: none
-    // Background hover color; `enabled:` skips it while disabled or loading
-    var bgColorHover = state === 'selected'
-        ? '' // No hover effect when selected
+    // `enabled:` never matches an <a>, so a link has its own hover classes
+    var bgColorHoverLink = state === 'selected' || isDisabled || loading
+        ? ''
         : color === 'primary'
-            ? 'enabled:hover:bg-accent-dark/75' // Primary
+            ? 'hover:bg-accent-dark/75' // Primary
             : color === 'secondary'
-                ? 'enabled:hover:bg-secondary-dark/75' // Secondary
-                : color === 'tertiary'
-                    ? 'enabled:hover:bg-background-accent200/75' // Tertiary
-                    : 'enabled:hover:bg-background-accent200/75'; // iconOnly
+                ? 'hover:bg-secondary-dark/75' // Secondary
+                : 'hover:bg-background-accent200/75'; // Tertiary and iconOnly
+    // Background hover color; `enabled:` skips it while disabled or loading
+    var bgColorHover = isLink
+        ? bgColorHoverLink
+        : state === 'selected'
+            ? '' // No hover effect when selected
+            : color === 'primary'
+                ? 'enabled:hover:bg-accent-dark/75' // Primary
+                : color === 'secondary'
+                    ? 'enabled:hover:bg-secondary-dark/75' // Secondary
+                    : color === 'tertiary'
+                        ? 'enabled:hover:bg-background-accent200/75' // Tertiary
+                        : 'enabled:hover:bg-background-accent200/75'; // iconOnly
     // Icon color
     var iconColor = isDisabled
         ? 'text-fg-disabled'
@@ -78,8 +100,27 @@ export default function IconButton(_a) {
             : state === 'selected'
                 ? 'cursor-pointer'
                 : 'cursor-pointer';
-    return (<button {...rest} type="button" className={"".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses, " ").concat(stateTransition, " ").concat(pressFeedback, " ").concat(focusRing, " flex items-center justify-center")} disabled={isDisabled || loading} // Disable button during loading
+    // A <button> shrinks to its content and `enabled:` matches it. An <a> does neither, so a link
+    // gets the press feedback for non-buttons and a zero-specificity fit width a width class overrides.
+    var press = isLink ? "[:where(&)]:w-fit ".concat(isDisabled || loading ? '' : pressFeedbackAny) : pressFeedback;
+    var className = "".concat(baseClasses, " ").concat(bgColor, " ").concat(iconColor, " ").concat(bgColorHover, " ").concat(stateClasses, " ").concat(stateTransition, " ").concat(press, " ").concat(focusRing, " flex items-center justify-center");
+    var content = loading ? (<LoadingSmall size={size}/>) : (<IconSlot icon={icon !== null && icon !== void 0 ? icon : iconName} className={iconSizeClasses[size]}/>);
+    if (isLink) {
+        // A link cannot be disabled: without an href it is not focusable and does nothing
+        if (isDisabled || loading) {
+            return (<a {...rest} role="link" aria-disabled="true" className={className} aria-label={loading ? 'Loading' : label}>
+          {content}
+        </a>);
+        }
+        var linkProps = __assign(__assign(__assign({}, rest), { className: className, onClick: onClick, 'aria-label': label }), (openInNewTab && { target: '_blank', rel: 'noopener noreferrer' }));
+        // Same rule as Link: next/link for paths, a plain <a> for another site
+        if (href.startsWith('http://') || href.startsWith('https://')) {
+            return <a href={href} {...linkProps}>{content}</a>;
+        }
+        return <NextLink href={href} replace={replace} {...linkProps}>{content}</NextLink>;
+    }
+    return (<button {...rest} type="button" className={className} disabled={isDisabled || loading} // Disable button during loading
      onClick={onClick} aria-label={loading ? 'Loading' : label}>
-      {loading ? (<LoadingSmall size={size}/>) : (Icon && <Icon className={iconSizeClasses[size]} strokeWidth={2}/>)}
+      {content}
     </button>);
 }

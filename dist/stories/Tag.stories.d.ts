@@ -18,3 +18,4 @@ export declare const Info: Story;
 export declare const AllColors: Story;
 export declare const Dot: Story;
 export declare const DotColors: Story;
+export declare const IconComponent: Story;

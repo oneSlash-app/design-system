@@ -1,5 +1,6 @@
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import { ChevronDown, ChevronRight, ExternalLink, Plus, Star } from "lucide-react";
 import Button from "../components/button";
 
 const meta: Meta<typeof Button> = {
@@ -183,4 +184,57 @@ export const AriaExpanded: Story = {
     "aria-controls": "filters-panel",
     "data-testid": "filters-trigger",
   },
+};
+
+// An icon can be a component or an element instead of a name. A component is sized like a
+// named icon and only that icon is bundled; an element is rendered as given.
+export const IconComponents: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <Button size="medium" type="primary" state="enabled" label="Component" decoIcon={Star} actionIcon={ChevronRight} />
+      <Button size="medium" type="secondary" state="enabled" label="By name" decoIcon="Star" actionIcon="ChevronRight" />
+      <Button
+        size="medium"
+        type="tertiary"
+        state="enabled"
+        label="Element"
+        decoIcon={<span className="w-5 h-5 rounded-full bg-accent-main flex-shrink-0" />}
+      />
+    </div>
+  ),
+};
+
+// `href` renders a link with the button's look: next/link for a path, a plain <a> for another site
+export const AsLink: Story = {
+  render: () => (
+    <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <Button size="medium" type="primary" state="enabled" label="Internal link" href="/gallery" />
+      <Button size="medium" type="secondary" state="enabled" label="New tab" href="https://example.com" openInNewTab actionIcon={ExternalLink} />
+      <Button size="medium" type="tertiary" state="disabled" label="Disabled link" href="/gallery" />
+    </div>
+  ),
+};
+
+// `htmlType="submit"` makes the button submit its form, so Enter in a field submits too
+export const Submit: Story = {
+  render: () => (
+    <form onSubmit={(e) => e.preventDefault()} style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+      <Button size="medium" type="primary" state="enabled" label="Save" htmlType="submit" />
+      <Button size="medium" type="tertiary" state="enabled" label="Reset" htmlType="reset" />
+    </form>
+  ),
+};
+
+// Stretched, a lone label (with or without a deco icon) is centered. With an action icon the
+// label stays at the start and the icon sits at the far edge.
+export const FullWidth: Story = {
+  render: () => (
+    <div style={{ display: "flex", flexDirection: "column", gap: "16px", width: "320px" }}>
+      <Button size="medium" type="primary" state="enabled" label="Continue" className="w-full" />
+      <Button size="medium" type="secondary" state="enabled" label="Add item" decoIcon={Plus} className="w-full" />
+      <Button size="medium" type="tertiary" state="enabled" label="Filters" actionIcon={ChevronDown} className="w-full" />
+      <Button size="medium" type="primary" state="enabled" label="Link, full width" href="/gallery" className="w-full" />
+      <Button size="medium" type="primary" state="enabled" label="Link, fits content" href="/gallery" />
+    </div>
+  ),
 };

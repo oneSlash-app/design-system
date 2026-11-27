@@ -1,15 +1,14 @@
 'use client';
-import React, { useState, useEffect, useRef, useId, useCallback, SVGProps, JSX } from 'react';
+import React, { useState, useEffect, useRef, useId, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import { usePopper } from 'react-popper';
-import * as LucideIcons from 'lucide-react';
+import IconSlot from './iconSlot';
 import { ChevronDown } from 'lucide-react';
 import Menu from './menu';
 import MenuItem from './menuItem';
 import { focusRing, overlayHidden, overlayTransition, overlayVisible, stateTransition } from './sharedStyles';
 import { useOverlayTransition } from './useOverlayTransition';
 
-type IconType = (props: SVGProps<SVGSVGElement>) => JSX.Element;
 
 export interface SelectOption {
   value: string;
@@ -81,7 +80,6 @@ export default function Select({
   const optionId = (index: number) => `${listboxId}-option-${index}`;
 
   // Synchronous lookup so the icon renders on the first paint
-  const DecoIcon = decoIconName ? (LucideIcons[decoIconName as keyof typeof LucideIcons] as IconType) : null;
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -263,9 +261,7 @@ export default function Select({
           {/* Content Container */}
           <div className="flex items-center gap-2 flex-1 overflow-hidden">
             {/* Optional Decoration Icon */}
-            {DecoIcon && (
-              <DecoIcon className={`w-6 h-6 flex-shrink-0 ${getIconColor()}`} strokeWidth={2} />
-            )}
+            <IconSlot icon={decoIconName} className={`w-6 h-6 flex-shrink-0 ${getIconColor()}`} />
 
             {/* Display Text */}
             <span className="text-body1 truncate">

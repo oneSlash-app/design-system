@@ -23,6 +23,17 @@ The oneSlash Design System uses **Lucide React** for all icons, providing access
 
 ## Using Icons in Components
 
+An icon prop takes a name, as in the examples below, or since 2.14.0 the icon itself:
+
+```tsx
+import { Plus } from 'lucide-react';
+
+<Button size="medium" type="primary" state="enabled" label="Add" decoIcon={Plus} />
+<IconButton color="primary" state="enabled" size="medium" icon={Plus} ariaLabel="Add" />
+```
+
+Prefer the component in an app. Only the icons you import are bundled, and the icon is there on the first render. A name is looked up in the whole Lucide set, which loads in its own chunk the first time any name is used.
+
 ### IconButton
 
 Icon buttons display a single icon with interactive states.
