@@ -9,13 +9,34 @@ import Line from '../../components/line';
 import BrandIcon from '../../components/brandIcon';
 import { Center, Stack } from '../../components/layout';
 
+// A small check: some text, an @, then some text.
+function looksLikeEmail(value: string) {
+  return /^[^@\s]+@[^@\s]+$/.test(value);
+}
+
 export default function LoginProviderFirst() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (!email.trim()) {
+      setEmailError('Enter your email.');
+      return;
+    }
+    if (!looksLikeEmail(email.trim())) {
+      setEmailError('Enter a valid email address.');
+      return;
+    }
+    setEmailError('');
+    if (!password) {
+      setPasswordError('Enter your password.');
+      return;
+    }
+    setPasswordError('');
     setError('');
     setLoading(true);
     // Stands in for the request to the server.
@@ -36,8 +57,8 @@ export default function LoginProviderFirst() {
       <Line label="or" />
       <Form aria-label="Sign in with email" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-        <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+        <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
         <Button size="medium" type="primary" state="enabled" label="Sign in with email" htmlType="submit" loading={loading} />
         <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
       </Form>

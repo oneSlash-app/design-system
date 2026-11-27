@@ -8,11 +8,25 @@ import Alert from '../../components/alert';
 import TextField from '../../components/textField';
 import Button from '../../components/button';
 import { Center, Stack } from '../../components/layout';
+// A small check: some text, an @, then some text.
+function looksLikeEmail(value) {
+    return /^[^@\s]+@[^@\s]+$/.test(value);
+}
 export default function LoginEmailOnly() {
     var _a = useState('ada@example.com'), email = _a[0], setEmail = _a[1];
     var _b = useState(false), sent = _b[0], setSent = _b[1];
-    var _c = useState(false), loading = _c[0], setLoading = _c[1];
+    var _c = useState(''), emailError = _c[0], setEmailError = _c[1];
+    var _d = useState(false), loading = _d[0], setLoading = _d[1];
     function handleSubmit() {
+        if (!email.trim()) {
+            setEmailError('Enter your email.');
+            return;
+        }
+        if (!looksLikeEmail(email.trim())) {
+            setEmailError('Enter a valid email address.');
+            return;
+        }
+        setEmailError('');
         setLoading(true);
         // Stands in for the request to the server.
         setTimeout(function () {
@@ -29,7 +43,7 @@ export default function LoginEmailOnly() {
           </Stack>
           <Form aria-label="Log in" onSubmit={handleSubmit}>
             {sent && <Alert type="success" variant="inline" message={"We sent a sign-in link to ".concat(email, ".")}/>}
-            <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} onChange={function (e) { return setEmail(e.target.value); }}/>
+            <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
             <Button size="medium" type="primary" state="enabled" label="Send sign-in link" htmlType="submit" loading={loading}/>
           </Form>
         </Stack>

@@ -6,7 +6,8 @@ A person who already has an account opens the product and is not signed in.
 
 ## Do
 
-- Put the error above the fields, in an inline Alert.
+- Show a problem with one field under that field.
+- Show a refused sign-in or a failed request in an inline Alert above the fields.
 - When there is a password, put a text-only 'Forgot password?' Button right under the submit Button.
 - Name the provider on its button: 'Continue with Google'.
 - While signing in, show the loading state on the submit Button and keep the form in place.
@@ -16,6 +17,7 @@ A person who already has an account opens the product and is not signed in.
 - Do not clear the email field after a failed attempt.
 - Do not show sign-up fields on the login page; link or tab to sign-up.
 - Do not replace the form with a spinner while signing in.
+- Do not say which of the email or the password was wrong.
 
 ## Option: Centered column
 
@@ -44,13 +46,34 @@ const productMark =
 // A real app passes the router from its framework, such as Next's useRouter().
 const router = { push: (url: string) => console.info(`Go to ${url}`) };
 
+// A small check: some text, an @, then some text.
+function looksLikeEmail(value: string) {
+  return /^[^@\s]+@[^@\s]+$/.test(value);
+}
+
 export default function LoginCentered() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (!email.trim()) {
+      setEmailError('Enter your email.');
+      return;
+    }
+    if (!looksLikeEmail(email.trim())) {
+      setEmailError('Enter a valid email address.');
+      return;
+    }
+    setEmailError('');
+    if (!password) {
+      setPasswordError('Enter your password.');
+      return;
+    }
+    setPasswordError('');
     setError('');
     setLoading(true);
     // Stands in for the request to the server.
@@ -69,8 +92,8 @@ export default function LoginCentered() {
       </TabsContainer>
       <Form aria-label="Log in" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
         <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
         <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
       </Form>
@@ -106,13 +129,34 @@ import { Center, Cluster, Split, Stack } from 'oneslash-design-system/components
 const productMark =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E";
 
+// A small check: some text, an @, then some text.
+function looksLikeEmail(value: string) {
+  return /^[^@\s]+@[^@\s]+$/.test(value);
+}
+
 export default function LoginSplit() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (!email.trim()) {
+      setEmailError('Enter your email.');
+      return;
+    }
+    if (!looksLikeEmail(email.trim())) {
+      setEmailError('Enter a valid email address.');
+      return;
+    }
+    setEmailError('');
+    if (!password) {
+      setPasswordError('Enter your password.');
+      return;
+    }
+    setPasswordError('');
     setError('');
     setLoading(true);
     // Stands in for the request to the server.
@@ -139,8 +183,8 @@ export default function LoginSplit() {
         <Heading level={2} size="h5">Log in to Acme</Heading>
         <Form aria-label="Log in" onSubmit={handleSubmit}>
           {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-          <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+          <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
           <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
           <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
         </Form>
@@ -174,13 +218,34 @@ import Line from 'oneslash-design-system/components/line';
 import BrandIcon from 'oneslash-design-system/components/brandIcon';
 import { Center, Stack } from 'oneslash-design-system/components/layout';
 
+// A small check: some text, an @, then some text.
+function looksLikeEmail(value: string) {
+  return /^[^@\s]+@[^@\s]+$/.test(value);
+}
+
 export default function LoginProviderFirst() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (!email.trim()) {
+      setEmailError('Enter your email.');
+      return;
+    }
+    if (!looksLikeEmail(email.trim())) {
+      setEmailError('Enter a valid email address.');
+      return;
+    }
+    setEmailError('');
+    if (!password) {
+      setPasswordError('Enter your password.');
+      return;
+    }
+    setPasswordError('');
     setError('');
     setLoading(true);
     // Stands in for the request to the server.
@@ -201,8 +266,8 @@ export default function LoginProviderFirst() {
       <Line label="or" />
       <Form aria-label="Sign in with email" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-        <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+        <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
         <Button size="medium" type="primary" state="enabled" label="Sign in with email" htmlType="submit" loading={loading} />
         <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
       </Form>
@@ -229,12 +294,27 @@ import TextField from 'oneslash-design-system/components/textField';
 import Button from 'oneslash-design-system/components/button';
 import { Center, Stack } from 'oneslash-design-system/components/layout';
 
+// A small check: some text, an @, then some text.
+function looksLikeEmail(value: string) {
+  return /^[^@\s]+@[^@\s]+$/.test(value);
+}
+
 export default function LoginEmailOnly() {
   const [email, setEmail] = useState('ada@example.com');
   const [sent, setSent] = useState(false);
+  const [emailError, setEmailError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (!email.trim()) {
+      setEmailError('Enter your email.');
+      return;
+    }
+    if (!looksLikeEmail(email.trim())) {
+      setEmailError('Enter a valid email address.');
+      return;
+    }
+    setEmailError('');
     setLoading(true);
     // Stands in for the request to the server.
     setTimeout(() => {
@@ -253,7 +333,7 @@ export default function LoginEmailOnly() {
           </Stack>
           <Form aria-label="Log in" onSubmit={handleSubmit}>
             {sent && <Alert type="success" variant="inline" message={`We sent a sign-in link to ${email}.`} />}
-            <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
+            <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
             <Button size="medium" type="primary" state="enabled" label="Send sign-in link" htmlType="submit" loading={loading} />
           </Form>
         </Stack>

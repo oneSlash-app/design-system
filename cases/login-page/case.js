@@ -32,7 +32,8 @@ module.exports = {
     },
   ],
   do: [
-    'Put the error above the fields, in an inline Alert.',
+    'Show a problem with one field under that field.',
+    'Show a refused sign-in or a failed request in an inline Alert above the fields.',
     "When there is a password, put a text-only 'Forgot password?' Button right under the submit Button.",
     "Name the provider on its button: 'Continue with Google'.",
     'While signing in, show the loading state on the submit Button and keep the form in place.',
@@ -41,6 +42,7 @@ module.exports = {
     'Do not clear the email field after a failed attempt.',
     'Do not show sign-up fields on the login page; link or tab to sign-up.',
     'Do not replace the form with a spinner while signing in.',
+    'Do not say which of the email or the password was wrong.',
   ],
   notBuiltYet: "Commentify and Scindo on the web replace the form with a spinner while signing in. They do not use the Button's loading state yet.",
   native: 'On Apple use `SignInWithAppleButton` for Apple, a grouped form for the fields, and system buttons.',

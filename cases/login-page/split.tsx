@@ -16,13 +16,34 @@ import { Center, Cluster, Split, Stack } from '../../components/layout';
 const productMark =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E";
 
+// A small check: some text, an @, then some text.
+function looksLikeEmail(value: string) {
+  return /^[^@\s]+@[^@\s]+$/.test(value);
+}
+
 export default function LoginSplit() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (!email.trim()) {
+      setEmailError('Enter your email.');
+      return;
+    }
+    if (!looksLikeEmail(email.trim())) {
+      setEmailError('Enter a valid email address.');
+      return;
+    }
+    setEmailError('');
+    if (!password) {
+      setPasswordError('Enter your password.');
+      return;
+    }
+    setPasswordError('');
     setError('');
     setLoading(true);
     // Stands in for the request to the server.
@@ -49,8 +70,8 @@ export default function LoginSplit() {
         <Heading level={2} size="h5">Log in to Acme</Heading>
         <Form aria-label="Log in" onSubmit={handleSubmit}>
           {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-          <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+          <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
           <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
           <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
         </Form>

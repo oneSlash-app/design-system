@@ -18,13 +18,34 @@ const productMark =
 // A real app passes the router from its framework, such as Next's useRouter().
 const router = { push: (url: string) => console.info(`Go to ${url}`) };
 
+// A small check: some text, an @, then some text.
+function looksLikeEmail(value: string) {
+  return /^[^@\s]+@[^@\s]+$/.test(value);
+}
+
 export default function LoginCentered() {
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [emailError, setEmailError] = useState('');
+  const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
 
   function handleSubmit() {
+    if (!email.trim()) {
+      setEmailError('Enter your email.');
+      return;
+    }
+    if (!looksLikeEmail(email.trim())) {
+      setEmailError('Enter a valid email address.');
+      return;
+    }
+    setEmailError('');
+    if (!password) {
+      setPasswordError('Enter your password.');
+      return;
+    }
+    setPasswordError('');
     setError('');
     setLoading(true);
     // Stands in for the request to the server.
@@ -43,8 +64,8 @@ export default function LoginCentered() {
       </TabsContainer>
       <Form aria-label="Log in" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
         <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
         <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
       </Form>
