@@ -25,7 +25,9 @@ require.extensions['.js'] = (module, file) => (file.startsWith(dist + path.sep) 
 
 const load = (name) => require(path.join(dist, 'components', `${name}.jsx`)).default;
 const Button = load('button');
+const Form = load('form');
 const IconButton = load('iconButton');
+const Line = load('line');
 const Icon = load('icon');
 const Tag = load('tag');
 const TextField = load('textField');
@@ -195,3 +197,13 @@ test('every file dist/index.js imports is in dist', () => {
     assert.ok(found, `dist/index.js imports ${spec}, which is not in dist`);
   }
 });
+
+test('Form renders a <form> and submits without a page load', () => {
+  assert.match(html(h(Form, { onSubmit() {}, children: 'x' })), /^<form novalidate=""/i);
+});
+test('Line with a label renders the label between two lines', () => {
+  const out = html(h(Line, { label: 'or' }));
+  assert.equal(out.match(/bg-misc-divider/g).length, 2);
+  assert.match(out, />or</);
+});
+test('Line without a label is unchanged', () => assert.equal(html(h(Line, {})), '<div class="bg-misc-divider h-px w-full "></div>'));

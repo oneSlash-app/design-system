@@ -295,6 +295,7 @@ For each web component, the table gives the native control to use. System contro
 | emptyBox | `ContentUnavailableView` | `OdsEmptyState` | The system has this control on Apple, so ODS adds no part there. Material has none, so ODS does. |
 | factsRow | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows. |
 | figure | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: an `Image` with a caption `Text` in the caption text style. |
+| form | `Form` | A `Column` of fields; submit from the keyboard action | On Apple the system lays the fields out; do not add spacing. |
 | heading | `Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)` | `Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }` |  |
 | icon | `Image(systemName:)` (SF Symbols) | Material Symbols |  |
 | iconButton | `Button` with a `Label` and `.labelStyle(.iconOnly)` | `IconButton` |  |

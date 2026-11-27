@@ -34,6 +34,8 @@ const components = [
     note: 'In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows.' },
   { ods: 'figure', swiftui: NA, compose: NA,
     note: 'In an app screen: an `Image` with a caption `Text` in the caption text style.' },
+  { ods: 'form', swiftui: '`Form`', compose: 'A `Column` of fields; submit from the keyboard action',
+    note: 'On Apple the system lays the fields out; do not add spacing.' },
   { ods: 'heading', swiftui: '`Text` with the type role\'s text style and `.accessibilityAddTraits(.isHeader)`',
     compose: '`Text` with the type role\'s `MaterialTheme.typography` style and `Modifier.semantics { heading() }`' },
   { ods: 'icon', swiftui: '`Image(systemName:)` (SF Symbols)', compose: 'Material Symbols' },

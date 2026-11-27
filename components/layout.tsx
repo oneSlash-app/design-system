@@ -1,6 +1,6 @@
 import React from 'react';
 
-type Gap = 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'huge' | 'giant';
+export type Gap = 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'huge' | 'giant';
 
 const gaps: Record<Gap, string> = {
   small: 'gap-small',
