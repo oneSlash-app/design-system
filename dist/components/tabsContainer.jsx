@@ -1,5 +1,7 @@
 'use client';
-import React, { createContext, useLayoutEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+// useLayoutEffect warns on a server render, where it cannot run; useEffect is the same there and silent
+var useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 // Lets a Tab know a container draws its selected background (the sliding pill)
 export var TabsContainerContext = createContext(false);
 export default function TabsContainer(_a) {
@@ -8,7 +10,7 @@ export default function TabsContainer(_a) {
     var containerRef = useRef(null);
     var selectedRef = useRef(null);
     var _b = useState(null), indicator = _b[0], setIndicator = _b[1];
-    useLayoutEffect(function () {
+    useIsomorphicLayoutEffect(function () {
         var _a;
         var container = containerRef.current;
         if (!container)

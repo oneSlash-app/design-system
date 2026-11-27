@@ -1,6 +1,6 @@
 import React from 'react';
 
-type Gap = 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'huge' | 'giant';
+export type Gap = 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge' | 'huge' | 'giant';
 
 const gaps: Record<Gap, string> = {
   small: 'gap-small',
@@ -65,4 +65,41 @@ export function Grid({ children, columns = 2, compact = false, align = 'stretch'
 // Children take the full width; put a Button in a Cluster so it keeps its own.
 export function PageSection({ children, gap = 'huge', className = '' }: LayoutProps) {
   return <section className={`flex flex-col ${gaps[gap]} ${className}`}>{children}</section>;
+}
+
+interface CenterProps {
+  children: React.ReactNode;
+  /** `form` is a narrow column, `page` the width of a page. */
+  width?: 'form' | 'page';
+  /** Take at least the window height and center the column vertically too. */
+  fill?: boolean;
+  gap?: Gap;
+}
+
+// A column centered in the window. For a page that is one narrow thing, such as a form.
+export function Center({ children, width = 'form', fill = false, gap = 'xlarge' }: CenterProps) {
+  return (
+    <div className={`mx-auto flex w-full flex-col px-xlarge ${width === 'page' ? 'max-w-page' : 'max-w-form'} ${fill ? 'min-h-screen justify-center' : ''} ${gaps[gap]}`}>
+      {children}
+    </div>
+  );
+}
+
+interface SplitProps {
+  /** The first half, on a panel. It is not shown below the medium breakpoint. */
+  aside: React.ReactNode;
+  children: React.ReactNode;
+  /** Take at least the window height. */
+  fill?: boolean;
+}
+
+// A page of two equal halves from the medium breakpoint up. Below it, only the children.
+// Put a `<Center fill>` in the second half to center a form in it.
+export function Split({ aside, children, fill = false }: SplitProps) {
+  return (
+    <div className={`grid grid-cols-1 md:grid-cols-2 ${fill ? 'min-h-screen' : ''}`}>
+      <div className="hidden md:flex items-center justify-center bg-background-panel p-xxlarge">{aside}</div>
+      <div>{children}</div>
+    </div>
+  );
 }

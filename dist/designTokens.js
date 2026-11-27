@@ -208,6 +208,7 @@ var base = {
     container: {
         page: '48rem',
         'page-wide': '64rem',
+        form: '24rem',
     },
     stage: {
         short: '20rem',

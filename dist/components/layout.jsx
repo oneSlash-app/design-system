@@ -41,3 +41,19 @@ export function PageSection(_a) {
     var children = _a.children, _b = _a.gap, gap = _b === void 0 ? 'huge' : _b, _c = _a.className, className = _c === void 0 ? '' : _c;
     return <section className={"flex flex-col ".concat(gaps[gap], " ").concat(className)}>{children}</section>;
 }
+// A column centered in the window. For a page that is one narrow thing, such as a form.
+export function Center(_a) {
+    var children = _a.children, _b = _a.width, width = _b === void 0 ? 'form' : _b, _c = _a.fill, fill = _c === void 0 ? false : _c, _d = _a.gap, gap = _d === void 0 ? 'xlarge' : _d;
+    return (<div className={"mx-auto flex w-full flex-col px-xlarge ".concat(width === 'page' ? 'max-w-page' : 'max-w-form', " ").concat(fill ? 'min-h-screen justify-center' : '', " ").concat(gaps[gap])}>
+      {children}
+    </div>);
+}
+// A page of two equal halves from the medium breakpoint up. Below it, only the children.
+// Put a `<Center fill>` in the second half to center a form in it.
+export function Split(_a) {
+    var aside = _a.aside, children = _a.children, _b = _a.fill, fill = _b === void 0 ? false : _b;
+    return (<div className={"grid grid-cols-1 md:grid-cols-2 ".concat(fill ? 'min-h-screen' : '')}>
+      <div className="hidden md:flex items-center justify-center bg-background-panel p-xxlarge">{aside}</div>
+      <div>{children}</div>
+    </div>);
+}

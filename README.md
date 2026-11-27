@@ -63,6 +63,16 @@ import SectionIntro from 'oneslash-design-system/components/sectionIntro';
 </PageShell>
 ```
 
+## Design cases
+
+A case is one design situation with oneSlash's answer to it. A rule case has one answer, such as "an agent asks before a risky action". A design case has two to four options, each with a line on when to use it and a working example built only from this package. 2.15.0 has the first seven: the login page and six rules for an agent.
+
+- `oneslash-design-system/cases.json` lists every case with its rule text, options, Do and Don't lines, and the source of each example.
+- `oneslash-design-system/cases/<id>.md` is one case as text, and `oneslash-design-system/cases/<id>/<option>.jsx` is the example itself.
+- The Cases section of [DESIGN.md](./dist/DESIGN.md) is the same list for an agent to read.
+
+The source is `cases/<id>/case.js` plus one `.tsx` file per option. `npm run build` checks each example uses only ODS parts and writes the files above.
+
 ## Releasing
 
 Bump `version` in `package.json`, run `npm run build`, and merge to `main`. The Release workflow runs the tests and `npm run check:contrast`, then publishes to npm, creates the tag and GitHub Release with notes from the merged PR titles, and updates the docs site. The same `v<version>` tag is the Swift package version.

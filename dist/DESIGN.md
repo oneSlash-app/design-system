@@ -3,6 +3,8 @@
 
 ODS is the oneSlash design system. One source, `designTokens.js`, defines every color, spacing step, radius and type role. The build turns it into CSS themes and Tailwind presets for the web, a Swift package for Apple apps, and `tokens.json` in the W3C design tokens format. The tables in this file are generated from the same source, so they match the tokens exactly.
 
+Before you lay out a page or an agent behaviour, check the Cases section at the end of this file.
+
 ## Using ODS on the web
 
 The package ships Tailwind class names, CSS variables and untranspiled `.jsx`. Each app compiles the components itself and picks one theme.
@@ -291,14 +293,17 @@ For each web component, the table gives the native control to use. System contro
 | --- | --- | --- | --- |
 | alert | `ODSBanner` for an inline message; `.alert` for one that needs a decision | `OdsBanner` for an inline message; `AlertDialog` for one that needs a decision | ODS has no native toast: on Android use `Snackbar` in a `SnackbarHost`. |
 | button | `Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a `.borderedProminent` or `.glassProminent` button takes `text.primary`, not the system white, which is below 4.5:1 on the accent in default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark. In forest light it is the same color as the fill, so the label cannot be seen. The modifier keeps the system style and sets the label to `accent.contrast`. Compose needs nothing: `onPrimary` is `accent.contrast`. |
+| brandIcon | the provider's own button where one exists (`SignInWithAppleButton`), else an asset in the app | an asset in the app |  |
 | checkBox | `Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS) | `Checkbox` |  |
 | emptyBox | `ContentUnavailableView` | `OdsEmptyState` | The system has this control on Apple, so ODS adds no part there. Material has none, so ODS does. |
 | factsRow | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows. |
 | figure | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: an `Image` with a caption `Text` in the caption text style. |
+| form | `Form` | A `Column` of fields; submit from the keyboard action | On Apple the system lays the fields out; do not add spacing. |
 | heading | `Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)` | `Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }` |  |
 | icon | `Image(systemName:)` (SF Symbols) | Material Symbols |  |
 | iconButton | `Button` with a `Label` and `.labelStyle(.iconOnly)` | `IconButton` |  |
-| layout | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`. |
+| image | `Image` / `AsyncImage` | `Image` with the app's image loader |  |
+| layout | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`. `Center` and `Split` are for web pages; a native screen is already one column. |
 | line | `Divider` | `HorizontalDivider`, `VerticalDivider` |  |
 | link | `Link` | `Text` with a `LinkAnnotation.Url` in its `AnnotatedString` |  |
 | linkCard | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: a `NavigationLink` row in a `List` / a clickable `ListItem`. |
@@ -365,3 +370,131 @@ A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one
 | `tag.contained.success` | `success.fill` | `success.onFill` | `success.fill` |  |
 | `tag.textOnly.success` |  | `success.text` | `success.fill` |  |
 | `tag.dot.success` |  | `text.primary` |  | `success.main` |
+
+## Cases
+
+A case answers one design question the way oneSlash does, such as how to lay out a login page or how an agent asks before a risky action. A rule gives one answer and is printed here in full.
+
+A design case has a few options, each with a working example. Open the file named in the table for the one you need. In an app, import a component like this: `import Button from 'oneslash-design-system/components/button'`.
+
+### An agent asks before a risky action
+
+The agent is about to do something that changes shared work or is hard to undo.
+
+Answer: An action is risky when it changes shared work or is hard to undo. In a product that works with code, that includes opening or merging a pull request, deleting files, closing an issue and rolling back a release. Carrying out a plan of several changes is risky too. Before a risky action the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. The agent does nothing until the person presses the approve button.
+
+**Not built yet:** In Scindo the agent asks before carrying out a plan, opening a pull request and merging one. It does not yet ask before deleting files, closing an issue or rolling back a release.
+
+Why: A person can only approve what they can see, and an agent's mistake in shared work costs other people.
+
+Do:
+- List every step in the card, in the order the agent will do them.
+- Offer a way to see the full changes, such as a View Changes button, before the approve button is pressed.
+- Let the person edit the plan or cancel it, not only approve it.
+- Once decided, mark the card Approved or Cancelled and remove its buttons.
+
+Don't:
+- Do not carry out a risky action before the person approves it.
+- Do not replace the steps or the changes with a one-line summary.
+- Do not let the agent write the label of an approve or merge button.
+- Do not let a second click on a decided card approve or cancel it again.
+
+### An agent cancels and reports when nobody answers
+
+The agent has asked a question or proposed an action, and nobody answers.
+
+Answer: The agent never takes silence as a yes: while a question or proposal waits, it does nothing that depends on the answer. Each product sets the waiting time and shows it on the waiting card. When the time is up, the agent cancels the request, marks the card Cancelled, and posts one line saying what it did not do. The agent may write a plan that lists the unanswered questions as open questions. It may not carry out anything that depends on an answer.
+
+**Not built yet:** No product cancels a waiting request on its own yet. In Scindo a request waits until a person answers, cancels or skips it, and the waiting time is not decided.
+
+Why: An agent that acts on silence does work nobody approved, and one that waits forever leaves work stuck without saying so.
+
+Do:
+- Keep the card and its buttons open until someone answers or the request is cancelled.
+- Notify the person who asked when the agent needs their answer.
+- When a request is cancelled, mark the card Cancelled and post one line on what was not done.
+- List questions asked before a plan that nobody answered as open questions in that plan.
+
+Don't:
+- Do not treat no answer as approval.
+- Do not cancel a request without saying so in the thread.
+
+### An agent refuses clearly
+
+The product will not let the agent answer a request, for example because the workspace used all its agent replies for the month, reached its spending cap, or sent too many requests at once.
+
+Answer: The refusal says in one plain sentence which limit was reached, and either who can change it or when to try again. A person who can lift the limit gets the one button that does it, such as Upgrade or Change Budget Cap. When an admin can lift the limit, everyone else is told to ask a workspace admin. A limit that passes with time says when to try again instead.
+
+**Not built yet:** Scindo on the web does not follow this yet: it shows the Upgrade button to everyone. Scindo's Apple app shows it only to admins.
+
+Why: A person who is refused needs to know why and what to do next, or they will just send the request again.
+
+Do:
+- Say which limit was reached, with the number when there is one: 'You've used all 50 AI agent responses this month.'
+- Say who can change it, or when to try again: 'Try again in a minute.'
+- Show the button that lifts the limit only to a person allowed to use it.
+- Let the person close the refusal without acting, with a button such as 'Not Now'.
+
+Don't:
+- Do not show a general error message for a refusal.
+- Do not show an Upgrade button to someone who cannot upgrade.
+
+### An agent says what it is
+
+The agent posts in a thread where people also write, or replies to a person.
+
+Answer: Every agent message has marks no person's message has. It shows an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.
+
+Why: People must see at a glance whether a person or an agent wrote what they are reading, and whose agent it is.
+
+Do:
+- Show the agent with an icon avatar, never a photo or an initial.
+- Name the agent in the message header: its role or given name, or 'Agent' when it has none.
+- Show the model name next to the time when the product knows it.
+- Show the product's logo on the product's own agent and a plain bot icon on an agent from outside, so people see whose agent it is.
+
+Don't:
+- Do not show a photo for an agent, even when one is set.
+- Do not show the product's logo on an agent the product does not run.
+
+### An agent shows its progress
+
+The agent is working on a request and its reply is not ready yet.
+
+Answer: While it works, the agent shows a live row in the thread, where its reply will appear: its name, the model, the seconds so far, the steps it has finished with a check mark, and the step it is on now in plain words, such as 'Reading file'. A Stop button stays on that row for the whole run. When the run is stopped, the agent posts a short note that it stopped.
+
+Why: A person waiting on an agent needs to know it is still working, what it is doing, and that they can stop it.
+
+Do:
+- Show the progress row in the thread, where the reply will appear.
+- Name the current step in plain words, such as 'Reading file' or 'Editing code'.
+- Keep finished steps in view, each with a check mark.
+- Keep a Stop button on the row for the whole run.
+
+Don't:
+- Do not show a spinner with no words.
+- Do not hide the Stop button while the agent writes its reply.
+- Do not say the agent stopped before the run has really ended.
+
+### An agent shows its sources
+
+The agent answers from things it read: documents, files, chat, tasks, or a connected service such as a code host or a design tool.
+
+Answer: Under the reply, the agent lists what it used. A small tag names the kinds of source, such as 'From Chat · Knowledge base', and one card per source shows its title, its kind and where it lives. Each card opens the source. A reply that used no sources shows no sources section.
+
+Why: A person can check an answer only when they can open what it came from.
+
+Do:
+- Put the sources directly under the reply they support.
+- Show each source as a card with its title and where it lives, such as the space name or the date.
+- Make each card open the source itself, in the product or on the service it came from.
+- Show the first six sources and a 'Show N more' button for the rest.
+
+Don't:
+- Do not show a sources section when the reply used no sources.
+- Do not show source cards on a person's message.
+- Do not link a source card to any site other than the product or the service the source came from.
+
+| Case | When | File |
+| --- | --- | --- |
+| Login page | A person who already has an account opens the product and is not signed in. | cases/login-page.md |

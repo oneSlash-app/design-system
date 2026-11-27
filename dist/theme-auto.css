@@ -278,4 +278,5 @@
   --container-measure-wide: var(--os-measure-wide);
   --container-page: var(--os-container-page);
   --container-page-wide: var(--os-container-page-wide);
+  --container-form: var(--os-container-form);
 }

@@ -3,6 +3,9 @@ import React, { useState, useRef, useLayoutEffect, useEffect, useId } from 'reac
 import { createPortal } from 'react-dom';
 import { useOverlayTransition } from './useOverlayTransition';
 
+// useLayoutEffect warns on a server render, where it cannot run; useEffect is the same there and silent
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
+
 interface TooltipProps {
   title: string;
   children: React.ReactElement;
@@ -26,7 +29,7 @@ export default function Tooltip({ title, children, placement }: TooltipProps) {
   const tooltipId = useId();
 
   // Measure the trigger and the tooltip, then place the tooltip where it fits entirely on screen
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (!mounted) {
       setCoords(null);
       return;

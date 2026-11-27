@@ -1,5 +1,8 @@
 'use client';
-import React, { createContext, useLayoutEffect, useRef, useState } from 'react';
+import React, { createContext, useEffect, useLayoutEffect, useRef, useState } from 'react';
+
+// useLayoutEffect warns on a server render, where it cannot run; useEffect is the same there and silent
+const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 
 interface TabsContainerProps {
   children: React.ReactNode;
@@ -19,7 +22,7 @@ export default function TabsContainer({
   const selectedRef = useRef<HTMLElement | null>(null);
   const [indicator, setIndicator] = useState<IndicatorRect | null>(null);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const container = containerRef.current;
     if (!container) return;
 

@@ -1,7 +1,7 @@
 {
   "name": "oneslash-design-system",
   "description": "A design system for the Oneslash projects",
-  "version": "2.14.2",
+  "version": "2.15.0",
   "license": "MIT",
   "private": false,
   "main": "./dist/index.js",
@@ -18,6 +18,8 @@
     "./tokens.json": "./dist/tokens.json",
     "./native-mapping.json": "./dist/native-mapping.json",
     "./DESIGN.md": "./dist/DESIGN.md",
+    "./cases.json": "./dist/cases.json",
+    "./cases/*": "./dist/cases/*",
     "./tokens": {
       "types": "./dist/designTokens.d.ts",
       "default": "./dist/designTokens.js"
@@ -43,7 +45,7 @@
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "pretest": "npm run build",
-    "test": "node --test scripts/*.test.js scripts/tokens/*.test.js",
+    "test": "node --test scripts/*.test.js scripts/tokens/*.test.js scripts/cases/*.test.js",
     "check:contrast": "node scripts/check-contrast.js",
     "test:visual": "playwright test",
     "test:visual:update": "playwright test --update-snapshots"

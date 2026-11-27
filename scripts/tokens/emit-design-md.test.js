@@ -74,3 +74,12 @@ test('the parts section has one row per style key', () => {
   assert.match(md, /^\| `tag\.contained\.success` \| `success\.fill` \| `success\.onFill` \| `success\.fill` \|  \|$/m);
   assert.equal((md.match(/^\| `(tag|banner)\./gm) || []).length, 26);
 });
+
+test('the cases:index placeholder is filled from the cases argument', () => {
+  const none = emitDesignMd(tokens, mapping, '<!-- cases:index -->\n');
+  assert.match(none, /no design cases yet/i);
+  const c = { id: 'a-b', title: 'A B', kind: 'design', situation: 'x', seenIn: [{ product: 'P' }], options: [] };
+  const md = emitDesignMd(tokens, mapping, '<!-- cases:index -->\n', undefined, [c]);
+  assert.match(md, /\| A B \| x \| cases\/a-b\.md \|/);
+  assert.doesNotMatch(md, /<!-- cases:/);
+});

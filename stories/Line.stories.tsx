@@ -6,6 +6,7 @@ const meta: Meta<typeof Line> = {
   title: "Components/Line",
   component: Line,
   argTypes: {
+    label: { control: "text" },
     direction: {
       control: "select",
       options: ["horizontal", "vertical"],
@@ -26,6 +27,20 @@ export const Horizontal: Story = {
         <p>Content above</p>
         <Story />
         <p>Content below</p>
+      </div>
+    ),
+  ],
+};
+
+export const WithLabel: Story = {
+  args: {
+    direction: "horizontal",
+    label: "or",
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ width: "100%", padding: "16px" }}>
+        <Story />
       </div>
     ),
   ],

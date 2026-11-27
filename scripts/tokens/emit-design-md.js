@@ -50,7 +50,7 @@ const typeRoles = (tokens, m) => table(['ODS role', 'Web size', 'System text sty
   Object.entries(m.typeRoles).map(([role, style]) => [role, tokens.typography[role] && tokens.typography[role].size, `\`${style}\``]));
 
 // Fills each placeholder line of the template with a table built from the tokens and the native mapping.
-function emitDesignMd(tokens, mapping, template, increased = withIncreased(tokens)) {
+function emitDesignMd(tokens, mapping, template, increased = withIncreased(tokens), cases = []) {
   const fills = {
     'tokens:colors': () => colors(tokens),
     'tokens:increased-accent': () => increasedAccent(increased),
@@ -60,9 +60,11 @@ function emitDesignMd(tokens, mapping, template, increased = withIncreased(token
     'native:components': () => components(mapping),
     'native:parts': () => partsTable(mapping.parts),
     'native:type-roles': () => typeRoles(tokens, mapping),
+    // Required here because cases/emit.js takes `cell` from this file.
+    'cases:index': () => require('../cases/emit').emitCasesSection(cases),
   };
   const body = template.split('\n').map((line) => {
-    const m = /^<!-- ((?:tokens|native):[\w-]+) -->$/.exec(line);
+    const m = /^<!-- ((?:tokens|native|cases):[\w-]+) -->$/.exec(line);
     if (!m) return line;
     if (!fills[m[1]]) throw new Error(`unknown placeholder ${m[1]}`);
     return fills[m[1]]();
@@ -70,4 +72,4 @@ function emitDesignMd(tokens, mapping, template, increased = withIncreased(token
   return `${MD_HEADER}\n${body}`;
 }
 
-module.exports = { emitDesignMd };
+module.exports = { emitDesignMd, cell };

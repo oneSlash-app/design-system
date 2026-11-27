@@ -4,52 +4,27 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { Writable } = require('node:stream');
-const ts = require('typescript');
 const React = require('react');
-const { renderToPipeableStream, renderToStaticMarkup } = require('react-dom/server');
+const { renderToStaticMarkup } = require('react-dom/server');
 const { Plus } = require('lucide-react');
-
-const dist = path.join(__dirname, '..', 'dist');
-
-// dist/ is ESM with JSX left in (.jsx), for the app's bundler. Compile it to CommonJS on require.
-const compile = (module, file) => {
-  const { outputText } = ts.transpileModule(fs.readFileSync(file, 'utf8'), {
-    compilerOptions: { module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.React, esModuleInterop: true },
-  });
-  module._compile(outputText, file);
-};
-require.extensions['.jsx'] = compile;
-const defaultJs = require.extensions['.js'];
-require.extensions['.js'] = (module, file) => (file.startsWith(dist + path.sep) ? compile(module, file) : defaultJs(module, file));
+const { dist, htmlWhenReady } = require('./compile-dist');
 
 const load = (name) => require(path.join(dist, 'components', `${name}.jsx`)).default;
+const BrandIcon = load('brandIcon');
 const Button = load('button');
+const Form = load('form');
 const IconButton = load('iconButton');
+const ImageEl = load('image');
+const Line = load('line');
 const Icon = load('icon');
 const Tag = load('tag');
 const TextField = load('textField');
 const Textarea = load('textarea');
 const UserImage = load('userImage');
+const { Center, Split } = require(path.join(dist, 'components', 'layout.jsx'));
 
 const h = React.createElement;
 const html = (element) => renderToStaticMarkup(element);
-// Waits for lazy parts (an icon looked up by name), as a streaming server render does
-const htmlWhenReady = (element) =>
-  new Promise((resolve, reject) => {
-    let out = '';
-    const sink = new Writable({
-      write(chunk, _enc, done) {
-        out += chunk;
-        done();
-      },
-      final(done) {
-        resolve(out);
-        done();
-      },
-    });
-    const stream = renderToPipeableStream(element, { onAllReady: () => stream.pipe(sink), onError: reject });
-  });
 
 const base = { size: 'medium', type: 'primary', state: 'enabled', label: 'Save' };
 const classOf = (markup) => markup.match(/class="([^"]*)"/)[1].split(/\s+/).filter(Boolean);
@@ -194,4 +169,97 @@ test('every file dist/index.js imports is in dist', () => {
     const found = ['', '.js', '.jsx'].some((ext) => fs.existsSync(file + ext) && fs.statSync(file + ext).isFile());
     assert.ok(found, `dist/index.js imports ${spec}, which is not in dist`);
   }
+});
+
+test('Form renders a <form> and submits without a page load', () => {
+  assert.match(html(h(Form, { onSubmit() {}, children: 'x' })), /^<form novalidate=""/i);
+});
+test('Line with a label renders the label between two lines', () => {
+  const out = html(h(Line, { label: 'or' }));
+  assert.equal(out.match(/bg-misc-divider/g).length, 2);
+  assert.match(out, />or</);
+});
+test('Line without a label is unchanged', () => assert.equal(html(h(Line, {})), '<div class="bg-misc-divider h-px w-full "></div>'));
+test('Form is a client component', () => {
+  const first = fs.readFileSync(path.join(dist, 'components', 'form.jsx'), 'utf8').split('\n')[0];
+  assert.match(first, /^['"]use client['"];?$/);
+});
+
+test('Center is a centered column at the form width by default', () => {
+  const c = classOf(html(h(Center, { children: 'x' })));
+  for (const k of ['mx-auto', 'w-full', 'max-w-form', 'px-xlarge', 'gap-xlarge']) assert.ok(c.includes(k), k);
+  assert.ok(!c.includes('min-h-screen'));
+});
+test('Center takes the page width, and with fill the window height', () => {
+  assert.ok(classOf(html(h(Center, { width: 'page', children: 'x' }))).includes('max-w-page'));
+  const outer = classOf(html(h(Center, { fill: true, children: 'x' })));
+  for (const k of ['min-h-screen', 'justify-center']) assert.ok(outer.includes(k), k);
+});
+test('Split shows the aside only from md up', () => {
+  const out = html(h(Split, { aside: 'A', children: 'B' }));
+  assert.match(out, /hidden md:flex[^"]*"[^>]*>A</);
+  assert.match(out, /md:grid-cols-2/);
+  assert.match(out, /bg-background-panel/);
+  assert.match(out, />B</);
+  assert.ok(!classOf(out).includes('min-h-screen'));
+  assert.ok(classOf(html(h(Split, { aside: 'A', fill: true, children: 'B' }))).includes('min-h-screen'));
+});
+
+test('Image renders an <img> with alt, width and height', () => {
+  assert.match(html(h(ImageEl, { src: '/a.png', alt: 'A', width: 40, height: 20 })), /^<img [^>]*alt="A"[^>]*width="40"[^>]*height="20"/);
+  assert.match(html(h(ImageEl, { src: '/a.png', alt: '' })), /alt=""/);
+  assert.match(html(h(ImageEl, { src: '/a.png', alt: 'A', fit: 'contain', loading: 'lazy' })), /class="object-contain"/);
+  assert.match(html(h(ImageEl, { src: '/a.png', alt: 'A', loading: 'lazy' })), /loading="lazy"/);
+  assert.doesNotMatch(html(h(ImageEl, { src: '/a.png', alt: 'A' })), /class=|loading=|width=/);
+});
+test('BrandIcon is hidden from assistive tech unless it has a title', () => {
+  assert.match(html(h(BrandIcon, { name: 'github' })), /aria-hidden="true"/);
+  const named = html(h(BrandIcon, { name: 'github', title: 'GitHub' }));
+  assert.match(named, /<title>GitHub<\/title>/);
+  assert.match(named, /role="img"/);
+  assert.doesNotMatch(named, /aria-hidden/);
+});
+test('BrandIcon github and apple draw in currentColor; google keeps its four colors', () => {
+  for (const name of ['github', 'apple']) {
+    const out = html(h(BrandIcon, { name }));
+    assert.equal(out.match(/<path /g).length, 1);
+    assert.match(out, /fill="currentColor"/);
+  }
+  const google = html(h(BrandIcon, { name: 'google' }));
+  assert.equal(google.match(/<path /g).length, 4);
+  for (const c of ['#4285F4', '#34A853', '#FBBC05', '#EA4335']) assert.ok(google.includes(c), c);
+  assert.doesNotMatch(google, /currentColor/);
+});
+test('BrandIcon takes size, or a size class, and ignores props it does not use', () => {
+  assert.match(html(h(BrandIcon, { name: 'apple' })), /^<svg [^>]*width="16" height="16"/);
+  assert.match(html(h(BrandIcon, { name: 'apple', size: 24 })), /width="24" height="24"/);
+  const byClass = html(h(BrandIcon, { name: 'apple', className: 'w-5 h-5' }));
+  assert.match(byClass, /class="w-5 h-5"/);
+  assert.doesNotMatch(byClass, /width=|height=/);
+  assert.doesNotMatch(html(h(BrandIcon, { name: 'apple', strokeWidth: 2 })), /stroke/i);
+});
+test('a Button takes a BrandIcon as its decoIcon and sizes it like a named icon', () => {
+  const brand = html(h(Button, { ...base, decoIcon: h(BrandIcon, { name: 'github' }) }));
+  const lucide = html(h(Button, { ...base, decoIcon: h(Plus) }));
+  assert.equal(brand.match(/<svg /g).length, 1);
+  const sizeOf = (m) => m.match(/<svg [^>]*class="([^"]*)"/)[1].split(/\s+/).filter((c) => /^(w|h)-/.test(c));
+  assert.deepEqual(sizeOf(brand), sizeOf(lucide));
+  assert.doesNotMatch(brand, /<svg [^>]*(width|height|stroke)/i);
+});
+
+// React 18 logs through console.error when a server render runs into something it cannot do, such as useLayoutEffect
+test('TabsContainer and Tooltip render on the server without a console.error', async () => {
+  const TabsContainer = load('tabsContainer');
+  const Tab = load('tab');
+  const Tooltip = load('tooltip');
+  const errors = [];
+  const original = console.error;
+  console.error = (...args) => errors.push(args.join(' '));
+  try {
+    await htmlWhenReady(h(TabsContainer, null, h(Tab, { label: 'One', isSelected: true, onClickTab: () => {} })));
+    await htmlWhenReady(h(Tooltip, { title: 'Hint' }, h('span', null, 'Hover')));
+  } finally {
+    console.error = original;
+  }
+  assert.deepEqual(errors, []);
 });

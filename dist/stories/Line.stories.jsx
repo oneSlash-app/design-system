@@ -4,6 +4,7 @@ var meta = {
     title: "Components/Line",
     component: Line,
     argTypes: {
+        label: { control: "text" },
         direction: {
             control: "select",
             options: ["horizontal", "vertical"],
@@ -20,6 +21,17 @@ export var Horizontal = {
         <p>Content above</p>
         <Story />
         <p>Content below</p>
+      </div>); },
+    ],
+};
+export var WithLabel = {
+    args: {
+        direction: "horizontal",
+        label: "or",
+    },
+    decorators: [
+        function (Story) { return (<div style={{ width: "100%", padding: "16px" }}>
+        <Story />
       </div>); },
     ],
 };

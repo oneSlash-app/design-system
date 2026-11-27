@@ -1,0 +1,256 @@
+{
+  "cases": [
+    {
+      "id": "agent-asks-before-risky-action",
+      "title": "An agent asks before a risky action",
+      "kind": "rule",
+      "level": "rule",
+      "area": "agent",
+      "situation": "The agent is about to do something that changes shared work or is hard to undo.",
+      "answer": "An action is risky when it changes shared work or is hard to undo. In a product that works with code, that includes opening or merging a pull request, deleting files, closing an issue and rolling back a release. Carrying out a plan of several changes is risky too. Before a risky action the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. The agent does nothing until the person presses the approve button.",
+      "why": "A person can only approve what they can see, and an agent's mistake in shared work costs other people.",
+      "do": [
+        "List every step in the card, in the order the agent will do them.",
+        "Offer a way to see the full changes, such as a View Changes button, before the approve button is pressed.",
+        "Let the person edit the plan or cancel it, not only approve it.",
+        "Once decided, mark the card Approved or Cancelled and remove its buttons."
+      ],
+      "dont": [
+        "Do not carry out a risky action before the person approves it.",
+        "Do not replace the steps or the changes with a one-line summary.",
+        "Do not let the agent write the label of an approve or merge button.",
+        "Do not let a second click on a decided card approve or cancel it again."
+      ],
+      "notBuiltYet": "In Scindo the agent asks before carrying out a plan, opening a pull request and merging one. It does not yet ask before deleting files, closing an issue or rolling back a release.",
+      "seenIn": [
+        "Scindo"
+      ]
+    },
+    {
+      "id": "agent-cancels-when-unanswered",
+      "title": "An agent cancels and reports when nobody answers",
+      "kind": "rule",
+      "level": "rule",
+      "area": "agent",
+      "situation": "The agent has asked a question or proposed an action, and nobody answers.",
+      "answer": "The agent never takes silence as a yes: while a question or proposal waits, it does nothing that depends on the answer. Each product sets the waiting time and shows it on the waiting card. When the time is up, the agent cancels the request, marks the card Cancelled, and posts one line saying what it did not do. The agent may write a plan that lists the unanswered questions as open questions. It may not carry out anything that depends on an answer.",
+      "why": "An agent that acts on silence does work nobody approved, and one that waits forever leaves work stuck without saying so.",
+      "do": [
+        "Keep the card and its buttons open until someone answers or the request is cancelled.",
+        "Notify the person who asked when the agent needs their answer.",
+        "When a request is cancelled, mark the card Cancelled and post one line on what was not done.",
+        "List questions asked before a plan that nobody answered as open questions in that plan."
+      ],
+      "dont": [
+        "Do not treat no answer as approval.",
+        "Do not cancel a request without saying so in the thread."
+      ],
+      "notBuiltYet": "No product cancels a waiting request on its own yet. In Scindo a request waits until a person answers, cancels or skips it, and the waiting time is not decided.",
+      "seenIn": [
+        "Scindo"
+      ]
+    },
+    {
+      "id": "agent-refuses-clearly",
+      "title": "An agent refuses clearly",
+      "kind": "rule",
+      "level": "rule",
+      "area": "agent",
+      "situation": "The product will not let the agent answer a request, for example because the workspace used all its agent replies for the month, reached its spending cap, or sent too many requests at once.",
+      "answer": "The refusal says in one plain sentence which limit was reached, and either who can change it or when to try again. A person who can lift the limit gets the one button that does it, such as Upgrade or Change Budget Cap. When an admin can lift the limit, everyone else is told to ask a workspace admin. A limit that passes with time says when to try again instead.",
+      "why": "A person who is refused needs to know why and what to do next, or they will just send the request again.",
+      "do": [
+        "Say which limit was reached, with the number when there is one: 'You've used all 50 AI agent responses this month.'",
+        "Say who can change it, or when to try again: 'Try again in a minute.'",
+        "Show the button that lifts the limit only to a person allowed to use it.",
+        "Let the person close the refusal without acting, with a button such as 'Not Now'."
+      ],
+      "dont": [
+        "Do not show a general error message for a refusal.",
+        "Do not show an Upgrade button to someone who cannot upgrade."
+      ],
+      "native": "On Apple the refusal is a row above the composer, with an Upgrade or Change Budget Cap button for admins and never a link to a web page.",
+      "notBuiltYet": "Scindo on the web does not follow this yet: it shows the Upgrade button to everyone. Scindo's Apple app shows it only to admins.",
+      "seenIn": [
+        "Scindo"
+      ]
+    },
+    {
+      "id": "agent-says-what-it-is",
+      "title": "An agent says what it is",
+      "kind": "rule",
+      "level": "rule",
+      "area": "agent",
+      "situation": "The agent posts in a thread where people also write, or replies to a person.",
+      "answer": "Every agent message has marks no person's message has. It shows an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.",
+      "why": "People must see at a glance whether a person or an agent wrote what they are reading, and whose agent it is.",
+      "do": [
+        "Show the agent with an icon avatar, never a photo or an initial.",
+        "Name the agent in the message header: its role or given name, or 'Agent' when it has none.",
+        "Show the model name next to the time when the product knows it.",
+        "Show the product's logo on the product's own agent and a plain bot icon on an agent from outside, so people see whose agent it is."
+      ],
+      "dont": [
+        "Do not show a photo for an agent, even when one is set.",
+        "Do not show the product's logo on an agent the product does not run."
+      ],
+      "native": "On Apple an 'Agent' label with a sparkles icon sits next to a named agent's name, and the app draws the agent's avatar itself.",
+      "seenIn": [
+        "Scindo"
+      ]
+    },
+    {
+      "id": "agent-shows-progress",
+      "title": "An agent shows its progress",
+      "kind": "rule",
+      "level": "rule",
+      "area": "agent",
+      "situation": "The agent is working on a request and its reply is not ready yet.",
+      "answer": "While it works, the agent shows a live row in the thread, where its reply will appear: its name, the model, the seconds so far, the steps it has finished with a check mark, and the step it is on now in plain words, such as 'Reading file'. A Stop button stays on that row for the whole run. When the run is stopped, the agent posts a short note that it stopped.",
+      "why": "A person waiting on an agent needs to know it is still working, what it is doing, and that they can stop it.",
+      "do": [
+        "Show the progress row in the thread, where the reply will appear.",
+        "Name the current step in plain words, such as 'Reading file' or 'Editing code'.",
+        "Keep finished steps in view, each with a check mark.",
+        "Keep a Stop button on the row for the whole run."
+      ],
+      "dont": [
+        "Do not show a spinner with no words.",
+        "Do not hide the Stop button while the agent writes its reply.",
+        "Do not say the agent stopped before the run has really ended."
+      ],
+      "native": "On Apple the Send button turns into Stop while the agent works, and the note reads 'Stopped.' only once the run has really ended.",
+      "seenIn": [
+        "Scindo"
+      ]
+    },
+    {
+      "id": "agent-shows-sources",
+      "title": "An agent shows its sources",
+      "kind": "rule",
+      "level": "rule",
+      "area": "agent",
+      "situation": "The agent answers from things it read: documents, files, chat, tasks, or a connected service such as a code host or a design tool.",
+      "answer": "Under the reply, the agent lists what it used. A small tag names the kinds of source, such as 'From Chat · Knowledge base', and one card per source shows its title, its kind and where it lives. Each card opens the source. A reply that used no sources shows no sources section.",
+      "why": "A person can check an answer only when they can open what it came from.",
+      "do": [
+        "Put the sources directly under the reply they support.",
+        "Show each source as a card with its title and where it lives, such as the space name or the date.",
+        "Make each card open the source itself, in the product or on the service it came from.",
+        "Show the first six sources and a 'Show N more' button for the rest."
+      ],
+      "dont": [
+        "Do not show a sources section when the reply used no sources.",
+        "Do not show source cards on a person's message.",
+        "Do not link a source card to any site other than the product or the service the source came from."
+      ],
+      "seenIn": [
+        "Scindo"
+      ]
+    },
+    {
+      "id": "login-page",
+      "title": "Login page",
+      "kind": "design",
+      "level": "page",
+      "area": "auth",
+      "situation": "A person who already has an account opens the product and is not signed in.",
+      "do": [
+        "Show a problem with one field under that field.",
+        "Show a refused sign-in or a failed request in an inline Alert above the fields.",
+        "When there is a password, put a text-only 'Forgot password?' Button right under the submit Button.",
+        "Name the provider on its button: 'Continue with Google'.",
+        "While signing in, show the loading state on the submit Button and keep the form in place."
+      ],
+      "dont": [
+        "Do not clear the email field after a failed attempt.",
+        "Do not show sign-up fields on the login page; link or tab to sign-up.",
+        "Do not replace the form with a spinner while signing in.",
+        "Do not say which of the email or the password was wrong."
+      ],
+      "native": "On Apple use `SignInWithAppleButton` for Apple, a grouped form for the fields, and system buttons.",
+      "notBuiltYet": "Commentify and Scindo on the web replace the form with a spinner while signing in. They do not use the Button's loading state yet.",
+      "seenIn": [
+        "Commentify",
+        "Commentify admin",
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "centered",
+          "title": "Centered column",
+          "useWhen": "The product has one way in, and most people sign in with email and a password.",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Image from 'oneslash-design-system/components/image';\nimport TabsContainer from 'oneslash-design-system/components/tabsContainer';\nimport Tab from 'oneslash-design-system/components/tab';\nimport Form from 'oneslash-design-system/components/form';\nimport Alert from 'oneslash-design-system/components/alert';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport Line from 'oneslash-design-system/components/line';\nimport BrandIcon from 'oneslash-design-system/components/brandIcon';\nimport { Center } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A real app passes the router from its framework, such as Next's useRouter().\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\n// A small check: some text, an @, then some text.\nfunction looksLikeEmail(value: string) {\n  return /^[^@\\s]+@[^@\\s]+$/.test(value);\n}\n\nexport default function LoginCentered() {\n  const [email, setEmail] = useState('ada@example.com');\n  const [password, setPassword] = useState('');\n  const [error, setError] = useState('');\n  const [emailError, setEmailError] = useState('');\n  const [passwordError, setPasswordError] = useState('');\n  const [loading, setLoading] = useState(false);\n\n  function handleSubmit() {\n    if (loading) return;\n    setError('');\n    setEmailError('');\n    setPasswordError('');\n    if (!email.trim()) {\n      setEmailError('Enter your email.');\n      return;\n    }\n    if (!looksLikeEmail(email.trim())) {\n      setEmailError('Enter a valid email address.');\n      return;\n    }\n    if (!password) {\n      setPasswordError('Enter your password.');\n      return;\n    }\n    setLoading(true);\n    // Stands in for the request to the server.\n    setTimeout(() => {\n      setLoading(false);\n      setError('That email and password do not match.');\n    }, 1200);\n  }\n\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <TabsContainer>\n        <Tab label=\"Log In\" isSelected onClickTab={() => {}} />\n        <Tab label=\"Sign Up\" isSelected={false} href=\"/sign-up\" router={router} onClickTab={() => {}} />\n      </TabsContainer>\n      <Form aria-label=\"Log in\" onSubmit={handleSubmit}>\n        {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n        <TextField id=\"login-email\" label=\"Email\" type=\"email\" autoComplete=\"username\" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />\n        <TextField id=\"login-password\" label=\"Password\" type=\"password\" autoComplete=\"current-password\" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />\n        <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Log In\" htmlType=\"submit\" loading={loading} />\n        <Button size=\"medium\" type=\"textOnly\" state=\"enabled\" label=\"Forgot password?\" />\n      </Form>\n      <Line label=\"or\" />\n      <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with Google\" decoIcon={<BrandIcon name=\"google\" />} />\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "BrandIcon",
+            "Button",
+            "Center",
+            "Form",
+            "Image",
+            "Line",
+            "Tab",
+            "TabsContainer",
+            "TextField"
+          ]
+        },
+        {
+          "id": "split",
+          "title": "Brand beside the form",
+          "useWhen": "First-time visitors land here and need one line on what the product is.",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Image from 'oneslash-design-system/components/image';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport Form from 'oneslash-design-system/components/form';\nimport Alert from 'oneslash-design-system/components/alert';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport Line from 'oneslash-design-system/components/line';\nimport Link from 'oneslash-design-system/components/link';\nimport BrandIcon from 'oneslash-design-system/components/brandIcon';\nimport { Center, Cluster, Split, Stack } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A small check: some text, an @, then some text.\nfunction looksLikeEmail(value: string) {\n  return /^[^@\\s]+@[^@\\s]+$/.test(value);\n}\n\nexport default function LoginSplit() {\n  const [email, setEmail] = useState('ada@example.com');\n  const [password, setPassword] = useState('');\n  const [error, setError] = useState('');\n  const [emailError, setEmailError] = useState('');\n  const [passwordError, setPasswordError] = useState('');\n  const [loading, setLoading] = useState(false);\n\n  function handleSubmit() {\n    if (loading) return;\n    setError('');\n    setEmailError('');\n    setPasswordError('');\n    if (!email.trim()) {\n      setEmailError('Enter your email.');\n      return;\n    }\n    if (!looksLikeEmail(email.trim())) {\n      setEmailError('Enter a valid email address.');\n      return;\n    }\n    if (!password) {\n      setPasswordError('Enter your password.');\n      return;\n    }\n    setLoading(true);\n    // Stands in for the request to the server.\n    setTimeout(() => {\n      setLoading(false);\n      setError('That email and password do not match.');\n    }, 1200);\n  }\n\n  return (\n    <Split\n      fill\n      aside={\n        <Stack gap=\"large\">\n          <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n          <Heading level={2} size=\"h4\">Plan the week with your whole team.</Heading>\n          <Paragraph tone=\"secondary\" measure=\"lede\">\n            Acme keeps tasks, notes and decisions in one place.\n          </Paragraph>\n        </Stack>\n      }\n    >\n      <Center fill>\n        <Heading level={2} size=\"h5\">Log in to Acme</Heading>\n        <Form aria-label=\"Log in\" onSubmit={handleSubmit}>\n          {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n          <TextField id=\"split-email\" label=\"Email\" type=\"email\" autoComplete=\"username\" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />\n          <TextField id=\"split-password\" label=\"Password\" type=\"password\" autoComplete=\"current-password\" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />\n          <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Log In\" htmlType=\"submit\" loading={loading} />\n          <Button size=\"medium\" type=\"textOnly\" state=\"enabled\" label=\"Forgot password?\" />\n        </Form>\n        <Line label=\"or\" />\n        <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with Google\" decoIcon={<BrandIcon name=\"google\" />} />\n        <Cluster gap=\"small\">\n          <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">New here?</Paragraph>\n          <Link href=\"/signup\" size=\"body2\">Create an account</Link>\n        </Cluster>\n      </Center>\n    </Split>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "BrandIcon",
+            "Button",
+            "Center",
+            "Cluster",
+            "Form",
+            "Heading",
+            "Image",
+            "Line",
+            "Link",
+            "Paragraph",
+            "Split",
+            "Stack",
+            "TextField"
+          ]
+        },
+        {
+          "id": "provider-first",
+          "title": "Provider first",
+          "useWhen": "Most people sign in with Google, GitHub or Apple; email is the fallback.",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Form from 'oneslash-design-system/components/form';\nimport Alert from 'oneslash-design-system/components/alert';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport Line from 'oneslash-design-system/components/line';\nimport BrandIcon from 'oneslash-design-system/components/brandIcon';\nimport { Center, Stack } from 'oneslash-design-system/components/layout';\n\n// A small check: some text, an @, then some text.\nfunction looksLikeEmail(value: string) {\n  return /^[^@\\s]+@[^@\\s]+$/.test(value);\n}\n\nexport default function LoginProviderFirst() {\n  const [email, setEmail] = useState('ada@example.com');\n  const [password, setPassword] = useState('');\n  const [error, setError] = useState('');\n  const [emailError, setEmailError] = useState('');\n  const [passwordError, setPasswordError] = useState('');\n  const [loading, setLoading] = useState(false);\n\n  function handleSubmit() {\n    if (loading) return;\n    setError('');\n    setEmailError('');\n    setPasswordError('');\n    if (!email.trim()) {\n      setEmailError('Enter your email.');\n      return;\n    }\n    if (!looksLikeEmail(email.trim())) {\n      setEmailError('Enter a valid email address.');\n      return;\n    }\n    if (!password) {\n      setPasswordError('Enter your password.');\n      return;\n    }\n    setLoading(true);\n    // Stands in for the request to the server.\n    setTimeout(() => {\n      setLoading(false);\n      setError('That email and password do not match.');\n    }, 1200);\n  }\n\n  return (\n    <Center fill>\n      <Heading level={2} size=\"h5\">Sign in to Acme</Heading>\n      <Stack gap=\"medium\">\n        <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with Google\" decoIcon={<BrandIcon name=\"google\" />} />\n        <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with GitHub\" decoIcon={<BrandIcon name=\"github\" />} />\n        <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Continue with Apple\" decoIcon={<BrandIcon name=\"apple\" />} />\n      </Stack>\n      <Line label=\"or\" />\n      <Form aria-label=\"Sign in with email\" onSubmit={handleSubmit}>\n        {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n        <TextField id=\"provider-email\" label=\"Email\" type=\"email\" autoComplete=\"username\" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />\n        <TextField id=\"provider-password\" label=\"Password\" type=\"password\" autoComplete=\"current-password\" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />\n        <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Sign in with email\" htmlType=\"submit\" loading={loading} />\n        <Button size=\"medium\" type=\"textOnly\" state=\"enabled\" label=\"Forgot password?\" />\n      </Form>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "BrandIcon",
+            "Button",
+            "Center",
+            "Form",
+            "Heading",
+            "Line",
+            "Stack",
+            "TextField"
+          ]
+        },
+        {
+          "id": "email-only",
+          "title": "Email only",
+          "useWhen": "An internal tool with no passwords: the person gets a sign-in link by email.",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Surface from 'oneslash-design-system/components/surface';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport Form from 'oneslash-design-system/components/form';\nimport Alert from 'oneslash-design-system/components/alert';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Stack } from 'oneslash-design-system/components/layout';\n\n// A small check: some text, an @, then some text.\nfunction looksLikeEmail(value: string) {\n  return /^[^@\\s]+@[^@\\s]+$/.test(value);\n}\n\nexport default function LoginEmailOnly() {\n  const [email, setEmail] = useState('ada@example.com');\n  const [sentTo, setSentTo] = useState('');\n  const [emailError, setEmailError] = useState('');\n  const [loading, setLoading] = useState(false);\n\n  function handleSubmit() {\n    if (loading) return;\n    setEmailError('');\n    setSentTo('');\n    if (!email.trim()) {\n      setEmailError('Enter your email.');\n      return;\n    }\n    if (!looksLikeEmail(email.trim())) {\n      setEmailError('Enter a valid email address.');\n      return;\n    }\n    setLoading(true);\n    const address = email.trim();\n    // Stands in for the request to the server.\n    setTimeout(() => {\n      setLoading(false);\n      setSentTo(address);\n    }, 1200);\n  }\n\n  return (\n    <Center fill>\n      <Surface padding=\"large\">\n        <Stack gap=\"xlarge\">\n          <Stack gap=\"small\">\n            <Heading level={2} size=\"h5\">Log in</Heading>\n            <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">We will email you a link to sign in.</Paragraph>\n          </Stack>\n          <Form aria-label=\"Log in\" onSubmit={handleSubmit}>\n            {sentTo && <Alert type=\"success\" variant=\"inline\" message={`We sent a sign-in link to ${sentTo}.`} showCloseButton onClose={() => setSentTo('')} />}\n            <TextField id=\"email-only-email\" label=\"Email\" type=\"email\" autoComplete=\"username\" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />\n            <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Send sign-in link\" htmlType=\"submit\" loading={loading} />\n          </Form>\n        </Stack>\n      </Surface>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "Button",
+            "Center",
+            "Form",
+            "Heading",
+            "Paragraph",
+            "Stack",
+            "Surface",
+            "TextField"
+          ]
+        }
+      ]
+    }
+  ]
+}

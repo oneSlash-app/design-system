@@ -13,6 +13,11 @@
       "note": "Tertiary and text-only: `.borderless` / `TextButton`. On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a `.borderedProminent` or `.glassProminent` button takes `text.primary`, not the system white, which is below 4.5:1 on the accent in default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark. In forest light it is the same color as the fill, so the label cannot be seen. The modifier keeps the system style and sets the label to `accent.contrast`. Compose needs nothing: `onPrimary` is `accent.contrast`."
     },
     {
+      "ods": "brandIcon",
+      "swiftui": "the provider's own button where one exists (`SignInWithAppleButton`), else an asset in the app",
+      "compose": "an asset in the app"
+    },
+    {
       "ods": "checkBox",
       "swiftui": "`Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS)",
       "compose": "`Checkbox`"
@@ -36,6 +41,12 @@
       "note": "In an app screen: an `Image` with a caption `Text` in the caption text style."
     },
     {
+      "ods": "form",
+      "swiftui": "`Form`",
+      "compose": "A `Column` of fields; submit from the keyboard action",
+      "note": "On Apple the system lays the fields out; do not add spacing."
+    },
+    {
       "ods": "heading",
       "swiftui": "`Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)`",
       "compose": "`Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }`"
@@ -51,10 +62,15 @@
       "compose": "`IconButton`"
     },
     {
+      "ods": "image",
+      "swiftui": "`Image` / `AsyncImage`",
+      "compose": "`Image` with the app's image loader"
+    },
+    {
       "ods": "layout",
       "swiftui": "Not applicable: web page pattern",
       "compose": "Not applicable: web page pattern",
-      "note": "In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`."
+      "note": "In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`. `Center` and `Split` are for web pages; a native screen is already one column."
     },
     {
       "ods": "line",

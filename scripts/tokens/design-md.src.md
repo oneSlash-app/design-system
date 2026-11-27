@@ -2,6 +2,8 @@
 
 ODS is the oneSlash design system. One source, `designTokens.js`, defines every color, spacing step, radius and type role. The build turns it into CSS themes and Tailwind presets for the web, a Swift package for Apple apps, and `tokens.json` in the W3C design tokens format. The tables in this file are generated from the same source, so they match the tokens exactly.
 
+Before you lay out a page or an agent behaviour, check the Cases section at the end of this file.
+
 ## Using ODS on the web
 
 The package ships Tailwind class names, CSS variables and untranspiled `.jsx`. Each app compiles the components itself and picks one theme.
@@ -165,3 +167,11 @@ The parts ODS ships where the platform has no control of its own: `ODSBanner` (a
 A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one color token.
 
 <!-- native:parts -->
+
+## Cases
+
+A case answers one design question the way oneSlash does, such as how to lay out a login page or how an agent asks before a risky action. A rule gives one answer and is printed here in full.
+
+A design case has a few options, each with a working example. Open the file named in the table for the one you need. In an app, import a component like this: `import Button from 'oneslash-design-system/components/button'`.
+
+<!-- cases:index -->

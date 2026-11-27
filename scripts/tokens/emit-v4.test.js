@@ -26,6 +26,7 @@ test('v4 theme.css', () => {
   assert.ok(css.includes('--shadow-overlay: var(--os-shadow-overlay);'));
   assert.ok(css.includes('--ease-spring: var(--os-ease-spring);'));
   assert.ok(css.includes('--spacing-small: var(--os-spacing-small);'));
+  assert.ok(css.includes('--container-form: var(--os-container-form);'));
   assert.ok(css.includes('@custom-variant dark (&:where(.dark, .dark *));'));
   assert.ok(!css.includes('--text-h1'));
 });
