@@ -11,8 +11,8 @@ export type IconComponent = React.ComponentType<any>;
  * - an icon component (`Plus` from `lucide-react`). Sized and stroked like a named icon, and only
  *   that icon is bundled.
  * - an element (`<Plus />`, `<Logo />`). The only form a Server Component can pass. An element
- *   without a `className` is sized and stroked like a named icon; one with a `className` is
- *   rendered as given, so the caller's own size wins.
+ *   whose classes set no size is sized like a named icon; one with a size class of its own
+ *   (`w-*`, `h-*`, `size-*`) is rendered as given, so the caller's size wins.
  */
 export type IconSource = string | IconComponent | React.ReactElement;
 interface IconSlotProps {

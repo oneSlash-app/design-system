@@ -12,6 +12,8 @@ var __assign = (this && this.__assign) || function () {
 };
 import React, { Suspense, lazy } from 'react';
 var NamedIcon = lazy(function () { return import('./namedIcon'); });
+// A Tailwind class that sets a width or a height, with any variant or `!` in front
+var SIZE_CLASS = /(^|[\s:!])(w|h|size)-/;
 export default function IconSlot(_a) {
     var _b;
     var icon = _a.icon, className = _a.className, _c = _a.strokeWidth, strokeWidth = _c === void 0 ? 2 : _c, size = _a.size, warnIfMissing = _a.warnIfMissing;
@@ -19,12 +21,19 @@ export default function IconSlot(_a) {
         return null;
     if (React.isValidElement(icon)) {
         var own = icon.props;
-        // The caller's own classes win: merging two size classes would leave the result to CSS order
-        if (own.className !== undefined)
+        // The caller's own size wins: two size classes on one element would leave the result to CSS order
+        if (own.className && SIZE_CLASS.test(own.className))
             return icon;
+        var merged = [own.className, className].filter(Boolean).join(' ') || undefined;
+        // A Lucide icon passed from a Server Component arrives already rendered, as an <svg> with
+        // Lucide's own classes and its default width and height. The size class overrides those
+        // attributes; a pixel size replaces them.
+        if (typeof icon.type === 'string') {
+            var box = size !== undefined && icon.type === 'svg' ? { width: size, height: size } : {};
+            return React.cloneElement(icon, __assign({ className: merged }, box));
+        }
         // `strokeWidth` and `size` are props of an icon component, not attributes of a plain tag
-        var iconProps = typeof icon.type === 'string' ? {} : __assign({ strokeWidth: (_b = own.strokeWidth) !== null && _b !== void 0 ? _b : strokeWidth }, (size !== undefined && own.size === undefined ? { size: size } : {}));
-        return React.cloneElement(icon, __assign({ className: className }, iconProps));
+        return React.cloneElement(icon, __assign({ className: merged, strokeWidth: (_b = own.strokeWidth) !== null && _b !== void 0 ? _b : strokeWidth }, (size !== undefined && own.size === undefined ? { size: size } : {})));
     }
     if (typeof icon === 'string') {
         return (

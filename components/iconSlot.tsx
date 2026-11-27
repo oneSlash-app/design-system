@@ -14,12 +14,15 @@ export type IconComponent = React.ComponentType<any>;
  * - an icon component (`Plus` from `lucide-react`). Sized and stroked like a named icon, and only
  *   that icon is bundled.
  * - an element (`<Plus />`, `<Logo />`). The only form a Server Component can pass. An element
- *   without a `className` is sized and stroked like a named icon; one with a `className` is
- *   rendered as given, so the caller's own size wins.
+ *   whose classes set no size is sized like a named icon; one with a size class of its own
+ *   (`w-*`, `h-*`, `size-*`) is rendered as given, so the caller's size wins.
  */
 export type IconSource = string | IconComponent | React.ReactElement;
 
 const NamedIcon = lazy(() => import('./namedIcon'));
+
+// A Tailwind class that sets a width or a height, with any variant or `!` in front
+const SIZE_CLASS = /(^|[\s:!])(w|h|size)-/;
 
 interface IconSlotProps {
   icon: IconSource | null | undefined;
@@ -34,14 +37,22 @@ export default function IconSlot({ icon, className, strokeWidth = 2, size, warnI
   if (!icon) return null;
   if (React.isValidElement(icon)) {
     const own = icon.props as { className?: string; strokeWidth?: number; size?: number };
-    // The caller's own classes win: merging two size classes would leave the result to CSS order
-    if (own.className !== undefined) return icon;
+    // The caller's own size wins: two size classes on one element would leave the result to CSS order
+    if (own.className && SIZE_CLASS.test(own.className)) return icon;
+    const merged = [own.className, className].filter(Boolean).join(' ') || undefined;
+    // A Lucide icon passed from a Server Component arrives already rendered, as an <svg> with
+    // Lucide's own classes and its default width and height. The size class overrides those
+    // attributes; a pixel size replaces them.
+    if (typeof icon.type === 'string') {
+      const box = size !== undefined && icon.type === 'svg' ? { width: size, height: size } : {};
+      return React.cloneElement(icon as React.ReactElement<any>, { className: merged, ...box });
+    }
     // `strokeWidth` and `size` are props of an icon component, not attributes of a plain tag
-    const iconProps = typeof icon.type === 'string' ? {} : {
+    return React.cloneElement(icon as React.ReactElement<any>, {
+      className: merged,
       strokeWidth: own.strokeWidth ?? strokeWidth,
       ...(size !== undefined && own.size === undefined ? { size } : {}),
-    };
-    return React.cloneElement(icon as React.ReactElement<any>, { className, ...iconProps });
+    });
   }
   if (typeof icon === 'string') {
     return (
