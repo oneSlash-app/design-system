@@ -91,7 +91,7 @@ test('Button link: other sites are a plain <a>, a new tab is opt-in, disabled ha
 
 test('an icon given as a component or an element renders at once, without the icon set', () => {
   assert.match(html(h(Button, { ...base, decoIcon: Plus })), /<svg[^>]*class="lucide lucide-plus w-5 h-5 flex-shrink-0"/);
-  assert.match(html(h(Button, { ...base, decoIcon: h('i', { id: 'mark', className: 'own' }) })), /<i id="mark" class="own"><\/i>/);
+  assert.match(html(h(Button, { ...base, decoIcon: h('i', { id: 'mark', className: 'size-3' }) })), /<i id="mark" class="size-3"><\/i>/);
   assert.match(html(h(IconButton, { color: 'primary', state: 'enabled', size: 'medium', icon: Plus, ariaLabel: 'Add' })), /^<button [^>]*aria-label="Add"[^>]*><svg[^>]*lucide-plus size-6/);
   assert.match(html(h(Tag, { variant: 'contained', size: 'medium', label: 'New', icon: Plus })), /lucide-plus w-4 h-4/);
   assert.match(html(h(Icon, { icon: Plus, size: 'small' })), /<svg[^>]*width="16" height="16"[^>]*lucide-plus text-fg-primary/);
@@ -107,12 +107,24 @@ test('an element icon without a class is sized like a component; with a class it
   );
   assert.equal(html(h(Tag, { variant: 'contained', size: 'medium', label: 'New', icon: h(Plus) })), html(h(Tag, { variant: 'contained', size: 'medium', label: 'New', icon: Plus })));
   assert.equal(html(h(Icon, { icon: h(Plus), size: 'small' })), html(h(Icon, { icon: Plus, size: 'small' })));
-  // The caller's own class and stroke win
+  // The caller's own size and stroke win; a class that sets no size is kept and the size added
   const own = html(h(Button, { ...base, decoIcon: h(Plus, { className: 'w-8 h-8' }) }));
   assert.match(own, /class="lucide lucide-plus w-8 h-8"/);
+  assert.match(html(h(Button, { ...base, decoIcon: h(Plus, { className: 'md:size-8' }) })), /class="lucide lucide-plus md:size-8"/);
+  assert.match(html(h(Button, { ...base, decoIcon: h(Plus, { className: 'text-error-main' }) })), /class="lucide lucide-plus text-error-main w-5 h-5 flex-shrink-0"/);
   assert.match(html(h(Button, { ...base, decoIcon: h(Plus, { strokeWidth: 1 }) })), /stroke-width="1"[^>]*class="lucide lucide-plus w-5 h-5 flex-shrink-0"/);
   // A plain tag gets the size class and nothing else
   assert.match(html(h(Button, { ...base, decoIcon: h('i') })), /<i class="w-5 h-5 flex-shrink-0"><\/i>/);
+});
+
+test('a Lucide icon a Server Component rendered arrives as an <svg> and is still sized', () => {
+  // What crosses from the server: the icon's output, not the icon. Lucide has set its classes and 24px.
+  const fromServer = () => h('svg', { className: 'lucide lucide-plus', width: 24, height: 24, strokeWidth: 2, 'aria-hidden': 'true' });
+  assert.match(html(h(Button, { ...base, decoIcon: fromServer() })), /class="lucide lucide-plus w-5 h-5 flex-shrink-0"/);
+  assert.match(html(h(Button, { ...base, size: 'small', actionIcon: fromServer() })), /class="lucide lucide-plus w-4 h-4 flex-shrink-0"/);
+  assert.match(html(h(IconButton, { color: 'tertiary', state: 'enabled', size: 'small', icon: fromServer(), ariaLabel: 'Add' })), /class="lucide lucide-plus size-5"/);
+  assert.match(html(h(Tag, { variant: 'contained', size: 'medium', label: 'New', icon: fromServer() })), /class="lucide lucide-plus w-4 h-4 flex-shrink-0"/);
+  assert.match(html(h(Icon, { icon: fromServer(), size: 'small' })), /<svg[^>]*class="lucide lucide-plus text-fg-primary"[^>]*width="16" height="16"|<svg[^>]*width="16" height="16"[^>]*class="lucide lucide-plus text-fg-primary"/);
 });
 
 test('an icon given by name still renders, and is the same icon', async () => {

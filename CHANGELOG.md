@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.14.2] - 2026-11-27
+
+### Fixed
+
+- A Lucide icon passed as an element from a Server Component (`icon={<Info />}`) is now sized like the same icon passed as a component. The 2.14.1 fix did not cover this, the case it was written for: the server renders the icon before it is passed, so the button receives an `<svg>` that already carries Lucide's classes, and 2.14.1 left any element with a `className` alone. The rule is now about size: an element whose classes set no width or height (`w-*`, `h-*`, `size-*`) keeps its classes and gets the slot's size added; one that sets its own size is rendered as given.
+
 ## [2.14.1] - 2026-11-27
 
 ### Fixed
