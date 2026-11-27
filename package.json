@@ -18,6 +18,8 @@
     "./tokens.json": "./dist/tokens.json",
     "./native-mapping.json": "./dist/native-mapping.json",
     "./DESIGN.md": "./dist/DESIGN.md",
+    "./cases.json": "./dist/cases.json",
+    "./cases/*": "./dist/cases/*",
     "./tokens": {
       "types": "./dist/designTokens.d.ts",
       "default": "./dist/designTokens.js"

@@ -365,3 +365,11 @@ A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one
 | `tag.contained.success` | `success.fill` | `success.onFill` | `success.fill` |  |
 | `tag.textOnly.success` |  | `success.text` | `success.fill` |  |
 | `tag.dot.success` |  | `text.primary` |  | `success.main` |
+
+## Cases
+
+A case answers one design question the way oneSlash does, such as how to confirm a delete or how to lay out a login page. A rule gives one answer and is printed here in full.
+
+A design case has a few options, each with a working example. Open the file named in the table for the one you need.
+
+There are no design cases yet.

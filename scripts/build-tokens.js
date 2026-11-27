@@ -17,6 +17,10 @@ const { withGeneratedNotes } = require('./tokens/button-note');
 const { emitKotlinColors, emitKotlinScheme, emitKotlinParts, emitKotlinMetrics } = require('./tokens/emit-kotlin');
 const material = require('../native/material-roles');
 const nativeMapping = require('../native/mapping');
+const { loadCases } = require('./cases/load');
+const { validateCases } = require('./cases/validate');
+const { odsViolations } = require('./cases/ods-only');
+const { emitCasesJson, emitCaseMd, emitCaseStories } = require('./cases/emit');
 
 const { typeRoles } = nativeMapping;
 // The mapping as it is published: notes that depend on the tokens are filled in.
@@ -42,7 +46,7 @@ const emitters = {
   'tokens.json': (t, inc) => emitDtcg(t, inc),
   'tailwind-preset.js': (t) => emitPreset(t),
   'tailwind-preset-auto.js': (t) => emitPreset(t, { auto: true }),
-  'DESIGN.md': (t, inc) => emitDesignMd(t, mappingFor(t), designMdTemplate, inc),
+  'DESIGN.md': (t, inc, cases) => emitDesignMd(t, mappingFor(t), designMdTemplate, inc, cases),
   'native-mapping.json': (t) => `${JSON.stringify({ components: mappingFor(t).components, typeRoles }, null, 2)}\n`,
 };
 
@@ -75,12 +79,43 @@ function generateNative(tokens) {
   return files;
 }
 
-function generate(tokens) {
+function generate(tokens, cases = []) {
   validateTokens(tokens);
   const increased = withIncreased(tokens);
   const files = {};
-  for (const [file, emit] of Object.entries(emitters)) files[file] = emit(tokens, increased);
+  for (const [file, emit] of Object.entries(emitters)) files[file] = emit(tokens, increased, cases);
   return files;
+}
+
+// Loads and checks the cases; throws listing every problem, including every example that is not ODS only.
+function readCases(dir) {
+  const cases = loadCases(dir);
+  validateCases(cases);
+  const violations = cases.flatMap((c) => (c.options || []).flatMap((o) => (
+    o.source === undefined ? [] : odsViolations(o.source, `cases/${c.id}/${o.example}`))));
+  if (violations.length > 0) throw new Error(`case examples are not ODS only:\n- ${violations.join('\n- ')}`);
+  return cases;
+}
+
+function casesFiles(cases) {
+  const dist = { 'cases.json': emitCasesJson(cases) };
+  for (const c of cases) dist[`cases/${c.id}.md`] = emitCaseMd(c);
+  return { dist, stories: { 'Cases.generated.stories.tsx': emitCaseStories(cases) } };
+}
+
+function generateCases(dir) {
+  return casesFiles(readCases(dir));
+}
+
+// Paths under <out>/cases/ that the run does not produce: *.md files, and folders whose id is not a case.
+// tsc writes dist/cases/<id>/ for a current case, so only other folders are stale.
+function staleCasePaths(out, files, cases) {
+  const dir = path.join(out, 'cases');
+  if (!fs.existsSync(dir)) return [];
+  const ids = new Set(cases.map((c) => c.id));
+  return fs.readdirSync(dir, { withFileTypes: true })
+    .filter((e) => (e.isDirectory() ? !ids.has(e.name) : /\.md$/.test(e.name) && !(`cases/${e.name}` in files)))
+    .map((e) => path.join(dir, e.name));
 }
 
 function main(argv) {
@@ -97,16 +132,35 @@ function main(argv) {
   const androidOut = androidIdx === -1 ? 'native/android/oneslash-design/src/main/kotlin/app/oneslash/design/generated' : argv[androidIdx + 1];
   if (!androidOut) throw new Error('--android-out requires a directory');
 
+  const storiesIdx = argv.indexOf('--stories-out');
+  const storiesOut = storiesIdx === -1 ? 'stories' : argv[storiesIdx + 1];
+  if (!storiesOut) throw new Error('--stories-out requires a directory');
+
+  const casesIdx = argv.indexOf('--cases-dir');
+  const casesDir = casesIdx === -1 ? 'cases' : argv[casesIdx + 1];
+  if (!casesDir) throw new Error('--cases-dir requires a directory');
+
   const tokens = require('../designTokens.js');
-  const sets = [[out, generate(tokens)], [nativeOut, generateNative(tokens)], [androidOut, generateAndroid(tokens)]];
+  const cases = readCases(casesDir);
+  const fromCases = casesFiles(cases);
+  const sets = [
+    [out, { ...generate(tokens, cases), ...fromCases.dist }],
+    [nativeOut, generateNative(tokens)],
+    [androidOut, generateAndroid(tokens)],
+    [storiesOut, fromCases.stories],
+  ];
+  const stale = staleCasePaths(out, sets[0][1], cases);
 
   if (check) {
     const differing = sets.flatMap(([dir, files]) => Object.keys(files)
       .map((f) => path.join(dir, f))
       .filter((p, i) => !fs.existsSync(p) || fs.readFileSync(p, 'utf8') !== files[Object.keys(files)[i]]));
-    differing.forEach((p) => console.log(p));
-    process.exit(differing.length ? 1 : 0);
+    const problems = [...differing, ...stale];
+    problems.forEach((p) => console.log(p));
+    process.exit(problems.length ? 1 : 0);
   }
+
+  stale.forEach((p) => fs.rmSync(p, { recursive: true, force: true }));
 
   for (const [dir, files] of sets) {
     for (const [f, content] of Object.entries(files)) {
@@ -119,4 +173,4 @@ function main(argv) {
 
 if (require.main === module) main(process.argv.slice(2));
 
-module.exports = { generate, generateNative, generateAndroid };
+module.exports = { generate, generateNative, generateAndroid, generateCases };
