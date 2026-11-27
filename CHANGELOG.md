@@ -7,9 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [2.14.0] - Unreleased
+## [2.14.0] - 2026-11-27
 
-Web components only. Found while moving Viskit to this package: each item replaces a workaround an app had to carry. `package.json` is still 2.13.1; bumping it to 2.14.0 on main is what publishes.
+Web components only. Found while moving Viskit to this package: each item replaces a workaround an app had to carry.
 
 ### Added
 
