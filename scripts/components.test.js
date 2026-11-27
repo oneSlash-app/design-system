@@ -246,3 +246,20 @@ test('a Button takes a BrandIcon as its decoIcon and sizes it like a named icon'
   assert.deepEqual(sizeOf(brand), sizeOf(lucide));
   assert.doesNotMatch(brand, /<svg [^>]*(width|height|stroke)/i);
 });
+
+// React 18 logs through console.error when a server render runs into something it cannot do, such as useLayoutEffect
+test('TabsContainer and Tooltip render on the server without a console.error', async () => {
+  const TabsContainer = load('tabsContainer');
+  const Tab = load('tab');
+  const Tooltip = load('tooltip');
+  const errors = [];
+  const original = console.error;
+  console.error = (...args) => errors.push(args.join(' '));
+  try {
+    await htmlWhenReady(h(TabsContainer, null, h(Tab, { label: 'One', isSelected: true, onClickTab: () => {} })));
+    await htmlWhenReady(h(Tooltip, { title: 'Hint' }, h('span', null, 'Hover')));
+  } finally {
+    console.error = original;
+  }
+  assert.deepEqual(errors, []);
+});
