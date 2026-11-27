@@ -24,9 +24,11 @@ const defaultJs = require.extensions['.js'];
 require.extensions['.js'] = (module, file) => (file.startsWith(dist + path.sep) ? compile(module, file) : defaultJs(module, file));
 
 const load = (name) => require(path.join(dist, 'components', `${name}.jsx`)).default;
+const BrandIcon = load('brandIcon');
 const Button = load('button');
 const Form = load('form');
 const IconButton = load('iconButton');
+const ImageEl = load('image');
 const Line = load('line');
 const Icon = load('icon');
 const Tag = load('tag');
@@ -231,4 +233,46 @@ test('Split shows the aside only from md up', () => {
   assert.match(out, />B</);
   assert.ok(!classOf(out).includes('min-h-screen'));
   assert.ok(classOf(html(h(Split, { aside: 'A', fill: true, children: 'B' }))).includes('min-h-screen'));
+});
+
+test('Image renders an <img> with alt, width and height', () => {
+  assert.match(html(h(ImageEl, { src: '/a.png', alt: 'A', width: 40, height: 20 })), /^<img [^>]*alt="A"[^>]*width="40"[^>]*height="20"/);
+  assert.match(html(h(ImageEl, { src: '/a.png', alt: '' })), /alt=""/);
+  assert.match(html(h(ImageEl, { src: '/a.png', alt: 'A', fit: 'contain', loading: 'lazy' })), /class="object-contain"/);
+  assert.match(html(h(ImageEl, { src: '/a.png', alt: 'A', loading: 'lazy' })), /loading="lazy"/);
+  assert.doesNotMatch(html(h(ImageEl, { src: '/a.png', alt: 'A' })), /class=|loading=|width=/);
+});
+test('BrandIcon is hidden from assistive tech unless it has a title', () => {
+  assert.match(html(h(BrandIcon, { name: 'github' })), /aria-hidden="true"/);
+  const named = html(h(BrandIcon, { name: 'github', title: 'GitHub' }));
+  assert.match(named, /<title>GitHub<\/title>/);
+  assert.match(named, /role="img"/);
+  assert.doesNotMatch(named, /aria-hidden/);
+});
+test('BrandIcon github and apple draw in currentColor; google keeps its four colors', () => {
+  for (const name of ['github', 'apple']) {
+    const out = html(h(BrandIcon, { name }));
+    assert.equal(out.match(/<path /g).length, 1);
+    assert.match(out, /fill="currentColor"/);
+  }
+  const google = html(h(BrandIcon, { name: 'google' }));
+  assert.equal(google.match(/<path /g).length, 4);
+  for (const c of ['#4285F4', '#34A853', '#FBBC05', '#EA4335']) assert.ok(google.includes(c), c);
+  assert.doesNotMatch(google, /currentColor/);
+});
+test('BrandIcon takes size, or a size class, and ignores props it does not use', () => {
+  assert.match(html(h(BrandIcon, { name: 'apple' })), /^<svg [^>]*width="16" height="16"/);
+  assert.match(html(h(BrandIcon, { name: 'apple', size: 24 })), /width="24" height="24"/);
+  const byClass = html(h(BrandIcon, { name: 'apple', className: 'w-5 h-5' }));
+  assert.match(byClass, /class="w-5 h-5"/);
+  assert.doesNotMatch(byClass, /width=|height=/);
+  assert.doesNotMatch(html(h(BrandIcon, { name: 'apple', strokeWidth: 2 })), /stroke/i);
+});
+test('a Button takes a BrandIcon as its decoIcon and sizes it like a named icon', () => {
+  const brand = html(h(Button, { ...base, decoIcon: h(BrandIcon, { name: 'github' }) }));
+  const lucide = html(h(Button, { ...base, decoIcon: h(Plus) }));
+  assert.equal(brand.match(/<svg /g).length, 1);
+  const sizeOf = (m) => m.match(/<svg [^>]*class="([^"]*)"/)[1].split(/\s+/).filter((c) => /^(w|h)-/.test(c));
+  assert.deepEqual(sizeOf(brand), sizeOf(lucide));
+  assert.doesNotMatch(brand, /<svg [^>]*(width|height|stroke)/i);
 });

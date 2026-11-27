@@ -291,6 +291,7 @@ For each web component, the table gives the native control to use. System contro
 | --- | --- | --- | --- |
 | alert | `ODSBanner` for an inline message; `.alert` for one that needs a decision | `OdsBanner` for an inline message; `AlertDialog` for one that needs a decision | ODS has no native toast: on Android use `Snackbar` in a `SnackbarHost`. |
 | button | `Button` with `.odsProminentButton()` for accent (`.odsProminentButton(.glass)` for the glass style), `.bordered` for primary | `Button`, `OutlinedButton` | Tertiary and text-only: `.borderless` / `TextButton`. On Apple, apply `.odsProminentButton()` to every prominent button. Under `odsTheme` the label of a `.borderedProminent` or `.glassProminent` button takes `text.primary`, not the system white, which is below 4.5:1 on the accent in default dark, forest light, forest dark, clay dark, indigo light, indigo dark, wine light, wine dark. In forest light it is the same color as the fill, so the label cannot be seen. The modifier keeps the system style and sets the label to `accent.contrast`. Compose needs nothing: `onPrimary` is `accent.contrast`. |
+| brandIcon | the provider's own button where one exists (`SignInWithAppleButton`), else an asset in the app | an asset in the app |  |
 | checkBox | `Toggle` (switch on iOS, `.toggleStyle(.checkbox)` on macOS) | `Checkbox` |  |
 | emptyBox | `ContentUnavailableView` | `OdsEmptyState` | The system has this control on Apple, so ODS adds no part there. Material has none, so ODS does. |
 | factsRow | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `LabeledContent` rows in a `Form` / `ListItem` rows. |
@@ -299,6 +300,7 @@ For each web component, the table gives the native control to use. System contro
 | heading | `Text` with the type role's text style and `.accessibilityAddTraits(.isHeader)` | `Text` with the type role's `MaterialTheme.typography` style and `Modifier.semantics { heading() }` |  |
 | icon | `Image(systemName:)` (SF Symbols) | Material Symbols |  |
 | iconButton | `Button` with a `Label` and `.labelStyle(.iconOnly)` | `IconButton` |  |
+| image | `Image` / `AsyncImage` | `Image` with the app's image loader |  |
 | layout | Not applicable: web page pattern | Not applicable: web page pattern | In an app screen: `VStack` / `HStack` / `Grid`; Compose `Column` / `Row` / `LazyVerticalGrid`. `Center` and `Split` are for web pages; a native screen is already one column. |
 | line | `Divider` | `HorizontalDivider`, `VerticalDivider` |  |
 | link | `Link` | `Text` with a `LinkAnnotation.Url` in its `AnnotatedString` |  |
