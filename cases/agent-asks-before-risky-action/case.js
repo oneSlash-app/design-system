@@ -1,0 +1,30 @@
+module.exports = {
+  id: 'agent-asks-before-risky-action',
+  title: 'An agent asks before a risky action',
+  kind: 'rule',
+  level: 'rule',
+  area: 'agent',
+  situation: 'The agent is about to do something that changes shared work or is hard to undo.',
+  answer: 'Risky means opening or merging a pull request, deleting files, closing an issue, rolling back a release, or carrying out a plan of several changes. Before any of these the agent stops and posts a card with the exact action: every step it will take, or the changes themselves, which the person can open. Nothing happens until the person presses the approve button.',
+  why: "A person can only approve what they can see, and an agent's mistake in shared work costs other people.",
+  do: [
+    'List every step in the card, in the order the agent will do them.',
+    'Offer a way to see the full changes, such as a View Changes button, before the approve button is pressed.',
+    'Let the person edit the plan or cancel it, not only approve it.',
+    'Once decided, mark the card Approved or Cancelled and remove its buttons.',
+  ],
+  dont: [
+    'Do not carry out a risky action before the person approves it.',
+    'Do not replace the steps or the changes with a one-line summary.',
+    'Do not let the agent write the label of an approve or merge button.',
+    'Do not let a second click on a decided card approve or cancel it again.',
+  ],
+  seenIn: [
+    { product: 'Scindo', path: 'apps/web/src/components/chat/IntentPreview.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/components/chat/OptionsPreview.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/app/api/agent/action/route.ts' },
+    { product: 'Scindo', path: 'apps/web/src/app/api/agent/channel-respond/route.ts' },
+    { product: 'Scindo', path: 'apps/web/src/lib/agent-tools.ts' },
+    { product: 'Scindo', path: 'apps/web/src/lib/confidence-gate.ts' },
+  ],
+};
