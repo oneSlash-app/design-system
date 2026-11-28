@@ -35,7 +35,7 @@ The package ships Tailwind class names, CSS variables and untranspiled `.jsx`. E
 Use class names that mean the same thing in Tailwind v3 and v4 inside components, since apps on both versions compile them.
 
 Mount `<Toaster />` (from `oneslash-design-system/components/toaster`) once, near the app root.
-Call `toast('Saved')` from anywhere to show a message; it closes itself after 5 seconds.
+Call `toast('Saved')` from client code (event handlers and effects), not from a Server Component or a server action; it closes itself after 5 seconds.
 An error toast, `toast({ type: 'error', message })`, stays until the person closes it.
 
 ## Using the design system in a native app

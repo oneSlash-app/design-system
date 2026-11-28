@@ -1,12 +1,12 @@
 'use client';
-import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import React, { useEffect, useReducer, useRef, useState, useSyncExternalStore } from 'react';
 import Alert from './alert';
 
 export type ToastInput = {
   type?: 'success' | 'warning' | 'error' | 'info' | 'default';
   message: string;
   secondMessage?: string;
-  /** Milliseconds before the toast closes itself; `null` keeps it until closed. Default 5000, and `null` for errors. */
+  /** Milliseconds before the toast closes itself; `null` keeps it until closed. Default 5000, and `null` for errors. A value that is not finite or is above 2^31-1 (what `setTimeout` can hold) counts as `null`. */
   duration?: number | null;
 };
 
@@ -22,11 +22,14 @@ const DEFAULT_DURATION_MS = 5000;
 const MAX_VISIBLE = 3;
 // Matches Alert's exit transition
 const EXIT_MS = 150;
+// The longest delay setTimeout can hold; a longer one fires at once
+const MAX_TIMEOUT_MS = 2 ** 31 - 1;
 
 // Pure helpers. The state lists toasts newest first.
 export function addToast(state: ToastItem[], input: string | ToastInput, id: string): ToastItem[] {
   const { type = 'default', message, secondMessage, duration } = typeof input === 'string' ? { message: input } as ToastInput : input;
-  const item = { id, type, message, secondMessage, duration: duration !== undefined ? duration : type === 'error' ? null : DEFAULT_DURATION_MS };
+  const wanted = duration !== undefined ? duration : type === 'error' ? null : DEFAULT_DURATION_MS;
+  const item = { id, type, message, secondMessage, duration: wanted !== null && Number.isFinite(wanted) && wanted <= MAX_TIMEOUT_MS ? wanted : null };
   return [item, ...state];
 }
 
@@ -38,6 +41,19 @@ export function removeToast(state: ToastItem[], id: string): ToastItem[] {
 export function visibleToasts(state: ToastItem[]): ToastItem[] {
   return state.slice(-MAX_VISIBLE);
 }
+
+// The timer pauses while the pointer or focus is on the toast; each is tracked on its own
+type PauseState = { hovered: boolean; focused: boolean };
+type PauseEvent = 'pointerEnter' | 'pointerLeave' | 'focus' | 'blur';
+export function pauseReducer(state: PauseState, event: PauseEvent): PauseState {
+  switch (event) {
+    case 'pointerEnter': return { ...state, hovered: true };
+    case 'pointerLeave': return { ...state, hovered: false };
+    case 'focus': return { ...state, focused: true };
+    case 'blur': return { ...state, focused: false };
+  }
+}
+export const isPaused = ({ hovered, focused }: PauseState) => hovered || focused;
 
 // One store per bundle, shared by every importer
 type Store = { toasts: ToastItem[]; mounts: symbol[] };
@@ -55,9 +71,10 @@ const subscribe = (listener: () => void) => {
   return () => listeners.delete(listener);
 };
 
+/** Shows a toast and returns its id. Call it from client code (event handlers and effects), not from a Server Component or a server action. */
 export function toast(input: string | ToastInput): string {
   const id = `toast-${++nextId}`;
-  // On the server there is no Toaster to show it, and the store would outlive the request
+  // During a server render there is no Toaster to show it, and the store would outlive the request
   if (typeof window === 'undefined') return id;
   setStore({ ...store, toasts: addToast(store.toasts, input, id) });
   return id;
@@ -70,10 +87,10 @@ export function dismissToast(id: string): void {
 
 function Toast({ item }: { item: ToastItem }) {
   const [open, setOpen] = useState(true);
-  const [paused, setPaused] = useState(false);
+  const [pause, dispatch] = useReducer(pauseReducer, { hovered: false, focused: false });
+  const paused = isPaused(pause);
   const remainingMs = useRef(item.duration);
 
-  // The timer pauses while the pointer or focus is on the toast
   useEffect(() => {
     if (!open || paused || remainingMs.current === null) return;
     const startedAt = Date.now();
@@ -94,10 +111,11 @@ function Toast({ item }: { item: ToastItem }) {
   return (
     <div
       className="pointer-events-auto"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-      onFocus={() => setPaused(true)}
-      onBlur={() => setPaused(false)}
+      onMouseEnter={() => dispatch('pointerEnter')}
+      onMouseLeave={() => dispatch('pointerLeave')}
+      onFocus={() => dispatch('focus')}
+      // Focus moving to another element inside the same toast has not left it
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget as Node | null)) dispatch('blur'); }}
     >
       <Alert
         variant="inline"

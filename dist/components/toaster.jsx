@@ -19,16 +19,19 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
     }
     return to.concat(ar || Array.prototype.slice.call(from));
 };
-import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react';
+import React, { useEffect, useReducer, useRef, useState, useSyncExternalStore } from 'react';
 import Alert from './alert';
 var DEFAULT_DURATION_MS = 5000;
 var MAX_VISIBLE = 3;
 // Matches Alert's exit transition
 var EXIT_MS = 150;
+// The longest delay setTimeout can hold; a longer one fires at once
+var MAX_TIMEOUT_MS = Math.pow(2, 31) - 1;
 // Pure helpers. The state lists toasts newest first.
 export function addToast(state, input, id) {
     var _a = typeof input === 'string' ? { message: input } : input, _b = _a.type, type = _b === void 0 ? 'default' : _b, message = _a.message, secondMessage = _a.secondMessage, duration = _a.duration;
-    var item = { id: id, type: type, message: message, secondMessage: secondMessage, duration: duration !== undefined ? duration : type === 'error' ? null : DEFAULT_DURATION_MS };
+    var wanted = duration !== undefined ? duration : type === 'error' ? null : DEFAULT_DURATION_MS;
+    var item = { id: id, type: type, message: message, secondMessage: secondMessage, duration: wanted !== null && Number.isFinite(wanted) && wanted <= MAX_TIMEOUT_MS ? wanted : null };
     return __spreadArray([item], state, true);
 }
 export function removeToast(state, id) {
@@ -38,6 +41,18 @@ export function removeToast(state, id) {
 export function visibleToasts(state) {
     return state.slice(-MAX_VISIBLE);
 }
+export function pauseReducer(state, event) {
+    switch (event) {
+        case 'pointerEnter': return __assign(__assign({}, state), { hovered: true });
+        case 'pointerLeave': return __assign(__assign({}, state), { hovered: false });
+        case 'focus': return __assign(__assign({}, state), { focused: true });
+        case 'blur': return __assign(__assign({}, state), { focused: false });
+    }
+}
+export var isPaused = function (_a) {
+    var hovered = _a.hovered, focused = _a.focused;
+    return hovered || focused;
+};
 var store = { toasts: [], mounts: [] };
 var serverStore = { toasts: [], mounts: [] };
 var listeners = new Set();
@@ -50,9 +65,10 @@ var subscribe = function (listener) {
     listeners.add(listener);
     return function () { return listeners.delete(listener); };
 };
+/** Shows a toast and returns its id. Call it from client code (event handlers and effects), not from a Server Component or a server action. */
 export function toast(input) {
     var id = "toast-".concat(++nextId);
-    // On the server there is no Toaster to show it, and the store would outlive the request
+    // During a server render there is no Toaster to show it, and the store would outlive the request
     if (typeof window === 'undefined')
         return id;
     setStore(__assign(__assign({}, store), { toasts: addToast(store.toasts, input, id) }));
@@ -66,9 +82,9 @@ export function dismissToast(id) {
 function Toast(_a) {
     var item = _a.item;
     var _b = useState(true), open = _b[0], setOpen = _b[1];
-    var _c = useState(false), paused = _c[0], setPaused = _c[1];
+    var _c = useReducer(pauseReducer, { hovered: false, focused: false }), pause = _c[0], dispatch = _c[1];
+    var paused = isPaused(pause);
     var remainingMs = useRef(item.duration);
-    // The timer pauses while the pointer or focus is on the toast
     useEffect(function () {
         if (!open || paused || remainingMs.current === null)
             return;
@@ -87,7 +103,10 @@ function Toast(_a) {
         var timer = setTimeout(function () { return dismissToast(item.id); }, EXIT_MS);
         return function () { return clearTimeout(timer); };
     }, [open, item.id]);
-    return (<div className="pointer-events-auto" onMouseEnter={function () { return setPaused(true); }} onMouseLeave={function () { return setPaused(false); }} onFocus={function () { return setPaused(true); }} onBlur={function () { return setPaused(false); }}>
+    return (<div className="pointer-events-auto" onMouseEnter={function () { return dispatch('pointerEnter'); }} onMouseLeave={function () { return dispatch('pointerLeave'); }} onFocus={function () { return dispatch('focus'); }} 
+    // Focus moving to another element inside the same toast has not left it
+    onBlur={function (e) { if (!e.currentTarget.contains(e.relatedTarget))
+        dispatch('blur'); }}>
       <Alert variant="inline" showCloseButton autoDismiss={false} open={open} type={item.type} message={item.message} secondMessage={item.secondMessage} onClose={function () { return dismissToast(item.id); }}/>
     </div>);
 }

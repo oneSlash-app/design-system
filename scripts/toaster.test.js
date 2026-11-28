@@ -5,7 +5,7 @@ const path = require('node:path');
 const { dist } = require('./compile-dist');
 
 const file = path.join(dist, 'components', 'toaster.jsx');
-const { addToast, removeToast, visibleToasts } = require(file);
+const { addToast, removeToast, visibleToasts, pauseReducer, isPaused } = require(file);
 
 const four = () => ['a', 'b', 'c', 'd'].reduce((s, id) => addToast(s, `Toast ${id}`, id), []);
 
@@ -36,4 +36,25 @@ test('a string becomes a default toast', () => {
 test('removing an unknown id returns the same state', () => {
   const state = four();
   assert.equal(removeToast(state, 'nope'), state);
+});
+
+test('a duration setTimeout cannot hold stays until closed', () => {
+  for (const duration of [Infinity, -Infinity, NaN, 2 ** 31]) {
+    assert.equal(addToast([], { message: 'Saved', duration }, 'x')[0].duration, null, String(duration));
+  }
+  assert.equal(addToast([], { message: 'Saved', duration: 2 ** 31 - 1 }, 'x')[0].duration, 2 ** 31 - 1);
+});
+
+const run = (events) => events.reduce(pauseReducer, { hovered: false, focused: false });
+
+test('a toast stays paused while focused, even after the pointer passes over and leaves', () => {
+  assert.equal(isPaused(run(['focus', 'pointerEnter', 'pointerLeave'])), true);
+});
+
+test('a toast stays paused while hovered, even after focus leaves it', () => {
+  assert.equal(isPaused(run(['pointerEnter', 'focus', 'blur'])), true);
+});
+
+test('a toast resumes once both pointer and focus have left', () => {
+  assert.equal(isPaused(run(['focus', 'pointerEnter', 'pointerLeave', 'blur'])), false);
 });
