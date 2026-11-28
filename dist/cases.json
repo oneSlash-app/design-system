@@ -249,6 +249,76 @@
       ]
     },
     {
+      "id": "create-modal",
+      "title": "Create in a Modal",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person creates something new, such as a project or a task, and it needs a name before it exists.",
+      "do": [
+        "Title the Modal 'Create' and the thing, such as 'Create Project', and give its action the same verb: 'Create'.",
+        "Put 'Cancel' first, a tertiary Button, then 'Create', a primary Button, in the Modal's `actions`.",
+        "Create on Enter too: put the fields in a `Form`.",
+        "Keep 'Create' `state=\"disabled\"` while the name is empty.",
+        "Show `loading` on 'Create' while it runs, and keep the fields on screen with what the person typed.",
+        "Show a name that is taken under the field, with `error` and `errorText`, and keep the Modal open.",
+        "Pick a safe default for every choice, so the person only has to type the name.",
+        "Close the Modal when it works and show the new thing where it lives."
+      ],
+      "dont": [
+        "Do not replace the fields with a spinner while it creates.",
+        "Do not change the label while it is loading, such as to 'Creating…'.",
+        "Do not ask for more than the thing needs to exist. Everything else goes in its settings.",
+        "Do not show a toast when the new thing is on screen. It shows where it lives."
+      ],
+      "native": "On Apple use a sheet with a `Form`. Put 'Cancel' in the `.cancellationAction` placement and 'Create' in `.confirmationAction`, and create on `.onSubmit` from the name field.",
+      "notBuiltYet": "Scindo on the web replaces the fields with a spinner while it creates a workspace or a task, and makes Cancel a secondary Button. Scindo's Apple app labels the Button 'Creating...' while it runs.",
+      "seenIn": [
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "quick",
+          "title": "Just a name",
+          "useWhen": "One name is enough. Everything else can be set later.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Surface from 'oneslash-design-system/components/surface';\nimport Heading from 'oneslash-design-system/components/heading';\nimport List from 'oneslash-design-system/components/list';\nimport Form from 'oneslash-design-system/components/form';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nexport default function CreateModalQuick() {\n  const [projects, setProjects] = useState(['Website refresh', 'Hiring plan', 'Office move']);\n  // Opens on the Modal, as if the person just chose Create Project.\n  const [open, setOpen] = useState(true);\n  const [name, setName] = useState('Q4 budget');\n  const [nameError, setNameError] = useState('');\n  const [creating, setCreating] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  const next = name.trim();\n\n  function handleOpen() {\n    setName('');\n    setNameError('');\n    setOpen(true);\n  }\n\n  // Escape, a click outside and Cancel all close it, except while the request runs.\n  function handleClose() {\n    if (creating) return;\n    setOpen(false);\n  }\n\n  function handleCreate() {\n    if (creating || next === '') return;\n    setNameError('');\n    setCreating(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setCreating(false);\n      // The server already has these names. Type one to see the request fail.\n      if (projects.some((p) => p.toLowerCase() === next.toLowerCase())) {\n        setNameError(`A project named '${next}' already exists. Choose another name.`);\n        return;\n      }\n      setProjects((list) => [next, ...list]);\n      setOpen(false);\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"large\">\n        <Cluster>\n          <Heading level={1} size=\"h5\">Projects</Heading>\n          <Button size=\"small\" type=\"primary\" state=\"enabled\" label=\"Create Project\" decoIcon=\"Plus\" onClickButton={handleOpen} />\n        </Cluster>\n        {/* The new project shows at the top of the list, so no toast is needed. */}\n        <Surface padding=\"large\">\n          <List items={projects} size=\"body1\" />\n        </Surface>\n      </Stack>\n      <Modal\n        isOpen={open}\n        size=\"small\"\n        title=\"Create Project\"\n        onClose={handleClose}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state={creating ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleClose} />\n            <Button size=\"small\" type=\"primary\" state={next === '' ? 'disabled' : 'enabled'} label=\"Create\" loading={creating} onClickButton={handleCreate} />\n          </>\n        }\n      >\n        {/* The Form lets Enter in the field create too. */}\n        <Form aria-label=\"Create project\" onSubmit={handleCreate}>\n          <TextField id=\"create-modal-name\" label=\"Project name\" placeholder=\"Q4 budget\" value={name} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); }} />\n        </Form>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Form",
+            "Heading",
+            "List",
+            "Modal",
+            "Stack",
+            "Surface",
+            "TextField"
+          ]
+        },
+        {
+          "id": "with-settings",
+          "title": "A name and a few choices",
+          "useWhen": "The thing needs two or three choices up front, such as who can see it.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Surface from 'oneslash-design-system/components/surface';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport List from 'oneslash-design-system/components/list';\nimport Form from 'oneslash-design-system/components/form';\nimport TextField from 'oneslash-design-system/components/textField';\nimport RadioGroup from 'oneslash-design-system/components/radioGroup';\nimport Checkbox from 'oneslash-design-system/components/checkBox';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nconst visibilityOptions = [\n  { value: 'workspace', label: 'Everyone in Acme Design', secondLabel: 'Anyone in the workspace can find and open it.' },\n  { value: 'private', label: 'Only people you invite', secondLabel: 'It stays hidden until you add people.' },\n];\n\nexport default function CreateModalWithSettings() {\n  const [projects, setProjects] = useState(['Website refresh', 'Hiring plan', 'Office move']);\n  // Opens on the Modal, as if the person just chose Create Project.\n  const [open, setOpen] = useState(true);\n  const [name, setName] = useState('Q4 budget');\n  // Safe defaults, so the name is the only thing the person has to give.\n  const [visibility, setVisibility] = useState('workspace');\n  const [starterTasks, setStarterTasks] = useState(true);\n  const [nameError, setNameError] = useState('');\n  const [creating, setCreating] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  const next = name.trim();\n\n  function handleOpen() {\n    setName('');\n    setVisibility('workspace');\n    setStarterTasks(true);\n    setNameError('');\n    setOpen(true);\n  }\n\n  // Escape, a click outside and Cancel all close it, except while the request runs.\n  function handleClose() {\n    if (creating) return;\n    setOpen(false);\n  }\n\n  function handleCreate() {\n    if (creating || next === '') return;\n    setNameError('');\n    setCreating(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setCreating(false);\n      // The server already has these names. Type one to see the request fail.\n      if (projects.some((p) => p.toLowerCase() === next.toLowerCase())) {\n        setNameError(`A project named '${next}' already exists. Choose another name.`);\n        return;\n      }\n      setProjects((list) => [next, ...list]);\n      setOpen(false);\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"large\">\n        <Cluster>\n          <Heading level={1} size=\"h5\">Projects</Heading>\n          <Button size=\"small\" type=\"primary\" state=\"enabled\" label=\"Create Project\" decoIcon=\"Plus\" onClickButton={handleOpen} />\n        </Cluster>\n        {/* The new project shows at the top of the list, so no toast is needed. */}\n        <Surface padding=\"large\">\n          <List items={projects} size=\"body1\" />\n        </Surface>\n      </Stack>\n      <Modal\n        isOpen={open}\n        size=\"small\"\n        title=\"Create Project\"\n        onClose={handleClose}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state={creating ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleClose} />\n            <Button size=\"small\" type=\"primary\" state={next === '' ? 'disabled' : 'enabled'} label=\"Create\" loading={creating} onClickButton={handleCreate} />\n          </>\n        }\n      >\n        {/* The Form lets Enter in the name field create too. */}\n        <Form aria-label=\"Create project\" onSubmit={handleCreate}>\n          <TextField id=\"create-modal-settings-name\" label=\"Project name\" placeholder=\"Q4 budget\" value={name} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); }} />\n          <Stack gap=\"small\">\n            {/* RadioGroup takes no label, so a line above it names the choice. */}\n            <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">Who can see it</Paragraph>\n            <RadioGroup options={visibilityOptions} selectedValue={visibility} onChange={setVisibility} />\n          </Stack>\n          <Checkbox label=\"Add starter tasks\" secondLabel=\"A short list to plan the first week. You can delete them.\" checked={starterTasks} onChange={setStarterTasks} />\n        </Form>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Checkbox",
+            "Cluster",
+            "Form",
+            "Heading",
+            "List",
+            "Modal",
+            "Paragraph",
+            "RadioGroup",
+            "Stack",
+            "Surface",
+            "TextField"
+          ]
+        }
+      ]
+    },
+    {
       "id": "empty-list",
       "title": "Empty list",
       "kind": "design",
@@ -482,6 +552,56 @@
       ]
     },
     {
+      "id": "feedback-form",
+      "title": "Feedback form",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person sends feedback about the product from inside it.",
+      "do": [
+        "Title the Modal 'Send Feedback' and label its action 'Send', after 'Cancel'.",
+        "Ask for a category with a `Select` and the feedback with a `Textarea`. Start the category on a safe default.",
+        "Name the `Select` with a line of text above it. Select takes no label of its own.",
+        "Keep 'Send' `state=\"disabled\"` while the feedback is empty.",
+        "Send on Cmd+Enter or Ctrl+Enter from the `Textarea`, through its `onSubmit`. Enter adds a new line.",
+        "Show an inline error Alert at the top of the Modal when sending fails, and keep what the person wrote.",
+        "Close the Modal when it works, and show a toast: 'Feedback sent.'"
+      ],
+      "dont": [
+        "Do not replace the form with a thank-you message that closes on its own.",
+        "Do not change the label while it is loading, such as to 'Sending...'.",
+        "Do not fail without a word. Say that the feedback was not sent.",
+        "Do not clear what the person wrote when sending fails."
+      ],
+      "notBuiltYet": "Scindo's feedback form labels the Button 'Sending...' while it runs, shows no error when sending fails, and replaces the form with a thank-you that closes after 1.5 seconds. It labels its fields with captions written by hand.",
+      "seenIn": [
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "modal",
+          "title": "Send from a Modal",
+          "useWhen": "Feedback can be sent from anywhere in the product, such as a help menu.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Toaster, { toast, dismissToast } from 'oneslash-design-system/components/toaster';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport Alert from 'oneslash-design-system/components/alert';\nimport Select from 'oneslash-design-system/components/select';\nimport Textarea from 'oneslash-design-system/components/textarea';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nconst categories = [\n  { value: 'idea', label: 'An idea' },\n  { value: 'bug', label: 'Something is broken' },\n  { value: 'question', label: 'A question' },\n  { value: 'other', label: 'Something else' },\n];\n\nexport default function FeedbackFormModal() {\n  // Opens on the Modal, as if the person just chose Send Feedback.\n  const [open, setOpen] = useState(true);\n  const [category, setCategory] = useState('idea');\n  const [message, setMessage] = useState('It would help to see who changed a task and when.');\n  const [error, setError] = useState('');\n  const [sending, setSending] = useState(false);\n  const attempts = useRef(0);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n  const toastIds = useRef<string[]>([]);\n\n  // On unmount it stops the request and closes every toast it opened.\n  useEffect(() => () => {\n    clearTimeout(timer.current);\n    toastIds.current.forEach((id) => dismissToast(id));\n    toastIds.current = [];\n  }, []);\n\n  const text = message.trim();\n\n  function handleOpen() {\n    setError('');\n    setOpen(true);\n  }\n\n  // Escape, a click outside and Cancel all close it, except while the request runs.\n  function handleClose() {\n    if (sending) return;\n    setOpen(false);\n  }\n\n  function handleSend() {\n    if (sending || text === '') return;\n    setError('');\n    setSending(true);\n    attempts.current += 1;\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setSending(false);\n      // The first try fails, to show the error. Send again and it works.\n      if (attempts.current === 1) {\n        setError('Your feedback was not sent. Check your connection and try again.');\n        return;\n      }\n      setOpen(false);\n      setCategory('idea');\n      setMessage('');\n      toastIds.current.push(toast({ type: 'success', message: 'Feedback sent.' }));\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      {/* A real app mounts one Toaster near its root. */}\n      <Toaster />\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Help</Heading>\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">Guides, shortcuts and what is new in Acme.</Paragraph>\n        <Cluster>\n          <Button size=\"small\" type=\"secondary\" state=\"enabled\" label=\"Send Feedback\" decoIcon=\"MessageSquare\" onClickButton={handleOpen} />\n        </Cluster>\n      </Stack>\n      <Modal\n        isOpen={open}\n        size=\"small\"\n        title=\"Send Feedback\"\n        onClose={handleClose}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state={sending ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleClose} />\n            <Button size=\"small\" type=\"primary\" state={text === '' ? 'disabled' : 'enabled'} label=\"Send\" loading={sending} onClickButton={handleSend} />\n          </>\n        }\n      >\n        {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n        <Stack gap=\"small\">\n          {/* Select takes no label, so a line above it names the field. */}\n          <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">What is it about?</Paragraph>\n          <Select value={category} options={categories} onChange={(v) => setCategory(typeof v === 'string' ? v : v[0])} />\n        </Stack>\n        {/* Cmd+Enter or Ctrl+Enter sends. Enter adds a new line. */}\n        <Textarea id=\"feedback-form-message\" label=\"Your feedback\" placeholder=\"What happened, or what would help?\" value={message} onSubmit={handleSend} onChange={(e) => setMessage(e.target.value)} />\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "Modal",
+            "Paragraph",
+            "Select",
+            "Stack",
+            "Textarea",
+            "Toaster",
+            "dismissToast",
+            "toast"
+          ]
+        }
+      ]
+    },
+    {
       "id": "form-errors",
       "title": "Form errors",
       "kind": "rule",
@@ -510,6 +630,57 @@
         "Commentify",
         "Scindo",
         "jinhwankim.com"
+      ]
+    },
+    {
+      "id": "import-checklist",
+      "title": "Import from a checklist",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person picks which items to bring in from another place, such as pages from a wiki.",
+      "do": [
+        "Put a search field at the top, then a count line, then the list of `Checkbox`es.",
+        "Write the count line as plain words: '3 of 8 pages selected'.",
+        "Offer 'Select All' and 'Clear' as tertiary Buttons. Both act on the items shown.",
+        "Count the selection in the action: 'Import 3 Pages'. Keep it `state=\"disabled\"` while nothing is selected.",
+        "Keep the selection when a search hides items. Items that are filtered out stay selected.",
+        "Show `EmptyBox size=\"small\"` with the words searched for and a 'Clear Search' Button when nothing matches.",
+        "Show `EmptyBox size=\"small\"` when there is nothing left to import.",
+        "Show `loading` on the action while it imports, and keep the list on screen with the Checkboxes disabled.",
+        "Close the Modal when it works and show the new items where they live."
+      ],
+      "dont": [
+        "Do not use a master Checkbox for Select All. Checkbox has no state for some selected.",
+        "Do not label the action 'Import' without the count, or change it while it runs, such as to 'Importing… 1/2'.",
+        "Do not clear the selection when the person searches.",
+        "Do not show a bare line of text when the list is empty or nothing matches."
+      ],
+      "notBuiltYet": "Scindo's Notion import labels its Buttons 'Select all' and 'Import', changes the action to 'Importing… 1/2' while it runs, and shows bare text when nothing matches.",
+      "seenIn": [
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "modal",
+          "title": "Pick in a Modal",
+          "useWhen": "The person chooses some items out of a list they can search.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Surface from 'oneslash-design-system/components/surface';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport List from 'oneslash-design-system/components/list';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Checkbox from 'oneslash-design-system/components/checkBox';\nimport EmptyBox from 'oneslash-design-system/components/emptyBox';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\n// Pages in the other place. A real app loads them when the Modal opens.\nconst wikiPages = [\n  { id: 'p1', title: 'Launch checklist', edited: 'Edited 2 days ago' },\n  { id: 'p2', title: 'Launch email draft', edited: 'Edited 3 days ago' },\n  { id: 'p3', title: 'Brand voice', edited: 'Edited last week' },\n  { id: 'p4', title: 'Pricing notes', edited: 'Edited last week' },\n  { id: 'p5', title: 'Hiring plan', edited: 'Edited 2 weeks ago' },\n  { id: 'p6', title: 'Office move', edited: 'Edited last month' },\n  { id: 'p7', title: 'Onboarding guide', edited: 'Edited last month' },\n  { id: 'p8', title: 'Team rituals', edited: 'Edited 2 months ago' },\n];\n\nconst plural = (n: number) => (n === 1 ? 'Page' : 'Pages');\n\nexport default function ImportChecklistModal() {\n  const [docs, setDocs] = useState(['Q3 plan', 'Meeting notes']);\n  const [imported, setImported] = useState<string[]>([]);\n  // Opens on the Modal with three pages picked, as if the person just chose Import Pages.\n  const [open, setOpen] = useState(true);\n  const [query, setQuery] = useState('');\n  const [selected, setSelected] = useState<string[]>(['p1', 'p2', 'p4']);\n  const [importing, setImporting] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  const available = wikiPages.filter((p) => !imported.includes(p.id));\n  const words = query.trim();\n  const shown = available.filter((p) => p.title.toLowerCase().includes(words.toLowerCase()));\n  const shownIds = shown.map((p) => p.id);\n  const count = selected.length;\n\n  function toggle(id: string, checked: boolean) {\n    setSelected((list) => (checked ? [...list, id] : list.filter((x) => x !== id)));\n  }\n\n  // Both act on the pages shown. Pages the search hides keep their selection.\n  function selectShown() {\n    setSelected((list) => [...list, ...shownIds.filter((id) => !list.includes(id))]);\n  }\n  function clearShown() {\n    setSelected((list) => list.filter((id) => !shownIds.includes(id)));\n  }\n\n  function handleOpen() {\n    setQuery('');\n    setSelected([]);\n    setOpen(true);\n  }\n\n  // Escape, a click outside and Cancel all close it, except while the request runs.\n  function handleClose() {\n    if (importing) return;\n    setOpen(false);\n  }\n\n  function handleImport() {\n    if (importing || count === 0) return;\n    setImporting(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setImporting(false);\n      setDocs((list) => [...wikiPages.filter((p) => selected.includes(p.id)).map((p) => p.title), ...list]);\n      setImported((list) => [...list, ...selected]);\n      setSelected([]);\n      setOpen(false);\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"large\">\n        <Cluster>\n          <Heading level={1} size=\"h5\">Docs</Heading>\n          <Button size=\"small\" type=\"secondary\" state=\"enabled\" label=\"Import Pages\" decoIcon=\"Download\" onClickButton={handleOpen} />\n        </Cluster>\n        {/* The imported pages show at the top of the list, so no toast is needed. */}\n        <Surface padding=\"large\">\n          <List items={docs} size=\"body1\" />\n        </Surface>\n      </Stack>\n      <Modal\n        isOpen={open}\n        size=\"medium\"\n        title=\"Import Pages\"\n        secondTitle=\"From the Acme wiki\"\n        onClose={handleClose}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state={importing ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleClose} />\n            <Button size=\"small\" type=\"primary\" state={count === 0 ? 'disabled' : 'enabled'} label={count === 0 ? 'Import Pages' : `Import ${count} ${plural(count)}`} loading={importing} onClickButton={handleImport} />\n          </>\n        }\n      >\n        {available.length === 0 ? (\n          <EmptyBox size=\"small\" icon=\"FileCheck\" text=\"No pages left to import\" secondText=\"Every page in the Acme wiki is already in Docs.\" />\n        ) : (\n          <>\n            <TextField id=\"import-checklist-search\" label=\"Search pages\" type=\"search\" value={query} disabled={importing} onChange={(e) => setQuery(e.target.value)} />\n            <Stack gap=\"small\">\n              <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">\n                {count} of {available.length} pages selected.{words && ` ${shown.length} match \"${words}\".`}\n              </Paragraph>\n              <Cluster gap=\"small\">\n                <Button size=\"small\" type=\"tertiary\" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label=\"Select All\" onClickButton={selectShown} />\n                <Button size=\"small\" type=\"tertiary\" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label=\"Clear\" onClickButton={clearShown} />\n              </Cluster>\n            </Stack>\n            {shown.length > 0 ? (\n              <Stack gap=\"medium\">\n                {shown.map((p) => (\n                  <Checkbox key={p.id} label={p.title} secondLabel={p.edited} checked={selected.includes(p.id)} disabled={importing} onChange={(checked) => toggle(p.id, checked)} />\n                ))}\n              </Stack>\n            ) : (\n              <EmptyBox\n                size=\"small\"\n                icon=\"Search\"\n                text={`No pages match \"${words}\"`}\n                secondText=\"Check the spelling, or search for fewer words.\"\n                action={<Button size=\"small\" type=\"secondary\" state=\"enabled\" label=\"Clear Search\" onClickButton={() => setQuery('')} />}\n              />\n            )}\n          </>\n        )}\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Checkbox",
+            "Cluster",
+            "EmptyBox",
+            "Heading",
+            "List",
+            "Modal",
+            "Paragraph",
+            "Stack",
+            "Surface",
+            "TextField"
+          ]
+        }
       ]
     },
     {
@@ -583,6 +754,84 @@
             "Heading",
             "Stack",
             "Surface",
+            "TextField",
+            "Toaster",
+            "dismissToast",
+            "toast"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "invite-member",
+      "title": "Invite a member",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person invites someone to join a workspace.",
+      "do": [
+        "Title the Modal 'Invite Member' and label its action 'Send Invite', after 'Cancel'.",
+        "Send on Enter too: put the email field in a `Form`.",
+        "Show a problem with the address under the field, such as a person who is already a member.",
+        "Close the Modal once the invite is sent, and show a toast that names the address: 'Invite sent to ada@example.com.'",
+        "Show the link in a `TextField` with `readOnly`, so it can be selected, and a 'Copy' Button next to it.",
+        "Change 'Copy' to 'Copied' for 2 seconds, and only when the link reached the clipboard.",
+        "Say who can use the link and when it stops working.",
+        "List the links that still work, each with a 'Revoke' Button. Revoking removes access, so confirm it in the row, as the case 'Confirm a destructive action' does."
+      ],
+      "dont": [
+        "Do not label the way out 'Close', or the action 'Create Invite' when the product sends it.",
+        "Do not replace the field with a spinner while the invite is sent.",
+        "Do not show 'Copied' when the copy failed, or 'Copied!' with an exclamation mark.",
+        "Do not revoke a link on the first click.",
+        "Do not touch `navigator` while the page renders. Copy only in the click handler."
+      ],
+      "native": "On Apple use a sheet with a `Form`, share the link with `ShareLink`, and revoke a link with a `.destructive` Button that asks first in a `confirmationDialog`.",
+      "notBuiltYet": "Scindo on the web replaces the fields with a spinner while it creates an invite, labels the way out 'Close', reads 'Copied!', and cancels an invite link on one click with no confirm. Scindo's Apple app cancels a pending invite with no confirm too.",
+      "seenIn": [
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "by-email",
+          "title": "Send an invite by email",
+          "useWhen": "The product sends the invite to an address the person types.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Toaster, { toast, dismissToast } from 'oneslash-design-system/components/toaster';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport TableContainer from 'oneslash-design-system/components/tableContainer';\nimport TableRow from 'oneslash-design-system/components/tableRow';\nimport TableCell from 'oneslash-design-system/components/tableCell';\nimport Form from 'oneslash-design-system/components/form';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nconst members = [\n  { name: 'Dana Lee', email: 'dana@example.com', role: 'Admin' },\n  { name: 'Omar Haddad', email: 'omar@example.com', role: 'Member' },\n  { name: 'Mei Tanaka', email: 'mei@example.com', role: 'Member' },\n];\n\n// A small check: some text, an @, then some text.\nfunction looksLikeEmail(value: string) {\n  return /^[^@\\s]+@[^@\\s]+$/.test(value);\n}\n\nexport default function InviteMemberByEmail() {\n  // Opens on the Modal, as if the person just chose Invite Member.\n  const [open, setOpen] = useState(true);\n  const [email, setEmail] = useState('ada@example.com');\n  const [emailError, setEmailError] = useState('');\n  const [sending, setSending] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n  const toastIds = useRef<string[]>([]);\n\n  // On unmount it stops the request and closes every toast it opened.\n  useEffect(() => () => {\n    clearTimeout(timer.current);\n    toastIds.current.forEach((id) => dismissToast(id));\n    toastIds.current = [];\n  }, []);\n\n  const address = email.trim();\n\n  function handleOpen() {\n    setEmail('');\n    setEmailError('');\n    setOpen(true);\n  }\n\n  // Escape, a click outside and Cancel all close it, except while the request runs.\n  function handleClose() {\n    if (sending) return;\n    setOpen(false);\n  }\n\n  function handleSend() {\n    if (sending || address === '') return;\n    setEmailError('');\n    if (!looksLikeEmail(address)) {\n      setEmailError('Enter an email address, like name@example.com.');\n      return;\n    }\n    // Type omar@example.com to see a problem with the address.\n    const member = members.find((m) => m.email === address.toLowerCase());\n    if (member) {\n      setEmailError(`${member.name} is already a member of Acme Design.`);\n      return;\n    }\n    setSending(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setSending(false);\n      setOpen(false);\n      toastIds.current.push(toast({ type: 'success', message: `Invite sent to ${address}.` }));\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      {/* A real app mounts one Toaster near its root. */}\n      <Toaster />\n      <Stack gap=\"large\">\n        <Cluster>\n          <Heading level={1} size=\"h5\">Members</Heading>\n          <Button size=\"small\" type=\"primary\" state=\"enabled\" label=\"Invite Member\" decoIcon=\"UserPlus\" onClickButton={handleOpen} />\n        </Cluster>\n        <TableContainer>\n          {members.map((m) => (\n            <TableRow key={m.email}>\n              <TableCell>{m.name}</TableCell>\n              <TableCell>{m.email}</TableCell>\n              <TableCell width=\"100px\">{m.role}</TableCell>\n            </TableRow>\n          ))}\n        </TableContainer>\n      </Stack>\n      <Modal\n        isOpen={open}\n        size=\"small\"\n        title=\"Invite Member\"\n        onClose={handleClose}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state={sending ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleClose} />\n            <Button size=\"small\" type=\"primary\" state={address === '' ? 'disabled' : 'enabled'} label=\"Send Invite\" loading={sending} onClickButton={handleSend} />\n          </>\n        }\n      >\n        <Paragraph measure=\"none\">We email them a link to join Acme Design as a member. The link works for 7 days.</Paragraph>\n        {/* The Form lets Enter in the field send too. */}\n        <Form aria-label=\"Invite member\" onSubmit={handleSend}>\n          <TextField id=\"invite-member-email\" label=\"Email\" type=\"email\" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />\n        </Form>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Form",
+            "Heading",
+            "Modal",
+            "Paragraph",
+            "Stack",
+            "TableCell",
+            "TableContainer",
+            "TableRow",
+            "TextField",
+            "Toaster",
+            "dismissToast",
+            "toast"
+          ]
+        },
+        {
+          "id": "by-link",
+          "title": "Share an invite link",
+          "useWhen": "The person shares a link themselves, in their own chat or email.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Toaster, { toast, dismissToast } from 'oneslash-design-system/components/toaster';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport TableContainer from 'oneslash-design-system/components/tableContainer';\nimport TableRow from 'oneslash-design-system/components/tableRow';\nimport TableCell from 'oneslash-design-system/components/tableCell';\nimport TextField from 'oneslash-design-system/components/textField';\nimport EmptyBox from 'oneslash-design-system/components/emptyBox';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nconst members = [\n  { name: 'Dana Lee', email: 'dana@example.com', role: 'Admin' },\n  { name: 'Omar Haddad', email: 'omar@example.com', role: 'Member' },\n  { name: 'Mei Tanaka', email: 'mei@example.com', role: 'Member' },\n];\n\n// The link made for this Modal. A real app gets it from the server.\nconst inviteLink = 'https://acme.example/join/k7Qm2xLp';\n\nconst earlierLinks = [\n  { id: 'l1', createdBy: 'Dana Lee', expires: '5 days left' },\n  { id: 'l2', createdBy: 'Omar Haddad', expires: '2 days left' },\n];\n\nexport default function InviteMemberByLink() {\n  // Opens on the Modal, as if the person just chose Invite Member.\n  const [open, setOpen] = useState(true);\n  const [copied, setCopied] = useState(false);\n  const [links, setLinks] = useState(earlierLinks);\n  const [confirming, setConfirming] = useState<string | null>(null);\n  const [revoking, setRevoking] = useState(false);\n  const copyTimer = useRef<ReturnType<typeof setTimeout>>();\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n  const toastIds = useRef<string[]>([]);\n\n  // On unmount it stops the timers and closes every toast it opened.\n  useEffect(() => () => {\n    clearTimeout(copyTimer.current);\n    clearTimeout(timer.current);\n    toastIds.current.forEach((id) => dismissToast(id));\n    toastIds.current = [];\n  }, []);\n\n  // Only reads 'Copied' when the link reached the clipboard. If the copy fails,\n  // the label stays 'Copy' and the person can still select the link in the field.\n  function handleCopy() {\n    navigator.clipboard?.writeText(inviteLink).then(\n      () => {\n        setCopied(true);\n        clearTimeout(copyTimer.current);\n        copyTimer.current = setTimeout(() => setCopied(false), 2000);\n      },\n      () => {},\n    );\n  }\n\n  function handleRevoke(id: string) {\n    if (revoking) return;\n    setRevoking(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setRevoking(false);\n      setConfirming(null);\n      setLinks((list) => list.filter((l) => l.id !== id));\n      toastIds.current.push(toast({ type: 'success', message: 'Invite link revoked.' }));\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      {/* A real app mounts one Toaster near its root. */}\n      <Toaster />\n      <Stack gap=\"large\">\n        <Cluster>\n          <Heading level={1} size=\"h5\">Members</Heading>\n          <Button size=\"small\" type=\"primary\" state=\"enabled\" label=\"Invite Member\" decoIcon=\"UserPlus\" onClickButton={() => setOpen(true)} />\n        </Cluster>\n        <TableContainer>\n          {members.map((m) => (\n            <TableRow key={m.email}>\n              <TableCell>{m.name}</TableCell>\n              <TableCell>{m.email}</TableCell>\n              <TableCell width=\"100px\">{m.role}</TableCell>\n            </TableRow>\n          ))}\n        </TableContainer>\n      </Stack>\n      <Modal\n        isOpen={open}\n        size=\"medium\"\n        title=\"Invite Member\"\n        onClose={() => setOpen(false)}\n        actions={<Button size=\"small\" type=\"primary\" state=\"enabled\" label=\"Done\" onClickButton={() => setOpen(false)} />}\n      >\n        <Paragraph measure=\"none\">Anyone with this link can join Acme Design as a member. It works for 7 days.</Paragraph>\n        <Stack gap=\"small\" align=\"start\">\n          <TextField id=\"invite-member-link\" label=\"Invite link\" value={inviteLink} readOnly onChange={() => {}} />\n          <Button size=\"small\" type=\"secondary\" state=\"enabled\" label={copied ? 'Copied' : 'Copy'} decoIcon={copied ? 'Check' : 'Copy'} onClickButton={handleCopy} />\n        </Stack>\n        <Stack gap=\"small\">\n          <Heading level={3} size=\"subtitle1\">Other links that still work</Heading>\n          {links.length > 0 ? (\n            <TableContainer>\n              {links.map((l) => (\n                <TableRow key={l.id}>\n                  <TableCell>Made by {l.createdBy}</TableCell>\n                  <TableCell width=\"120px\">{l.expires}</TableCell>\n                  {/* A fixed last column keeps every row's Buttons in one place, so they do not jump when they change. */}\n                  <TableCell width=\"168px\">\n                    {confirming === l.id ? (\n                      <Cluster gap=\"small\">\n                        <Button size=\"small\" type=\"tertiary\" state={revoking ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={() => setConfirming(null)} />\n                        <Button size=\"small\" type=\"primary\" color=\"danger\" state=\"enabled\" label=\"Revoke\" loading={revoking} onClickButton={() => handleRevoke(l.id)} />\n                      </Cluster>\n                    ) : (\n                      <Cluster gap=\"small\">\n                        <Button size=\"small\" type=\"tertiary\" state={revoking ? 'disabled' : 'enabled'} label=\"Revoke\" onClickButton={() => setConfirming(l.id)} />\n                      </Cluster>\n                    )}\n                  </TableCell>\n                </TableRow>\n              ))}\n            </TableContainer>\n          ) : (\n            <EmptyBox size=\"small\" icon=\"Link\" text=\"No other links\" secondText=\"Links you make here show until they stop working.\" />\n          )}\n        </Stack>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "EmptyBox",
+            "Heading",
+            "Modal",
+            "Paragraph",
+            "Stack",
+            "TableCell",
+            "TableContainer",
+            "TableRow",
             "TextField",
             "Toaster",
             "dismissToast",
@@ -1118,6 +1367,68 @@
             "Cluster",
             "Heading",
             "Modal",
+            "Paragraph",
+            "Stack",
+            "Surface",
+            "TextField"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "upgrade-prompt",
+      "title": "Upgrade prompt",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person reaches something their plan does not include, or a limit of their plan. When the agent is the one refused, follow the rule 'An agent refuses clearly' too.",
+      "do": [
+        "Say what is locked and which plan unlocks it: 'Exporting to PDF is part of the Pro plan.'",
+        "Say which limit was reached, with the number, and when it resets: 'You have used all 50 agent replies for November.'",
+        "Offer 'Not Now' as a tertiary Button, then 'Upgrade to Pro' as a primary Button.",
+        "Show 'Upgrade to Pro' only to a person who can change the plan. Tell everyone else to ask a workspace admin, and give them only 'Not Now'.",
+        "Follow the rule 'Confirm dialogs' for the Modal: `size=\"small\"`, and Escape or a click outside means 'Not Now'.",
+        "Put the notice where the control was, with the same two Buttons, when a limit is reached inside a flow."
+      ],
+      "dont": [
+        "Do not title the Modal 'Upgrade Required' or 'This is available on Pro plan only'. Name the action: 'Upgrade to Pro'.",
+        "Do not label the way out 'Maybe Later' or 'Close'.",
+        "Do not show an Upgrade Button to someone who cannot upgrade.",
+        "Do not hide the locked control. Let the person press it and learn what unlocks it.",
+        "Do not build the overlay by hand. Use `Modal`, which closes on Escape."
+      ],
+      "native": "On Apple show the notice in place, with an Upgrade Button only for admins. It opens the plan sheet in the app, never a link to a web page.",
+      "notBuiltYet": "Scindo's upgrade prompt on the web is an overlay built by hand that does not close on Escape, is titled 'Upgrade Required' and shows Upgrade to everyone. Commentify's upgrade Modal labels its Buttons 'Maybe Later' and 'Upgrade'.",
+      "seenIn": [
+        "Commentify",
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "modal",
+          "title": "Explain in a Modal",
+          "useWhen": "The person pressed something their plan does not include.",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\n// A real app passes the router from its framework, such as Next's useRouter().\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\n// A real app reads this from the person's role. Only an admin can change the plan.\nconst canChangePlan = true;\n\nexport default function UpgradePromptModal() {\n  // Opens on the Modal, as if the person just chose Export PDF.\n  const [open, setOpen] = useState(true);\n\n  function handleUpgrade() {\n    setOpen(false);\n    router.push('/settings/billing?plan=pro');\n  }\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Q3 plan</Heading>\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">12 tasks. Updated 2 days ago by Dana Lee.</Paragraph>\n        {/* The locked control stays on the page, so the person can find out what unlocks it. */}\n        <Cluster gap=\"small\">\n          <Button size=\"small\" type=\"secondary\" state=\"enabled\" label=\"Share\" />\n          <Button size=\"small\" type=\"secondary\" state=\"enabled\" label=\"Export PDF\" decoIcon=\"Lock\" onClickButton={() => setOpen(true)} />\n        </Cluster>\n      </Stack>\n      <Modal\n        isOpen={open}\n        size=\"small\"\n        title=\"Upgrade to Pro\"\n        onClose={() => setOpen(false)}\n        actions={\n          canChangePlan ? (\n            <>\n              <Button size=\"small\" type=\"tertiary\" state=\"enabled\" label=\"Not Now\" onClickButton={() => setOpen(false)} />\n              <Button size=\"small\" type=\"primary\" state=\"enabled\" label=\"Upgrade to Pro\" onClickButton={handleUpgrade} />\n            </>\n          ) : (\n            <Button size=\"small\" type=\"tertiary\" state=\"enabled\" label=\"Not Now\" onClickButton={() => setOpen(false)} />\n          )\n        }\n      >\n        <Paragraph measure=\"none\">Exporting to PDF is part of the Pro plan. Acme Design is on the Free plan.</Paragraph>\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">\n          {canChangePlan\n            ? 'Pro also adds version history and unlimited guests, for $8 per member each month.'\n            : 'Ask a workspace admin to upgrade Acme Design to Pro.'}\n        </Paragraph>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "Modal",
+            "Paragraph",
+            "Stack"
+          ]
+        },
+        {
+          "id": "inline",
+          "title": "Replace the control",
+          "useWhen": "A limit was reached inside a flow. The notice takes the place of the control that hit it.",
+          "source": "'use client';\nimport { useState } from 'react';\nimport Surface from 'oneslash-design-system/components/surface';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\n// A real app passes the router from its framework, such as Next's useRouter().\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\n// A real app reads this from the person's role. Only an admin can change the plan.\nconst canChangePlan = true;\n\nconst thread = [\n  { id: 'm1', from: 'Dana Lee', text: 'Can you list what is still open for the launch?' },\n  { id: 'm2', from: 'Acme agent', text: 'Three tasks are open: the press kit, the pricing page and the launch email.' },\n  { id: 'm3', from: 'Dana Lee', text: 'Draft the launch email, please.' },\n];\n\nexport default function UpgradePromptInline() {\n  // Opens on the notice, as if the workspace just used its last agent reply of the month.\n  const [showNotice, setShowNotice] = useState(true);\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"large\">\n        <Heading level={1} size=\"h5\">Launch plan</Heading>\n        <Stack gap=\"medium\">\n          {thread.map((m) => (\n            <Stack key={m.id} gap=\"small\">\n              <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">{m.from}</Paragraph>\n              <Paragraph measure=\"none\">{m.text}</Paragraph>\n            </Stack>\n          ))}\n        </Stack>\n        {showNotice ? (\n          // The notice takes the place of the message box, where the person was about to type.\n          <Surface padding=\"medium\">\n            <Stack gap=\"medium\">\n              <Stack gap=\"small\">\n                <Paragraph measure=\"none\">You have used all 50 agent replies for November. They start again on December 1.</Paragraph>\n                <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">\n                  {canChangePlan\n                    ? 'The Pro plan gives Acme Design 1,000 agent replies a month.'\n                    : 'Ask a workspace admin to upgrade Acme Design to Pro for more replies.'}\n                </Paragraph>\n              </Stack>\n              <Cluster gap=\"small\">\n                <Button size=\"small\" type=\"tertiary\" state=\"enabled\" label=\"Not Now\" onClickButton={() => setShowNotice(false)} />\n                {canChangePlan && (\n                  <Button size=\"small\" type=\"primary\" state=\"enabled\" label=\"Upgrade to Pro\" onClickButton={() => router.push('/settings/billing?plan=pro')} />\n                )}\n              </Cluster>\n            </Stack>\n          </Surface>\n        ) : (\n          // After 'Not Now' the message box comes back, closed until the replies start again.\n          <TextField id=\"upgrade-prompt-message\" label=\"Message the agent\" value=\"\" placeholder=\"Agent replies start again on December 1.\" disabled onChange={() => {}} />\n        )}\n      </Stack>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
             "Paragraph",
             "Stack",
             "Surface",
