@@ -1,0 +1,51 @@
+module.exports = {
+  id: 'sign-up-page',
+  title: 'Sign-up page',
+  kind: 'design',
+  level: 'page',
+  area: 'auth',
+  situation: 'A person who has no account yet opens the product and wants one.',
+  options: [
+    {
+      id: 'centered',
+      title: 'Centered column',
+      useWhen: 'The product has one way in, and most people sign up with email and a password.',
+      example: 'centered.tsx',
+    },
+    {
+      id: 'split',
+      title: 'Brand beside the form',
+      useWhen: 'First-time visitors land here and need one line on what the product is.',
+      example: 'split.tsx',
+    },
+    {
+      id: 'provider-first',
+      title: 'Provider first',
+      useWhen: 'Most people sign up with Google, GitHub or Apple; email is the fallback.',
+      example: 'provider-first.tsx',
+    },
+  ],
+  do: [
+    'Ask only for what the account needs: name, email and password.',
+    "Say the password rule under the Password field before the person types: 'Use at least 8 characters.'",
+    'Show a problem with one field under that field.',
+    'Show a failed request in an inline Alert above the fields.',
+    'Show the loading state on the submit Button while creating the account, and keep the form in place.',
+    'Send every address to the check-your-email page when the email must be confirmed, even one that already has an account. Tell that person by email that they can log in.',
+    "Name the provider on its button: 'Continue with Google'.",
+    'Link or tab to login for people who already have an account.',
+  ],
+  dont: [
+    'Do not ask for anything the account can do without, such as a username or the password twice.',
+    'Do not clear the email field after a failed attempt.',
+    'Do not replace the form with a spinner while creating the account.',
+    'Do not say on the page whether an address already has an account.',
+  ],
+  notBuiltYet: 'Commentify and Scindo on the web replace the form with a spinner while creating the account. Neither says the password rule before the person types. Commentify asks for the first and last name in two fields.',
+  native: 'On Apple, Scindo opens the web sign-up page with a `Link`. A sign-up built in the app uses `SignInWithAppleButton` for Apple, a grouped form for the fields, and system buttons.',
+  seenIn: [
+    { product: 'Commentify', path: 'src/app/(auth)/signup/[[...signup]]/page.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/app/(auth)/signup/page.tsx' },
+    { product: 'Scindo', path: 'apps/apple/Shared/Views/SignInView.swift' },
+  ],
+};

@@ -594,13 +594,16 @@ Don't:
 
 | Case | When | File |
 | --- | --- | --- |
+| Check your email | A person signed up, and the product sent a link to confirm their email. | cases/check-your-email.md |
 | Confirm a destructive action | A person asks to delete or remove something, and it cannot be undone. | cases/confirm-destructive-action.md |
 | Create in a Modal | A person creates something new, such as a project or a task, and it needs a name before it exists. | cases/create-modal.md |
+| Email confirmed | A person opened the link that confirms their email. | cases/email-confirmed.md |
 | Empty list | A list has loaded, and there is nothing in it yet. | cases/empty-list.md |
 | Empty because it is not set up | A pane is empty because something it needs is not set up yet, such as a connected account. | cases/empty-not-set-up.md |
 | Empty search | A search or a filter finds nothing. | cases/empty-search.md |
 | Error page | Something broke while showing a page, and the app cannot show it. | cases/error-page.md |
 | Feedback form | A person sends feedback about the product from inside it. | cases/feedback-form.md |
+| Forgot password | A person cannot remember their password and asks for a link to set a new one. | cases/forgot-password.md |
 | Import from a checklist | A person picks which items to bring in from another place, such as pages from a wiki. | cases/import-checklist.md |
 | Form feedback | A person submits a small form, such as a settings field, and the request ends. | cases/inline-form-feedback.md |
 | Invite a member | A person invites someone to join a workspace. | cases/invite-member.md |
@@ -610,6 +613,8 @@ Don't:
 | Page not found | A person opens a link to a page that does not exist. | cases/not-found-page.md |
 | Rename | A person renames something, such as a project or a channel. | cases/rename.md |
 | Page loading | A page or a pane is loading, and there is nothing to show yet. | cases/route-loading.md |
+| Set new password | A person opened the link to reset their password and now chooses a new one. | cases/set-new-password.md |
+| Sign-up page | A person who has no account yet opens the product and wants one. | cases/sign-up-page.md |
 | Type to confirm | A person asks to delete something large that cannot be brought back, such as a workspace or an account. | cases/type-to-confirm.md |
 | Unsaved changes | A person closes or leaves something they changed and did not save. | cases/unsaved-changes-guard.md |
 | Upgrade prompt | A person reaches something their plan does not include, or a limit of their plan. When the agent is the one refused, follow the rule 'An agent refuses clearly' too. | cases/upgrade-prompt.md |
