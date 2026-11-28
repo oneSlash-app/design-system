@@ -79,6 +79,18 @@ export const WithError: Story = {
   },
 };
 
+export const HelperText: Story = {
+  render: (args) => <TextFieldWrapper {...args} />,
+  args: {
+    id: "helper-textfield",
+    label: "Password",
+    type: "password",
+    value: "",
+    helperText: "Use at least 8 characters.",
+    size: "medium",
+  },
+};
+
 export const LargeSize: Story = {
   render: (args) => <TextFieldWrapper {...args} />,
   args: {

@@ -21,6 +21,8 @@ interface TextFieldProps {
   error?: boolean;
   /** Message shown under the field when `error` is true */
   errorText?: string;
+  /** A caption under the field. Tied to the field with `aria-describedby`. While `error` is true the error text shows instead. */
+  helperText?: string;
   required?: boolean;
   size?: 'large' | 'medium' | 'small' | 'tiny';
   placeholder?: string;
@@ -53,6 +55,7 @@ export default function TextField({
   readOnly = false,
   error = false,
   errorText = 'This field is required',
+  helperText,
   required = false,
   size = 'medium',
   placeholder,
@@ -102,6 +105,7 @@ export default function TextField({
   };
 
   const errorId = `${id}-error`;
+  const helperId = `${id}-helper`;
 
   // Get inputMode for mobile keyboard optimization
   const getInputMode = (): React.HTMLAttributes<HTMLInputElement>['inputMode'] => {
@@ -130,7 +134,7 @@ export default function TextField({
 
   const errorProps = {
     'aria-invalid': error || undefined,
-    'aria-describedby': error ? errorId : undefined,
+    'aria-describedby': error ? errorId : helperText ? helperId : undefined,
   };
 
   return (
@@ -193,6 +197,11 @@ export default function TextField({
       {error && (
         <p id={errorId} className="mt-1 text-error-text text-body2">
           {errorText}
+        </p>
+      )}
+      {!error && helperText && (
+        <p id={helperId} className="mt-1 text-fg-secondary text-body2">
+          {helperText}
         </p>
       )}
     </div>

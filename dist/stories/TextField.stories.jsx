@@ -63,6 +63,17 @@ export var WithError = {
         size: "medium",
     },
 };
+export var HelperText = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "helper-textfield",
+        label: "Password",
+        type: "password",
+        value: "",
+        helperText: "Use at least 8 characters.",
+        size: "medium",
+    },
+};
 export var LargeSize = {
     render: function (args) { return <TextFieldWrapper {...args}/>; },
     args: {

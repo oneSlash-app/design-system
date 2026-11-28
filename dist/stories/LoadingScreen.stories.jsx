@@ -12,6 +12,14 @@ export var Default = {
       </div>); },
     ],
 };
+export var WithLabel = {
+    args: { label: "Checking invite…" },
+    decorators: [
+        function (Story) { return (<div style={{ height: "300px" }}>
+        <Story />
+      </div>); },
+    ],
+};
 export var Small = {
     render: function () { return <LoadingSmall size="small"/>; },
 };

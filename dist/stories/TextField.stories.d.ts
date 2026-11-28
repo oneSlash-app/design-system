@@ -7,6 +7,7 @@ export declare const Default: Story;
 export declare const WithValue: Story;
 export declare const Disabled: Story;
 export declare const WithError: Story;
+export declare const HelperText: Story;
 export declare const LargeSize: Story;
 export declare const SmallSize: Story;
 export declare const Multiline: Story;

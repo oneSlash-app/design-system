@@ -18,6 +18,8 @@ interface TextFieldProps {
     error?: boolean;
     /** Message shown under the field when `error` is true */
     errorText?: string;
+    /** A caption under the field. Tied to the field with `aria-describedby`. While `error` is true the error text shows instead. */
+    helperText?: string;
     required?: boolean;
     size?: 'large' | 'medium' | 'small' | 'tiny';
     placeholder?: string;
@@ -32,5 +34,5 @@ interface TextFieldProps {
     /** Passed to the `<input>` or `<textarea>`. Left to the browser's default when not set. */
     spellCheck?: boolean;
 }
-export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, readOnly, error, errorText, required, size, placeholder, name, autoComplete, tabIndex, maxLength, minLength, spellCheck, }: TextFieldProps): React.JSX.Element;
+export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, readOnly, error, errorText, helperText, required, size, placeholder, name, autoComplete, tabIndex, maxLength, minLength, spellCheck, }: TextFieldProps): React.JSX.Element;
 export {};

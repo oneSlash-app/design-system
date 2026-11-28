@@ -16,6 +16,8 @@ const Button = load('button');
 const EmptyBox = load('emptyBox');
 const Form = load('form');
 const IconButton = load('iconButton');
+const LoadingScreen = load('loadingScreen');
+const { LoadingSmall } = require(path.join(dist, 'components', 'loadingScreen.jsx'));
 const ImageEl = load('image');
 const Line = load('line');
 const Icon = load('icon');
@@ -436,4 +438,51 @@ test('Modal initialFocusCandidates: body elements first, then the panel as the f
   assert.deepEqual(initialFocusCandidates(['cancel', 'a'], [], 'body'), ['cancel', 'a']);
   assert.deepEqual(initialFocusCandidates(['cancel', 'a'], ['a'], 'first'), ['cancel', 'a']);
   assert.deepEqual(initialFocusCandidates([], [], 'body'), []);
+});
+
+// Output captured before TextField helperText and LoadingScreen label existed.
+const loadingBefore = {
+  screen: "<div role=\"status\" aria-label=\"Loading\" class=\"flex justify-center items-center h-full w-full min-h-[200px]\"><div class=\"w-12 h-12 rounded-full border-4 border-current border-t-transparent text-fg-primary animate-spin\"></div></div>",
+  small: "<div role=\"status\" aria-label=\"Loading\" class=\"flex justify-center items-center\"><div class=\"rounded-full border-current border-t-transparent animate-spin w-6 h-6 border-2\"></div></div>",
+};
+
+test('TextField helperText is a caption tied to the field by aria-describedby', () => {
+  const f = { id: 'pw', label: 'Password', value: '', onChange() {}, helperText: 'Use at least 8 characters.' };
+  const input = html(h(TextField, f));
+  assert.match(input, /<p id="pw-helper" class="mt-1 text-fg-secondary text-body2">Use at least 8 characters\.<\/p>/);
+  assert.match(input, /<input [^>]*aria-describedby="pw-helper"/);
+  assert.doesNotMatch(input, /aria-invalid/);
+  const area = html(h(TextField, { ...f, multiline: true }));
+  assert.match(area, /<textarea [^>]*aria-describedby="pw-helper"/);
+  assert.match(area, /id="pw-helper"/);
+});
+
+test('TextField with an error shows the error text instead of the helper', () => {
+  const f = { id: 'pw', value: '', onChange() {}, helperText: 'Use at least 8 characters.', error: true, errorText: 'Too short' };
+  for (const extra of [{}, { multiline: true }]) {
+    const out = html(h(TextField, { ...f, ...extra }));
+    assert.doesNotMatch(out, /Use at least 8|pw-helper/);
+    assert.match(out, /aria-describedby="pw-error"/);
+    assert.match(out, /<p id="pw-error" class="mt-1 text-error-text text-body2">Too short<\/p>/);
+    // Same output as an error field without helperText
+    assert.equal(out, html(h(TextField, { ...f, ...extra, helperText: undefined })));
+  }
+});
+
+test('TextField without helperText renders as before (input and textarea)', () => {
+  const f = { id: 'f', label: 'L', value: 'v', onChange() {} };
+  assert.equal(html(h(TextField, f)), before.tf);
+  assert.equal(html(h(TextField, { ...f, multiline: true })), before.tfm);
+});
+
+test('LoadingScreen label sits centered under the spinner inside the status element', () => {
+  const out = html(h(LoadingScreen, { label: 'Checking invite\u2026' }));
+  assert.match(out, /^<div role="status" aria-label="Loading" class="flex flex-col justify-center items-center gap-1 h-full w-full min-h-\[200px\]">/);
+  assert.match(out, /<p class="text-body2 text-fg-secondary text-center">Checking invite\u2026<\/p><\/div>$/);
+  assert.equal(out.match(/role="status"/g).length, 1);
+});
+
+test('LoadingScreen without label and LoadingSmall render as before', () => {
+  assert.equal(html(h(LoadingScreen)), loadingBefore.screen);
+  assert.equal(html(h(LoadingSmall)), loadingBefore.small);
 });
