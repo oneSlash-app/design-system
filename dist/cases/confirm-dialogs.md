@@ -1,0 +1,36 @@
+# A confirm says exactly what will happen
+
+An action a person takes themselves needs their yes before it happens. An action the agent wants to take follows the rule 'An agent asks before a risky action', a card in the conversation, not this one.
+
+## Answer
+
+A confirm is a Modal with `size="small"`. Its title names the action in Title Case, such as 'Delete Project'. The body says in one or two sentences what will happen and what is kept. Two Buttons sit in the Modal's `actions`. 'Cancel' comes first, a `<Button type="tertiary" size="small">`. Then comes the action, a `<Button type="primary" size="small">` labelled in Title Case with the same verb as the title. When the action destroys or removes something, the action Button also has `color="danger"`. One case differs: 'Unsaved changes'. Its guard may have three Buttons, 'Cancel', "Don't Save" and 'Save', in that order. When it has two, its safe Button reads 'Keep Editing'. Escape and a click outside the Modal mean Cancel. While the request runs, the action Button is `loading` and keeps its label, and 'Cancel' is `state="disabled"`. The Modal stays open. It still calls `onClose` on Escape or a click outside, and the page ignores that call until the request ends. If the request fails, the Modal stays open and shows an inline error Alert at the top of its body, as the rule 'A form error shows next to the problem' says. When the action works, the Modal closes. If the thing is still on screen, the change shows where it is. If the thing is gone, a toast names it, as the rule 'Success shows where the person is looking' says.
+
+**Not built yet:** No Commentify confirm Modal uses `color="danger"`, and two of them label Cancel 'No'. Scindo on the web makes Cancel a secondary Button in some confirms and a tertiary one in others. It leaves its Delete Task and Remove Member confirms uncolored. Scindo on the web revokes an API key, and Commentify revokes an agent client, with no confirm.
+
+## Why
+
+A confirm is the last chance to stop a mistake. It has to say exactly what will happen, and the safe choice has to be easy to find.
+
+## Do
+
+- Name the thing in the body: "This deletes 'Q3 plan' and its 12 tasks."
+- Say what is kept: 'Files in the repository are not changed.'
+- Give the title and the action the same verb, in Title Case: 'Delete Project' has a 'Delete' Button.
+- Disable 'Cancel' and ignore `onClose` while the request runs.
+- Close the Modal when the action works. Show the change where the thing is, or a toast that names it if the thing is gone.
+
+## Don't
+
+- Do not label Cancel 'No' or 'Close'.
+- Do not label the action 'Yes, Delete', 'Confirm' or 'OK'.
+- Do not title the Modal 'Confirm Deletion' or 'Sure?'.
+- Do not change the action's label while it is loading, such as to 'Deleting…'.
+- Do not replace the Modal body with a spinner, or close the Modal, while the request runs.
+- Do not ask for a confirm when the action is easy to undo.
+
+## Native
+
+On Apple use a system `confirmationDialog` or `.alert`, with the action in the `.destructive` role when it destroys or removes something. Never build a sheet by hand for a confirm.
+
+Seen in: Commentify, Scindo.

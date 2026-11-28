@@ -62,8 +62,8 @@ function checkCase(problems, c) {
     if (c.options !== undefined) problems.push(`${at}: a rule has no options`);
   } else if (c.kind === 'design') {
     const options = c.options;
-    if (!Array.isArray(options) || options.length < 2 || options.length > 4) {
-      problems.push(`${at} needs 2 to 4 options`);
+    if (!Array.isArray(options) || options.length < 1 || options.length > 4) {
+      problems.push(`${at} needs 1 to 4 options`);
       return;
     }
     const seen = new Set();

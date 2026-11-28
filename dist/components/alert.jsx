@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import IconButton from './iconButton';
+import { shouldAutoDismiss } from '../internal/alert';
 var bgClassMap = {
     error: 'bg-error-alertBg',
     warning: 'bg-warning-alertBg',
@@ -17,7 +18,7 @@ var motionClasses = {
 };
 export default function Alert(_a) {
     var _b;
-    var _c = _a.open, open = _c === void 0 ? true : _c, type = _a.type, message = _a.message, secondMessage = _a.secondMessage, onClose = _a.onClose, _d = _a.showCloseButton, showCloseButton = _d === void 0 ? false : _d, _e = _a.variant, variant = _e === void 0 ? 'toast' : _e;
+    var _c = _a.open, open = _c === void 0 ? true : _c, type = _a.type, message = _a.message, secondMessage = _a.secondMessage, onClose = _a.onClose, _d = _a.showCloseButton, showCloseButton = _d === void 0 ? false : _d, _e = _a.variant, variant = _e === void 0 ? 'toast' : _e, autoDismiss = _a.autoDismiss;
     var _f = useState(false), isVisible = _f[0], setIsVisible = _f[1];
     var _g = useState(false), shouldRender = _g[0], setShouldRender = _g[1];
     // Auto-dismiss pauses while the toast is hovered or focused
@@ -40,9 +41,10 @@ export default function Alert(_a) {
             return function () { return clearTimeout(hideTimer_1); };
         }
     }, [open, showCloseButton, shouldRender]);
-    // Only auto-dismiss if there's no close button
+    // Auto-dismiss unless autoDismiss says otherwise; by default only an alert with no close button
+    var autoDismissOn = shouldAutoDismiss({ autoDismiss: autoDismiss, showCloseButton: showCloseButton });
     useEffect(function () {
-        if (!open || !shouldRender || showCloseButton || isPaused)
+        if (!open || !shouldRender || !autoDismissOn || isPaused)
             return;
         var startedAt = Date.now();
         var dismissTimer = setTimeout(function () { return handleClose(); }, remainingMs.current);
@@ -50,7 +52,7 @@ export default function Alert(_a) {
             clearTimeout(dismissTimer);
             remainingMs.current -= Date.now() - startedAt;
         };
-    }, [open, shouldRender, showCloseButton, isPaused]); // eslint-disable-line react-hooks/exhaustive-deps
+    }, [open, shouldRender, autoDismissOn, isPaused]); // eslint-disable-line react-hooks/exhaustive-deps
     var handleClose = function () {
         setIsVisible(false);
         // Wait for animation to complete before unmounting

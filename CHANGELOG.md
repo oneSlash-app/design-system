@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [2.16.0] - 2026-11-27
+
+Design cases, batch 2: auth pages, confirms and modals, and states. Web only.
+
+### Added
+
+- 27 design cases with working examples built only from this package. Auth: sign-up, forgot password, check your email, set new password, email confirmed, OAuth consent, invite link page, device login, login check loading. Confirms and modals: delete confirm, type to confirm, log-out confirm, rename, unsaved changes, upgrade prompt, create modal, member invite, import checklist, feedback form. States: empty list, empty until set up, empty search, load failure, error page, page not found, page loading, form feedback.
+- Four rules: a confirm says exactly what will happen, an empty list says what will fill it, a form error shows next to the problem, success shows where the person is looking.
+- `Toaster` and `toast()` (`components/toaster`). Mount `<Toaster />` once and call `toast('Invite sent')` from client code. Three toasts show at most, the newest on top. A toast closes after 5 seconds and pauses while the pointer or focus is on it. An error toast stays until closed. `dismissToast(id)` closes one from code.
+- `EmptyBox`: `action` puts a Button under the text; `icon` replaces the default icon.
+- `Alert`: `autoDismiss`. `false` keeps the Alert until the page removes it; `true` closes it after 5 seconds even with a close button.
+- `Heading`: `level={1}`.
+- `TabsContainer`: `fill` makes the tabs share the full width.
+- `TextField`: `readOnly`, and `helperText`, a line under the field that is tied to it for screen readers. The error text replaces it while `error` is true.
+- `LoadingScreen`: `label`, one centered line under the spinner. It is also the spinner's accessible name.
+- `Modal`: `initialFocus="body"` puts the first focus on the first field in the body, not on the first Button in the header.
+- `Select` and `RadioGroup`: `aria-label`.
+- A design case may have one option. Its file prints "Example" in place of "Option".
+
+### Changed
+
+- The Cases section of `DESIGN.md` is an index. A rule prints its situation, its answer and what is not built yet, and points to `cases/<id>.md` for the rest.
+- The login page case uses the batch 2 wording: Title Case on Buttons, "log in" throughout, and 'Enter an email address, like name@example.com.' for a bad address. Its ids and options are unchanged.
+
+### Fixed
+
+- `Select`: Escape closes an open list and nothing else. Before, a `Modal` or `Popover` around it closed too.
+- `Modal`: the first focus and the Tab trap skip a hidden input. Before, a form whose first field was hidden left the focus behind the dialog.
+
 ## [2.15.0] - 2026-11-27
 
 Design cases: one design situation, oneSlash's answer, and a working example built only from this package. Web only.

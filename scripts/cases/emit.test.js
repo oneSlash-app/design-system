@@ -43,13 +43,14 @@ test('a case file and the DESIGN.md section never contain a seenIn path', () => 
   assert.match(emitCaseMd(design), /Seen in: Commentify, Scindo\./);
 });
 
-test('a rule is printed in full in the DESIGN.md section; a design case is one table row', () => {
+test('a rule in the DESIGN.md section is its answer and file; a design case is one table row', () => {
   const md = emitCasesSection(cases);
   assert.match(md, /^### Confirm delete$/m);
-  assert.match(md, /Ask first\./);
-  assert.match(md, /It is permanent\./);
-  assert.match(md, /Name the item/);
-  assert.match(md, /Use a generic title/);
+  assert.match(md, /Answer: Ask first\./);
+  assert.match(md, /^File: cases\/confirm-delete\.md$/m);
+  assert.doesNotMatch(md, /It is permanent\./);
+  assert.doesNotMatch(md, /Name the item/);
+  assert.doesNotMatch(md, /Use a generic title/);
   assert.doesNotMatch(md, /### Login page/);
   const rows = md.split('\n').filter((l) => l.startsWith('|'));
   const body = rows.slice(2);
@@ -72,6 +73,40 @@ test('a design case file has one fenced example per option, in order', () => {
   assert.ok(md.indexOf('function A') < md.indexOf('function B'));
   assert.match(md, /Uses: `Button`, `TextField`/);
   assert.match(md, /Use when: One provider/);
+});
+
+test('a one-option case says Example where a many-option case says Option', () => {
+  const one = emitCaseMd({ ...design, options: [design.options[0]] });
+  const headings = one.split('\n').filter((l) => l.startsWith('## '));
+  assert.deepEqual(headings, ['## Example: Provider first', '## Native']);
+  assert.doesNotMatch(one, /Option/);
+  assert.doesNotMatch(one, /Use when:/);
+  assert.match(emitCaseMd(design), /^Use when: One provider$/m);
+  assert.match(emitCaseMd(design), /^## Option: Provider first$/m);
+});
+
+test('the DESIGN.md row for a one-option case is the same row shape as for any design case', () => {
+  const row = (c) => emitCasesSection([c]).split('\n').pop();
+  assert.equal(row({ ...design, options: [design.options[0]] }), row(design));
+});
+
+test('a two-option design case file is unchanged (login-page snapshot)', () => {
+  assert.equal(emitCaseMd(design), [
+    '# Login page',
+    'People sign in with `a | b`.\nSecond line.',
+    '## Option: Provider first',
+    'Use when: One provider',
+    'Do:\n- Lead with it',
+    'Uses: `Button`',
+    '```tsx\nexport default function A() { return null; }\n```',
+    '## Option: Email first',
+    "Use when: Many users",
+    "Don't:\n- Hide it",
+    'Uses: `Button`, `TextField`',
+    '```tsx\nexport default function B() { return null; }\n```',
+    '## Native\n\nSystem sign in sheet',
+    'Seen in: Commentify, Scindo.',
+  ].join('\n\n') + '\n');
 });
 
 test('a design case file prints its own Do and Don\'t before the options', () => {
@@ -174,12 +209,13 @@ test('a build into a temp dir removes stale case files and keeps current ones', 
   execFileSync('node', [...args, '--check']);
 });
 
-test('notBuiltYet prints right after the Answer in a rule file and the DESIGN.md block', () => {
+test('notBuiltYet prints right after the Answer in a rule file and the DESIGN.md block; why, do and don\'t stay in the file', () => {
   const r = { ...rule, notBuiltYet: 'No product asks yet.' };
   const md = emitCaseMd(r);
   assert.match(md, /## Answer\n\nAsk first\.\n\n\*\*Not built yet:\*\* No product asks yet\.\n\n## Why/);
   const section = emitCasesSection([r]);
-  assert.match(section, /Answer: Ask first\.\n\n\*\*Not built yet:\*\* No product asks yet\.\n\nWhy: It is permanent\./);
+  assert.match(section, /Answer: Ask first\.\n\n\*\*Not built yet:\*\* No product asks yet\.\n\nFile: cases\/confirm-delete\.md$/);
+  assert.doesNotMatch(section, /Why:|It is permanent|Name the item|Use a generic title/);
   assert.doesNotMatch(emitCaseMd(rule), /Not built yet/);
   assert.doesNotMatch(emitCasesSection([rule]), /Not built yet/);
 });

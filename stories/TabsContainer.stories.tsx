@@ -29,6 +29,17 @@ const TabsWrapper = ({ tabs, size }: { tabs: string[]; size?: "medium" | "small"
   );
 };
 
+const TabsFillWrapper = () => {
+  const [selected, setSelected] = useState(0);
+  return (
+    <TabsContainer fill>
+      {["Log In", "Sign Up"].map((tab, index) => (
+        <Tab key={tab} label={tab} isSelected={selected === index} onClickTab={() => setSelected(index)} />
+      ))}
+    </TabsContainer>
+  );
+};
+
 export const Default: Story = {
   render: () => <TabsWrapper tabs={["Tab 1", "Tab 2", "Tab 3"]} />,
 };
@@ -113,6 +124,15 @@ export const Overflowing: Story = {
   render: () => (
     <div style={{ width: "260px" }}>
       <TabsWrapper tabs={["Overview", "Analytics", "Reports", "Settings", "Users", "Billing"]} />
+    </div>
+  ),
+};
+
+// `fill`: as wide as the parent, every tab an equal share
+export const Fill: Story = {
+  render: () => (
+    <div style={{ width: 360 }}>
+      <TabsFillWrapper />
     </div>
   ),
 };

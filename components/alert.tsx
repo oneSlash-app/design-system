@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import IconButton from './iconButton';
+import { shouldAutoDismiss } from '../internal/alert';
 
 interface AlertProps {
   open?: boolean;
@@ -10,6 +11,8 @@ interface AlertProps {
   onClose?: () => void;
   showCloseButton?: boolean;
   variant?: 'toast' | 'inline';
+  /** Not set: the alert dismisses itself after 5 seconds unless it has a close button. `false` keeps it open; `true` dismisses it even with a close button. */
+  autoDismiss?: boolean;
 }
 
 const bgClassMap = {
@@ -37,6 +40,7 @@ export default function Alert({
   onClose,
   showCloseButton = false,
   variant = 'toast',
+  autoDismiss,
 }: AlertProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
@@ -61,16 +65,17 @@ export default function Alert({
     }
   }, [open, showCloseButton, shouldRender]);
 
-  // Only auto-dismiss if there's no close button
+  // Auto-dismiss unless autoDismiss says otherwise; by default only an alert with no close button
+  const autoDismissOn = shouldAutoDismiss({ autoDismiss, showCloseButton });
   useEffect(() => {
-    if (!open || !shouldRender || showCloseButton || isPaused) return;
+    if (!open || !shouldRender || !autoDismissOn || isPaused) return;
     const startedAt = Date.now();
     const dismissTimer = setTimeout(() => handleClose(), remainingMs.current);
     return () => {
       clearTimeout(dismissTimer);
       remainingMs.current -= Date.now() - startedAt;
     };
-  }, [open, shouldRender, showCloseButton, isPaused]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [open, shouldRender, autoDismissOn, isPaused]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClose = () => {
     setIsVisible(false);

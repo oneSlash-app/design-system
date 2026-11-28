@@ -63,6 +63,17 @@ export var WithError = {
         size: "medium",
     },
 };
+export var HelperText = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "helper-textfield",
+        label: "Password",
+        type: "password",
+        value: "",
+        helperText: "Use at least 8 characters.",
+        size: "medium",
+    },
+};
 export var LargeSize = {
     render: function (args) { return <TextFieldWrapper {...args}/>; },
     args: {
@@ -166,6 +177,17 @@ export var LengthLimits = {
         minLength: 3,
         maxLength: 20,
         spellCheck: false,
+        size: "medium",
+    },
+};
+// `readOnly` keeps the normal colors; the text can be focused and selected but not changed
+export var ReadOnly = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "readonly-textfield",
+        label: "Invite link",
+        value: "https://acme.example.com/invite/4f9k2",
+        readOnly: true,
         size: "medium",
     },
 };

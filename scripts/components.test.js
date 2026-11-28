@@ -11,9 +11,13 @@ const { dist, htmlWhenReady } = require('./compile-dist');
 
 const load = (name) => require(path.join(dist, 'components', `${name}.jsx`)).default;
 const BrandIcon = load('brandIcon');
+const { shouldAutoDismiss } = require(path.join(dist, 'internal', 'alert.js'));
 const Button = load('button');
+const EmptyBox = load('emptyBox');
 const Form = load('form');
 const IconButton = load('iconButton');
+const LoadingScreen = load('loadingScreen');
+const { LoadingSmall } = require(path.join(dist, 'components', 'loadingScreen.jsx'));
 const ImageEl = load('image');
 const Line = load('line');
 const Icon = load('icon');
@@ -262,4 +266,235 @@ test('TabsContainer and Tooltip render on the server without a console.error', a
     console.error = original;
   }
   assert.deepEqual(errors, []);
+});
+
+// Output captured before heading level 1, TabsContainer fill and TextField readOnly existed.
+// Without the new props the markup must stay byte for byte the same.
+const before = {
+ "heading": "<h3 class=\"text-h6 text-fg-primary \">Hi</h3>",
+ "heading2": "<h2 class=\"text-h4 text-fg-primary \">Hi</h2>",
+ "tabs": "<div role=\"tablist\" class=\"\n          relative flex gap-0.5 p-1 rounded-container overflow-x-auto\n          bg-background-accent100\n        \" style=\"scrollbar-width:none;-ms-overflow-style:none\"><div data-tab-selected=\"true\" role=\"tab\" aria-selected=\"true\" tabindex=\"0\" class=\"\n        relative flex items-center space-x-1 rounded-control cursor-pointer justify-start transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-primary\n        py-1 px-[6px]\n        text-primary-contrast\n      \"><div class=\"flex flex-col text-center px-[6px] text-body1\"><span class=\"whitespace-nowrap\">A</span></div></div><div data-tab-selected=\"false\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\" class=\"\n        relative flex items-center space-x-1 rounded-control cursor-pointer justify-start transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-primary\n        py-1 px-[6px]\n        text-fg-primary hover:bg-background-accent200\n      \"><div class=\"flex flex-col text-center px-[6px] text-body1\"><span class=\"whitespace-nowrap\">B</span></div></div></div>",
+ "tf": "<div class=\"flex flex-col w-full\"><label for=\"f\" class=\"mb-1 text-body2 text-fg-secondary\">L</label><div class=\"relative\"><input id=\"f\" type=\"text\" class=\"\n    bg-background-default text-fg-primary\n    w-full border rounded-control outline-none transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n    placeholder:text-fg-disabled\n    text-body1 p-2 leading-[22px]\n    border-fg-disabled\n      hover:border-fg-secondary\n      focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-fg-primary\n  \" autoComplete=\"off\" value=\"v\"/></div></div>",
+ "tfm": "<div class=\"flex flex-col w-full\"><label for=\"f\" class=\"mb-1 text-body2 text-fg-secondary\">L</label><div class=\"relative\"><textarea id=\"f\" rows=\"6\" class=\"\n    bg-background-default text-fg-primary\n    w-full border rounded-control outline-none transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n    placeholder:text-fg-disabled\n    text-body1 p-2 leading-[22px]\n    border-fg-disabled\n      hover:border-fg-secondary\n      focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-fg-primary\n  \" autoComplete=\"off\">v</textarea></div></div>",
+ "tfd": "<div class=\"flex flex-col w-full\"><label for=\"f\" class=\"mb-1 text-body2 text-fg-secondary\">L</label><div class=\"relative\"><input id=\"f\" type=\"text\" class=\"\n    bg-transparent text-fg-disabled cursor-not-allowed\n    w-full border rounded-control outline-none transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n    placeholder:text-fg-disabled\n    text-body1 p-2 leading-[22px]\n    border-fg-disabled\n  \" disabled=\"\" autoComplete=\"off\" value=\"v\"/></div></div>"
+};
+
+test('Heading, TabsContainer and TextField render unchanged without the new props', () => {
+  const Heading = load('heading');
+  const TabsContainer = load('tabsContainer');
+  const Tab = load('tab');
+  const f = { id: 'f', label: 'L', value: 'v', onChange() {} };
+  const tab = (label, isSelected) => h(Tab, { label, isSelected, onClickTab() {} });
+  assert.equal(html(h(Heading, null, 'Hi')), before.heading);
+  assert.equal(html(h(Heading, { level: 2, size: 'h4' }, 'Hi')), before.heading2);
+  assert.equal(html(h(TabsContainer, null, tab('A', true), tab('B', false))), before.tabs);
+  assert.equal(html(h(TextField, f)), before.tf);
+  assert.equal(html(h(TextField, { ...f, multiline: true })), before.tfm);
+  assert.equal(html(h(TextField, { ...f, disabled: true })), before.tfd);
+});
+
+test('Heading level 1 is an <h1>', () => {
+  const Heading = load('heading');
+  assert.match(html(h(Heading, { level: 1, size: 'h4' }, 'Hi')), /^<h1 /);
+  assert.match(html(h(Heading, null, 'Hi')), /^<h3 /);
+});
+
+test('TabsContainer fill: full-width container, every tab grows equally and centers its label', () => {
+  const TabsContainer = load('tabsContainer');
+  const Tab = load('tab');
+  const tab = (label, isSelected) => h(Tab, { label, isSelected, onClickTab() {} });
+  const markup = html(h(TabsContainer, { fill: true }, tab('Log In', true), tab('Sign Up', false)));
+  assert.ok(classOf(markup).includes('w-full'));
+  const tabs = markup.split('role="tab"').slice(1).map((s) => s.match(/class="([^"]*)"/)[1].split(/\s+/));
+  assert.equal(tabs.length, 2);
+  for (const classes of tabs) {
+    assert.ok(classes.includes('flex-1'));
+    assert.ok(classes.includes('justify-center'));
+    assert.ok(!classes.includes('justify-start'));
+  }
+  // Not filled: neither the container nor a tab grows
+  const plain = html(h(TabsContainer, null, tab('Log In', true)));
+  assert.ok(!classOf(plain).includes('w-full'));
+  assert.doesNotMatch(plain, /flex-1/);
+});
+
+test('TextField readOnly reaches the element and keeps the normal colors', () => {
+  const field = { id: 'f', value: 'v', onChange() {} };
+  const input = html(h(TextField, { ...field, readOnly: true }));
+  assert.match(input, /<input [^>]*readOnly=""/i);
+  assert.match(html(h(TextField, { ...field, readOnly: true, multiline: true })), /<textarea [^>]*readOnly=""/i);
+  assert.doesNotMatch(input, /disabled=|cursor-not-allowed|bg-transparent/);
+  const inputClasses = input.match(/<input [^>]*class="([^"]*)"/)[1].split(/\s+/);
+  assert.ok(inputClasses.includes('text-fg-primary'));
+  assert.ok(inputClasses.includes('bg-background-default'));
+  assert.ok(!inputClasses.includes('text-fg-disabled'));
+  assert.doesNotMatch(html(h(TextField, field)), /readOnly/i);
+});
+
+// Captured from the 2.15.0 build, before EmptyBox took an action or an icon
+const EMPTY_ICON =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert size-6 text-fg-disabled" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>';
+const emptyBefore = (height, second) =>
+  `<div class="flex flex-col space-y-2 justify-center items-center w-full ${height}">${EMPTY_ICON}<div class="flex flex-col text-center"><p class="text-body1 text-fg-secondary">No items</p>${
+    second ? '<p class="text-body2 text-fg-secondary">Add one</p>' : ''
+  }</div></div>`;
+
+test('EmptyBox without action or icon renders exactly what 2.15.0 did', () => {
+  assert.equal(html(h(EmptyBox, { text: 'No items', size: 'small' })), emptyBefore('py-6', false));
+  assert.equal(html(h(EmptyBox, { text: 'No items', secondText: 'Add one', size: 'small' })), emptyBefore('py-6', true));
+  assert.equal(html(h(EmptyBox, { text: 'No items', size: 'large' })), emptyBefore('h-full', false));
+  assert.equal(html(h(EmptyBox, { text: 'No items', secondText: 'Add one', size: 'large' })), emptyBefore('h-full', true));
+});
+
+test('EmptyBox puts the action after the text', () => {
+  const action = h(Button, { ...base, label: 'Add one' });
+  const markup = html(h(EmptyBox, { text: 'No items', secondText: 'More', size: 'small', action }));
+  assert.ok(markup.indexOf('Add one') > markup.indexOf('More'));
+  assert.ok(markup.endsWith(`${html(action)}</div>`));
+  assert.ok(classOf(markup).includes('items-center'));
+});
+
+test('EmptyBox icon takes a name, a component or an element and keeps the default size and color', async () => {
+  const strip = (s) => s.replace(/<!--.*?-->/g, '');
+  const props = { text: 'No items', size: 'small' };
+  const byComponent = html(h(EmptyBox, { ...props, icon: Plus }));
+  assert.equal(strip(await htmlWhenReady(h(EmptyBox, { ...props, icon: 'Plus' }))), byComponent);
+  assert.equal(html(h(EmptyBox, { ...props, icon: h(Plus) })), byComponent);
+  assert.match(byComponent, /lucide-plus size-6 text-fg-disabled/);
+  assert.doesNotMatch(byComponent, /circle-alert/);
+  const search = strip(await htmlWhenReady(h(EmptyBox, { ...props, icon: 'Search' })));
+  assert.match(search, /lucide-search size-6 text-fg-disabled/);
+});
+
+test('Alert shouldAutoDismiss: unset follows the close button, false never, true always', () => {
+  assert.equal(shouldAutoDismiss({ showCloseButton: false }), true);
+  assert.equal(shouldAutoDismiss({ showCloseButton: true }), false);
+  assert.equal(shouldAutoDismiss({ autoDismiss: false, showCloseButton: false }), false);
+  assert.equal(shouldAutoDismiss({ autoDismiss: true, showCloseButton: true }), true);
+});
+// Checks that a server render of Toaster is empty even while the module's store holds a toast
+test('Toaster renders nothing on the server even with a toast in the store, and toast() there does not throw', () => {
+  const { default: Toaster, toast, dismissToast } = require(path.join(dist, 'components', 'toaster.jsx'));
+  assert.equal(typeof toast('Saved'), 'string');
+  // toast() only fills the store where window exists, as in a browser
+  globalThis.window = {};
+  let id;
+  try {
+    id = toast('In the client store');
+  } finally {
+    delete globalThis.window;
+  }
+  try {
+    assert.equal(html(h(Toaster)), '');
+  } finally {
+    dismissToast(id);
+  }
+});
+test('Toaster is a client component', () => {
+  const first = fs.readFileSync(path.join(dist, 'components', 'toaster.jsx'), 'utf8').split('\n')[0];
+  assert.match(first, /^['"]use client['"];?$/);
+});
+
+// Output captured before aria-label on Select and RadioGroup and Modal initialFocus existed.
+// Without the new props the markup must stay byte for byte the same.
+const beforeLabels = {
+  select: "<div class=\"relative \" style=\"width:100%\"><div role=\"combobox\" aria-haspopup=\"listbox\" aria-expanded=\"false\" aria-controls=\":R0:\" class=\"\n          rounded-control\n          border border-actionOutlinedBorder-enabled bg-background-default\n      hover:border-fg-secondary hover:bg-action-hover\n          cursor-pointer\n          transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-primary\n        \" tabindex=\"0\"><div class=\"flex items-center justify-between px-2 py-[7px] text-fg-primary\"><div class=\"flex items-center gap-2 flex-1 overflow-hidden\"><span class=\"text-body1 truncate\">A</span></div><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-chevron-down \n              w-6 h-6 flex-shrink-0 ml-1\n              text-fg-secondary\n              transition-transform duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></div></div></div>",
+  radioGroup: "<div role=\"radiogroup\" class=\"flex flex-col gap-2\"><label class=\"group relative flex items-start cursor-pointer\"><input type=\"radio\" name=\":R0:\" class=\"peer sr-only\" checked=\"\" value=\"a\"/><span class=\"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n                group-hover:bg-action-selected\n                peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-fg-primary\"><span class=\"relative flex justify-center items-center w-4 h-4 rounded-full border-2 transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n                  border-fg-primary\n                \"><span class=\"absolute w-2 h-2 rounded-full bg-fg-primary transition-transform duration-[var(--os-duration-fast)] ease-spring motion-reduce:transition-none scale-100\"></span></span></span><span class=\"flex flex-col ml-2\"><span class=\"text-body1 text-fg-primary\">A</span></span></label><label class=\"group relative flex items-start cursor-pointer\"><input type=\"radio\" name=\":R0:\" class=\"peer sr-only\" value=\"b\"/><span class=\"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n                group-hover:bg-action-selected\n                peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-fg-primary\"><span class=\"relative flex justify-center items-center w-4 h-4 rounded-full border-2 transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n                  border-fg-secondary\n                \"><span class=\"absolute w-2 h-2 rounded-full bg-fg-primary transition-transform duration-[var(--os-duration-fast)] ease-spring motion-reduce:transition-none scale-0\"></span></span></span><span class=\"flex flex-col ml-2\"><span class=\"text-body1 text-fg-primary\">B</span><span class=\"text-body2 opacity-70 text-fg-primary\">x</span></span></label></div>",
+  modal: "<div class=\"fixed bg-misc-scrim/40 flex items-center justify-center z-[var(--os-z-overlay)]\n        transition-opacity duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none opacity-0\" style=\"top:0;left:0;right:0;bottom:0\"><div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\":R0:\" tabindex=\"-1\" class=\"bg-background-elevated dark:ring-1 dark:ring-misc-divider rounded-control w-[600px] flex flex-col outline-none\n          transition-[opacity,transform] duration-[var(--os-duration-fast)] ease-emphasized motion-reduce:transition-none opacity-0 scale-[0.96]\" style=\"max-width:600px;width:calc(100vw - 64px);max-height:90vh;overflow:hidden\"><div class=\"px-6 py-3 border-b border-misc-divider flex justify-between items-start\" style=\"flex-shrink:0\"><div class=\"flex flex-col\"><h2 id=\":R0:\" class=\"text-h5 text-fg-primary\">T</h2></div><div class=\"flex space-x-2\"><button>Cancel</button></div></div><div class=\"text-body1 space-y-4 text-fg-primary p-6\" style=\"overflow-y:auto;flex-grow:1;min-height:0;scrollbar-width:thin\"><input/></div></div></div>",
+};
+const selectOptions = { options: [{ value: 'a', label: 'A' }], value: 'a' };
+const radioProps = { options: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B', secondLabel: 'x' }], selectedValue: 'a', onChange() {} };
+const modalProps = { isOpen: true, title: 'T', onClose() {}, actions: h('button', null, 'Cancel') };
+
+test('Select without aria-label renders as before; with it the combobox carries the label', () => {
+  const Select = load('select');
+  assert.equal(html(h(Select, selectOptions)), beforeLabels.select);
+  const labelled = html(h(Select, { ...selectOptions, 'aria-label': 'Category' }));
+  assert.match(labelled, /^<div class="relative "[^>]*><div role="combobox" aria-label="Category"/);
+  assert.equal(labelled.split('aria-label').length, 2);
+});
+
+test('RadioGroup without aria-label renders as before; with it the radiogroup carries the label', () => {
+  const RadioGroup = load('radioGroup');
+  assert.equal(html(h(RadioGroup, radioProps)), beforeLabels.radioGroup);
+  const labelled = html(h(RadioGroup, { ...radioProps, 'aria-label': 'Category' }));
+  assert.match(labelled, /^<div role="radiogroup" aria-label="Category" class=/);
+  assert.equal(labelled.split('aria-label').length, 2);
+});
+
+test('Modal renders as before without initialFocus, and the same with either value', async () => {
+  const Modal = load('modal');
+  const children = h('input');
+  assert.equal(await htmlWhenReady(h(Modal, modalProps, children)), beforeLabels.modal);
+  assert.equal(await htmlWhenReady(h(Modal, { ...modalProps, initialFocus: 'first' }, children)), beforeLabels.modal);
+  assert.equal(await htmlWhenReady(h(Modal, { ...modalProps, initialFocus: 'body' }, children)), beforeLabels.modal);
+});
+
+test('Modal pickInitialFocus: first in the panel, or first in the body with a fallback', () => {
+  const { pickInitialFocus } = require(path.join(dist, 'internal', 'modal.js'));
+  const cancel = { id: 'cancel' };
+  const confirm = { id: 'confirm' };
+  const field = { id: 'field' };
+  const panel = [cancel, confirm, field];
+  assert.equal(pickInitialFocus(panel, [field], 'first'), cancel);
+  assert.equal(pickInitialFocus(panel, [field], undefined), cancel);
+  assert.equal(pickInitialFocus(panel, [field], 'body'), field);
+  assert.equal(pickInitialFocus(panel, [], 'body'), cancel);
+  assert.equal(pickInitialFocus([], [], 'body'), undefined);
+  assert.equal(pickInitialFocus([], [], 'first'), undefined);
+});
+
+test('Modal initialFocusCandidates: body elements first, then the panel as the fallback', () => {
+  const { initialFocusCandidates } = require(path.join(dist, 'internal', 'modal.js'));
+  assert.deepEqual(initialFocusCandidates(['cancel', 'a', 'b'], ['a', 'b'], 'body'), ['a', 'b', 'cancel', 'a', 'b']);
+  assert.deepEqual(initialFocusCandidates(['cancel', 'a'], [], 'body'), ['cancel', 'a']);
+  assert.deepEqual(initialFocusCandidates(['cancel', 'a'], ['a'], 'first'), ['cancel', 'a']);
+  assert.deepEqual(initialFocusCandidates([], [], 'body'), []);
+});
+
+// Output captured before TextField helperText and LoadingScreen label existed.
+const loadingBefore = {
+  screen: "<div role=\"status\" aria-label=\"Loading\" class=\"flex justify-center items-center h-full w-full min-h-[200px]\"><div class=\"w-12 h-12 rounded-full border-4 border-current border-t-transparent text-fg-primary animate-spin\"></div></div>",
+  small: "<div role=\"status\" aria-label=\"Loading\" class=\"flex justify-center items-center\"><div class=\"rounded-full border-current border-t-transparent animate-spin w-6 h-6 border-2\"></div></div>",
+};
+
+test('TextField helperText is a caption tied to the field by aria-describedby', () => {
+  const f = { id: 'pw', label: 'Password', value: '', onChange() {}, helperText: 'Use at least 8 characters.' };
+  const input = html(h(TextField, f));
+  assert.match(input, /<p id="pw-helper" class="mt-1 text-fg-secondary text-body2">Use at least 8 characters\.<\/p>/);
+  assert.match(input, /<input [^>]*aria-describedby="pw-helper"/);
+  assert.doesNotMatch(input, /aria-invalid/);
+  const area = html(h(TextField, { ...f, multiline: true }));
+  assert.match(area, /<textarea [^>]*aria-describedby="pw-helper"/);
+  assert.match(area, /id="pw-helper"/);
+});
+
+test('TextField with an error shows the error text instead of the helper', () => {
+  const f = { id: 'pw', value: '', onChange() {}, helperText: 'Use at least 8 characters.', error: true, errorText: 'Too short' };
+  for (const extra of [{}, { multiline: true }]) {
+    const out = html(h(TextField, { ...f, ...extra }));
+    assert.doesNotMatch(out, /Use at least 8|pw-helper/);
+    assert.match(out, /aria-describedby="pw-error"/);
+    assert.match(out, /<p id="pw-error" class="mt-1 text-error-text text-body2">Too short<\/p>/);
+    // Same output as an error field without helperText
+    assert.equal(out, html(h(TextField, { ...f, ...extra, helperText: undefined })));
+  }
+});
+
+test('TextField without helperText renders as before (input and textarea)', () => {
+  const f = { id: 'f', label: 'L', value: 'v', onChange() {} };
+  assert.equal(html(h(TextField, f)), before.tf);
+  assert.equal(html(h(TextField, { ...f, multiline: true })), before.tfm);
+});
+
+test('LoadingScreen label sits centered under the spinner inside the status element and is its name', () => {
+  const out = html(h(LoadingScreen, { label: 'Checking invite\u2026' }));
+  assert.match(out, /^<div role="status" aria-label="Checking invite\u2026" class="flex flex-col justify-center items-center gap-1 h-full w-full min-h-\[200px\]">/);
+  assert.match(out, /<p class="text-body2 text-fg-secondary text-center">Checking invite\u2026<\/p><\/div>$/);
+  assert.equal(out.match(/role="status"/g).length, 1);
+});
+
+test('LoadingScreen without label and LoadingSmall render as before', () => {
+  assert.equal(html(h(LoadingScreen)), loadingBefore.screen);
+  assert.equal(html(h(LoadingSmall)), loadingBefore.small);
 });

@@ -5,3 +5,5 @@ export default meta;
 type Story = StoryObj<typeof EmptyBox>;
 export declare const Small: Story;
 export declare const Large: Story;
+export declare const WithAction: Story;
+export declare const CustomIcon: Story;

@@ -65,10 +65,14 @@ test('a rule needs answer, why, do and dont, and has no options', () => {
   assert.throws(() => validateCases([rule({ options: [option('a'), option('b')] })]), /options/);
 });
 
-test('a design case needs 2 to 4 options, each with title, useWhen and example', () => {
-  assert.throws(() => validateCases([design({ options: [option('a')] })]), /2 to 4 options/);
+test('a design case may have exactly one option', () => {
+  assert.doesNotThrow(() => validateCases([design({ options: [option('a')] })]));
+});
+
+test('a design case needs 1 to 4 options, each with title, useWhen and example', () => {
+  assert.throws(() => validateCases([design({ options: [] })]), /login-page.*1 to 4 options/);
   const five = ['a', 'b', 'c', 'd', 'e'].map((id) => option(id));
-  assert.throws(() => validateCases([design({ options: five })]), /2 to 4 options/);
+  assert.throws(() => validateCases([design({ options: five })]), /login-page.*1 to 4 options/);
   for (const key of ['title', 'useWhen', 'example']) {
     const o = option('a');
     delete o[key];
@@ -89,7 +93,7 @@ test('reports every problem in one error', () => {
 test('reports a non-object option or non-array options as a problem naming the case', () => {
   assert.throws(() => validateCases([design({ options: [null, option('split')] })]), /case login-page.*option must be an object/);
   assert.throws(() => validateCases([design({ options: [null, null] })]), /case login-page.*option must be an object/);
-  assert.throws(() => validateCases([design({ options: 'nope' })]), /case login-page needs 2 to 4 options/);
+  assert.throws(() => validateCases([design({ options: 'nope' })]), /case login-page needs 1 to 4 options/);
 });
 
 test('an option with no example is reported by the validator', () => {

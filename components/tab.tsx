@@ -1,7 +1,7 @@
 'use client';
 import React, { useContext } from 'react';
 import IconSlot from './iconSlot';
-import { TabsContainerContext } from './tabsContainer';
+import { TabsContainerContext, TabsFillContext } from './tabsContainer';
 import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 
 type RouterLike = {
@@ -34,6 +34,7 @@ export default function Tab({
   size = 'medium',
 }: TabProps) {
   const inContainer = useContext(TabsContainerContext);
+  const fill = useContext(TabsFillContext);
 
   const handleClick = () => {
     onClickTab();
@@ -67,7 +68,7 @@ export default function Tab({
         }
       }}
       className={`
-        relative flex items-center space-x-1 rounded-control cursor-pointer justify-start ${stateTransition} ${pressFeedbackAny} ${focusRing}
+        relative flex items-center space-x-1 rounded-control cursor-pointer ${fill ? 'flex-1 justify-center' : 'justify-start'} ${stateTransition} ${pressFeedbackAny} ${focusRing}
         ${sizeClasses.tab}
         ${isSelected
           ? selectedClasses

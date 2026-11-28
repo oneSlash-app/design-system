@@ -1,0 +1,48 @@
+module.exports = {
+  id: 'create-modal',
+  title: 'Create modal',
+  kind: 'design',
+  level: 'organism',
+  area: 'confirm',
+  situation: 'A person creates something new, such as a project or a task, and it needs a name before it exists.',
+  options: [
+    {
+      id: 'quick',
+      title: 'Just a name',
+      useWhen: 'One name is enough. Everything else can be set later.',
+      example: 'quick.tsx',
+    },
+    {
+      id: 'with-settings',
+      title: 'A name and a few choices',
+      useWhen: 'The thing needs two or three choices up front, such as who can see it.',
+      example: 'with-settings.tsx',
+    },
+  ],
+  do: [
+    "Title the Modal 'Create' and the thing, such as 'Create Project', and give its action the same verb: 'Create'.",
+    "Put 'Cancel' first, a tertiary Button, then 'Create', a primary Button, in the Modal's `actions`.",
+    'Create on Enter too: put the fields in a `Form`.',
+    "Keep 'Create' `state=\"disabled\"` while the name is empty.",
+    "Show `loading` on 'Create' while it runs, and keep the fields on screen with what the person typed.",
+    'Disable the fields while it runs, where the part allows it: the `TextField` and the `Checkbox`.',
+    'Focus the name field when the Modal opens, with `initialFocus="body"`.',
+    "Give a `RadioGroup` a line of text above it and an `aria-label` with the same words.",
+    'Show a name that is taken under the field, with `error` and `errorText`, and keep the Modal open.',
+    'Pick a safe default for every choice, so the person only has to type the name.',
+    'Close the Modal when it works and show the new thing where it lives.',
+  ],
+  dont: [
+    'Do not replace the fields with a spinner while it creates.',
+    "Do not change the label while it is loading, such as to 'Creating…'.",
+    'Do not ask for more than the thing needs to exist. Everything else goes in its settings.',
+    "Do not show a toast when the new thing is on screen. It shows where it lives.",
+  ],
+  native: "On Apple use a sheet with a `Form`. Put 'Cancel' in the `.cancellationAction` placement and 'Create' in `.confirmationAction`, and create on `.onSubmit` from the name field.",
+  notBuiltYet: "Scindo on the web replaces the fields with a spinner while it creates a workspace or a task, and makes Cancel a secondary Button. Scindo's Apple app labels the Button 'Creating...' while it runs.",
+  seenIn: [
+    { product: 'Scindo', path: 'apps/web/src/components/chat/CreateWorkspaceModal.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/components/chat/CreateTaskModal.tsx' },
+    { product: 'Scindo', path: 'apps/apple/Shared/Views/CreateWorkspaceView.swift' },
+  ],
+};

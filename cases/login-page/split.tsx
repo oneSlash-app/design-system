@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from '../../components/image';
 import Heading from '../../components/heading';
 import Paragraph from '../../components/paragraph';
@@ -28,6 +28,10 @@ export default function LoginSplit() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleSubmit() {
     if (loading) return;
@@ -39,7 +43,7 @@ export default function LoginSplit() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {
@@ -48,7 +52,7 @@ export default function LoginSplit() {
     }
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setError('That email and password do not match.');
     }, 1200);
@@ -68,19 +72,19 @@ export default function LoginSplit() {
       }
     >
       <Center fill>
-        <Heading level={2} size="h5">Log in to Acme</Heading>
+        <Heading level={1} size="h5">Log in to Acme</Heading>
         <Form aria-label="Log in" onSubmit={handleSubmit}>
           {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-          <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
-          <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
+          <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+          <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
           <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
-          <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
+          <Button size="medium" type="textOnly" state={loading ? 'disabled' : 'enabled'} label="Forgot Password?" />
         </Form>
         <Line label="or" />
         <Button size="medium" type="secondary" state="enabled" label="Continue with Google" decoIcon={<BrandIcon name="google" />} />
         <Cluster gap="small">
           <Paragraph tone="secondary" size="body2" measure="none">New here?</Paragraph>
-          <Link href="/signup" size="body2">Create an account</Link>
+          <Link href="/sign-up" size="body2">Sign Up</Link>
         </Cluster>
       </Center>
     </Split>

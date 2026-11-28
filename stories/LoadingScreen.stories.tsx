@@ -20,6 +20,17 @@ export const Default: Story = {
   ],
 };
 
+export const WithLabel: Story = {
+  args: { label: "Checking invite…" },
+  decorators: [
+    (Story) => (
+      <div style={{ height: "300px" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
 export const Small: StoryObj<typeof LoadingSmall> = {
   render: () => <LoadingSmall size="small" />,
 };

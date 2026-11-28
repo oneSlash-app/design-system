@@ -333,6 +333,7 @@ For each web component, the table gives the native control to use. System contro
 | textarea | `TextField(_:text:axis: .vertical)` or `TextEditor` | `OutlinedTextField` with `minLines` |  |
 | textField | `TextField` (`SecureField` for passwords) | `OutlinedTextField` or `TextField` |  |
 | timeStamp | `Text(_:style:)` (`.relative`) or `Text(_:format:)` (`.dateTime`) | `Text` with `DateUtils.getRelativeTimeSpanString` or `DateTimeFormatter.ofLocalizedDateTime` |  |
+| toaster | `ODSBanner` for an inline message; a system banner (a local notification) when the app is not in front | `Snackbar` in a `SnackbarHost` | SwiftUI has no toast, so ODS adds none: show the message in the screen. |
 | tooltip | `.help` | `TooltipBox` | `.help` shows on pointer hover only. `TooltipBox` needs `@OptIn(ExperimentalMaterial3Api::class)`. |
 | userImage | `ODSAvatar` | `OdsAvatar` | Load the picture yourself and pass it as an `Image` / a `Painter`. |
 
@@ -373,9 +374,9 @@ A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one
 
 ## Cases
 
-A case answers one design question the way oneSlash does, such as how to lay out a login page or how an agent asks before a risky action. A rule gives one answer and is printed here in full.
+A case answers one design question the way oneSlash does, such as how to lay out a login page or how an agent asks before a risky action. A rule gives one answer. Its answer is printed here; its reasons and its do and don't lines are in the file it names.
 
-A design case has a few options, each with a working example. Open the file named in the table for the one you need. In an app, import a component like this: `import Button from 'oneslash-design-system/components/button'`.
+A design case has one to four options, each with a working example. Open the file named in the table for the one you need. In an app, import a component like this: `import Button from 'oneslash-design-system/components/button'`.
 
 ### An agent asks before a risky action
 
@@ -385,19 +386,7 @@ Answer: An action is risky when it changes shared work or is hard to undo. In a 
 
 **Not built yet:** In Scindo the agent asks before carrying out a plan, opening a pull request and merging one. It does not yet ask before deleting files, closing an issue or rolling back a release.
 
-Why: A person can only approve what they can see, and an agent's mistake in shared work costs other people.
-
-Do:
-- List every step in the card, in the order the agent will do them.
-- Offer a way to see the full changes, such as a View Changes button, before the approve button is pressed.
-- Let the person edit the plan or cancel it, not only approve it.
-- Once decided, mark the card Approved or Cancelled and remove its buttons.
-
-Don't:
-- Do not carry out a risky action before the person approves it.
-- Do not replace the steps or the changes with a one-line summary.
-- Do not let the agent write the label of an approve or merge button.
-- Do not let a second click on a decided card approve or cancel it again.
+File: cases/agent-asks-before-risky-action.md
 
 ### An agent cancels and reports when nobody answers
 
@@ -407,17 +396,7 @@ Answer: The agent never takes silence as a yes: while a question or proposal wai
 
 **Not built yet:** No product cancels a waiting request on its own yet. In Scindo a request waits until a person answers, cancels or skips it, and the waiting time is not decided.
 
-Why: An agent that acts on silence does work nobody approved, and one that waits forever leaves work stuck without saying so.
-
-Do:
-- Keep the card and its buttons open until someone answers or the request is cancelled.
-- Notify the person who asked when the agent needs their answer.
-- When a request is cancelled, mark the card Cancelled and post one line on what was not done.
-- List questions asked before a plan that nobody answered as open questions in that plan.
-
-Don't:
-- Do not treat no answer as approval.
-- Do not cancel a request without saying so in the thread.
+File: cases/agent-cancels-when-unanswered.md
 
 ### An agent refuses clearly
 
@@ -427,17 +406,7 @@ Answer: The refusal says in one plain sentence which limit was reached, and eith
 
 **Not built yet:** Scindo on the web does not follow this yet: it shows the Upgrade button to everyone. Scindo's Apple app shows it only to admins.
 
-Why: A person who is refused needs to know why and what to do next, or they will just send the request again.
-
-Do:
-- Say which limit was reached, with the number when there is one: 'You've used all 50 AI agent responses this month.'
-- Say who can change it, or when to try again: 'Try again in a minute.'
-- Show the button that lifts the limit only to a person allowed to use it.
-- Let the person close the refusal without acting, with a button such as 'Not Now'.
-
-Don't:
-- Do not show a general error message for a refusal.
-- Do not show an Upgrade button to someone who cannot upgrade.
+File: cases/agent-refuses-clearly.md
 
 ### An agent says what it is
 
@@ -445,17 +414,7 @@ The agent posts in a thread where people also write, or replies to a person.
 
 Answer: Every agent message has marks no person's message has. It shows an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.
 
-Why: People must see at a glance whether a person or an agent wrote what they are reading, and whose agent it is.
-
-Do:
-- Show the agent with an icon avatar, never a photo or an initial.
-- Name the agent in the message header: its role or given name, or 'Agent' when it has none.
-- Show the model name next to the time when the product knows it.
-- Show the product's logo on the product's own agent and a plain bot icon on an agent from outside, so people see whose agent it is.
-
-Don't:
-- Do not show a photo for an agent, even when one is set.
-- Do not show the product's logo on an agent the product does not run.
+File: cases/agent-says-what-it-is.md
 
 ### An agent shows its progress
 
@@ -463,18 +422,7 @@ The agent is working on a request and its reply is not ready yet.
 
 Answer: While it works, the agent shows a live row in the thread, where its reply will appear: its name, the model, the seconds so far, the steps it has finished with a check mark, and the step it is on now in plain words, such as 'Reading file'. A Stop button stays on that row for the whole run. When the run is stopped, the agent posts a short note that it stopped.
 
-Why: A person waiting on an agent needs to know it is still working, what it is doing, and that they can stop it.
-
-Do:
-- Show the progress row in the thread, where the reply will appear.
-- Name the current step in plain words, such as 'Reading file' or 'Editing code'.
-- Keep finished steps in view, each with a check mark.
-- Keep a Stop button on the row for the whole run.
-
-Don't:
-- Do not show a spinner with no words.
-- Do not hide the Stop button while the agent writes its reply.
-- Do not say the agent stopped before the run has really ended.
+File: cases/agent-shows-progress.md
 
 ### An agent shows its sources
 
@@ -482,19 +430,75 @@ The agent answers from things it read: documents, files, chat, tasks, or a conne
 
 Answer: Under the reply, the agent lists what it used. A small tag names the kinds of source, such as 'From Chat · Knowledge base', and one card per source shows its title, its kind and where it lives. Each card opens the source. A reply that used no sources shows no sources section.
 
-Why: A person can check an answer only when they can open what it came from.
+File: cases/agent-shows-sources.md
 
-Do:
-- Put the sources directly under the reply they support.
-- Show each source as a card with its title and where it lives, such as the space name or the date.
-- Make each card open the source itself, in the product or on the service it came from.
-- Show the first six sources and a 'Show N more' button for the rest.
+### A confirm says exactly what will happen
 
-Don't:
-- Do not show a sources section when the reply used no sources.
-- Do not show source cards on a person's message.
-- Do not link a source card to any site other than the product or the service the source came from.
+An action a person takes themselves needs their yes before it happens. An action the agent wants to take follows the rule 'An agent asks before a risky action', a card in the conversation, not this one.
+
+Answer: A confirm is a Modal with `size="small"`. Its title names the action in Title Case, such as 'Delete Project'. The body says in one or two sentences what will happen and what is kept. Two Buttons sit in the Modal's `actions`. 'Cancel' comes first, a `<Button type="tertiary" size="small">`. Then comes the action, a `<Button type="primary" size="small">` labelled in Title Case with the same verb as the title. When the action destroys or removes something, the action Button also has `color="danger"`. One case differs: 'Unsaved changes'. Its guard may have three Buttons, 'Cancel', "Don't Save" and 'Save', in that order. When it has two, its safe Button reads 'Keep Editing'. Escape and a click outside the Modal mean Cancel. While the request runs, the action Button is `loading` and keeps its label, and 'Cancel' is `state="disabled"`. The Modal stays open. It still calls `onClose` on Escape or a click outside, and the page ignores that call until the request ends. If the request fails, the Modal stays open and shows an inline error Alert at the top of its body, as the rule 'A form error shows next to the problem' says. When the action works, the Modal closes. If the thing is still on screen, the change shows where it is. If the thing is gone, a toast names it, as the rule 'Success shows where the person is looking' says.
+
+**Not built yet:** No Commentify confirm Modal uses `color="danger"`, and two of them label Cancel 'No'. Scindo on the web makes Cancel a secondary Button in some confirms and a tertiary one in others. It leaves its Delete Task and Remove Member confirms uncolored. Scindo on the web revokes an API key, and Commentify revokes an agent client, with no confirm.
+
+File: cases/confirm-dialogs.md
+
+### An empty list says what will fill it
+
+A list, table or pane has nothing to show.
+
+Answer: Use `EmptyBox`, never a bare line of text. Its `size` is `large` when the list fills the whole region and `small` inside a section. The `text` says what is empty, in the person's words and in sentence case: 'No saved comments'. The `secondText` says what will appear here or what to do. When the person can fix it, pass the Button as `action`. The action Button is primary when it fills the list or tries again, and secondary when it is 'Clear Search'. An empty search shows the words searched for and a 'Clear Search' Button. A failed load is not an empty list: say that loading failed and offer a 'Try Again' Button. `EmptyBox` may hold that message, with 'Try Again' as its `action`, but never the empty text.
+
+**Not built yet:** Scindo on the web uses `EmptyBox` in three places and bare text elsewhere, such as 'No API keys yet.' Commentify uses `EmptyBox` in most lists and bare text in a few. Commentify admin and jinhwankim.com show bare text. No product passes an `action` yet.
+
+File: cases/empty-lists.md
+
+### A form error shows next to the problem
+
+A form was submitted and something is wrong.
+
+Answer: A problem with one field shows under that field, through the field's `error` and `errorText`. A problem with the whole request shows above the fields in `<Alert type="error" variant="inline" showCloseButton>`, so it stays until the person closes it or submits again. Its `onClose` clears the message; if it does not, the Alert comes back. While the request runs, the submit Button is `loading` and keeps its label. The form keeps what the person typed. The next submit clears the old messages. Messages are in sentence case. It is never a colored caption written by hand, and never the browser's `alert()`.
+
+**Not built yet:** Commentify writes red captions by hand on its consent screen and in its Figma import dialog. Scindo on the web does the same in its dialogs, such as renaming a workspace or a task. Commentify uses the browser's `alert()` in three files, and Scindo on the web in one.
+
+File: cases/form-errors.md
+
+### Success shows where the person is looking
+
+Something the person did has worked.
+
+Answer: The feedback depends on where the result shows. A Button that is `loading` keeps its label, and the spinner shows that it is working. Only success changes a label, and there are three success labels: 'Saved', 'Copied' and 'Sent', each for 2 seconds. When a form saves in place, its Button is `loading`, then reads 'Saved' for 2 seconds, then its own label again. There is no toast. Sometimes the result is somewhere else or gone. Something was deleted, sent, moved or duplicated somewhere else, or a long job has finished. Then call `toast({ type: 'success', message: '…' })` with one short sentence in the past tense, in sentence case. It closes after 5 seconds. When something is copied to the clipboard, a Button reads 'Copied' for 2 seconds, and an IconButton swaps its icon to `Check` for 2 seconds. When a Button sends an email again, it reads 'Sent' for 2 seconds. The message names the thing and does not say 'successfully'.
+
+**Not built yet:** Scindo on the web has no toast. It shows success in five ways: a 'Saved' Button label, a green caption, an inline Alert, a thank-you that replaces a dialog and a 'Copied' label. The timed ones clear after 1.5, 2, 3 or 4 seconds. Commentify shows toasts through `Alert`, one at a time, and many of them say 'successfully'.
+
+File: cases/success-feedback.md
 
 | Case | When | File |
 | --- | --- | --- |
-| Login page | A person who already has an account opens the product and is not signed in. | cases/login-page.md |
+| Invite link page | A person opens an invite link to join a workspace. | cases/accept-invite.md |
+| Login check loading | The app is checking whether the person is logged in, or running a step such as checking an invite, before it knows what to show. | cases/auth-gate-loading.md |
+| Check your email | A person signed up, and the product sent a link to confirm their email. | cases/check-your-email.md |
+| Delete confirm | A person asks to delete or remove something, and it cannot be undone. | cases/confirm-destructive-action.md |
+| Create modal | A person creates something new, such as a project or a task, and it needs a name before it exists. | cases/create-modal.md |
+| Device login | A CLI, an editor or another app opened the browser so the person can log in, and the login must reach that app. | cases/device-login.md |
+| Email confirmed | A person opened the link that confirms their email. | cases/email-confirmed.md |
+| Empty list | A list has loaded, and there is nothing in it yet. | cases/empty-list.md |
+| Empty until set up | A pane is empty because something it needs is not set up yet, such as a connected account. | cases/empty-not-set-up.md |
+| Empty search | A search or a filter finds nothing. | cases/empty-search.md |
+| Error page | Something broke while showing a page, and the app cannot show it. | cases/error-page.md |
+| Feedback form | A person sends feedback about the product from inside it. | cases/feedback-form.md |
+| Forgot password | A person cannot remember their password and asks for a link to set a new one. | cases/forgot-password.md |
+| Import checklist | A person picks which items to bring in from another place, such as pages from a wiki. | cases/import-checklist.md |
+| Form feedback | A person submits a small form, such as a settings field, and the request ends. The three options are the three outcomes of one save: it worked in place, it failed, or the result is elsewhere. | cases/inline-form-feedback.md |
+| Member invite | A person invites someone to join a workspace. | cases/invite-member.md |
+| Load failure | A list or a section could not load. | cases/load-failure.md |
+| Log-out confirm | A person chooses Log Out. | cases/log-out-confirm.md |
+| Login page | A person who already has an account opens the product and is not logged in. | cases/login-page.md |
+| Page not found | A person opens a link to a page that does not exist. | cases/not-found-page.md |
+| OAuth consent | Another app, such as a CLI or an MCP client, asks to act for a person who is logged in, and the person must allow it. | cases/oauth-consent.md |
+| Rename | A person renames something, such as a project or a channel. | cases/rename.md |
+| Page loading | A page or a pane is loading, and there is nothing to show yet. | cases/route-loading.md |
+| Set new password | A person opened the link to reset their password and now chooses a new one. | cases/set-new-password.md |
+| Sign-up page | A person who has no account yet opens the product and wants one. | cases/sign-up-page.md |
+| Type to confirm | A person asks to delete something large that cannot be brought back, such as a workspace or an account. | cases/type-to-confirm.md |
+| Unsaved changes | A person closes or leaves something they changed and did not save. | cases/unsaved-changes-guard.md |
+| Upgrade prompt | A person reaches something their plan does not include, or a limit of their plan. | cases/upgrade-prompt.md |

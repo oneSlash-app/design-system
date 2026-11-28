@@ -79,6 +79,18 @@ export const WithError: Story = {
   },
 };
 
+export const HelperText: Story = {
+  render: (args) => <TextFieldWrapper {...args} />,
+  args: {
+    id: "helper-textfield",
+    label: "Password",
+    type: "password",
+    value: "",
+    helperText: "Use at least 8 characters.",
+    size: "medium",
+  },
+};
+
 export const LargeSize: Story = {
   render: (args) => <TextFieldWrapper {...args} />,
   args: {
@@ -193,6 +205,18 @@ export const LengthLimits: Story = {
     minLength: 3,
     maxLength: 20,
     spellCheck: false,
+    size: "medium",
+  },
+};
+
+// `readOnly` keeps the normal colors; the text can be focused and selected but not changed
+export const ReadOnly: Story = {
+  render: (args) => <TextFieldWrapper {...args} />,
+  args: {
+    id: "readonly-textfield",
+    label: "Invite link",
+    value: "https://acme.example.com/invite/4f9k2",
+    readOnly: true,
     size: "medium",
   },
 };

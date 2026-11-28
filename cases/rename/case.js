@@ -1,0 +1,45 @@
+module.exports = {
+  id: 'rename',
+  title: 'Rename',
+  kind: 'design',
+  level: 'organism',
+  area: 'confirm',
+  situation: 'A person renames something, such as a project or a channel.',
+  options: [
+    {
+      id: 'modal',
+      title: 'Rename in a Modal',
+      useWhen: 'Rename is opened from a menu or from far away from the name.',
+      example: 'modal.tsx',
+    },
+    {
+      id: 'inline',
+      title: 'Rename in place',
+      useWhen: 'The name is on screen, and it becomes a field.',
+      example: 'inline.tsx',
+    },
+  ],
+  do: [
+    "Title the Modal 'Rename' and the thing, such as 'Rename Project', and give its action the same verb: 'Rename'.",
+    "Keep 'Rename' `state=\"disabled\"` while the name is empty or unchanged.",
+    'Save on Enter too: put the field in a `Form`.',
+    'Show a name that is taken under the field, with `error` and `errorText`, and keep the Modal open.',
+    'Focus the field with `autoFocus` when the name becomes a field in place.',
+    'Save on Enter and when the person leaves the field. Cancel on Escape, and when the name is empty.',
+  ],
+  dont: [
+    "Do not label the Modal's action 'Save' or 'OK'.",
+    'Do not show a toast after a rename. The new name shows where the old one was.',
+    'Do not save an empty name.',
+    'Do not drop what the person typed when they leave the field.',
+  ],
+  native: "On Apple rename in place in a list with a `TextField` and `.onSubmit`. Use an `.alert` with a `TextField` when the name is not on screen.",
+  notBuiltYet: "Commentify's two renames disagree on what leaving the field does: a project name cancels, a tag name saves. Scindo on the web labels its rename Modals' action 'Save', shows 'Saving...' while it runs, and writes a taken name as a red caption by hand.",
+  seenIn: [
+    { product: 'Commentify', path: 'src/components/layout/ProjectHeader.tsx' },
+    { product: 'Commentify', path: 'src/components/layout/ProjectNameInput.tsx' },
+    { product: 'Commentify', path: 'src/app/(main)/saved/ScrapSection.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/components/chat/ChannelHeader.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/components/chat/DocumentView.tsx' },
+  ],
+};

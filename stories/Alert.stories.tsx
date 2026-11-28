@@ -85,6 +85,25 @@ export const AutoDismiss: Story = {
   },
 };
 
+// Stays until the page removes it, even with no close button
+export const Persistent: Story = {
+  render: (args) => <Alert {...args} />,
+  args: {
+    type: "warning",
+    message: "You are offline. Changes are saved on this device.",
+    variant: "inline",
+    showCloseButton: false,
+    autoDismiss: false,
+  },
+  decorators: [
+    (Story) => (
+      <div style={{ maxWidth: "500px" }}>
+        <Story />
+      </div>
+    ),
+  ],
+};
+
 // Inline variant stories
 const InlineAlertWrapper = (args: any) => {
   const [open, setOpen] = useState(true);

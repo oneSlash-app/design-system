@@ -6,16 +6,21 @@ const useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : us
 
 interface TabsContainerProps {
   children: React.ReactNode;
+  /** The container is as wide as its parent and every tab takes an equal share, label centered. */
+  fill?: boolean;
 }
 
 // Lets a Tab know a container draws its selected background (the sliding pill)
 export const TabsContainerContext = createContext(false);
+// Lets a Tab know every tab in the container takes an equal share of the width
+export const TabsFillContext = createContext(false);
 
 // animate is false for the first placement so the pill doesn't slide in from 0,0
 type IndicatorRect = { x: number; y: number; width: number; height: number; animate: boolean };
 
 export default function TabsContainer({
   children,
+  fill = false,
 }: TabsContainerProps) {
   const tabCount = React.Children.count(children);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -74,6 +79,7 @@ export default function TabsContainer({
 
   return (
     <TabsContainerContext.Provider value={true}>
+      <TabsFillContext.Provider value={fill}>
       <div
         ref={containerRef}
         role="tablist"
@@ -94,7 +100,7 @@ export default function TabsContainer({
           tabs[next].click();
         }}
         className={`
-          relative flex gap-0.5 p-1 rounded-container overflow-x-auto
+          relative flex gap-0.5 p-1 rounded-container overflow-x-auto${fill ? ' w-full' : ''}
           ${tabCount > 0 ? 'bg-background-accent100' : 'bg-transparent'}
         `}
         style={{
@@ -118,6 +124,7 @@ export default function TabsContainer({
         )}
         {children}
       </div>
+      </TabsFillContext.Provider>
     </TabsContainerContext.Provider>
   );
 }

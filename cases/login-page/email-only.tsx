@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Surface from '../../components/surface';
 import Heading from '../../components/heading';
 import Paragraph from '../../components/paragraph';
@@ -19,6 +19,10 @@ export default function LoginEmailOnly() {
   const [sentTo, setSentTo] = useState('');
   const [emailError, setEmailError] = useState('');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleSubmit() {
     if (loading) return;
@@ -29,13 +33,13 @@ export default function LoginEmailOnly() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     setLoading(true);
     const address = email.trim();
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setSentTo(address);
     }, 1200);
@@ -46,13 +50,13 @@ export default function LoginEmailOnly() {
       <Surface padding="large">
         <Stack gap="xlarge">
           <Stack gap="small">
-            <Heading level={2} size="h5">Log in</Heading>
-            <Paragraph tone="secondary" size="body2" measure="none">We will email you a link to sign in.</Paragraph>
+            <Heading level={1} size="h5">Log in</Heading>
+            <Paragraph tone="secondary" size="body2" measure="none">We will email you a link to log in.</Paragraph>
           </Stack>
           <Form aria-label="Log in" onSubmit={handleSubmit}>
-            {sentTo && <Alert type="success" variant="inline" message={`We sent a sign-in link to ${sentTo}.`} showCloseButton onClose={() => setSentTo('')} />}
-            <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
-            <Button size="medium" type="primary" state="enabled" label="Send sign-in link" htmlType="submit" loading={loading} />
+            {sentTo && <Alert type="success" variant="inline" message={`We sent a login link to ${sentTo}.`} autoDismiss={false} />}
+            <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+            <Button size="medium" type="primary" state="enabled" label="Send Login Link" htmlType="submit" loading={loading} />
           </Form>
         </Stack>
       </Surface>

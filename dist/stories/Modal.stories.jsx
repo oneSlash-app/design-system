@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import Modal from "../components/modal";
 import Button from "../components/button";
+import Select from "../components/select";
+import TextField from "../components/textField";
 var meta = {
     title: "Components/Modal",
     component: Modal,
@@ -74,4 +76,38 @@ export var LongContent = {
         children: longContent,
         size: "medium",
     },
+};
+// Open on first render: with initialFocus="body" the cursor starts in the field, not on Cancel.
+var FocusInBodyModal = function (args) {
+    var _a = useState(""), name = _a[0], setName = _a[1];
+    return (<Modal {...args} isOpen onClose={function () { }}>
+      <TextField id="focus-in-body-name" label="Project name" value={name} onChange={function (e) { return setName(e.target.value); }}/>
+    </Modal>);
+};
+export var FocusInBody = {
+    render: function (args) { return <FocusInBodyModal {...args}/>; },
+    args: {
+        title: "New Project",
+        size: "small",
+        initialFocus: "body",
+        actions: (<div style={{ display: "flex", gap: "8px" }}>
+        <Button size="medium" type="tertiary" state="enabled" label="Cancel"/>
+        <Button size="medium" type="primary" state="enabled" label="Create"/>
+      </div>),
+    },
+};
+// Open on first render with the list closed; Escape closes an open list first, then the Modal.
+var WithSelectModal = function (args) {
+    var _a = useState(true), isOpen = _a[0], setIsOpen = _a[1];
+    var _b = useState(""), category = _b[0], setCategory = _b[1];
+    return (<Modal {...args} isOpen={isOpen} onClose={function () { return setIsOpen(false); }}>
+      <Select aria-label="Category" placeholder="Select a category" value={category} onChange={function (v) { return setCategory(v); }} options={[
+            { value: "work", label: "Work" },
+            { value: "personal", label: "Personal" },
+        ]}/>
+    </Modal>);
+};
+export var WithSelect = {
+    render: function (args) { return <WithSelectModal {...args}/>; },
+    args: { title: "Move Project", size: "small" },
 };

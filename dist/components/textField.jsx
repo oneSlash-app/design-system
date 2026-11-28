@@ -2,7 +2,7 @@
 import React from 'react';
 import { stateTransition } from './sharedStyles';
 export default function TextField(_a) {
-    var id = _a.id, label = _a.label, value = _a.value, _b = _a.type, type = _b === void 0 ? 'text' : _b, onChange = _a.onChange, onBlur = _a.onBlur, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, onSubmit = _a.onSubmit, _c = _a.autoFocus, autoFocus = _c === void 0 ? false : _c, _d = _a.multiline, multiline = _d === void 0 ? false : _d, _e = _a.maxRows, maxRows = _e === void 0 ? 6 : _e, _f = _a.disabled, disabled = _f === void 0 ? false : _f, _g = _a.error, error = _g === void 0 ? false : _g, _h = _a.errorText, errorText = _h === void 0 ? 'This field is required' : _h, _j = _a.required, required = _j === void 0 ? false : _j, _k = _a.size, size = _k === void 0 ? 'medium' : _k, placeholder = _a.placeholder, name = _a.name, _l = _a.autoComplete, autoComplete = _l === void 0 ? 'off' : _l, tabIndex = _a.tabIndex, maxLength = _a.maxLength, minLength = _a.minLength, spellCheck = _a.spellCheck;
+    var id = _a.id, label = _a.label, value = _a.value, _b = _a.type, type = _b === void 0 ? 'text' : _b, onChange = _a.onChange, onBlur = _a.onBlur, onFocus = _a.onFocus, onKeyDown = _a.onKeyDown, onSubmit = _a.onSubmit, _c = _a.autoFocus, autoFocus = _c === void 0 ? false : _c, _d = _a.multiline, multiline = _d === void 0 ? false : _d, _e = _a.maxRows, maxRows = _e === void 0 ? 6 : _e, _f = _a.disabled, disabled = _f === void 0 ? false : _f, _g = _a.readOnly, readOnly = _g === void 0 ? false : _g, _h = _a.error, error = _h === void 0 ? false : _h, _j = _a.errorText, errorText = _j === void 0 ? 'This field is required' : _j, helperText = _a.helperText, _k = _a.required, required = _k === void 0 ? false : _k, _l = _a.size, size = _l === void 0 ? 'medium' : _l, placeholder = _a.placeholder, name = _a.name, _m = _a.autoComplete, autoComplete = _m === void 0 ? 'off' : _m, tabIndex = _a.tabIndex, maxLength = _a.maxLength, minLength = _a.minLength, spellCheck = _a.spellCheck;
     var handleKeyDown = function (e) {
         // Ctrl+Enter or Cmd+Enter to submit
         if ((e.ctrlKey || e.metaKey) && e.key === 'Enter' && onSubmit) {
@@ -35,6 +35,7 @@ export default function TextField(_a) {
         return "border-fg-disabled\n      hover:border-fg-secondary\n      focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-fg-primary";
     };
     var errorId = "".concat(id, "-error");
+    var helperId = "".concat(id, "-helper");
     // Get inputMode for mobile keyboard optimization
     var getInputMode = function () {
         switch (type) {
@@ -55,17 +56,20 @@ export default function TextField(_a) {
     var containerClasses = "\n    ".concat(colorClasses, "\n    ").concat(baseClasses, "\n    ").concat(sizeClasses, "\n    ").concat(getBorderColor(), "\n  ");
     var errorProps = {
         'aria-invalid': error || undefined,
-        'aria-describedby': error ? errorId : undefined,
+        'aria-describedby': error ? errorId : helperText ? helperId : undefined,
     };
     return (<div className="flex flex-col w-full">
       {label && (<label htmlFor={id} className="mb-1 text-body2 text-fg-secondary">
           {label}{required && <span className="text-error-text ml-0.5">*</span>}
         </label>)}
       <div className="relative">
-        {multiline ? (<textarea id={id} rows={maxRows} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} name={name} autoComplete={autoComplete} tabIndex={tabIndex} maxLength={maxLength} minLength={minLength} spellCheck={spellCheck} {...errorProps}/>) : (<input id={id} type={type} inputMode={getInputMode()} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} required={required} name={name} autoComplete={autoComplete} tabIndex={tabIndex} maxLength={maxLength} minLength={minLength} spellCheck={spellCheck} {...errorProps}/>)}
+        {multiline ? (<textarea id={id} rows={maxRows} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} readOnly={readOnly} required={required} name={name} autoComplete={autoComplete} tabIndex={tabIndex} maxLength={maxLength} minLength={minLength} spellCheck={spellCheck} {...errorProps}/>) : (<input id={id} type={type} inputMode={getInputMode()} className={containerClasses} value={value} onChange={onChange} placeholder={placeholder} onFocus={onFocus} onBlur={onBlur} onKeyDown={handleKeyDown} autoFocus={autoFocus} disabled={disabled} readOnly={readOnly} required={required} name={name} autoComplete={autoComplete} tabIndex={tabIndex} maxLength={maxLength} minLength={minLength} spellCheck={spellCheck} {...errorProps}/>)}
       </div>
       {error && (<p id={errorId} className="mt-1 text-error-text text-body2">
           {errorText}
+        </p>)}
+      {!error && helperText && (<p id={helperId} className="mt-1 text-fg-secondary text-body2">
+          {helperText}
         </p>)}
     </div>);
 }

@@ -16,9 +16,13 @@ interface TextFieldProps {
   multiline?: boolean;
   maxRows?: number;
   disabled?: boolean;
+  /** Passed to the `<input>` or `<textarea>`: the text can be focused and selected but not changed. Keeps the normal colors, unlike `disabled`. `required` has no effect on a read-only field. */
+  readOnly?: boolean;
   error?: boolean;
   /** Message shown under the field when `error` is true */
   errorText?: string;
+  /** A caption under the field. Tied to the field with `aria-describedby`. While `error` is true the error text replaces it, so the error text should restate the rule. */
+  helperText?: string;
   required?: boolean;
   size?: 'large' | 'medium' | 'small' | 'tiny';
   placeholder?: string;
@@ -48,8 +52,10 @@ export default function TextField({
   multiline = false,
   maxRows = 6,
   disabled = false,
+  readOnly = false,
   error = false,
   errorText = 'This field is required',
+  helperText,
   required = false,
   size = 'medium',
   placeholder,
@@ -99,6 +105,7 @@ export default function TextField({
   };
 
   const errorId = `${id}-error`;
+  const helperId = `${id}-helper`;
 
   // Get inputMode for mobile keyboard optimization
   const getInputMode = (): React.HTMLAttributes<HTMLInputElement>['inputMode'] => {
@@ -127,7 +134,7 @@ export default function TextField({
 
   const errorProps = {
     'aria-invalid': error || undefined,
-    'aria-describedby': error ? errorId : undefined,
+    'aria-describedby': error ? errorId : helperText ? helperId : undefined,
   };
 
   return (
@@ -151,6 +158,7 @@ export default function TextField({
             onKeyDown={handleKeyDown}
             autoFocus={autoFocus}
             disabled={disabled}
+            readOnly={readOnly}
             required={required}
             name={name}
             autoComplete={autoComplete}
@@ -174,6 +182,7 @@ export default function TextField({
             onKeyDown={handleKeyDown}
             autoFocus={autoFocus}
             disabled={disabled}
+            readOnly={readOnly}
             required={required}
             name={name}
             autoComplete={autoComplete}
@@ -188,6 +197,11 @@ export default function TextField({
       {error && (
         <p id={errorId} className="mt-1 text-error-text text-body2">
           {errorText}
+        </p>
+      )}
+      {!error && helperText && (
+        <p id={helperId} className="mt-1 text-fg-secondary text-body2">
+          {helperText}
         </p>
       )}
     </div>

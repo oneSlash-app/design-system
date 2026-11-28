@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from '../../components/image';
 import TabsContainer from '../../components/tabsContainer';
 import Tab from '../../components/tab';
@@ -30,6 +30,10 @@ export default function LoginCentered() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleSubmit() {
     if (loading) return;
@@ -41,7 +45,7 @@ export default function LoginCentered() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {
@@ -50,7 +54,7 @@ export default function LoginCentered() {
     }
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setError('That email and password do not match.');
     }, 1200);
@@ -59,16 +63,16 @@ export default function LoginCentered() {
   return (
     <Center fill>
       <Image src={productMark} alt="Acme" width={40} height={40} />
-      <TabsContainer>
+      <TabsContainer fill>
         <Tab label="Log In" isSelected onClickTab={() => {}} />
         <Tab label="Sign Up" isSelected={false} href="/sign-up" router={router} onClickTab={() => {}} />
       </TabsContainer>
       <Form aria-label="Log in" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
-        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
+        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
         <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
-        <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
+        <Button size="medium" type="textOnly" state={loading ? 'disabled' : 'enabled'} label="Forgot Password?" />
       </Form>
       <Line label="or" />
       <Button size="medium" type="secondary" state="enabled" label="Continue with Google" decoIcon={<BrandIcon name="google" />} />

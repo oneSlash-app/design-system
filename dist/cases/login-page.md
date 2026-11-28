@@ -1,33 +1,34 @@
 # Login page
 
-A person who already has an account opens the product and is not signed in.
+A person who already has an account opens the product and is not logged in.
 
-**Not built yet:** Commentify and Scindo on the web replace the form with a spinner while signing in. They do not use the Button's loading state yet.
+**Not built yet:** Commentify and Scindo on the web replace the form with a spinner while logging in. They do not use the Button's loading state yet.
 
 ## Do
 
 - Show a problem with one field under that field.
-- Show a refused sign-in or a failed request in an inline Alert above the fields.
-- When there is a password, put a text-only 'Forgot password?' Button right under the submit Button.
+- Show a refused login or a failed request in an inline Alert above the fields.
+- Put a text-only 'Forgot Password?' Button right under the submit Button when there is a password.
 - Name the provider on its button: 'Continue with Google'.
-- While signing in, show the loading state on the submit Button and keep the form in place.
+- Show the loading state on the submit Button while logging in, and keep the form in place.
+- Disable the fields while the request runs.
 
 ## Don't
 
 - Do not clear the email field after a failed attempt.
 - Do not show sign-up fields on the login page; link or tab to sign-up.
-- Do not replace the form with a spinner while signing in.
+- Do not replace the form with a spinner while logging in.
 - Do not say which of the email or the password was wrong.
 
 ## Option: Centered column
 
-Use when: The product has one way in, and most people sign in with email and a password.
+Use when: The product has one way in, and most people log in with email and a password.
 
 Uses: `Alert`, `BrandIcon`, `Button`, `Center`, `Form`, `Image`, `Line`, `Tab`, `TabsContainer`, `TextField`
 
 ```tsx
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'oneslash-design-system/components/image';
 import TabsContainer from 'oneslash-design-system/components/tabsContainer';
 import Tab from 'oneslash-design-system/components/tab';
@@ -58,6 +59,10 @@ export default function LoginCentered() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleSubmit() {
     if (loading) return;
@@ -69,7 +74,7 @@ export default function LoginCentered() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {
@@ -78,7 +83,7 @@ export default function LoginCentered() {
     }
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setError('That email and password do not match.');
     }, 1200);
@@ -87,16 +92,16 @@ export default function LoginCentered() {
   return (
     <Center fill>
       <Image src={productMark} alt="Acme" width={40} height={40} />
-      <TabsContainer>
+      <TabsContainer fill>
         <Tab label="Log In" isSelected onClickTab={() => {}} />
         <Tab label="Sign Up" isSelected={false} href="/sign-up" router={router} onClickTab={() => {}} />
       </TabsContainer>
       <Form aria-label="Log in" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
-        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
+        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
         <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
-        <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
+        <Button size="medium" type="textOnly" state={loading ? 'disabled' : 'enabled'} label="Forgot Password?" />
       </Form>
       <Line label="or" />
       <Button size="medium" type="secondary" state="enabled" label="Continue with Google" decoIcon={<BrandIcon name="google" />} />
@@ -113,7 +118,7 @@ Uses: `Alert`, `BrandIcon`, `Button`, `Center`, `Cluster`, `Form`, `Heading`, `I
 
 ```tsx
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'oneslash-design-system/components/image';
 import Heading from 'oneslash-design-system/components/heading';
 import Paragraph from 'oneslash-design-system/components/paragraph';
@@ -142,6 +147,10 @@ export default function LoginSplit() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleSubmit() {
     if (loading) return;
@@ -153,7 +162,7 @@ export default function LoginSplit() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {
@@ -162,7 +171,7 @@ export default function LoginSplit() {
     }
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setError('That email and password do not match.');
     }, 1200);
@@ -182,19 +191,19 @@ export default function LoginSplit() {
       }
     >
       <Center fill>
-        <Heading level={2} size="h5">Log in to Acme</Heading>
+        <Heading level={1} size="h5">Log in to Acme</Heading>
         <Form aria-label="Log in" onSubmit={handleSubmit}>
           {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-          <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
-          <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
+          <TextField id="split-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+          <TextField id="split-password" label="Password" type="password" autoComplete="current-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
           <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
-          <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
+          <Button size="medium" type="textOnly" state={loading ? 'disabled' : 'enabled'} label="Forgot Password?" />
         </Form>
         <Line label="or" />
         <Button size="medium" type="secondary" state="enabled" label="Continue with Google" decoIcon={<BrandIcon name="google" />} />
         <Cluster gap="small">
           <Paragraph tone="secondary" size="body2" measure="none">New here?</Paragraph>
-          <Link href="/signup" size="body2">Create an account</Link>
+          <Link href="/sign-up" size="body2">Sign Up</Link>
         </Cluster>
       </Center>
     </Split>
@@ -204,13 +213,13 @@ export default function LoginSplit() {
 
 ## Option: Provider first
 
-Use when: Most people sign in with Google, GitHub or Apple; email is the fallback.
+Use when: Most people log in with Google, GitHub or Apple; email is the fallback.
 
 Uses: `Alert`, `BrandIcon`, `Button`, `Center`, `Form`, `Heading`, `Line`, `Stack`, `TextField`
 
 ```tsx
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Heading from 'oneslash-design-system/components/heading';
 import Form from 'oneslash-design-system/components/form';
 import Alert from 'oneslash-design-system/components/alert';
@@ -232,6 +241,10 @@ export default function LoginProviderFirst() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleSubmit() {
     if (loading) return;
@@ -243,7 +256,7 @@ export default function LoginProviderFirst() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {
@@ -252,7 +265,7 @@ export default function LoginProviderFirst() {
     }
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setError('That email and password do not match.');
     }, 1200);
@@ -260,19 +273,19 @@ export default function LoginProviderFirst() {
 
   return (
     <Center fill>
-      <Heading level={2} size="h5">Sign in to Acme</Heading>
+      <Heading level={1} size="h5">Log in to Acme</Heading>
       <Stack gap="medium">
         <Button size="medium" type="secondary" state="enabled" label="Continue with Google" decoIcon={<BrandIcon name="google" />} />
         <Button size="medium" type="secondary" state="enabled" label="Continue with GitHub" decoIcon={<BrandIcon name="github" />} />
         <Button size="medium" type="secondary" state="enabled" label="Continue with Apple" decoIcon={<BrandIcon name="apple" />} />
       </Stack>
       <Line label="or" />
-      <Form aria-label="Sign in with email" onSubmit={handleSubmit}>
+      <Form aria-label="Log in with email" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-        <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
-        <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
-        <Button size="medium" type="primary" state="enabled" label="Sign in with email" htmlType="submit" loading={loading} />
-        <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
+        <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+        <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
+        <Button size="medium" type="primary" state="enabled" label="Log In with Email" htmlType="submit" loading={loading} />
+        <Button size="medium" type="textOnly" state={loading ? 'disabled' : 'enabled'} label="Forgot Password?" />
       </Form>
     </Center>
   );
@@ -281,13 +294,13 @@ export default function LoginProviderFirst() {
 
 ## Option: Email only
 
-Use when: An internal tool with no passwords: the person gets a sign-in link by email.
+Use when: An internal tool with no passwords: the person gets a login link by email.
 
 Uses: `Alert`, `Button`, `Center`, `Form`, `Heading`, `Paragraph`, `Stack`, `Surface`, `TextField`
 
 ```tsx
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Surface from 'oneslash-design-system/components/surface';
 import Heading from 'oneslash-design-system/components/heading';
 import Paragraph from 'oneslash-design-system/components/paragraph';
@@ -307,6 +320,10 @@ export default function LoginEmailOnly() {
   const [sentTo, setSentTo] = useState('');
   const [emailError, setEmailError] = useState('');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleSubmit() {
     if (loading) return;
@@ -317,13 +334,13 @@ export default function LoginEmailOnly() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     setLoading(true);
     const address = email.trim();
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setSentTo(address);
     }, 1200);
@@ -334,13 +351,13 @@ export default function LoginEmailOnly() {
       <Surface padding="large">
         <Stack gap="xlarge">
           <Stack gap="small">
-            <Heading level={2} size="h5">Log in</Heading>
-            <Paragraph tone="secondary" size="body2" measure="none">We will email you a link to sign in.</Paragraph>
+            <Heading level={1} size="h5">Log in</Heading>
+            <Paragraph tone="secondary" size="body2" measure="none">We will email you a link to log in.</Paragraph>
           </Stack>
           <Form aria-label="Log in" onSubmit={handleSubmit}>
-            {sentTo && <Alert type="success" variant="inline" message={`We sent a sign-in link to ${sentTo}.`} showCloseButton onClose={() => setSentTo('')} />}
-            <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
-            <Button size="medium" type="primary" state="enabled" label="Send sign-in link" htmlType="submit" loading={loading} />
+            {sentTo && <Alert type="success" variant="inline" message={`We sent a login link to ${sentTo}.`} autoDismiss={false} />}
+            <TextField id="email-only-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+            <Button size="medium" type="primary" state="enabled" label="Send Login Link" htmlType="submit" loading={loading} />
           </Form>
         </Stack>
       </Surface>

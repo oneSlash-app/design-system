@@ -13,6 +13,7 @@ interface RadioGroupProps {
   selectedValue: string;
   onChange: (value: string) => void;
   direction?: 'horizontal' | 'vertical';
+  'aria-label'?: string;
 }
 
 export default function RadioGroup({
@@ -20,6 +21,7 @@ export default function RadioGroup({
   selectedValue,
   onChange,
   direction = 'vertical',
+  'aria-label': ariaLabel,
 }: RadioGroupProps) {
   // One shared name gives native arrow-key movement between the options
   const groupName = useId();
@@ -27,6 +29,7 @@ export default function RadioGroup({
   return (
     <div
       role="radiogroup"
+      aria-label={ariaLabel}
       className={`flex ${ direction === 'horizontal' ? 'gap-4' : 'flex-col gap-2' }`}
     >
       {options.map((option) => {

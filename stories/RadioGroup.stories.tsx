@@ -65,3 +65,18 @@ export const PaymentOptions: Story = {
     direction: "vertical",
   },
 };
+
+// A group with no visible heading still needs a name for a screen reader.
+export const Labelled: Story = {
+  render: (args) => <RadioGroupWrapper {...args} />,
+  args: {
+    "aria-label": "Category",
+    options: [
+      { label: "Work", value: "work" },
+      { label: "Personal", value: "personal" },
+      { label: "Other", value: "other" },
+    ],
+    selectedValue: "work",
+    direction: "vertical",
+  },
+};

@@ -6,3 +6,4 @@ type Story = StoryObj<typeof RadioGroup>;
 export declare const Vertical: Story;
 export declare const Horizontal: Story;
 export declare const PaymentOptions: Story;
+export declare const Labelled: Story;

@@ -2,10 +2,10 @@
 import React, { useId } from 'react';
 import { popTransition, stateTransition } from './sharedStyles';
 export default function RadioGroup(_a) {
-    var options = _a.options, selectedValue = _a.selectedValue, onChange = _a.onChange, _b = _a.direction, direction = _b === void 0 ? 'vertical' : _b;
+    var options = _a.options, selectedValue = _a.selectedValue, onChange = _a.onChange, _b = _a.direction, direction = _b === void 0 ? 'vertical' : _b, ariaLabel = _a["aria-label"];
     // One shared name gives native arrow-key movement between the options
     var groupName = useId();
-    return (<div role="radiogroup" className={"flex ".concat(direction === 'horizontal' ? 'gap-4' : 'flex-col gap-2')}>
+    return (<div role="radiogroup" aria-label={ariaLabel} className={"flex ".concat(direction === 'horizontal' ? 'gap-4' : 'flex-col gap-2')}>
       {options.map(function (option) {
             var isSelected = selectedValue === option.value;
             return (<label key={option.value} className="group relative flex items-start cursor-pointer">

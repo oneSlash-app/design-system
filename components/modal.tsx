@@ -2,6 +2,7 @@
 import React, { useEffect, useId, useRef } from 'react';
 import { overlayHidden, overlayTransition, overlayVisible } from './sharedStyles';
 import { useOverlayTransition } from './useOverlayTransition';
+import { initialFocusCandidates } from '../internal/modal';
 
 interface ModalProps {
   isOpen: boolean;
@@ -11,10 +12,17 @@ interface ModalProps {
   onClose: () => void;
   actions?: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
+  // 'first' focuses the first focusable element in the panel (the header actions come first);
+  // 'body' focuses the first one inside the children, for a form dialog.
+  // Only children present when the Modal opens are considered, not ones mounted later.
+  initialFocus?: 'first' | 'body';
 }
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+// For the first focus and the Tab trap: the same, minus a hidden input, which matches but cannot take focus
+const PICKABLE = FOCUSABLE.replace('input:not([disabled])', 'input:not([disabled]):not([type="hidden"])');
 
 export default function Modal({
   isOpen,
@@ -24,8 +32,10 @@ export default function Modal({
   onClose,
   actions,
   size = 'medium',
+  initialFocus = 'first',
 }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
   const { mounted, visible } = useOverlayTransition(isOpen);
 
@@ -40,8 +50,17 @@ export default function Modal({
     if (!isOpen || !mounted) return;
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
-    const firstFocusable = panel?.querySelector<HTMLElement>(FOCUSABLE);
-    (firstFocusable ?? panel)?.focus();
+    const candidates = initialFocusCandidates(
+      Array.from(panel?.querySelectorAll<HTMLElement>(PICKABLE) ?? []),
+      Array.from(bodyRef.current?.querySelectorAll<HTMLElement>(PICKABLE) ?? []),
+      initialFocus,
+    );
+    // An element that is hidden or display:none ignores focus(); try the next one
+    for (const candidate of candidates) {
+      candidate.focus();
+      if (panel?.contains(document.activeElement)) break;
+    }
+    if (panel && !panel.contains(document.activeElement)) panel.focus();
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -52,7 +71,7 @@ export default function Modal({
         return;
       }
       if (e.key !== 'Tab' || !panel) return;
-      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE));
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(PICKABLE));
       if (focusable.length === 0) {
         e.preventDefault();
         return;
@@ -138,6 +157,7 @@ export default function Modal({
         )}
 
         <div
+          ref={bodyRef}
           className="text-body1 space-y-4 text-fg-primary p-6"
           style={{
             overflowY: 'auto',

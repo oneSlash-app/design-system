@@ -42,7 +42,7 @@ var popperOptions = {
 };
 export default function Select(_a) {
     var _b, _c;
-    var value = _a.value, options = _a.options, onChange = _a.onChange, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.placeholder, placeholder = _e === void 0 ? 'Label' : _e, decoIconName = _a.decoIconName, width = _a.width, _f = _a.multiple, multiple = _f === void 0 ? false : _f, _g = _a.className, className = _g === void 0 ? '' : _g;
+    var value = _a.value, options = _a.options, onChange = _a.onChange, _d = _a.disabled, disabled = _d === void 0 ? false : _d, _e = _a.placeholder, placeholder = _e === void 0 ? 'Label' : _e, decoIconName = _a.decoIconName, width = _a.width, _f = _a.multiple, multiple = _f === void 0 ? false : _f, _g = _a.className, className = _g === void 0 ? '' : _g, ariaLabel = _a["aria-label"];
     var _h = useState(false), isOpen = _h[0], setIsOpen = _h[1];
     // Option highlighted by the keyboard; focus itself stays on the trigger
     var _j = useState(-1), activeIndex = _j[0], setActiveIndex = _j[1];
@@ -153,6 +153,8 @@ export default function Select(_a) {
                 break;
             case 'Escape':
                 e.preventDefault();
+                // Close only the list: keep this Escape from reaching a Modal's window listener
+                e.stopPropagation();
                 closeMenu();
                 break;
             case 'Tab':
@@ -208,7 +210,7 @@ export default function Select(_a) {
     };
     return (<div className={"relative ".concat(className)} style={{ width: width || '100%' }}>
       {/* Select Button */}
-      <div ref={setTrigger} role="combobox" aria-haspopup="listbox" aria-expanded={isOpen} aria-controls={listboxId} aria-activedescendant={isOpen && activeIndex >= 0 ? optionId(activeIndex) : undefined} aria-disabled={disabled || undefined} className={"\n          rounded-control\n          ".concat(getStateStyles(), "\n          ").concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer', "\n          ").concat(stateTransition, "\n          ").concat(focusRing, "\n        ")} onClick={handleToggle} tabIndex={disabled ? -1 : 0} onKeyDown={handleKeyDown}>
+      <div ref={setTrigger} role="combobox" aria-label={ariaLabel} aria-haspopup="listbox" aria-expanded={isOpen} aria-controls={listboxId} aria-activedescendant={isOpen && activeIndex >= 0 ? optionId(activeIndex) : undefined} aria-disabled={disabled || undefined} className={"\n          rounded-control\n          ".concat(getStateStyles(), "\n          ").concat(disabled ? 'cursor-not-allowed' : 'cursor-pointer', "\n          ").concat(stateTransition, "\n          ").concat(focusRing, "\n        ")} onClick={handleToggle} tabIndex={disabled ? -1 : 0} onKeyDown={handleKeyDown}>
         {/* Inner Content Container; 7px vertical padding makes the control 40px like Button and TextField */}
         <div className={"flex items-center justify-between px-2 py-[7px] ".concat(getTextColor())}>
           {/* Content Container */}

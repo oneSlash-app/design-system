@@ -28,26 +28,39 @@ for (const { id } of stories) {
         route.fulfill({ contentType: 'image/png', body: PLACEHOLDER_PNG }),
       );
       await page.goto(`/iframe.html?id=${id}&viewMode=story&globals=theme:${mode}`);
+      // Alert flips its classes from a timeout after mount and Modal from a layout effect, so a CSS transition can start after any wait
+      // and leave the page on a different composited layer, which moves antialiased corners by one shade.
+      // Turning transitions off makes the final state the only state.
+      await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
       await page.waitForFunction(() => !!document.querySelector('#storybook-root')?.firstElementChild);
       await page.evaluate(() => document.fonts.ready);
       await page.evaluate(() =>
         Promise.all(Array.from(document.images).map((img) => img.decode().catch(() => {}))),
       );
-      await page.evaluate(() => {
-        document.getAnimations().forEach((a) => {
-          try {
-            if ((a.effect as AnimationEffect | null)?.getTiming().iterations === Infinity) {
-              a.pause();
-              a.currentTime = 0;
-            } else {
-              a.finish();
-            }
-          } catch {}
-        });
+      // Some parts start their motion a moment after mount (Alert flips its classes from a timeout,
+      // Modal from a layout effect), so one pass can miss a transition that begins later. Finish animations frame by
+      // frame until three frames in a row have none left to finish.
+      await page.evaluate(async () => {
+        const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
+        let quiet = 0;
+        for (let i = 0; i < 60 && quiet < 3; i++) {
+          let active = 0;
+          document.getAnimations().forEach((a) => {
+            try {
+              if ((a.effect as AnimationEffect | null)?.getTiming().iterations === Infinity) {
+                a.pause();
+                a.currentTime = 0;
+              } else if (a.playState !== 'finished') {
+                active++;
+                a.finish();
+              }
+            } catch {}
+          });
+          quiet = active ? 0 : quiet + 1;
+          await frame();
+          await new Promise((r) => setTimeout(r, 20));
+        }
       });
-      await page.evaluate(
-        () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r))),
-      );
       await expect(page).toHaveScreenshot(`${id}-${mode}.png`);
     });
   }
