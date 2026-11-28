@@ -11,7 +11,9 @@ const { dist, htmlWhenReady } = require('./compile-dist');
 
 const load = (name) => require(path.join(dist, 'components', `${name}.jsx`)).default;
 const BrandIcon = load('brandIcon');
+const { shouldAutoDismiss } = require(path.join(dist, 'components', 'alert.jsx'));
 const Button = load('button');
+const EmptyBox = load('emptyBox');
 const Form = load('form');
 const IconButton = load('iconButton');
 const ImageEl = load('image');
@@ -325,4 +327,46 @@ test('TextField readOnly reaches the element and keeps the normal colors', () =>
   assert.ok(inputClasses.includes('bg-background-default'));
   assert.ok(!inputClasses.includes('text-fg-disabled'));
   assert.doesNotMatch(html(h(TextField, field)), /readOnly/i);
+});
+
+// Captured from the 2.15.0 build, before EmptyBox took an action or an icon
+const EMPTY_ICON =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-alert size-6 text-fg-disabled" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" x2="12" y1="8" y2="12"></line><line x1="12" x2="12.01" y1="16" y2="16"></line></svg>';
+const emptyBefore = (height, second) =>
+  `<div class="flex flex-col space-y-2 justify-center items-center w-full ${height}">${EMPTY_ICON}<div class="flex flex-col text-center"><p class="text-body1 text-fg-secondary">No items</p>${
+    second ? '<p class="text-body2 text-fg-secondary">Add one</p>' : ''
+  }</div></div>`;
+
+test('EmptyBox without action or icon renders exactly what 2.15.0 did', () => {
+  assert.equal(html(h(EmptyBox, { text: 'No items', size: 'small' })), emptyBefore('py-6', false));
+  assert.equal(html(h(EmptyBox, { text: 'No items', secondText: 'Add one', size: 'small' })), emptyBefore('py-6', true));
+  assert.equal(html(h(EmptyBox, { text: 'No items', size: 'large' })), emptyBefore('h-full', false));
+  assert.equal(html(h(EmptyBox, { text: 'No items', secondText: 'Add one', size: 'large' })), emptyBefore('h-full', true));
+});
+
+test('EmptyBox puts the action after the text', () => {
+  const action = h(Button, { ...base, label: 'Add one' });
+  const markup = html(h(EmptyBox, { text: 'No items', secondText: 'More', size: 'small', action }));
+  assert.ok(markup.indexOf('Add one') > markup.indexOf('More'));
+  assert.ok(markup.endsWith(`${html(action)}</div>`));
+  assert.ok(classOf(markup).includes('items-center'));
+});
+
+test('EmptyBox icon takes a name, a component or an element and keeps the default size and color', async () => {
+  const strip = (s) => s.replace(/<!--.*?-->/g, '');
+  const props = { text: 'No items', size: 'small' };
+  const byComponent = html(h(EmptyBox, { ...props, icon: Plus }));
+  assert.equal(strip(await htmlWhenReady(h(EmptyBox, { ...props, icon: 'Plus' }))), byComponent);
+  assert.equal(html(h(EmptyBox, { ...props, icon: h(Plus) })), byComponent);
+  assert.match(byComponent, /lucide-plus size-6 text-fg-disabled/);
+  assert.doesNotMatch(byComponent, /circle-alert/);
+  const search = strip(await htmlWhenReady(h(EmptyBox, { ...props, icon: 'Search' })));
+  assert.match(search, /lucide-search size-6 text-fg-disabled/);
+});
+
+test('Alert shouldAutoDismiss: unset follows the close button, false never, true always', () => {
+  assert.equal(shouldAutoDismiss({ showCloseButton: false }), true);
+  assert.equal(shouldAutoDismiss({ showCloseButton: true }), false);
+  assert.equal(shouldAutoDismiss({ autoDismiss: false, showCloseButton: false }), false);
+  assert.equal(shouldAutoDismiss({ autoDismiss: true, showCloseButton: true }), true);
 });

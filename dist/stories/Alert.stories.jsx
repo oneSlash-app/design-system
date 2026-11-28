@@ -66,6 +66,22 @@ export var AutoDismiss = {
         showCloseButton: false,
     },
 };
+// Stays until the page removes it, even with no close button
+export var Persistent = {
+    render: function (args) { return <Alert {...args}/>; },
+    args: {
+        type: "warning",
+        message: "You are offline. Changes are saved on this device.",
+        variant: "inline",
+        showCloseButton: false,
+        autoDismiss: false,
+    },
+    decorators: [
+        function (Story) { return (<div style={{ maxWidth: "500px" }}>
+        <Story />
+      </div>); },
+    ],
+};
 // Inline variant stories
 var InlineAlertWrapper = function (args) {
     var _a = useState(true), open = _a[0], setOpen = _a[1];

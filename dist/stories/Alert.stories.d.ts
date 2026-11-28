@@ -8,6 +8,7 @@ export declare const Warning: Story;
 export declare const Error: Story;
 export declare const Info: Story;
 export declare const AutoDismiss: Story;
+export declare const Persistent: Story;
 export declare const InlineSuccess: Story;
 export declare const InlineWarning: Story;
 export declare const InlineError: Story;

@@ -10,6 +10,8 @@ interface AlertProps {
   onClose?: () => void;
   showCloseButton?: boolean;
   variant?: 'toast' | 'inline';
+  /** Not set: the alert dismisses itself after 5 seconds unless it has a close button. `false` keeps it open; `true` dismisses it even with a close button. */
+  autoDismiss?: boolean;
 }
 
 const bgClassMap = {
@@ -19,6 +21,11 @@ const bgClassMap = {
   success: 'bg-success-alertBg',
   default: 'bg-secondary-main',
 } as const;
+
+// Whether the alert starts its own dismiss timer
+export function shouldAutoDismiss({ autoDismiss, showCloseButton }: { autoDismiss?: boolean; showCloseButton?: boolean }) {
+  return autoDismiss ?? !showCloseButton;
+}
 
 const AUTO_DISMISS_MS = 5000;
 const EXIT_MS = 150;
@@ -37,6 +44,7 @@ export default function Alert({
   onClose,
   showCloseButton = false,
   variant = 'toast',
+  autoDismiss,
 }: AlertProps) {
   const [isVisible, setIsVisible] = useState(false);
   const [shouldRender, setShouldRender] = useState(false);
@@ -61,16 +69,17 @@ export default function Alert({
     }
   }, [open, showCloseButton, shouldRender]);
 
-  // Only auto-dismiss if there's no close button
+  // Auto-dismiss unless autoDismiss says otherwise; by default only an alert with no close button
+  const autoDismissOn = shouldAutoDismiss({ autoDismiss, showCloseButton });
   useEffect(() => {
-    if (!open || !shouldRender || showCloseButton || isPaused) return;
+    if (!open || !shouldRender || !autoDismissOn || isPaused) return;
     const startedAt = Date.now();
     const dismissTimer = setTimeout(() => handleClose(), remainingMs.current);
     return () => {
       clearTimeout(dismissTimer);
       remainingMs.current -= Date.now() - startedAt;
     };
-  }, [open, shouldRender, showCloseButton, isPaused]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [open, shouldRender, autoDismissOn, isPaused]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleClose = () => {
     setIsVisible(false);

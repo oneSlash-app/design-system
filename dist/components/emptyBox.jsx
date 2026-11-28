@@ -1,15 +1,16 @@
 'use client';
 import React from 'react';
 import { AlertCircle } from 'lucide-react';
+import IconSlot from './iconSlot';
 export default function EmptyBox(_a) {
-    var text = _a.text, secondText = _a.secondText, size = _a.size;
+    var text = _a.text, secondText = _a.secondText, size = _a.size, action = _a.action, icon = _a.icon;
     // The icon can be faint; the text needs readable contrast
     var iconColor = 'text-fg-disabled';
     var textColor = 'text-fg-secondary';
     var height = size === 'small' ? 'py-6' : 'h-full';
     var iconSize = 'size-6';
     return (<div className={"flex flex-col space-y-2 justify-center items-center w-full ".concat(height)}>
-            <AlertCircle className={"".concat(iconSize, " ").concat(iconColor)} strokeWidth={2} aria-hidden/>
+            {icon ? (<IconSlot icon={icon} className={"".concat(iconSize, " ").concat(iconColor)}/>) : (<AlertCircle className={"".concat(iconSize, " ").concat(iconColor)} strokeWidth={2} aria-hidden/>)}
             <div className="flex flex-col text-center">
                 <p className={"text-body1 ".concat(textColor)}>
                     {text}
@@ -18,5 +19,6 @@ export default function EmptyBox(_a) {
                         {secondText}
                     </p>)}
             </div>
+            {action}
         </div>);
 }
