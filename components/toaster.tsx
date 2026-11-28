@@ -132,7 +132,7 @@ function Toast({ item }: { item: ToastItem }) {
 }
 
 // Mount once near the app root. A second Toaster renders nothing.
-export default function Toaster(): JSX.Element | null {
+export default function Toaster() {
   const { toasts, mounts } = useSyncExternalStore(subscribe, () => store, () => serverStore);
   const [me] = useState(() => Symbol('Toaster'));
 

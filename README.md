@@ -37,6 +37,7 @@ Use class names that mean the same thing in Tailwind v3 and v4 inside components
 Mount `<Toaster />` (from `oneslash-design-system/components/toaster`) once, near the app root.
 Call `toast('Saved')` from client code (event handlers and effects), not from a Server Component or a server action; it closes itself after 5 seconds.
 An error toast, `toast({ type: 'error', message })`, stays until the person closes it.
+A toast pauses its timer while the pointer or focus is on it.
 
 ## Using the design system in a native app
 
