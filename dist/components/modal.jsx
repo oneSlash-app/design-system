@@ -3,25 +3,33 @@ import React, { useEffect, useId, useRef } from 'react';
 import { overlayHidden, overlayTransition, overlayVisible } from './sharedStyles';
 import { useOverlayTransition } from './useOverlayTransition';
 var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+// Which element gets focus when the panel opens. 'body' falls back to 'first' when the body has none.
+export function pickInitialFocus(panelFocusables, bodyFocusables, initialFocus) {
+    if (initialFocus === void 0) { initialFocus = 'first'; }
+    if (initialFocus === 'body' && bodyFocusables.length > 0)
+        return bodyFocusables[0];
+    return panelFocusables[0];
+}
 export default function Modal(_a) {
-    var isOpen = _a.isOpen, title = _a.title, secondTitle = _a.secondTitle, children = _a.children, onClose = _a.onClose, actions = _a.actions, _b = _a.size, size = _b === void 0 ? 'medium' : _b;
+    var isOpen = _a.isOpen, title = _a.title, secondTitle = _a.secondTitle, children = _a.children, onClose = _a.onClose, actions = _a.actions, _b = _a.size, size = _b === void 0 ? 'medium' : _b, _c = _a.initialFocus, initialFocus = _c === void 0 ? 'first' : _c;
     var panelRef = useRef(null);
+    var bodyRef = useRef(null);
     var titleId = useId();
-    var _c = useOverlayTransition(isOpen), mounted = _c.mounted, visible = _c.visible;
+    var _d = useOverlayTransition(isOpen), mounted = _d.mounted, visible = _d.visible;
     // Keep onClose in a ref so a new function each render doesn't re-run the focus effect
     var onCloseRef = useRef(onClose);
     onCloseRef.current = onClose;
     // Move focus into the panel, trap Tab inside it, close on Escape,
     // lock page scroll, and give focus back to the trigger on close
     useEffect(function () {
-        var _a;
+        var _a, _b, _c, _d;
         // Wait for the panel to mount before moving focus into it
         if (!isOpen || !mounted)
             return;
         var previouslyFocused = document.activeElement;
         var panel = panelRef.current;
-        var firstFocusable = panel === null || panel === void 0 ? void 0 : panel.querySelector(FOCUSABLE);
-        (_a = (firstFocusable !== null && firstFocusable !== void 0 ? firstFocusable : panel)) === null || _a === void 0 ? void 0 : _a.focus();
+        var firstFocusable = pickInitialFocus(Array.from((_a = panel === null || panel === void 0 ? void 0 : panel.querySelectorAll(FOCUSABLE)) !== null && _a !== void 0 ? _a : []), Array.from((_c = (_b = bodyRef.current) === null || _b === void 0 ? void 0 : _b.querySelectorAll(FOCUSABLE)) !== null && _c !== void 0 ? _c : []), initialFocus);
+        (_d = (firstFocusable !== null && firstFocusable !== void 0 ? firstFocusable : panel)) === null || _d === void 0 ? void 0 : _d.focus();
         var previousOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         var handleKeyDown = function (e) {
@@ -61,7 +69,7 @@ export default function Modal(_a) {
         medium: { width: 'w-[600px]', maxWidth: '600px' },
         large: { width: 'w-[1024px]', maxWidth: '1024px' },
     };
-    var _d = sizeConfig[size], modalWidth = _d.width, maxWidth = _d.maxWidth;
+    var _e = sizeConfig[size], modalWidth = _e.width, maxWidth = _e.maxWidth;
     // close modal by clicking elsewhere
     var handleOverlayClick = function (e) {
         if (e.target === e.currentTarget) {
@@ -92,7 +100,7 @@ export default function Modal(_a) {
               </div>)}
           </div>)}
 
-        <div className="text-body1 space-y-4 text-fg-primary p-6" style={{
+        <div ref={bodyRef} className="text-body1 space-y-4 text-fg-primary p-6" style={{
             overflowY: 'auto',
             flexGrow: 1,
             minHeight: 0,

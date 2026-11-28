@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../components/modal";
 import Button from "../components/button";
+import TextField from "../components/textField";
 var meta = {
     title: "Components/Modal",
     component: Modal,
@@ -73,5 +74,24 @@ export var LongContent = {
         title: "Scrollable Modal",
         children: longContent,
         size: "medium",
+    },
+};
+// Open on first render: with initialFocus="body" the cursor starts in the field, not on Cancel.
+var FocusInBodyModal = function (args) {
+    var _a = useState(""), name = _a[0], setName = _a[1];
+    return (<Modal {...args} isOpen onClose={function () { }}>
+      <TextField id="focus-in-body-name" label="Project name" value={name} onChange={function (e) { return setName(e.target.value); }}/>
+    </Modal>);
+};
+export var FocusInBody = {
+    render: function (args) { return <FocusInBodyModal {...args}/>; },
+    args: {
+        title: "New Project",
+        size: "small",
+        initialFocus: "body",
+        actions: (<div style={{ display: "flex", gap: "8px" }}>
+        <Button size="medium" type="tertiary" state="enabled" label="Cancel"/>
+        <Button size="medium" type="primary" state="enabled" label="Create"/>
+      </div>),
     },
 };

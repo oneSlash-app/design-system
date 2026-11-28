@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import Modal from "../components/modal";
 import Button from "../components/button";
+import TextField from "../components/textField";
 
 const meta: Meta<typeof Modal> = {
   title: "Components/Modal",
@@ -100,5 +101,30 @@ export const LongContent: Story = {
     title: "Scrollable Modal",
     children: longContent,
     size: "medium",
+  },
+};
+
+// Open on first render: with initialFocus="body" the cursor starts in the field, not on Cancel.
+const FocusInBodyModal = (args: any) => {
+  const [name, setName] = useState("");
+  return (
+    <Modal {...args} isOpen onClose={() => {}}>
+      <TextField id="focus-in-body-name" label="Project name" value={name} onChange={(e) => setName(e.target.value)} />
+    </Modal>
+  );
+};
+
+export const FocusInBody: Story = {
+  render: (args) => <FocusInBodyModal {...args} />,
+  args: {
+    title: "New Project",
+    size: "small",
+    initialFocus: "body",
+    actions: (
+      <div style={{ display: "flex", gap: "8px" }}>
+        <Button size="medium" type="tertiary" state="enabled" label="Cancel" />
+        <Button size="medium" type="primary" state="enabled" label="Create" />
+      </div>
+    ),
   },
 };

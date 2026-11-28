@@ -7,6 +7,8 @@ interface ModalProps {
     onClose: () => void;
     actions?: React.ReactNode;
     size?: 'small' | 'medium' | 'large';
+    initialFocus?: 'first' | 'body';
 }
-export default function Modal({ isOpen, title, secondTitle, children, onClose, actions, size, }: ModalProps): React.JSX.Element | null;
+export declare function pickInitialFocus<T>(panelFocusables: T[], bodyFocusables: T[], initialFocus?: 'first' | 'body'): T | undefined;
+export default function Modal({ isOpen, title, secondTitle, children, onClose, actions, size, initialFocus, }: ModalProps): React.JSX.Element | null;
 export {};

@@ -14,6 +14,7 @@ interface SelectProps {
     width?: number | string;
     multiple?: boolean;
     className?: string;
+    'aria-label'?: string;
 }
-export default function Select({ value, options, onChange, disabled, placeholder, decoIconName, width, multiple, className, }: SelectProps): React.JSX.Element;
+export default function Select({ value, options, onChange, disabled, placeholder, decoIconName, width, multiple, className, 'aria-label': ariaLabel, }: SelectProps): React.JSX.Element;
 export { Select };

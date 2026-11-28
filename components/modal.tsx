@@ -11,10 +11,23 @@ interface ModalProps {
   onClose: () => void;
   actions?: React.ReactNode;
   size?: 'small' | 'medium' | 'large';
+  // 'first' focuses the first focusable element in the panel (the header actions come first);
+  // 'body' focuses the first one inside the children, for a form dialog.
+  initialFocus?: 'first' | 'body';
 }
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+// Which element gets focus when the panel opens. 'body' falls back to 'first' when the body has none.
+export function pickInitialFocus<T>(
+  panelFocusables: T[],
+  bodyFocusables: T[],
+  initialFocus: 'first' | 'body' = 'first',
+): T | undefined {
+  if (initialFocus === 'body' && bodyFocusables.length > 0) return bodyFocusables[0];
+  return panelFocusables[0];
+}
 
 export default function Modal({
   isOpen,
@@ -24,8 +37,10 @@ export default function Modal({
   onClose,
   actions,
   size = 'medium',
+  initialFocus = 'first',
 }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
   const { mounted, visible } = useOverlayTransition(isOpen);
 
@@ -40,7 +55,11 @@ export default function Modal({
     if (!isOpen || !mounted) return;
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
-    const firstFocusable = panel?.querySelector<HTMLElement>(FOCUSABLE);
+    const firstFocusable = pickInitialFocus(
+      Array.from(panel?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []),
+      Array.from(bodyRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []),
+      initialFocus,
+    );
     (firstFocusable ?? panel)?.focus();
 
     const previousOverflow = document.body.style.overflow;
@@ -138,6 +157,7 @@ export default function Modal({
         )}
 
         <div
+          ref={bodyRef}
           className="text-body1 space-y-4 text-fg-primary p-6"
           style={{
             overflowY: 'auto',

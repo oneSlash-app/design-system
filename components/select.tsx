@@ -26,6 +26,7 @@ interface SelectProps {
   width?: number | string;
   multiple?: boolean;
   className?: string;
+  'aria-label'?: string;
 }
 
 // Module-level so the options keep one identity: react-popper re-runs on every
@@ -60,6 +61,7 @@ export default function Select({
   width,
   multiple = false,
   className = '',
+  'aria-label': ariaLabel,
 }: SelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   // Option highlighted by the keyboard; focus itself stays on the trigger
@@ -240,6 +242,7 @@ export default function Select({
       <div
         ref={setTrigger}
         role="combobox"
+        aria-label={ariaLabel}
         aria-haspopup="listbox"
         aria-expanded={isOpen}
         aria-controls={listboxId}

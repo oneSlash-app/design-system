@@ -380,3 +380,52 @@ test('Toaster is a client component', () => {
   const first = fs.readFileSync(path.join(dist, 'components', 'toaster.jsx'), 'utf8').split('\n')[0];
   assert.match(first, /^['"]use client['"];?$/);
 });
+
+// Output captured before aria-label on Select and RadioGroup and Modal initialFocus existed.
+// Without the new props the markup must stay byte for byte the same.
+const beforeLabels = {
+  select: "<div class=\"relative \" style=\"width:100%\"><div role=\"combobox\" aria-haspopup=\"listbox\" aria-expanded=\"false\" aria-controls=\":R0:\" class=\"\n          rounded-control\n          border border-actionOutlinedBorder-enabled bg-background-default\n      hover:border-fg-secondary hover:bg-action-hover\n          cursor-pointer\n          transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-primary\n        \" tabindex=\"0\"><div class=\"flex items-center justify-between px-2 py-[7px] text-fg-primary\"><div class=\"flex items-center gap-2 flex-1 overflow-hidden\"><span class=\"text-body1 truncate\">A</span></div><svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"lucide lucide-chevron-down \n              w-6 h-6 flex-shrink-0 ml-1\n              text-fg-secondary\n              transition-transform duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\" aria-hidden=\"true\"><path d=\"m6 9 6 6 6-6\"></path></svg></div></div></div>",
+  radioGroup: "<div role=\"radiogroup\" class=\"flex flex-col gap-2\"><label class=\"group relative flex items-start cursor-pointer\"><input type=\"radio\" name=\":R0:\" class=\"peer sr-only\" checked=\"\" value=\"a\"/><span class=\"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n                group-hover:bg-action-selected\n                peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-fg-primary\"><span class=\"relative flex justify-center items-center w-4 h-4 rounded-full border-2 transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n                  border-fg-primary\n                \"><span class=\"absolute w-2 h-2 rounded-full bg-fg-primary transition-transform duration-[var(--os-duration-fast)] ease-spring motion-reduce:transition-none scale-100\"></span></span></span><span class=\"flex flex-col ml-2\"><span class=\"text-body1 text-fg-primary\">A</span></span></label><label class=\"group relative flex items-start cursor-pointer\"><input type=\"radio\" name=\":R0:\" class=\"peer sr-only\" value=\"b\"/><span class=\"relative flex flex-shrink-0 items-center justify-center w-6 h-6 rounded-full transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n                group-hover:bg-action-selected\n                peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-0 peer-focus-visible:outline-fg-primary\"><span class=\"relative flex justify-center items-center w-4 h-4 rounded-full border-2 transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n                  border-fg-secondary\n                \"><span class=\"absolute w-2 h-2 rounded-full bg-fg-primary transition-transform duration-[var(--os-duration-fast)] ease-spring motion-reduce:transition-none scale-0\"></span></span></span><span class=\"flex flex-col ml-2\"><span class=\"text-body1 text-fg-primary\">B</span><span class=\"text-body2 opacity-70 text-fg-primary\">x</span></span></label></div>",
+  modal: "<div class=\"fixed bg-misc-scrim/40 flex items-center justify-center z-[var(--os-z-overlay)]\n        transition-opacity duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none opacity-0\" style=\"top:0;left:0;right:0;bottom:0\"><div role=\"dialog\" aria-modal=\"true\" aria-labelledby=\":R0:\" tabindex=\"-1\" class=\"bg-background-elevated dark:ring-1 dark:ring-misc-divider rounded-control w-[600px] flex flex-col outline-none\n          transition-[opacity,transform] duration-[var(--os-duration-fast)] ease-emphasized motion-reduce:transition-none opacity-0 scale-[0.96]\" style=\"max-width:600px;width:calc(100vw - 64px);max-height:90vh;overflow:hidden\"><div class=\"px-6 py-3 border-b border-misc-divider flex justify-between items-start\" style=\"flex-shrink:0\"><div class=\"flex flex-col\"><h2 id=\":R0:\" class=\"text-h5 text-fg-primary\">T</h2></div><div class=\"flex space-x-2\"><button>Cancel</button></div></div><div class=\"text-body1 space-y-4 text-fg-primary p-6\" style=\"overflow-y:auto;flex-grow:1;min-height:0;scrollbar-width:thin\"><input/></div></div></div>",
+};
+const selectOptions = { options: [{ value: 'a', label: 'A' }], value: 'a' };
+const radioProps = { options: [{ value: 'a', label: 'A' }, { value: 'b', label: 'B', secondLabel: 'x' }], selectedValue: 'a', onChange() {} };
+const modalProps = { isOpen: true, title: 'T', onClose() {}, actions: h('button', null, 'Cancel') };
+
+test('Select without aria-label renders as before; with it the combobox carries the label', () => {
+  const Select = load('select');
+  assert.equal(html(h(Select, selectOptions)), beforeLabels.select);
+  const labelled = html(h(Select, { ...selectOptions, 'aria-label': 'Category' }));
+  assert.match(labelled, /^<div class="relative "[^>]*><div role="combobox" aria-label="Category"/);
+  assert.equal(labelled.split('aria-label').length, 2);
+});
+
+test('RadioGroup without aria-label renders as before; with it the radiogroup carries the label', () => {
+  const RadioGroup = load('radioGroup');
+  assert.equal(html(h(RadioGroup, radioProps)), beforeLabels.radioGroup);
+  const labelled = html(h(RadioGroup, { ...radioProps, 'aria-label': 'Category' }));
+  assert.match(labelled, /^<div role="radiogroup" aria-label="Category" class=/);
+  assert.equal(labelled.split('aria-label').length, 2);
+});
+
+test('Modal renders as before without initialFocus, and the same with either value', async () => {
+  const Modal = load('modal');
+  const children = h('input');
+  assert.equal(await htmlWhenReady(h(Modal, modalProps, children)), beforeLabels.modal);
+  assert.equal(await htmlWhenReady(h(Modal, { ...modalProps, initialFocus: 'first' }, children)), beforeLabels.modal);
+  assert.equal(await htmlWhenReady(h(Modal, { ...modalProps, initialFocus: 'body' }, children)), beforeLabels.modal);
+});
+
+test('Modal pickInitialFocus: first in the panel, or first in the body with a fallback', () => {
+  const { pickInitialFocus } = require(path.join(dist, 'components', 'modal.jsx'));
+  const cancel = { id: 'cancel' };
+  const confirm = { id: 'confirm' };
+  const field = { id: 'field' };
+  const panel = [cancel, confirm, field];
+  assert.equal(pickInitialFocus(panel, [field], 'first'), cancel);
+  assert.equal(pickInitialFocus(panel, [field], undefined), cancel);
+  assert.equal(pickInitialFocus(panel, [field], 'body'), field);
+  assert.equal(pickInitialFocus(panel, [], 'body'), cancel);
+  assert.equal(pickInitialFocus([], [], 'body'), undefined);
+  assert.equal(pickInitialFocus([], [], 'first'), undefined);
+});

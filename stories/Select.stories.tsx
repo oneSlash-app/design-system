@@ -115,3 +115,18 @@ export const InsideClippingContainer: Story = {
     ],
   },
 };
+
+// A Select with no visible label still needs a name for a screen reader.
+export const Labelled: Story = {
+  render: (args) => <SelectWrapper {...args} />,
+  args: {
+    "aria-label": "Category",
+    placeholder: "Select a category",
+    options: [
+      { value: "work", label: "Work" },
+      { value: "personal", label: "Personal" },
+      { value: "other", label: "Other" },
+    ],
+    width: 200,
+  },
+};

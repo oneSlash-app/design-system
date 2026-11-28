@@ -8,3 +8,4 @@ export declare const Large: Story;
 export declare const NoTitle: Story;
 export declare const WithActions: Story;
 export declare const LongContent: Story;
+export declare const FocusInBody: Story;

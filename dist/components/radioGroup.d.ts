@@ -9,6 +9,7 @@ interface RadioGroupProps {
     selectedValue: string;
     onChange: (value: string) => void;
     direction?: 'horizontal' | 'vertical';
+    'aria-label'?: string;
 }
-export default function RadioGroup({ options, selectedValue, onChange, direction, }: RadioGroupProps): React.JSX.Element;
+export default function RadioGroup({ options, selectedValue, onChange, direction, 'aria-label': ariaLabel, }: RadioGroupProps): React.JSX.Element;
 export {};
