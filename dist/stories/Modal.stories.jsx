@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Modal from "../components/modal";
 import Button from "../components/button";
+import Select from "../components/select";
 import TextField from "../components/textField";
 var meta = {
     title: "Components/Modal",
@@ -94,4 +95,19 @@ export var FocusInBody = {
         <Button size="medium" type="primary" state="enabled" label="Create"/>
       </div>),
     },
+};
+// Open on first render with the list closed; Escape closes an open list first, then the Modal.
+var WithSelectModal = function (args) {
+    var _a = useState(true), isOpen = _a[0], setIsOpen = _a[1];
+    var _b = useState(""), category = _b[0], setCategory = _b[1];
+    return (<Modal {...args} isOpen={isOpen} onClose={function () { return setIsOpen(false); }}>
+      <Select aria-label="Category" placeholder="Select a category" value={category} onChange={function (v) { return setCategory(v); }} options={[
+            { value: "work", label: "Work" },
+            { value: "personal", label: "Personal" },
+        ]}/>
+    </Modal>);
+};
+export var WithSelect = {
+    render: function (args) { return <WithSelectModal {...args}/>; },
+    args: { title: "Move Project", size: "small" },
 };

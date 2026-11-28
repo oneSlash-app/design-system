@@ -9,3 +9,4 @@ export declare const NoTitle: Story;
 export declare const WithActions: Story;
 export declare const LongContent: Story;
 export declare const FocusInBody: Story;
+export declare const WithSelect: Story;

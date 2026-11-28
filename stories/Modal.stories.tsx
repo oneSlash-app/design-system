@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import Modal from "../components/modal";
 import Button from "../components/button";
+import Select from "../components/select";
 import TextField from "../components/textField";
 
 const meta: Meta<typeof Modal> = {
@@ -127,4 +128,29 @@ export const FocusInBody: Story = {
       </div>
     ),
   },
+};
+
+// Open on first render with the list closed; Escape closes an open list first, then the Modal.
+const WithSelectModal = (args: any) => {
+  const [isOpen, setIsOpen] = useState(true);
+  const [category, setCategory] = useState("");
+  return (
+    <Modal {...args} isOpen={isOpen} onClose={() => setIsOpen(false)}>
+      <Select
+        aria-label="Category"
+        placeholder="Select a category"
+        value={category}
+        onChange={(v) => setCategory(v as string)}
+        options={[
+          { value: "work", label: "Work" },
+          { value: "personal", label: "Personal" },
+        ]}
+      />
+    </Modal>
+  );
+};
+
+export const WithSelect: Story = {
+  render: (args) => <WithSelectModal {...args} />,
+  args: { title: "Move Project", size: "small" },
 };

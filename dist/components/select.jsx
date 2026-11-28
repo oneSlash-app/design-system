@@ -153,6 +153,8 @@ export default function Select(_a) {
                 break;
             case 'Escape':
                 e.preventDefault();
+                // Close only the list: keep this Escape from reaching a Modal's window listener
+                e.stopPropagation();
                 closeMenu();
                 break;
             case 'Tab':
