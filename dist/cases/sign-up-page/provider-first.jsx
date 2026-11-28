@@ -1,10 +1,12 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { Mail } from 'lucide-react';
 import Heading from '../../components/heading';
 import Paragraph from '../../components/paragraph';
 import Form from '../../components/form';
 import Alert from '../../components/alert';
 import TextField from '../../components/textField';
+import Icon from '../../components/icon';
 import Button from '../../components/button';
 import Line from '../../components/line';
 import Link from '../../components/link';
@@ -25,9 +27,20 @@ export default function SignUpProviderFirst() {
     var _f = useState(''), emailError = _f[0], setEmailError = _f[1];
     var _g = useState(''), passwordError = _g[0], setPasswordError = _g[1];
     var _h = useState(false), loading = _h[0], setLoading = _h[1];
+    // The address the link went to. Set once the account request ends, which shows the check-your-email view.
+    var _j = useState(''), sentTo = _j[0], setSentTo = _j[1];
+    var _k = useState(false), resending = _k[0], setResending = _k[1];
+    var _l = useState(false), resent = _l[0], setResent = _l[1];
     var timer = useRef();
     // Stops the request if the example goes away before it ends.
     useEffect(function () { return function () { return clearTimeout(timer.current); }; }, []);
+    // 'Sent' shows for 2 seconds, then the Button reads 'Send Again'.
+    useEffect(function () {
+        if (!resent)
+            return;
+        var timer = setTimeout(function () { return setResent(false); }, 2000);
+        return function () { return clearTimeout(timer); };
+    }, [resent]);
     function handleSubmit() {
         if (loading)
             return;
@@ -52,13 +65,41 @@ export default function SignUpProviderFirst() {
             return;
         }
         setLoading(true);
+        var address = email.trim();
         // Stands in for the request to the server.
         // A failed request calls setError with one sentence instead, such as 'Your account was not created. Try again.'
         timer.current = setTimeout(function () {
+            // Every address goes on to the same view, so the page never says whether it has an account.
+            // The Button stays loading until the view changes.
             setLoading(false);
-            // Every address goes on to the same page, so the page never says whether it has an account.
-            router.push('/check-your-email');
+            setSentTo(address);
         }, 1200);
+    }
+    function handleSendAgain() {
+        // One click sends one email: clicks while it sends or reads 'Sent' do nothing.
+        if (resending || resent)
+            return;
+        setResending(true);
+        // Stands in for the request to the server.
+        // A failed request shows an inline error Alert above the Buttons, such as 'The email was not sent. Try again.'
+        timer.current = setTimeout(function () {
+            setResending(false);
+            setResent(true);
+        }, 1200);
+    }
+    // The same view as the check-your-email case, in place of the form.
+    if (sentTo) {
+        return (<Center fill>
+        <Icon icon={Mail} size="large" color="secondary"/>
+        <Stack gap="medium">
+          <Heading level={1} size="h5">Check your email</Heading>
+          <Paragraph tone="secondary" measure="none">We sent a link to {sentTo}. Open it to continue.</Paragraph>
+        </Stack>
+        <Stack gap="large">
+          <Button size="medium" type="secondary" state="enabled" label={resent ? 'Sent' : 'Send Again'} loading={resending} onClickButton={handleSendAgain}/>
+          <Button size="medium" type="textOnly" state="enabled" label="Back to Login" onClickButton={function () { return router.push('/login'); }}/>
+        </Stack>
+      </Center>);
     }
     return (<Center fill>
       <Heading level={1} size="h5">Sign up for Acme</Heading>
@@ -72,11 +113,7 @@ export default function SignUpProviderFirst() {
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={function () { return setError(''); }}/>}
         <TextField id="sign-up-page-provider-name" label="Name" autoComplete="name" value={name} disabled={loading} error={Boolean(nameError)} errorText={nameError} onChange={function (e) { setName(e.target.value); setNameError(''); }}/>
         <TextField id="sign-up-page-provider-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
-        <Stack gap="small">
-          <TextField id="sign-up-page-provider-password" label="Password" type="password" autoComplete="new-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={function (e) { setPassword(e.target.value); setPasswordError(''); }}/>
-          {/* The rule shows before the person types. While the field shows an error, the error says it instead. */}
-          {!passwordError && <Paragraph tone="secondary" size="caption" measure="none">Use at least 8 characters.</Paragraph>}
-        </Stack>
+        <TextField id="sign-up-page-provider-password" label="Password" type="password" autoComplete="new-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} helperText="Use at least 8 characters." onChange={function (e) { setPassword(e.target.value); setPasswordError(''); }}/>
         <Button size="medium" type="primary" state="enabled" label="Sign Up with Email" htmlType="submit" loading={loading}/>
       </Form>
       <Cluster gap="small">

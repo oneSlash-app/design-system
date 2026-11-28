@@ -2,12 +2,12 @@
 
 A person signed up, and the product sent a link to confirm their email.
 
-**Not built yet:** Neither Commentify nor Scindo can send the email again from the check-your-email screen. Both show their success Alert above the login form with a close button.
+**Not built yet:** Neither Commentify nor Scindo can send the email again from the check-your-email screen. Both show their success Alert above the login form with a close button, and it starts 'Account created.', even for an address that already had an account.
 
 ## Do
 
 - Name the page 'Check your email' in a `Heading` with `level={1}`, with a `Mail` icon above it.
-- Say in one line which address the link went to.
+- Say in one line which address the link went to, in words that are true whether or not it already had an account: 'We sent a link to ada@example.com. Open it to continue.'
 - Offer 'Send Again' and a text-only 'Back to Login'.
 - Show `loading` on 'Send Again' while it sends, then 'Sent' for 2 seconds.
 - Ignore 'Send Again' while it sends and while it reads 'Sent', so one click sends one email. Let the server limit how often it sends.
@@ -16,6 +16,7 @@ A person signed up, and the product sent a link to confirm their email.
 ## Don't
 
 - Do not leave the sign-up form on screen once the link is sent.
+- Do not say that an account was created, or that one already exists.
 - Do not make the person close the success Alert, and do not let it close on its own before they have read it.
 - Do not change 'Send Again' to 'Sending…' while it sends.
 
@@ -61,6 +62,7 @@ export default function CheckYourEmailPage() {
     if (loading || sent) return;
     setLoading(true);
     // Stands in for the request to the server.
+    // A failed request shows an inline error Alert above the Buttons, such as 'The email was not sent. Try again.'
     timer.current = setTimeout(() => {
       setLoading(false);
       setSent(true);
@@ -72,7 +74,7 @@ export default function CheckYourEmailPage() {
       <Icon icon={Mail} size="large" color="secondary" />
       <Stack gap="medium">
         <Heading level={1} size="h5">Check your email</Heading>
-        <Paragraph tone="secondary" measure="none">We sent a link to {address}. Open it to confirm your email.</Paragraph>
+        <Paragraph tone="secondary" measure="none">We sent a link to {address}. Open it to continue.</Paragraph>
       </Stack>
       <Stack gap="large">
         <Button size="medium" type="secondary" state="enabled" label={sent ? 'Sent' : 'Send Again'} loading={loading} onClickButton={handleSendAgain} />
@@ -85,7 +87,7 @@ export default function CheckYourEmailPage() {
 
 ## Option: Alert above the login form
 
-Use when: The person can also just log in, and confirm the email later.
+Use when: The product lets a person log in before they confirm their email.
 
 Uses: `Alert`, `BrandIcon`, `Button`, `Center`, `Form`, `Image`, `Line`, `Tab`, `TabsContainer`, `TextField`
 
@@ -116,8 +118,9 @@ function looksLikeEmail(value: string) {
 }
 
 export default function CheckYourEmailAlertOnLogin() {
-  // Opens as the login page does right after sign-up, with the address the person signed up with.
-  const [notice, setNotice] = useState('Account created. We sent a link to ada@example.com to confirm your email.');
+  // Opens as the login page does right after sign-up. The words are the same whether or not the address
+  // already had an account, so the page never says which.
+  const [notice, setNotice] = useState('We sent a link to ada@example.com. Open it to finish signing up, or log in below.');
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

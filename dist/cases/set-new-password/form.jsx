@@ -61,7 +61,8 @@ export default function SetNewPasswordForm() {
         // A failed request calls setError with one sentence instead, such as 'Your password was not updated. Try again.'
         timer.current = setTimeout(function () {
             setLoading(false);
-            // A real app goes to its login page here, which shows the notice. The example shows it in place.
+            // A real app signs the reset session out and goes to its login page here, which shows the notice.
+            // The example shows it in place.
             setNotice('Password updated. Log in with your new password.');
             setUpdated(true);
         }, 1200);
@@ -120,11 +121,8 @@ export default function SetNewPasswordForm() {
       </Stack>
       <Form aria-label="Set new password" onSubmit={handleUpdate}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={function () { return setError(''); }}/>}
-        <Stack gap="small">
-          <TextField id="set-new-password-new" label="New password" type="password" autoComplete="new-password" value={newPassword} disabled={loading} error={Boolean(newPasswordError)} errorText={newPasswordError} onChange={function (e) { setNewPassword(e.target.value); setNewPasswordError(''); }}/>
-          {/* The rule shows before the person types. While the field shows an error, the error says it instead. */}
-          {!newPasswordError && <Paragraph tone="secondary" size="caption" measure="none">Use at least 8 characters.</Paragraph>}
-        </Stack>
+        {/* Editing the new password also clears the message under Confirm password, which may no longer be true. */}
+        <TextField id="set-new-password-new" label="New password" type="password" autoComplete="new-password" value={newPassword} disabled={loading} error={Boolean(newPasswordError)} errorText={newPasswordError} helperText="Use at least 8 characters." onChange={function (e) { setNewPassword(e.target.value); setNewPasswordError(''); setConfirmPasswordError(''); }}/>
         <TextField id="set-new-password-confirm" label="Confirm password" type="password" autoComplete="new-password" value={confirmPassword} disabled={loading} error={Boolean(confirmPasswordError)} errorText={confirmPasswordError} onChange={function (e) { setConfirmPassword(e.target.value); setConfirmPasswordError(''); }}/>
         <Button size="medium" type="primary" state="enabled" label="Update Password" htmlType="submit" loading={loading}/>
       </Form>

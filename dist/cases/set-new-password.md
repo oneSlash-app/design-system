@@ -2,15 +2,18 @@
 
 A person opened the link to reset their password and now chooses a new one.
 
-**Not built yet:** Commentify and Scindo on the web replace the form with a spinner while updating, show field problems in an Alert above the fields, and say the rule only after it is broken. Scindo's reset page has no invalid-link state.
+**Not built yet:** Commentify and Scindo on the web replace the form with a spinner while updating, show field problems in an Alert above the fields, and accept 6 characters, saying 'Password must be at least 6 characters.' only after it is broken. Scindo's reset page has no invalid-link state.
 
 ## Do
 
 - Name the page 'Set new password' in a `Heading` with `level={1}`, and name the account it is for.
-- Ask for 'New password' and 'Confirm password', and send them with 'Update Password'.
-- Say the password rule under the New password field before the person types: 'Use at least 8 characters.'
-- Show a problem with one field under that field: a password that does not match shows under Confirm password.
+- Ask for 'New password' and 'Confirm password', and send them with 'Update Password'. Ask twice here: the old password is gone after this, and there is no other way to catch a typo.
+- Say the product's password rule before the person breaks it, such as 'Use at least 8 characters.'
+- Put the rule in the password field's `helperText`, so it is tied to the field.
+- Check the rule on the server too, and show its refusal under the field.
+- Show a problem with one field under that field: a password that does not match shows under Confirm password, and clears when either field changes.
 - Show the loading state on the submit Button while updating, and keep the form in place.
+- Sign the reset session out on success, so the person really logs in with the new password.
 - Go to the login form on success, with a success Alert above it: 'Password updated. Log in with your new password.'
 - Show an inline error Alert in place of the form when the link is invalid or expired, with a 'Back to Login' Button under it. The Alert reports a standing condition, so it has no close button and `autoDismiss={false}`: 'This link has expired or was already used. Ask for a new one from the login page.'
 
@@ -98,7 +101,8 @@ export default function SetNewPasswordForm() {
     // A failed request calls setError with one sentence instead, such as 'Your password was not updated. Try again.'
     timer.current = setTimeout(() => {
       setLoading(false);
-      // A real app goes to its login page here, which shows the notice. The example shows it in place.
+      // A real app signs the reset session out and goes to its login page here, which shows the notice.
+      // The example shows it in place.
       setNotice('Password updated. Log in with your new password.');
       setUpdated(true);
     }, 1200);
@@ -162,11 +166,8 @@ export default function SetNewPasswordForm() {
       </Stack>
       <Form aria-label="Set new password" onSubmit={handleUpdate}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-        <Stack gap="small">
-          <TextField id="set-new-password-new" label="New password" type="password" autoComplete="new-password" value={newPassword} disabled={loading} error={Boolean(newPasswordError)} errorText={newPasswordError} onChange={(e) => { setNewPassword(e.target.value); setNewPasswordError(''); }} />
-          {/* The rule shows before the person types. While the field shows an error, the error says it instead. */}
-          {!newPasswordError && <Paragraph tone="secondary" size="caption" measure="none">Use at least 8 characters.</Paragraph>}
-        </Stack>
+        {/* Editing the new password also clears the message under Confirm password, which may no longer be true. */}
+        <TextField id="set-new-password-new" label="New password" type="password" autoComplete="new-password" value={newPassword} disabled={loading} error={Boolean(newPasswordError)} errorText={newPasswordError} helperText="Use at least 8 characters." onChange={(e) => { setNewPassword(e.target.value); setNewPasswordError(''); setConfirmPasswordError(''); }} />
         <TextField id="set-new-password-confirm" label="Confirm password" type="password" autoComplete="new-password" value={confirmPassword} disabled={loading} error={Boolean(confirmPasswordError)} errorText={confirmPasswordError} onChange={(e) => { setConfirmPassword(e.target.value); setConfirmPasswordError(''); }} />
         <Button size="medium" type="primary" state="enabled" label="Update Password" htmlType="submit" loading={loading} />
       </Form>

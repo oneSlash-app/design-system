@@ -24,8 +24,9 @@ function looksLikeEmail(value: string) {
 }
 
 export default function CheckYourEmailAlertOnLogin() {
-  // Opens as the login page does right after sign-up, with the address the person signed up with.
-  const [notice, setNotice] = useState('Account created. We sent a link to ada@example.com to confirm your email.');
+  // Opens as the login page does right after sign-up. The words are the same whether or not the address
+  // already had an account, so the page never says which.
+  const [notice, setNotice] = useState('We sent a link to ada@example.com. Open it to finish signing up, or log in below.');
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');

@@ -15,7 +15,7 @@ module.exports = {
     {
       id: 'split',
       title: 'Brand beside the form',
-      useWhen: 'First-time visitors land here and need one line on what the product is.',
+      useWhen: 'People arrive from an ad or an invite and need one line on what the product is.',
       example: 'split.tsx',
     },
     {
@@ -27,11 +27,14 @@ module.exports = {
   ],
   do: [
     'Ask only for what the account needs: name, email and password.',
-    "Say the password rule under the Password field before the person types: 'Use at least 8 characters.'",
+    "Say the product's password rule before the person breaks it, such as 'Use at least 8 characters.'",
+    "Put the rule in the password field's `helperText`, so it is tied to the field.",
+    'Check the rule on the server too, and show its refusal under the field.',
     'Show a problem with one field under that field.',
     'Show a failed request in an inline Alert above the fields.',
     'Show the loading state on the submit Button while creating the account, and keep the form in place.',
-    'Send every address to the check-your-email page when the email must be confirmed, even one that already has an account. Tell that person by email that they can log in.',
+    'Show the check-your-email view in place of the form when the email must be confirmed, for every address, even one that already has an account. Tell that person by email that they can log in.',
+    'Keep the submit Button loading until the check-your-email view shows.',
     "Name the provider on its button: 'Continue with Google'.",
     'Link or tab to login for people who already have an account.',
   ],
@@ -41,7 +44,7 @@ module.exports = {
     'Do not replace the form with a spinner while creating the account.',
     'Do not say on the page whether an address already has an account.',
   ],
-  notBuiltYet: 'Commentify and Scindo on the web replace the form with a spinner while creating the account. Neither says the password rule before the person types. Commentify asks for the first and last name in two fields.',
+  notBuiltYet: "Commentify and Scindo on the web replace the form with a spinner while creating the account. Neither says a password rule on its sign-up page. Their reset pages accept 6 characters and say 'Password must be at least 6 characters.' only after it is broken. Commentify asks for the first and last name in two fields.",
   native: 'On Apple, Scindo opens the web sign-up page with a `Link`. A sign-up built in the app uses `SignInWithAppleButton` for Apple, a grouped form for the fields, and system buttons.',
   seenIn: [
     { product: 'Commentify', path: 'src/app/(auth)/signup/[[...signup]]/page.tsx' },

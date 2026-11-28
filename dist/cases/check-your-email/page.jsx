@@ -29,6 +29,7 @@ export default function CheckYourEmailPage() {
             return;
         setLoading(true);
         // Stands in for the request to the server.
+        // A failed request shows an inline error Alert above the Buttons, such as 'The email was not sent. Try again.'
         timer.current = setTimeout(function () {
             setLoading(false);
             setSent(true);
@@ -38,7 +39,7 @@ export default function CheckYourEmailPage() {
       <Icon icon={Mail} size="large" color="secondary"/>
       <Stack gap="medium">
         <Heading level={1} size="h5">Check your email</Heading>
-        <Paragraph tone="secondary" measure="none">We sent a link to {address}. Open it to confirm your email.</Paragraph>
+        <Paragraph tone="secondary" measure="none">We sent a link to {address}. Open it to continue.</Paragraph>
       </Stack>
       <Stack gap="large">
         <Button size="medium" type="secondary" state="enabled" label={sent ? 'Sent' : 'Send Again'} loading={loading} onClickButton={handleSendAgain}/>
