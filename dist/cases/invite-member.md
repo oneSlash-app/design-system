@@ -8,12 +8,16 @@ A person invites someone to join a workspace.
 
 - Title the Modal 'Invite Member' and label its action 'Send Invite', after 'Cancel'.
 - Send on Enter too: put the email field in a `Form`.
+- Focus the email field when the Modal opens, with `initialFocus="body"`, and disable it while the invite is sent.
 - Show a problem with the address under the field, such as a person who is already a member.
 - Close the Modal once the invite is sent, and show a toast that names the address: 'Invite sent to ada@example.com.'
 - Show the link in a `TextField` with `readOnly`, so it can be selected, and a 'Copy' Button next to it.
 - Change 'Copy' to 'Copied' for 2 seconds, and only when the link reached the clipboard.
+- Say under the field when copying is blocked: 'Copying is blocked here. Select the link and copy it.'
 - Say who can use the link and when it stops working.
 - List the links that still work, each with a 'Revoke' Button. Revoking removes access, so confirm it in the row, as the case 'Confirm a destructive action' does.
+- Give each row's 'Revoke', and the confirm's 'Cancel' and 'Revoke', an `aria-label` that names the link: 'Revoke the link made by Dana Lee'.
+- Disable 'Done', and ignore Escape and a click outside, while a revoke runs.
 
 ## Don't
 
@@ -129,6 +133,7 @@ export default function InviteMemberByEmail() {
       <Modal
         isOpen={open}
         size="small"
+        initialFocus="body"
         title="Invite Member"
         onClose={handleClose}
         actions={
@@ -141,7 +146,7 @@ export default function InviteMemberByEmail() {
         <Paragraph measure="none">We email them a link to join Acme Design as a member. The link works for 7 days.</Paragraph>
         {/* The Form lets Enter in the field send too. */}
         <Form aria-label="Invite member" onSubmit={handleSend}>
-          <TextField id="invite-member-email" label="Email" type="email" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+          <TextField id="invite-member-email" label="Email" type="email" value={email} disabled={sending} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
         </Form>
       </Modal>
     </Center>
@@ -188,6 +193,7 @@ export default function InviteMemberByLink() {
   // Opens on the Modal, as if the person just chose Invite Member.
   const [open, setOpen] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [copyBlocked, setCopyBlocked] = useState(false);
   const [links, setLinks] = useState(earlierLinks);
   const [confirming, setConfirming] = useState<string | null>(null);
   const [revoking, setRevoking] = useState(false);
@@ -203,17 +209,29 @@ export default function InviteMemberByLink() {
     toastIds.current = [];
   }, []);
 
-  // Only reads 'Copied' when the link reached the clipboard. If the copy fails,
-  // the label stays 'Copy' and the person can still select the link in the field.
+  // Only reads 'Copied' when the link reached the clipboard. When the browser has no
+  // clipboard or refuses the write, a line under the field says so, and the label stays 'Copy'.
   function handleCopy() {
-    navigator.clipboard?.writeText(inviteLink).then(
-      () => {
-        setCopied(true);
-        clearTimeout(copyTimer.current);
-        copyTimer.current = setTimeout(() => setCopied(false), 2000);
-      },
-      () => {},
-    );
+    clearTimeout(copyTimer.current);
+    setCopied(false);
+    const blocked = () => setCopyBlocked(true);
+    if (!navigator.clipboard) {
+      blocked();
+      return;
+    }
+    navigator.clipboard.writeText(inviteLink).then(() => {
+      setCopyBlocked(false);
+      setCopied(true);
+      copyTimer.current = setTimeout(() => setCopied(false), 2000);
+    }, blocked);
+  }
+
+  // Done, Escape and a click outside all close it, except while a revoke runs.
+  // Closing drops a row's open confirm, so the Modal never reopens on it.
+  function handleClose() {
+    if (revoking) return;
+    setConfirming(null);
+    setOpen(false);
   }
 
   function handleRevoke(id: string) {
@@ -251,12 +269,13 @@ export default function InviteMemberByLink() {
         isOpen={open}
         size="medium"
         title="Invite Member"
-        onClose={() => setOpen(false)}
-        actions={<Button size="small" type="primary" state="enabled" label="Done" onClickButton={() => setOpen(false)} />}
+        onClose={handleClose}
+        actions={<Button size="small" type="primary" state={revoking ? 'disabled' : 'enabled'} label="Done" onClickButton={handleClose} />}
       >
         <Paragraph measure="none">Anyone with this link can join Acme Design as a member. It works for 7 days.</Paragraph>
         <Stack gap="small" align="start">
           <TextField id="invite-member-link" label="Invite link" value={inviteLink} readOnly onChange={() => {}} />
+          {copyBlocked && <Paragraph tone="secondary" size="body2" measure="none">Copying is blocked here. Select the link and copy it.</Paragraph>}
           <Button size="small" type="secondary" state="enabled" label={copied ? 'Copied' : 'Copy'} decoIcon={copied ? 'Check' : 'Copy'} onClickButton={handleCopy} />
         </Stack>
         <Stack gap="small">
@@ -271,12 +290,12 @@ export default function InviteMemberByLink() {
                   <TableCell width="168px">
                     {confirming === l.id ? (
                       <Cluster gap="small">
-                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" onClickButton={() => setConfirming(null)} />
-                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" loading={revoking} onClickButton={() => handleRevoke(l.id)} />
+                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" aria-label={`Keep the link made by ${l.createdBy}`} onClickButton={() => setConfirming(null)} />
+                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" aria-label={`Confirm revoking the link made by ${l.createdBy}`} loading={revoking} onClickButton={() => handleRevoke(l.id)} />
                       </Cluster>
                     ) : (
                       <Cluster gap="small">
-                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Revoke" onClickButton={() => setConfirming(l.id)} />
+                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Revoke" aria-label={`Revoke the link made by ${l.createdBy}`} onClickButton={() => setConfirming(l.id)} />
                       </Cluster>
                     )}
                   </TableCell>

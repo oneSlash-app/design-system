@@ -103,6 +103,7 @@ export default function TypeToConfirmModal() {
       <Modal
         isOpen={open}
         size="small"
+        initialFocus="body"
         title="Delete Workspace"
         onClose={handleClose}
         actions={

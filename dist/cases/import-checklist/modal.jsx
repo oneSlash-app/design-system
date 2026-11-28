@@ -39,6 +39,9 @@ export default function ImportChecklistModal() {
     var _d = useState(''), query = _d[0], setQuery = _d[1];
     var _e = useState(['p1', 'p2', 'p4']), selected = _e[0], setSelected = _e[1];
     var _f = useState(false), importing = _f[0], setImporting = _f[1];
+    // Bumped by 'Clear Search'. It remounts the search field with `autoFocus`, so focus goes
+    // back to the field instead of being lost with the Button that the list replaces.
+    var _g = useState(0), searchKey = _g[0], setSearchKey = _g[1];
     var timer = useRef();
     // Stops the request if the example goes away before it ends.
     useEffect(function () { return function () { return clearTimeout(timer.current); }; }, []);
@@ -47,6 +50,8 @@ export default function ImportChecklistModal() {
     var shown = available.filter(function (p) { return p.title.toLowerCase().includes(words.toLowerCase()); });
     var shownIds = shown.map(function (p) { return p.id; });
     var count = selected.length;
+    // While a search is on, the labels say that they act only on the pages shown.
+    var scope = words ? " ".concat(shown.length, " Shown") : '';
     function toggle(id, checked) {
         setSelected(function (list) { return (checked ? __spreadArray(__spreadArray([], list, true), [id], false) : list.filter(function (x) { return x !== id; })); });
     }
@@ -56,6 +61,10 @@ export default function ImportChecklistModal() {
     }
     function clearShown() {
         setSelected(function (list) { return list.filter(function (id) { return !shownIds.includes(id); }); });
+    }
+    function clearSearch() {
+        setQuery('');
+        setSearchKey(function (k) { return k + 1; });
     }
     function handleOpen() {
         setQuery('');
@@ -92,24 +101,24 @@ export default function ImportChecklistModal() {
           <List items={docs} size="body1"/>
         </Surface>
       </Stack>
-      <Modal isOpen={open} size="medium" title="Import Pages" secondTitle="From the Acme wiki" onClose={handleClose} actions={<>
+      <Modal isOpen={open} size="medium" initialFocus="body" title="Import Pages" secondTitle="From the Acme wiki" onClose={handleClose} actions={<>
             <Button size="small" type="tertiary" state={importing ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleClose}/>
             <Button size="small" type="primary" state={count === 0 ? 'disabled' : 'enabled'} label={count === 0 ? 'Import Pages' : "Import ".concat(count, " ").concat(plural(count))} loading={importing} onClickButton={handleImport}/>
           </>}>
         {available.length === 0 ? (<EmptyBox size="small" icon="FileCheck" text="No pages left to import" secondText="Every page in the Acme wiki is already in Docs."/>) : (<>
-            <TextField id="import-checklist-search" label="Search pages" type="search" value={query} disabled={importing} onChange={function (e) { return setQuery(e.target.value); }}/>
+            <TextField key={searchKey} autoFocus={searchKey > 0} id="import-checklist-search" label="Search pages" type="search" value={query} disabled={importing} onChange={function (e) { return setQuery(e.target.value); }}/>
             <Stack gap="small">
               <Paragraph tone="secondary" size="body2" measure="none">
                 {count} of {available.length} pages selected.{words && " ".concat(shown.length, " match \"").concat(words, "\".")}
               </Paragraph>
               <Cluster gap="small">
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label="Select All" onClickButton={selectShown}/>
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label="Clear" onClickButton={clearShown}/>
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={"Select All".concat(scope)} onClickButton={selectShown}/>
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={"Clear".concat(scope)} onClickButton={clearShown}/>
               </Cluster>
             </Stack>
             {shown.length > 0 ? (<Stack gap="medium">
                 {shown.map(function (p) { return (<Checkbox key={p.id} label={p.title} secondLabel={p.edited} checked={selected.includes(p.id)} disabled={importing} onChange={function (checked) { return toggle(p.id, checked); }}/>); })}
-              </Stack>) : (<EmptyBox size="small" icon="Search" text={"No pages match \"".concat(words, "\"")} secondText="Check the spelling, or search for fewer words." action={<Button size="small" type="secondary" state="enabled" label="Clear Search" onClickButton={function () { return setQuery(''); }}/>}/>)}
+              </Stack>) : (<EmptyBox size="small" icon="Search" text={"No pages match \"".concat(words, "\"")} secondText="Check the spelling, or search for fewer words." action={<Button size="small" type="secondary" state="enabled" label="Clear Search" onClickButton={clearSearch}/>}/>)}
           </>)}
       </Modal>
     </Center>);

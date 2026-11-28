@@ -97,6 +97,7 @@ export default function InviteMemberByEmail() {
       <Modal
         isOpen={open}
         size="small"
+        initialFocus="body"
         title="Invite Member"
         onClose={handleClose}
         actions={
@@ -109,7 +110,7 @@ export default function InviteMemberByEmail() {
         <Paragraph measure="none">We email them a link to join Acme Design as a member. The link works for 7 days.</Paragraph>
         {/* The Form lets Enter in the field send too. */}
         <Form aria-label="Invite member" onSubmit={handleSend}>
-          <TextField id="invite-member-email" label="Email" type="email" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+          <TextField id="invite-member-email" label="Email" type="email" value={email} disabled={sending} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
         </Form>
       </Modal>
     </Center>

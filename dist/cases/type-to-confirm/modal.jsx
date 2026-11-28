@@ -61,7 +61,7 @@ export default function TypeToConfirmModal() {
             <Button size="small" type="secondary" color="danger" state="enabled" label="Delete Workspace" onClickButton={function () { return setOpen(true); }}/>
           </Cluster>
         </Stack>)}
-      <Modal isOpen={open} size="small" title="Delete Workspace" onClose={handleClose} actions={<>
+      <Modal isOpen={open} size="small" initialFocus="body" title="Delete Workspace" onClose={handleClose} actions={<>
             <Button size="small" type="tertiary" state={deleting ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleClose}/>
             <Button size="small" type="primary" color="danger" state={matches ? 'enabled' : 'disabled'} label="Delete" loading={deleting} onClickButton={handleDelete}/>
           </>}>

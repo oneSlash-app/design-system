@@ -67,13 +67,13 @@ export default function CreateModalQuick() {
           <List items={projects} size="body1"/>
         </Surface>
       </Stack>
-      <Modal isOpen={open} size="small" title="Create Project" onClose={handleClose} actions={<>
+      <Modal isOpen={open} size="small" initialFocus="body" title="Create Project" onClose={handleClose} actions={<>
             <Button size="small" type="tertiary" state={creating ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleClose}/>
             <Button size="small" type="primary" state={next === '' ? 'disabled' : 'enabled'} label="Create" loading={creating} onClickButton={handleCreate}/>
           </>}>
         {/* The Form lets Enter in the field create too. */}
         <Form aria-label="Create project" onSubmit={handleCreate}>
-          <TextField id="create-modal-name" label="Project name" placeholder="Q4 budget" value={name} error={Boolean(nameError)} errorText={nameError} onChange={function (e) { setName(e.target.value); setNameError(''); }}/>
+          <TextField id="create-modal-name" label="Project name" placeholder="Q4 budget" value={name} disabled={creating} error={Boolean(nameError)} errorText={nameError} onChange={function (e) { setName(e.target.value); setNameError(''); }}/>
         </Form>
       </Modal>
     </Center>);

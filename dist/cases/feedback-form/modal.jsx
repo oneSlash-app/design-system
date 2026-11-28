@@ -72,18 +72,18 @@ export default function FeedbackFormModal() {
           <Button size="small" type="secondary" state="enabled" label="Send Feedback" decoIcon="MessageSquare" onClickButton={handleOpen}/>
         </Cluster>
       </Stack>
-      <Modal isOpen={open} size="small" title="Send Feedback" onClose={handleClose} actions={<>
+      <Modal isOpen={open} size="small" initialFocus="body" title="Send Feedback" onClose={handleClose} actions={<>
             <Button size="small" type="tertiary" state={sending ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleClose}/>
             <Button size="small" type="primary" state={text === '' ? 'disabled' : 'enabled'} label="Send" loading={sending} onClickButton={handleSend}/>
           </>}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={function () { return setError(''); }}/>}
         <Stack gap="small">
-          {/* Select takes no label, so a line above it names the field. */}
+          {/* The line above names the field on screen, and `aria-label` names it for a screen reader. */}
           <Paragraph tone="secondary" size="body2" measure="none">What is it about?</Paragraph>
-          <Select value={category} options={categories} onChange={function (v) { return setCategory(typeof v === 'string' ? v : v[0]); }}/>
+          <Select aria-label="What is it about?" value={category} options={categories} disabled={sending} onChange={function (v) { return setCategory(typeof v === 'string' ? v : v[0]); }}/>
         </Stack>
         {/* Cmd+Enter or Ctrl+Enter sends. Enter adds a new line. */}
-        <Textarea id="feedback-form-message" label="Your feedback" placeholder="What happened, or what would help?" value={message} onSubmit={handleSend} onChange={function (e) { return setMessage(e.target.value); }}/>
+        <Textarea id="feedback-form-message" label="Your feedback" placeholder="What happened, or what would help?" value={message} disabled={sending} onSubmit={handleSend} onChange={function (e) { return setMessage(e.target.value); }}/>
       </Modal>
     </Center>);
 }

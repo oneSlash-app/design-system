@@ -96,6 +96,7 @@ export default function RenameModal() {
       <Modal
         isOpen={open}
         size="small"
+        initialFocus="body"
         title="Rename Project"
         onClose={handleClose}
         actions={

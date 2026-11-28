@@ -79,19 +79,20 @@ export default function CreateModalWithSettings() {
           <List items={projects} size="body1"/>
         </Surface>
       </Stack>
-      <Modal isOpen={open} size="small" title="Create Project" onClose={handleClose} actions={<>
+      <Modal isOpen={open} size="small" initialFocus="body" title="Create Project" onClose={handleClose} actions={<>
             <Button size="small" type="tertiary" state={creating ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleClose}/>
             <Button size="small" type="primary" state={next === '' ? 'disabled' : 'enabled'} label="Create" loading={creating} onClickButton={handleCreate}/>
           </>}>
         {/* The Form lets Enter in the name field create too. */}
         <Form aria-label="Create project" onSubmit={handleCreate}>
-          <TextField id="create-modal-settings-name" label="Project name" placeholder="Q4 budget" value={name} error={Boolean(nameError)} errorText={nameError} onChange={function (e) { setName(e.target.value); setNameError(''); }}/>
+          <TextField id="create-modal-settings-name" label="Project name" placeholder="Q4 budget" value={name} disabled={creating} error={Boolean(nameError)} errorText={nameError} onChange={function (e) { setName(e.target.value); setNameError(''); }}/>
           <Stack gap="small">
-            {/* RadioGroup takes no label, so a line above it names the choice. */}
+            {/* The line above names the choice on screen, and `aria-label` names it for a screen reader.
+            RadioGroup has no disabled state, so it stays live while the request runs. */}
             <Paragraph tone="secondary" size="body2" measure="none">Who can see it</Paragraph>
-            <RadioGroup options={visibilityOptions} selectedValue={visibility} onChange={setVisibility}/>
+            <RadioGroup aria-label="Who can see it" options={visibilityOptions} selectedValue={visibility} onChange={setVisibility}/>
           </Stack>
-          <Checkbox label="Add starter tasks" secondLabel="A short list to plan the first week. You can delete them." checked={starterTasks} onChange={setStarterTasks}/>
+          <Checkbox label="Add starter tasks" secondLabel="A short list to plan the first week. You can delete them." checked={starterTasks} disabled={creating} onChange={setStarterTasks}/>
         </Form>
       </Modal>
     </Center>);

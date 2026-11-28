@@ -26,9 +26,10 @@ export default function InviteMemberByLink() {
     // Opens on the Modal, as if the person just chose Invite Member.
     var _a = useState(true), open = _a[0], setOpen = _a[1];
     var _b = useState(false), copied = _b[0], setCopied = _b[1];
-    var _c = useState(earlierLinks), links = _c[0], setLinks = _c[1];
-    var _d = useState(null), confirming = _d[0], setConfirming = _d[1];
-    var _e = useState(false), revoking = _e[0], setRevoking = _e[1];
+    var _c = useState(false), copyBlocked = _c[0], setCopyBlocked = _c[1];
+    var _d = useState(earlierLinks), links = _d[0], setLinks = _d[1];
+    var _e = useState(null), confirming = _e[0], setConfirming = _e[1];
+    var _f = useState(false), revoking = _f[0], setRevoking = _f[1];
     var copyTimer = useRef();
     var timer = useRef();
     var toastIds = useRef([]);
@@ -39,15 +40,29 @@ export default function InviteMemberByLink() {
         toastIds.current.forEach(function (id) { return dismissToast(id); });
         toastIds.current = [];
     }; }, []);
-    // Only reads 'Copied' when the link reached the clipboard. If the copy fails,
-    // the label stays 'Copy' and the person can still select the link in the field.
+    // Only reads 'Copied' when the link reached the clipboard. When the browser has no
+    // clipboard or refuses the write, a line under the field says so, and the label stays 'Copy'.
     function handleCopy() {
-        var _a;
-        (_a = navigator.clipboard) === null || _a === void 0 ? void 0 : _a.writeText(inviteLink).then(function () {
+        clearTimeout(copyTimer.current);
+        setCopied(false);
+        var blocked = function () { return setCopyBlocked(true); };
+        if (!navigator.clipboard) {
+            blocked();
+            return;
+        }
+        navigator.clipboard.writeText(inviteLink).then(function () {
+            setCopyBlocked(false);
             setCopied(true);
-            clearTimeout(copyTimer.current);
             copyTimer.current = setTimeout(function () { return setCopied(false); }, 2000);
-        }, function () { });
+        }, blocked);
+    }
+    // Done, Escape and a click outside all close it, except while a revoke runs.
+    // Closing drops a row's open confirm, so the Modal never reopens on it.
+    function handleClose() {
+        if (revoking)
+            return;
+        setConfirming(null);
+        setOpen(false);
     }
     function handleRevoke(id) {
         if (revoking)
@@ -77,10 +92,11 @@ export default function InviteMemberByLink() {
             </TableRow>); })}
         </TableContainer>
       </Stack>
-      <Modal isOpen={open} size="medium" title="Invite Member" onClose={function () { return setOpen(false); }} actions={<Button size="small" type="primary" state="enabled" label="Done" onClickButton={function () { return setOpen(false); }}/>}>
+      <Modal isOpen={open} size="medium" title="Invite Member" onClose={handleClose} actions={<Button size="small" type="primary" state={revoking ? 'disabled' : 'enabled'} label="Done" onClickButton={handleClose}/>}>
         <Paragraph measure="none">Anyone with this link can join Acme Design as a member. It works for 7 days.</Paragraph>
         <Stack gap="small" align="start">
           <TextField id="invite-member-link" label="Invite link" value={inviteLink} readOnly onChange={function () { }}/>
+          {copyBlocked && <Paragraph tone="secondary" size="body2" measure="none">Copying is blocked here. Select the link and copy it.</Paragraph>}
           <Button size="small" type="secondary" state="enabled" label={copied ? 'Copied' : 'Copy'} decoIcon={copied ? 'Check' : 'Copy'} onClickButton={handleCopy}/>
         </Stack>
         <Stack gap="small">
@@ -92,10 +108,10 @@ export default function InviteMemberByLink() {
                   {/* A fixed last column keeps every row's Buttons in one place, so they do not jump when they change. */}
                   <TableCell width="168px">
                     {confirming === l.id ? (<Cluster gap="small">
-                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" onClickButton={function () { return setConfirming(null); }}/>
-                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" loading={revoking} onClickButton={function () { return handleRevoke(l.id); }}/>
+                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" aria-label={"Keep the link made by ".concat(l.createdBy)} onClickButton={function () { return setConfirming(null); }}/>
+                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" aria-label={"Confirm revoking the link made by ".concat(l.createdBy)} loading={revoking} onClickButton={function () { return handleRevoke(l.id); }}/>
                       </Cluster>) : (<Cluster gap="small">
-                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Revoke" onClickButton={function () { return setConfirming(l.id); }}/>
+                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Revoke" aria-label={"Revoke the link made by ".concat(l.createdBy)} onClickButton={function () { return setConfirming(l.id); }}/>
                       </Cluster>)}
                   </TableCell>
                 </TableRow>); })}

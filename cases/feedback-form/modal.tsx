@@ -82,6 +82,7 @@ export default function FeedbackFormModal() {
       <Modal
         isOpen={open}
         size="small"
+        initialFocus="body"
         title="Send Feedback"
         onClose={handleClose}
         actions={
@@ -93,12 +94,12 @@ export default function FeedbackFormModal() {
       >
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
         <Stack gap="small">
-          {/* Select takes no label, so a line above it names the field. */}
+          {/* The line above names the field on screen, and `aria-label` names it for a screen reader. */}
           <Paragraph tone="secondary" size="body2" measure="none">What is it about?</Paragraph>
-          <Select value={category} options={categories} onChange={(v) => setCategory(typeof v === 'string' ? v : v[0])} />
+          <Select aria-label="What is it about?" value={category} options={categories} disabled={sending} onChange={(v) => setCategory(typeof v === 'string' ? v : v[0])} />
         </Stack>
         {/* Cmd+Enter or Ctrl+Enter sends. Enter adds a new line. */}
-        <Textarea id="feedback-form-message" label="Your feedback" placeholder="What happened, or what would help?" value={message} onSubmit={handleSend} onChange={(e) => setMessage(e.target.value)} />
+        <Textarea id="feedback-form-message" label="Your feedback" placeholder="What happened, or what would help?" value={message} disabled={sending} onSubmit={handleSend} onChange={(e) => setMessage(e.target.value)} />
       </Modal>
     </Center>
   );

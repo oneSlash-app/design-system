@@ -22,12 +22,16 @@ module.exports = {
   do: [
     "Title the Modal 'Invite Member' and label its action 'Send Invite', after 'Cancel'.",
     'Send on Enter too: put the email field in a `Form`.',
+    'Focus the email field when the Modal opens, with `initialFocus="body"`, and disable it while the invite is sent.',
     'Show a problem with the address under the field, such as a person who is already a member.',
     "Close the Modal once the invite is sent, and show a toast that names the address: 'Invite sent to ada@example.com.'",
     "Show the link in a `TextField` with `readOnly`, so it can be selected, and a 'Copy' Button next to it.",
     "Change 'Copy' to 'Copied' for 2 seconds, and only when the link reached the clipboard.",
+    "Say under the field when copying is blocked: 'Copying is blocked here. Select the link and copy it.'",
     'Say who can use the link and when it stops working.',
     "List the links that still work, each with a 'Revoke' Button. Revoking removes access, so confirm it in the row, as the case 'Confirm a destructive action' does.",
+    "Give each row's 'Revoke', and the confirm's 'Cancel' and 'Revoke', an `aria-label` that names the link: 'Revoke the link made by Dana Lee'.",
+    "Disable 'Done', and ignore Escape and a click outside, while a revoke runs.",
   ],
   dont: [
     "Do not label the way out 'Close', or the action 'Create Invite' when the product sends it.",

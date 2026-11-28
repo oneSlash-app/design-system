@@ -8,7 +8,9 @@ A person sends feedback about the product from inside it.
 
 - Title the Modal 'Send Feedback' and label its action 'Send', after 'Cancel'.
 - Ask for a category with a `Select` and the feedback with a `Textarea`. Start the category on a safe default.
-- Name the `Select` with a line of text above it. Select takes no label of its own.
+- Put a line of text above the `Select` that says what it asks, and give the Select the same words as its `aria-label`.
+- Focus the first field when the Modal opens, with `initialFocus="body"`.
+- Disable the `Select` and the `Textarea` while it sends, and keep what the person wrote.
 - Keep 'Send' `state="disabled"` while the feedback is empty.
 - Send on Cmd+Enter or Ctrl+Enter from the `Textarea`, through its `onSubmit`. Enter adds a new line.
 - Show an inline error Alert at the top of the Modal when sending fails, and keep what the person wrote.
@@ -112,6 +114,7 @@ export default function FeedbackFormModal() {
       <Modal
         isOpen={open}
         size="small"
+        initialFocus="body"
         title="Send Feedback"
         onClose={handleClose}
         actions={
@@ -123,12 +126,12 @@ export default function FeedbackFormModal() {
       >
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
         <Stack gap="small">
-          {/* Select takes no label, so a line above it names the field. */}
+          {/* The line above names the field on screen, and `aria-label` names it for a screen reader. */}
           <Paragraph tone="secondary" size="body2" measure="none">What is it about?</Paragraph>
-          <Select value={category} options={categories} onChange={(v) => setCategory(typeof v === 'string' ? v : v[0])} />
+          <Select aria-label="What is it about?" value={category} options={categories} disabled={sending} onChange={(v) => setCategory(typeof v === 'string' ? v : v[0])} />
         </Stack>
         {/* Cmd+Enter or Ctrl+Enter sends. Enter adds a new line. */}
-        <Textarea id="feedback-form-message" label="Your feedback" placeholder="What happened, or what would help?" value={message} onSubmit={handleSend} onChange={(e) => setMessage(e.target.value)} />
+        <Textarea id="feedback-form-message" label="Your feedback" placeholder="What happened, or what would help?" value={message} disabled={sending} onSubmit={handleSend} onChange={(e) => setMessage(e.target.value)} />
       </Modal>
     </Center>
   );

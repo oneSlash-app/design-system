@@ -16,7 +16,9 @@ module.exports = {
   do: [
     "Title the Modal 'Send Feedback' and label its action 'Send', after 'Cancel'.",
     'Ask for a category with a `Select` and the feedback with a `Textarea`. Start the category on a safe default.',
-    'Name the `Select` with a line of text above it. Select takes no label of its own.',
+    "Put a line of text above the `Select` that says what it asks, and give the Select the same words as its `aria-label`.",
+    'Focus the first field when the Modal opens, with `initialFocus="body"`.',
+    "Disable the `Select` and the `Textarea` while it sends, and keep what the person wrote.",
     "Keep 'Send' `state=\"disabled\"` while the feedback is empty.",
     'Send on Cmd+Enter or Ctrl+Enter from the `Textarea`, through its `onSubmit`. Enter adds a new line.',
     "Show an inline error Alert at the top of the Modal when sending fails, and keep what the person wrote.",

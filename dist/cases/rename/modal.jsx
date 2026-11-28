@@ -57,7 +57,7 @@ export default function RenameModal() {
           <Button size="small" type="secondary" state="enabled" label="Rename Project" onClickButton={handleOpen}/>
         </Cluster>
       </Stack>
-      <Modal isOpen={open} size="small" title="Rename Project" onClose={handleClose} actions={<>
+      <Modal isOpen={open} size="small" initialFocus="body" title="Rename Project" onClose={handleClose} actions={<>
             <Button size="small" type="tertiary" state={saving ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleClose}/>
             <Button size="small" type="primary" state={canRename ? 'enabled' : 'disabled'} label="Rename" loading={saving} onClickButton={handleRename}/>
           </>}>

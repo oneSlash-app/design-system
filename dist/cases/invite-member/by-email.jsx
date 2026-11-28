@@ -84,14 +84,14 @@ export default function InviteMemberByEmail() {
             </TableRow>); })}
         </TableContainer>
       </Stack>
-      <Modal isOpen={open} size="small" title="Invite Member" onClose={handleClose} actions={<>
+      <Modal isOpen={open} size="small" initialFocus="body" title="Invite Member" onClose={handleClose} actions={<>
             <Button size="small" type="tertiary" state={sending ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleClose}/>
             <Button size="small" type="primary" state={address === '' ? 'disabled' : 'enabled'} label="Send Invite" loading={sending} onClickButton={handleSend}/>
           </>}>
         <Paragraph measure="none">We email them a link to join Acme Design as a member. The link works for 7 days.</Paragraph>
         {/* The Form lets Enter in the field send too. */}
         <Form aria-label="Invite member" onSubmit={handleSend}>
-          <TextField id="invite-member-email" label="Email" type="email" value={email} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
+          <TextField id="invite-member-email" label="Email" type="email" value={email} disabled={sending} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
         </Form>
       </Modal>
     </Center>);

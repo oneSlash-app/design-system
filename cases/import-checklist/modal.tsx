@@ -33,6 +33,9 @@ export default function ImportChecklistModal() {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<string[]>(['p1', 'p2', 'p4']);
   const [importing, setImporting] = useState(false);
+  // Bumped by 'Clear Search'. It remounts the search field with `autoFocus`, so focus goes
+  // back to the field instead of being lost with the Button that the list replaces.
+  const [searchKey, setSearchKey] = useState(0);
   const timer = useRef<ReturnType<typeof setTimeout>>();
 
   // Stops the request if the example goes away before it ends.
@@ -43,6 +46,8 @@ export default function ImportChecklistModal() {
   const shown = available.filter((p) => p.title.toLowerCase().includes(words.toLowerCase()));
   const shownIds = shown.map((p) => p.id);
   const count = selected.length;
+  // While a search is on, the labels say that they act only on the pages shown.
+  const scope = words ? ` ${shown.length} Shown` : '';
 
   function toggle(id: string, checked: boolean) {
     setSelected((list) => (checked ? [...list, id] : list.filter((x) => x !== id)));
@@ -54,6 +59,11 @@ export default function ImportChecklistModal() {
   }
   function clearShown() {
     setSelected((list) => list.filter((id) => !shownIds.includes(id)));
+  }
+
+  function clearSearch() {
+    setQuery('');
+    setSearchKey((k) => k + 1);
   }
 
   function handleOpen() {
@@ -96,6 +106,7 @@ export default function ImportChecklistModal() {
       <Modal
         isOpen={open}
         size="medium"
+        initialFocus="body"
         title="Import Pages"
         secondTitle="From the Acme wiki"
         onClose={handleClose}
@@ -110,14 +121,14 @@ export default function ImportChecklistModal() {
           <EmptyBox size="small" icon="FileCheck" text="No pages left to import" secondText="Every page in the Acme wiki is already in Docs." />
         ) : (
           <>
-            <TextField id="import-checklist-search" label="Search pages" type="search" value={query} disabled={importing} onChange={(e) => setQuery(e.target.value)} />
+            <TextField key={searchKey} autoFocus={searchKey > 0} id="import-checklist-search" label="Search pages" type="search" value={query} disabled={importing} onChange={(e) => setQuery(e.target.value)} />
             <Stack gap="small">
               <Paragraph tone="secondary" size="body2" measure="none">
                 {count} of {available.length} pages selected.{words && ` ${shown.length} match "${words}".`}
               </Paragraph>
               <Cluster gap="small">
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label="Select All" onClickButton={selectShown} />
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label="Clear" onClickButton={clearShown} />
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={`Select All${scope}`} onClickButton={selectShown} />
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={`Clear${scope}`} onClickButton={clearShown} />
               </Cluster>
             </Stack>
             {shown.length > 0 ? (
@@ -132,7 +143,7 @@ export default function ImportChecklistModal() {
                 icon="Search"
                 text={`No pages match "${words}"`}
                 secondText="Check the spelling, or search for fewer words."
-                action={<Button size="small" type="secondary" state="enabled" label="Clear Search" onClickButton={() => setQuery('')} />}
+                action={<Button size="small" type="secondary" state="enabled" label="Clear Search" onClickButton={clearSearch} />}
               />
             )}
           </>

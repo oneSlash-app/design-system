@@ -11,6 +11,9 @@ A person creates something new, such as a project or a task, and it needs a name
 - Create on Enter too: put the fields in a `Form`.
 - Keep 'Create' `state="disabled"` while the name is empty.
 - Show `loading` on 'Create' while it runs, and keep the fields on screen with what the person typed.
+- Disable the fields while it runs, where the part allows it: the `TextField` and the `Checkbox`.
+- Focus the name field when the Modal opens, with `initialFocus="body"`.
+- Give a `RadioGroup` a line of text above it and an `aria-label` with the same words.
 - Show a name that is taken under the field, with `error` and `errorText`, and keep the Modal open.
 - Pick a safe default for every choice, so the person only has to type the name.
 - Close the Modal when it works and show the new thing where it lives.
@@ -98,6 +101,7 @@ export default function CreateModalQuick() {
       <Modal
         isOpen={open}
         size="small"
+        initialFocus="body"
         title="Create Project"
         onClose={handleClose}
         actions={
@@ -109,7 +113,7 @@ export default function CreateModalQuick() {
       >
         {/* The Form lets Enter in the field create too. */}
         <Form aria-label="Create project" onSubmit={handleCreate}>
-          <TextField id="create-modal-name" label="Project name" placeholder="Q4 budget" value={name} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); }} />
+          <TextField id="create-modal-name" label="Project name" placeholder="Q4 budget" value={name} disabled={creating} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); }} />
         </Form>
       </Modal>
     </Center>
@@ -206,6 +210,7 @@ export default function CreateModalWithSettings() {
       <Modal
         isOpen={open}
         size="small"
+        initialFocus="body"
         title="Create Project"
         onClose={handleClose}
         actions={
@@ -217,13 +222,14 @@ export default function CreateModalWithSettings() {
       >
         {/* The Form lets Enter in the name field create too. */}
         <Form aria-label="Create project" onSubmit={handleCreate}>
-          <TextField id="create-modal-settings-name" label="Project name" placeholder="Q4 budget" value={name} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); }} />
+          <TextField id="create-modal-settings-name" label="Project name" placeholder="Q4 budget" value={name} disabled={creating} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); }} />
           <Stack gap="small">
-            {/* RadioGroup takes no label, so a line above it names the choice. */}
+            {/* The line above names the choice on screen, and `aria-label` names it for a screen reader.
+                RadioGroup has no disabled state, so it stays live while the request runs. */}
             <Paragraph tone="secondary" size="body2" measure="none">Who can see it</Paragraph>
-            <RadioGroup options={visibilityOptions} selectedValue={visibility} onChange={setVisibility} />
+            <RadioGroup aria-label="Who can see it" options={visibilityOptions} selectedValue={visibility} onChange={setVisibility} />
           </Stack>
-          <Checkbox label="Add starter tasks" secondLabel="A short list to plan the first week. You can delete them." checked={starterTasks} onChange={setStarterTasks} />
+          <Checkbox label="Add starter tasks" secondLabel="A short list to plan the first week. You can delete them." checked={starterTasks} disabled={creating} onChange={setStarterTasks} />
         </Form>
       </Modal>
     </Center>
