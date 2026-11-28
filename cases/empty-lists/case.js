@@ -1,0 +1,32 @@
+module.exports = {
+  id: 'empty-lists',
+  title: 'Empty lists',
+  kind: 'rule',
+  level: 'rule',
+  area: 'state',
+  situation: 'A list, table or pane has nothing to show.',
+  answer: "Use `EmptyBox`, never a bare line of text. Its size is `large` when the list fills the whole region and `small` inside a section. The `text` says what is empty, in the person's words: 'No saved comments'. The `secondText` says what will appear here or what to do. When the person can fix it, pass the Button as `action`. An empty search shows the words searched for and a way to clear them. A failed load is not an empty list.",
+  notBuiltYet: "Scindo on the web uses `EmptyBox` in three places and bare text elsewhere, such as 'No API keys yet.' Commentify uses `EmptyBox` in most lists and bare text in a few, and shows a failed load in an `EmptyBox`. Commentify admin and jinhwankim.com show bare text. No product passes an `action` yet.",
+  why: 'An empty space looks like something is broken. Saying what is missing and what will fill it tells the person nothing is wrong and what to do next.',
+  do: [
+    "Say what is empty in the person's words: 'No saved comments'.",
+    "Say in `secondText` what will appear here or what to do: 'Comments you save appear here.'",
+    "Pass the Button that fills the list as `action`, such as 'Create Project'.",
+    "In an empty search, show the words searched for and a 'Clear Search' Button.",
+  ],
+  dont: [
+    'Do not show a bare line of text, or nothing at all, when a list is empty.',
+    'Do not show a failed load as an empty list.',
+    "Do not use the system's words, such as 'No data' or 'No records found'.",
+    'Do not pass an `action` the person is not allowed to use.',
+  ],
+  native: 'On Apple use `ContentUnavailableView`, with the same words.',
+  seenIn: [
+    { product: 'Commentify', path: 'src/app/(main)/comments/AllViewComponent.tsx' },
+    { product: 'Commentify', path: 'src/app/(main)/dashboard/page.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/components/settings/ApiKeysSettings.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/components/chat/PlanPane.tsx' },
+    { product: 'Commentify admin', path: 'src/app/dashboard/(view)/statistics/PlatformBreakdown.tsx' },
+    { product: 'jinhwankim.com', path: 'app/admin/messages/page.js' },
+  ],
+};

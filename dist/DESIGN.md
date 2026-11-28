@@ -496,6 +496,96 @@ Don't:
 - Do not show source cards on a person's message.
 - Do not link a source card to any site other than the product or the service the source came from.
 
+### Confirm dialogs
+
+An action needs a yes before it happens.
+
+Answer: A confirm is a small Modal. Its title names the action, such as 'Delete project'. The body says in one or two sentences what will happen and what is kept. Two Buttons sit in the Modal's `actions`: 'Cancel' first, a small tertiary Button, then the action, a small primary Button labelled with the same verb as the title. When the action destroys or removes something, the action Button is `color="danger"`. While the request runs, the action Button shows `loading` and the Modal stays open. Escape and a click outside the Modal mean Cancel.
+
+**Not built yet:** No Commentify confirm Modal uses `color="danger"`, and two of them label Cancel 'No'. Scindo on the web makes Cancel a secondary Button in some confirms and a tertiary one in others, and leaves 'Delete Task' and 'Remove member' uncolored. Scindo on the web revokes an API key, and Commentify revokes an agent client, with no confirm.
+
+Why: A confirm is the last chance to stop a mistake. It has to say exactly what will happen, and the safe choice has to be easy to find.
+
+Do:
+- Name the thing in the body: 'This deletes Q3 plan and its 12 tasks.'
+- Say what is kept: 'Files in the repository are not changed.'
+- Label the action with the verb in the title: 'Delete project' has a 'Delete' Button.
+- Close the Modal when the action works, and show the result where the thing was.
+
+Don't:
+- Do not label Cancel 'No' or 'Close'.
+- Do not label the action 'Yes, Delete', 'Confirm' or 'OK'.
+- Do not title the Modal 'Confirm Deletion' or 'Sure?'.
+- Do not replace the Modal body with a spinner while the request runs.
+- Do not ask for a confirm when the action is easy to undo.
+
+### Empty lists
+
+A list, table or pane has nothing to show.
+
+Answer: Use `EmptyBox`, never a bare line of text. Its size is `large` when the list fills the whole region and `small` inside a section. The `text` says what is empty, in the person's words: 'No saved comments'. The `secondText` says what will appear here or what to do. When the person can fix it, pass the Button as `action`. An empty search shows the words searched for and a way to clear them. A failed load is not an empty list.
+
+**Not built yet:** Scindo on the web uses `EmptyBox` in three places and bare text elsewhere, such as 'No API keys yet.' Commentify uses `EmptyBox` in most lists and bare text in a few, and shows a failed load in an `EmptyBox`. Commentify admin and jinhwankim.com show bare text. No product passes an `action` yet.
+
+Why: An empty space looks like something is broken. Saying what is missing and what will fill it tells the person nothing is wrong and what to do next.
+
+Do:
+- Say what is empty in the person's words: 'No saved comments'.
+- Say in `secondText` what will appear here or what to do: 'Comments you save appear here.'
+- Pass the Button that fills the list as `action`, such as 'Create Project'.
+- In an empty search, show the words searched for and a 'Clear Search' Button.
+
+Don't:
+- Do not show a bare line of text, or nothing at all, when a list is empty.
+- Do not show a failed load as an empty list.
+- Do not use the system's words, such as 'No data' or 'No records found'.
+- Do not pass an `action` the person is not allowed to use.
+
+### Form errors
+
+A form was submitted and something is wrong.
+
+Answer: A problem with one field shows under that field, through the field's `error` and `errorText`. A problem with the whole request shows in an inline Alert of `type="error"` above the fields, with a close button, so it stays until the person closes it or submits again. The form keeps what the person typed. The next submit clears the old messages. It is never a colored caption written by hand, and never the browser's `alert()`.
+
+**Not built yet:** Commentify writes red captions by hand on its consent screen and in its Figma import dialog. Scindo on the web does the same in its dialogs, such as renaming a workspace or a task. Commentify uses the browser's `alert()` in three files, and Scindo on the web in one.
+
+Why: A message next to the problem tells the person what to fix without searching for it. Keeping what they typed means they fix one thing instead of starting again.
+
+Do:
+- Show a problem with one field under that field, with `error` and `errorText`.
+- Say what to do, not only what is wrong: 'Enter an email address, like name@acme.com.'
+- Show a problem with the whole request in an inline error Alert above the fields, with a close button.
+- Keep everything the person typed after a failed submit.
+- Clear the old messages when the person submits again.
+
+Don't:
+- Do not write a red caption by hand. Use `errorText` or an Alert.
+- Do not use the browser's `alert()`.
+- Do not clear the form after a failed submit.
+- Do not let the request Alert close itself before the person has read it.
+
+### Success feedback
+
+Something the person did has worked.
+
+Answer: The feedback depends on where the result shows. When a form saves in place, its Button shows `loading` and reads 'Saving…', then reads 'Saved' for 2 seconds, then its own label again. There is no toast. When the result is somewhere else or gone, as when something is deleted, sent, copied to another place or a long job has finished, `toast()` shows one short sentence in the past tense for 5 seconds. When something is copied to the clipboard, the Button reads 'Copied' for 2 seconds. The message names the thing and does not say 'successfully'.
+
+**Not built yet:** Scindo on the web has no toast. It shows success in five ways: a 'Saved' Button label, a green caption, an inline Alert, a thank-you that replaces a dialog and a 'Copied' label. The timed ones clear after 1.5, 2, 3 or 4 seconds. Commentify shows toasts through `Alert`, one at a time, and many of them say 'successfully'.
+
+Why: Feedback belongs where the person is looking. A change they can see needs only a word on the Button, and a result they cannot see needs a short message that names it.
+
+Do:
+- Show `loading` and 'Saving…' on the Button while a form saves, then 'Saved' for 2 seconds.
+- Write a toast as one short sentence in the past tense that names the thing: 'Invite sent to Dana.'
+- Show 'Copied' on the copy Button for 2 seconds.
+- Mount one `Toaster` near the app root, and show every toast with `toast()`.
+
+Don't:
+- Do not say 'successfully'.
+- Do not show a toast for a change the person can already see.
+- Do not build a toast from `Alert`. Use `toast()`.
+- Do not make the person close a success message.
+
 | Case | When | File |
 | --- | --- | --- |
 | Login page | A person who already has an account opens the product and is not signed in. | cases/login-page.md |
