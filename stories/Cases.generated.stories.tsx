@@ -1,16 +1,48 @@
 // Generated from cases/ by npm run build. Do not edit.
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import EmptyList_RegionExample from "../cases/empty-list/region";
+import EmptyList_SectionExample from "../cases/empty-list/section";
+import EmptyNotSetUp_ActionExample from "../cases/empty-not-set-up/action";
+import EmptyNotSetUp_PointerExample from "../cases/empty-not-set-up/pointer";
+import EmptySearch_ClearSearchExample from "../cases/empty-search/clear-search";
+import ErrorPage_FullPageExample from "../cases/error-page/full-page";
+import ErrorPage_InShellExample from "../cases/error-page/in-shell";
+import InlineFormFeedback_ButtonLabelExample from "../cases/inline-form-feedback/button-label";
+import InlineFormFeedback_InlineAlertExample from "../cases/inline-form-feedback/inline-alert";
+import InlineFormFeedback_ToastExample from "../cases/inline-form-feedback/toast";
+import LoadFailure_RegionExample from "../cases/load-failure/region";
+import LoadFailure_InlineExample from "../cases/load-failure/inline";
 import LoginPage_CenteredExample from "../cases/login-page/centered";
 import LoginPage_SplitExample from "../cases/login-page/split";
 import LoginPage_ProviderFirstExample from "../cases/login-page/provider-first";
 import LoginPage_EmailOnlyExample from "../cases/login-page/email-only";
+import NotFoundPage_FullPageExample from "../cases/not-found-page/full-page";
+import NotFoundPage_InShellExample from "../cases/not-found-page/in-shell";
+import RouteLoading_FullScreenExample from "../cases/route-loading/full-screen";
+import RouteLoading_RegionExample from "../cases/route-loading/region";
 
 const meta: Meta = { title: "Cases" };
 export default meta;
 type Story = StoryObj;
 
+export const EmptyList_Region: Story = { render: () => <EmptyList_RegionExample /> };
+export const EmptyList_Section: Story = { render: () => <EmptyList_SectionExample /> };
+export const EmptyNotSetUp_Action: Story = { render: () => <EmptyNotSetUp_ActionExample /> };
+export const EmptyNotSetUp_Pointer: Story = { render: () => <EmptyNotSetUp_PointerExample /> };
+export const EmptySearch_ClearSearch: Story = { render: () => <EmptySearch_ClearSearchExample /> };
+export const ErrorPage_FullPage: Story = { render: () => <ErrorPage_FullPageExample /> };
+export const ErrorPage_InShell: Story = { render: () => <ErrorPage_InShellExample /> };
+export const InlineFormFeedback_ButtonLabel: Story = { render: () => <InlineFormFeedback_ButtonLabelExample /> };
+export const InlineFormFeedback_InlineAlert: Story = { render: () => <InlineFormFeedback_InlineAlertExample /> };
+export const InlineFormFeedback_Toast: Story = { render: () => <InlineFormFeedback_ToastExample /> };
+export const LoadFailure_Region: Story = { render: () => <LoadFailure_RegionExample /> };
+export const LoadFailure_Inline: Story = { render: () => <LoadFailure_InlineExample /> };
 export const LoginPage_Centered: Story = { render: () => <LoginPage_CenteredExample /> };
 export const LoginPage_Split: Story = { render: () => <LoginPage_SplitExample /> };
 export const LoginPage_ProviderFirst: Story = { render: () => <LoginPage_ProviderFirstExample /> };
 export const LoginPage_EmailOnly: Story = { render: () => <LoginPage_EmailOnlyExample /> };
+export const NotFoundPage_FullPage: Story = { render: () => <NotFoundPage_FullPageExample /> };
+export const NotFoundPage_InShell: Story = { render: () => <NotFoundPage_InShellExample /> };
+export const RouteLoading_FullScreen: Story = { render: () => <RouteLoading_FullScreenExample /> };
+export const RouteLoading_Region: Story = { render: () => <RouteLoading_RegionExample /> };

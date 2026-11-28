@@ -594,4 +594,12 @@ Don't:
 
 | Case | When | File |
 | --- | --- | --- |
+| Empty list | A list has loaded, and there is nothing in it yet. | cases/empty-list.md |
+| Empty because it is not set up | A pane is empty because something it needs is not set up yet, such as a connected account. | cases/empty-not-set-up.md |
+| Empty search | A search or a filter finds nothing. | cases/empty-search.md |
+| Error page | Something broke while showing a page, and the app cannot show it. | cases/error-page.md |
+| Form feedback | A person submits a small form, such as a settings field, and the request ends. | cases/inline-form-feedback.md |
+| Load failure | A list or a section could not load. | cases/load-failure.md |
 | Login page | A person who already has an account opens the product and is not signed in. | cases/login-page.md |
+| Page not found | A person opens a link to a page that does not exist. | cases/not-found-page.md |
+| Page loading | A page or a pane is loading, and there is nothing to show yet. | cases/route-loading.md |
