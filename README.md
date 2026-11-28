@@ -70,7 +70,7 @@ import SectionIntro from 'oneslash-design-system/components/sectionIntro';
 
 ## Design cases
 
-A case is one design situation with oneSlash's answer to it. A rule case has one answer, such as "an agent asks before a risky action". A design case has two to four options, each with a line on when to use it and a working example built only from this package. 2.15.0 has the first seven: the login page and six rules for an agent.
+A case is one design situation with oneSlash's answer to it. A rule case has one answer, such as "an agent asks before a risky action". A design case has one to four options, each with a line on when to use it and a working example built only from this package. 2.16.0 has 38: ten rules and 28 design cases for auth pages, confirms and modals, and empty, failed and loading states.
 
 - `oneslash-design-system/cases.json` lists every case with its rule text, options, Do and Don't lines, and the source of each example.
 - `oneslash-design-system/cases/<id>.md` is one case as text, and `oneslash-design-system/cases/<id>/<option>.jsx` is the example itself.
