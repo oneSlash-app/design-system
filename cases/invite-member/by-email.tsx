@@ -103,7 +103,7 @@ export default function InviteMemberByEmail() {
         actions={
           <>
             <Button size="small" type="tertiary" state={sending ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleClose} />
-            <Button size="small" type="primary" state={address === '' ? 'disabled' : 'enabled'} label="Send Invite" loading={sending} onClickButton={handleSend} />
+            <Button size="small" type="primary" state={address === '' ? 'disabled' : 'enabled'} label="Invite" loading={sending} onClickButton={handleSend} />
           </>
         }
       >

@@ -47,7 +47,7 @@ export default function ImportChecklistModal() {
   const shownIds = shown.map((p) => p.id);
   const count = selected.length;
   // While a search is on, the labels say that they act only on the pages shown.
-  const scope = words ? ` ${shown.length} Shown` : '';
+  const searching = words !== '';
 
   function toggle(id: string, checked: boolean) {
     setSelected((list) => (checked ? [...list, id] : list.filter((x) => x !== id)));
@@ -127,8 +127,8 @@ export default function ImportChecklistModal() {
                 {count} of {available.length} pages selected.{words && ` ${shown.length} match "${words}".`}
               </Paragraph>
               <Cluster gap="small">
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={`Select All${scope}`} onClickButton={selectShown} />
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={`Clear${scope}`} onClickButton={clearShown} />
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={searching ? 'Select Shown' : 'Select All'} onClickButton={selectShown} />
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={searching ? 'Clear Shown' : 'Clear'} onClickButton={clearShown} />
               </Cluster>
             </Stack>
             {shown.length > 0 ? (

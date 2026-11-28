@@ -7,7 +7,7 @@ import { Center } from '../../components/layout';
 // It stays on this state: the login does not finish by itself.
 // If the browser keeps the popup open after window.close(), the page shows one line
 // in place of the spinner: 'Done. You can close this window.'
-// If no page answers after a short wait, the login ran in this tab, so the page finishes it here.
+// If no page answers after about 2 seconds, the login ran in this tab, so the page finishes it here.
 export default function DeviceLoginPopup() {
   return (
     <Center fill>

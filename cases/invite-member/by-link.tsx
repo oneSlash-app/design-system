@@ -71,7 +71,7 @@ export default function InviteMemberByLink() {
     setOpen(false);
   }
 
-  function handleRevoke(id: string) {
+  function handleRevoke(id: string, createdBy: string) {
     if (revoking) return;
     setRevoking(true);
     // Stands in for the request to the server.
@@ -79,7 +79,7 @@ export default function InviteMemberByLink() {
       setRevoking(false);
       setConfirming(null);
       setLinks((list) => list.filter((l) => l.id !== id));
-      toastIds.current.push(toast({ type: 'success', message: 'Invite link revoked.' }));
+      toastIds.current.push(toast({ type: 'success', message: `Link made by ${createdBy} revoked.` }));
     }, 1200);
   }
 
@@ -127,8 +127,8 @@ export default function InviteMemberByLink() {
                   <TableCell width="168px">
                     {confirming === l.id ? (
                       <Cluster gap="small">
-                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" aria-label={`Keep the link made by ${l.createdBy}`} onClickButton={() => setConfirming(null)} />
-                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" aria-label={`Confirm revoking the link made by ${l.createdBy}`} loading={revoking} onClickButton={() => handleRevoke(l.id)} />
+                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" aria-label={`Cancel, keep the link made by ${l.createdBy}`} onClickButton={() => setConfirming(null)} />
+                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" aria-label={`Revoke the link made by ${l.createdBy}`} loading={revoking} onClickButton={() => handleRevoke(l.id, l.createdBy)} />
                       </Cluster>
                     ) : (
                       <Cluster gap="small">

@@ -15,8 +15,8 @@ module.exports = {
   ],
   do: [
     'Put a search field at the top, then a count line, then the list of `Checkbox`es.',
-    "Write the count line as plain words: '3 of 8 pages selected'.",
-    "Offer 'Select All' and 'Clear' as tertiary Buttons. Both act on the items shown, and while a search is on their labels say so: 'Select All 2 Shown', 'Clear 2 Shown'.",
+    "Write the count line as plain words: '3 of 8 pages selected.' While a search is on, add how many match: '3 of 8 pages selected. 2 match \"launch\".'",
+    "Offer 'Select All' and 'Clear' as tertiary Buttons. Both act on the items shown, and while a search is on their labels say so: 'Select Shown' and 'Clear Shown'.",
     'Focus the search field when the Modal opens, with `initialFocus="body"`, and again after \'Clear Search\'.',
     "Count the selection in the action: 'Import 3 Pages'. Keep it `state=\"disabled\"` while nothing is selected.",
     'Keep the selection when a search hides items. Items that are filtered out stay selected.',

@@ -2,12 +2,12 @@
 
 A person asks to delete something large that cannot be brought back, such as a workspace or an account.
 
-**Not built yet:** Commentify matches its phrase with any case and ignores spaces around it, and labels its Button 'Deleting…' while it runs. Scindo labels its Button 'Deleting...' on the web and on Apple, and on the web its Delete Workspace Modal shows a failed request as a red caption written by hand.
+**Not built yet:** Commentify matches its phrase with any case and ignores spaces around it, and labels its Button 'Deleting…' while it runs. Scindo labels its Button 'Deleting...' on the web and on Apple. On the web its Delete Workspace Modal shows a failed request as a red caption written by hand.
 
 ## Do
 
 - Ask for typing only when the loss is permanent and large, such as a workspace with everything in it, or an account.
-- Ask for the thing's name when it has one. Ask for a fixed word, such as DELETE, when it does not.
+- Ask the person to type the thing's name when it has one, and a fixed word such as DELETE when it does not.
 - Put the text to type in the field's label: 'Type Acme Design to confirm'.
 - Keep the action Button `state="disabled"` until the typed text matches exactly.
 - Match with case: 'acme design' does not match 'Acme Design'. Allow pasting the text.
@@ -22,7 +22,7 @@ A person asks to delete something large that cannot be brought back, such as a w
 
 ## Option: Type the name in a Modal
 
-Use when: The thing has a name to type, such as a workspace.
+Use when: The action starts from a menu or a row, away from a settings page.
 
 Uses: `Button`, `Center`, `Cluster`, `Heading`, `List`, `Modal`, `Paragraph`, `Stack`, `Surface`, `TextField`, `Toaster`, `dismissToast`, `toast`
 
@@ -124,7 +124,7 @@ export default function TypeToConfirmModal() {
 
 ## Option: Type a word in place
 
-Use when: A danger zone on a settings page: the field appears in place, under what it deletes.
+Use when: The action lives in a danger zone on a settings page.
 
 Uses: `Button`, `Center`, `Cluster`, `Heading`, `Paragraph`, `Stack`, `Surface`, `TextField`
 

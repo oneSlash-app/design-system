@@ -57,7 +57,7 @@ export default function ConfirmDestructiveActionInline() {
               <TableCell width="168px">
                 {confirming === m.id ? (<Cluster gap="small">
                     <Button size="small" type="tertiary" state={removing ? 'disabled' : 'enabled'} label="Cancel" aria-label={"Cancel removing ".concat(m.name)} onClickButton={function () { return setConfirming(null); }}/>
-                    <Button size="small" type="primary" color="danger" state="enabled" label="Remove" aria-label={"Confirm removing ".concat(m.name)} loading={removing} onClickButton={function () { return handleRemove(m.id, m.name); }}/>
+                    <Button size="small" type="primary" color="danger" state="enabled" label="Remove" aria-label={"Remove ".concat(m.name)} loading={removing} onClickButton={function () { return handleRemove(m.id, m.name); }}/>
                   </Cluster>) : (<Cluster gap="small">
                     <Button size="small" type="tertiary" state={removing ? 'disabled' : 'enabled'} label="Remove" aria-label={"Remove ".concat(m.name)} onClickButton={function () { return setConfirming(m.id); }}/>
                   </Cluster>)}

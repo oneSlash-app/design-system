@@ -43,7 +43,7 @@ export default function EmailConfirmedAlertOnLogin() {
             return;
         }
         if (!looksLikeEmail(email.trim())) {
-            setEmailError('Enter a valid email address.');
+            setEmailError('Enter an email address, like name@example.com.');
             return;
         }
         if (!password) {

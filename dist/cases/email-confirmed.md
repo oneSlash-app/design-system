@@ -2,7 +2,7 @@
 
 A person opened the link that confirms their email.
 
-**Not built yet:** Scindo on the web shows its success Alert above the login form with a close button. Commentify has no confirmed page and no Alert for it.
+**Not built yet:** Scindo on the web shows its success Alert above the login form with a close button. Commentify has no confirmed page and no Alert for it: the link goes straight to the dashboard.
 
 ## Do
 
@@ -110,7 +110,7 @@ export default function EmailConfirmedAlertOnLogin() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {
@@ -148,4 +148,4 @@ export default function EmailConfirmedAlertOnLogin() {
 }
 ```
 
-Seen in: Scindo.
+Seen in: Commentify, Scindo.

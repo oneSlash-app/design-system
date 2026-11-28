@@ -31,11 +31,13 @@ module.exports = {
     "Do not show the error's own message, such as 'Failed to fetch'.",
     'Do not replace the whole page when only one section failed.',
   ],
-  notBuiltYet: "Scindo on the web offers no Try Again when a list fails to load the first time. Commentify puts its 'Try again' Button under `EmptyBox`, not in its `action`.",
+  notBuiltYet: "Scindo on the web shows its empty list, with no Try Again, when its API keys or its members fail to load. Commentify puts its 'Try again' Button under `EmptyBox`, not in its `action`.",
   native: "On Apple use `ContentUnavailableView`, with a 'Try Again' Button in its `actions`.",
   seenIn: [
     { product: 'Commentify', path: 'src/app/(main)/comments/AllViewComponent.tsx' },
     { product: 'Commentify', path: 'src/app/(main)/checked/CheckedComponent.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/components/settings/ApiKeysSettings.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/components/settings/MembersSettings.tsx' },
     { product: 'Scindo', path: 'apps/apple/Shared/Views/SearchView.swift' },
   ],
 };

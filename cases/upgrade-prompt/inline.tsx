@@ -40,7 +40,7 @@ export default function UpgradePromptInline() {
           <Surface padding="medium">
             <Stack gap="medium">
               <Stack gap="small">
-                <Paragraph measure="none">You have used all 50 agent replies for November. They start again on December 1.</Paragraph>
+                <Paragraph measure="none">You&apos;ve used all 50 agent replies this month. They start again on December 1.</Paragraph>
                 <Paragraph tone="secondary" size="body2" measure="none">
                   {canChangePlan
                     ? 'The Pro plan gives Acme Design 1,000 agent replies a month.'

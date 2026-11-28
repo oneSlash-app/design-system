@@ -1,18 +1,19 @@
 # Upgrade prompt
 
-A person reaches something their plan does not include, or a limit of their plan. When the agent is the one refused, follow the rule 'An agent refuses clearly' too.
+A person reaches something their plan does not include, or a limit of their plan.
 
 **Not built yet:** Scindo's upgrade prompt on the web is an overlay built by hand that does not close on Escape, is titled 'Upgrade Required' and shows Upgrade to everyone. Commentify's upgrade Modal labels its Buttons 'Maybe Later' and 'Upgrade'.
 
 ## Do
 
 - Say what is locked and which plan unlocks it: 'Exporting to PDF is part of the Pro plan.'
-- Say which limit was reached, with the number, and when it resets: 'You have used all 50 agent replies for November.'
+- Say which limit was reached, with the number, and when it resets: "You've used all 50 agent replies this month. They start again on December 1."
 - Offer 'Not Now' as a tertiary Button, then 'Upgrade to Pro' as a primary Button.
 - Show 'Upgrade to Pro' only to a person who can change the plan. Tell everyone else to ask a workspace admin, and give them only 'Not Now'.
-- Title the Modal 'Upgrade to Pro' only for a person who can upgrade. For everyone else, name what is locked: 'PDF Export Is on Pro'.
+- Title the Modal 'Upgrade to Pro' only for a person who can upgrade. For everyone else, title it 'Pro Feature'.
 - Follow the rule 'Confirm dialogs' for the Modal: `size="small"`, and Escape or a click outside means 'Not Now'.
 - Put the notice where the control was, with the same two Buttons, when a limit is reached inside a flow.
+- Follow the rule 'An agent refuses clearly' too when the agent is the one refused.
 
 ## Don't
 
@@ -67,7 +68,7 @@ export default function UpgradePromptModal() {
         isOpen={open}
         size="small"
         // The title names the action only for a person who can take it.
-        title={canChangePlan ? 'Upgrade to Pro' : 'PDF Export Is on Pro'}
+        title={canChangePlan ? 'Upgrade to Pro' : 'Pro Feature'}
         onClose={() => setOpen(false)}
         actions={
           canChangePlan ? (
@@ -141,7 +142,7 @@ export default function UpgradePromptInline() {
           <Surface padding="medium">
             <Stack gap="medium">
               <Stack gap="small">
-                <Paragraph measure="none">You have used all 50 agent replies for November. They start again on December 1.</Paragraph>
+                <Paragraph measure="none">You&apos;ve used all 50 agent replies this month. They start again on December 1.</Paragraph>
                 <Paragraph tone="secondary" size="body2" measure="none">
                   {canChangePlan
                     ? 'The Pro plan gives Acme Design 1,000 agent replies a month.'

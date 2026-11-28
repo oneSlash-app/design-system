@@ -69,7 +69,7 @@ export default function UnsavedChangesSaveOrDiscard() {
         <Heading level={1} size="h5">Q3 plan</Heading>
         <TextField id="unsaved-changes-guard-body" label="Plan" multiline maxRows={4} value={draft} onChange={function (e) { return setDraft(e.target.value); }}/>
         <Cluster gap="small">
-          <Button size="small" type="tertiary" state="enabled" label="Close" onClickButton={handleCloseEditor}/>
+          <Button size="small" type="tertiary" state="enabled" label="Close Draft" onClickButton={handleCloseEditor}/>
         </Cluster>
       </Stack>
       <Modal isOpen={asking} size="small" title="Save Changes" onClose={handleCancel} actions={<>

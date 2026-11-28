@@ -29,9 +29,10 @@ module.exports = {
     'Do not ask the person to log in again in the browser where they are already logged in.',
     'Do not make the person close the success Alert.',
   ],
-  notBuiltYet: 'Scindo on the web shows its success Alert above the login form with a close button. Commentify has no confirmed page and no Alert for it.',
+  notBuiltYet: 'Scindo on the web shows its success Alert above the login form with a close button. Commentify has no confirmed page and no Alert for it: the link goes straight to the dashboard.',
   seenIn: [
     { product: 'Scindo', path: 'apps/web/src/app/confirmed/page.tsx' },
     { product: 'Scindo', path: 'apps/web/src/app/(auth)/login/page.tsx' },
+    { product: 'Commentify', path: 'src/app/(auth)/callback/route.ts' },
   ],
 };

@@ -2,7 +2,7 @@
 
 A CLI, an editor or another app opened the browser so the person can log in, and the login must reach that app.
 
-**Not built yet:** Scindo's CLI login shows 'Login successful!' as soon as its request to the CLI gets any reply. It sends that request with `no-cors`, so it cannot read whether the CLI took the login. Its provider Buttons read 'GitHub' and 'Google'. Commentify's popup shows nothing while it finishes.
+**Not built yet:** Scindo's CLI login shows 'Login successful!' as soon as its request to the CLI gets any reply. It sends that request in a way that leaves the page unable to read the CLI's reply, so it cannot tell whether the CLI took the login. Its provider Buttons read 'GitHub' and 'Google'. Commentify's popup shows nothing while it finishes.
 
 ## Do
 
@@ -12,7 +12,7 @@ A CLI, an editor or another app opened the browser so the person can log in, and
 - End on "You're logged in" and 'You can close this tab.' once the device has answered.
 - Go back to the form with an inline error Alert when the device does not answer, and say what to check.
 - Show `LoadingScreen` with `label="Finishing login…"` while a popup finishes, and close the popup when the page that opened it answers.
-- Finish the login in this tab after a short wait when no page that opened the popup answers.
+- Finish the login in this tab after about 2 seconds when no page that opened the popup answers.
 - Show 'Done. You can close this window.' when the browser keeps the popup open.
 
 ## Don't
@@ -75,7 +75,7 @@ export default function DeviceLoginProviderFirst() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {
@@ -135,7 +135,7 @@ export default function DeviceLoginProviderFirst() {
         <TextField id="device-login-provider-first-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
         <TextField id="device-login-provider-first-password" label="Password" type="password" autoComplete="current-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />
         <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading} />
-        <Button size="medium" type="textOnly" state="enabled" label="Forgot password?" />
+        <Button size="medium" type="textOnly" state="enabled" label="Forgot Password?" />
       </Form>
     </Center>
   );
@@ -158,7 +158,7 @@ import { Center } from 'oneslash-design-system/components/layout';
 // It stays on this state: the login does not finish by itself.
 // If the browser keeps the popup open after window.close(), the page shows one line
 // in place of the spinner: 'Done. You can close this window.'
-// If no page answers after a short wait, the login ran in this tab, so the page finishes it here.
+// If no page answers after about 2 seconds, the login ran in this tab, so the page finishes it here.
 export default function DeviceLoginPopup() {
   return (
     <Center fill>

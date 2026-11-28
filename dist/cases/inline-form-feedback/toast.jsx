@@ -55,7 +55,7 @@ export default function InlineFormFeedbackToast() {
         <Stack gap="large">
           <Heading level={2} size="h6">Invite people</Heading>
           <Form aria-label="Invite people" onSubmit={handleSubmit}>
-            <TextField id="inline-form-feedback-email" label="Email" type="email" value={email} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
+            <TextField id="inline-form-feedback-email" label="Email" type="email" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
             <Cluster>
               <Button size="medium" type="primary" state="enabled" label="Send Invite" htmlType="submit" loading={loading}/>
             </Cluster>

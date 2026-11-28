@@ -24,9 +24,18 @@ export default function ForgotPasswordOwnPage() {
     var _c = useState(''), error = _c[0], setError = _c[1];
     var _d = useState(''), emailError = _d[0], setEmailError = _d[1];
     var _e = useState(false), loading = _e[0], setLoading = _e[1];
+    var _f = useState(false), resending = _f[0], setResending = _f[1];
+    var _g = useState(false), resent = _g[0], setResent = _g[1];
     var timer = useRef();
     // Stops the request if the example goes away before it ends.
     useEffect(function () { return function () { return clearTimeout(timer.current); }; }, []);
+    // 'Sent' shows for 2 seconds, then the Button reads 'Send Again'.
+    useEffect(function () {
+        if (!resent)
+            return;
+        var timer = setTimeout(function () { return setResent(false); }, 2000);
+        return function () { return clearTimeout(timer); };
+    }, [resent]);
     function handleSubmit() {
         if (loading)
             return;
@@ -37,7 +46,7 @@ export default function ForgotPasswordOwnPage() {
             return;
         }
         if (!looksLikeEmail(email.trim())) {
-            setEmailError('Enter a valid email address.');
+            setEmailError('Enter an email address, like name@example.com.');
             return;
         }
         setLoading(true);
@@ -50,6 +59,17 @@ export default function ForgotPasswordOwnPage() {
             setSentTo(address);
         }, 1200);
     }
+    function handleSendAgain() {
+        // One click sends one email: clicks while it sends or reads 'Sent' do nothing.
+        if (resending || resent)
+            return;
+        setResending(true);
+        // Stands in for the request to the server.
+        timer.current = setTimeout(function () {
+            setResending(false);
+            setResent(true);
+        }, 1200);
+    }
     if (sentTo) {
         return (<Center fill>
         <Icon icon={Mail} size="large" color="secondary"/>
@@ -57,7 +77,10 @@ export default function ForgotPasswordOwnPage() {
           <Heading level={1} size="h5">Check your email</Heading>
           <Paragraph tone="secondary" measure="none">If {sentTo} has an Acme account, we sent it a link to reset the password.</Paragraph>
         </Stack>
-        <Button size="medium" type="textOnly" state="enabled" label="Back to Login" onClickButton={function () { return router.push('/login'); }}/>
+        <Stack gap="large">
+          <Button size="medium" type="secondary" state="enabled" label={resent ? 'Sent' : 'Send Again'} loading={resending} onClickButton={handleSendAgain}/>
+          <Button size="medium" type="textOnly" state="enabled" label="Back to Login" onClickButton={function () { return router.push('/login'); }}/>
+        </Stack>
       </Center>);
     }
     return (<Center fill>
@@ -70,7 +93,7 @@ export default function ForgotPasswordOwnPage() {
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={function () { return setError(''); }}/>}
         <TextField id="forgot-password-own-page-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
         <Button size="medium" type="primary" state="enabled" label="Send Reset Link" htmlType="submit" loading={loading}/>
-        <Button size="medium" type="textOnly" state="enabled" label="Back to Login" onClickButton={function () { return router.push('/login'); }}/>
+        <Button size="medium" type="textOnly" state={loading ? 'disabled' : 'enabled'} label="Back to Login" onClickButton={function () { return router.push('/login'); }}/>
       </Form>
     </Center>);
 }

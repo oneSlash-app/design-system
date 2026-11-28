@@ -7,8 +7,8 @@ A person picks which items to bring in from another place, such as pages from a 
 ## Do
 
 - Put a search field at the top, then a count line, then the list of `Checkbox`es.
-- Write the count line as plain words: '3 of 8 pages selected'.
-- Offer 'Select All' and 'Clear' as tertiary Buttons. Both act on the items shown, and while a search is on their labels say so: 'Select All 2 Shown', 'Clear 2 Shown'.
+- Write the count line as plain words: '3 of 8 pages selected.' While a search is on, add how many match: '3 of 8 pages selected. 2 match "launch".'
+- Offer 'Select All' and 'Clear' as tertiary Buttons. Both act on the items shown, and while a search is on their labels say so: 'Select Shown' and 'Clear Shown'.
 - Focus the search field when the Modal opens, with `initialFocus="body"`, and again after 'Clear Search'.
 - Count the selection in the action: 'Import 3 Pages'. Keep it `state="disabled"` while nothing is selected.
 - Keep the selection when a search hides items. Items that are filtered out stay selected.
@@ -78,7 +78,7 @@ export default function ImportChecklistModal() {
   const shownIds = shown.map((p) => p.id);
   const count = selected.length;
   // While a search is on, the labels say that they act only on the pages shown.
-  const scope = words ? ` ${shown.length} Shown` : '';
+  const searching = words !== '';
 
   function toggle(id: string, checked: boolean) {
     setSelected((list) => (checked ? [...list, id] : list.filter((x) => x !== id)));
@@ -158,8 +158,8 @@ export default function ImportChecklistModal() {
                 {count} of {available.length} pages selected.{words && ` ${shown.length} match "${words}".`}
               </Paragraph>
               <Cluster gap="small">
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={`Select All${scope}`} onClickButton={selectShown} />
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={`Clear${scope}`} onClickButton={clearShown} />
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={searching ? 'Select Shown' : 'Select All'} onClickButton={selectShown} />
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={searching ? 'Clear Shown' : 'Clear'} onClickButton={clearShown} />
               </Cluster>
             </Stack>
             {shown.length > 0 ? (

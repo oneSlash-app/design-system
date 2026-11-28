@@ -47,7 +47,7 @@ export default function InlineFormFeedbackButtonLabel() {
         <Stack gap="large">
           <Heading level={2} size="h6">Profile</Heading>
           <Form aria-label="Profile" onSubmit={handleSubmit}>
-            <TextField id="inline-form-feedback-name" label="Display name" value={name} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); setSaved(false); }} />
+            <TextField id="inline-form-feedback-name" label="Display name" value={name} disabled={loading} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); setSaved(false); }} />
             <Cluster>
               <Button size="medium" type="primary" state="enabled" label={saved ? 'Saved' : 'Save'} htmlType="submit" loading={loading} />
             </Cluster>

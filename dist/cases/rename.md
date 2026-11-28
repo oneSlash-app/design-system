@@ -108,7 +108,7 @@ export default function RenameModal() {
       >
         {/* The Form lets Enter in the field rename too. */}
         <Form aria-label="Rename project" onSubmit={handleRename}>
-          <TextField id="rename-name" label="Project name" value={draft} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setDraft(e.target.value); setNameError(''); }} />
+          <TextField id="rename-name" label="Project name" value={draft} disabled={saving} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setDraft(e.target.value); setNameError(''); }} />
         </Form>
       </Modal>
     </Center>

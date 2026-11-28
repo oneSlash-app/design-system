@@ -26,7 +26,7 @@ function looksLikeEmail(value: string) {
 export default function CheckYourEmailAlertOnLogin() {
   // Opens as the login page does right after sign-up. The words are the same whether or not the address
   // already had an account, so the page never says which.
-  const [notice, setNotice] = useState('We sent a link to ada@example.com. Open it to finish signing up, or log in below.');
+  const [notice, setNotice] = useState('We sent a link to ada@example.com. Open it to continue, or log in below.');
   const [email, setEmail] = useState('ada@example.com');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -49,7 +49,7 @@ export default function CheckYourEmailAlertOnLogin() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {

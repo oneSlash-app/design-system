@@ -26,7 +26,7 @@ module.exports = {
     "End on \"You're logged in\" and 'You can close this tab.' once the device has answered.",
     'Go back to the form with an inline error Alert when the device does not answer, and say what to check.',
     "Show `LoadingScreen` with `label=\"Finishing login…\"` while a popup finishes, and close the popup when the page that opened it answers.",
-    'Finish the login in this tab after a short wait when no page that opened the popup answers.',
+    'Finish the login in this tab after about 2 seconds when no page that opened the popup answers.',
     "Show 'Done. You can close this window.' when the browser keeps the popup open.",
   ],
   dont: [
@@ -34,7 +34,7 @@ module.exports = {
     'Do not leave a popup blank while it finishes.',
     "Do not label a provider Button with its name alone, such as 'Google'. Write 'Continue with Google'.",
   ],
-  notBuiltYet: "Scindo's CLI login shows 'Login successful!' as soon as its request to the CLI gets any reply. It sends that request with `no-cors`, so it cannot read whether the CLI took the login. Its provider Buttons read 'GitHub' and 'Google'. Commentify's popup shows nothing while it finishes.",
+  notBuiltYet: "Scindo's CLI login shows 'Login successful!' as soon as its request to the CLI gets any reply. It sends that request in a way that leaves the page unable to read the CLI's reply, so it cannot tell whether the CLI took the login. Its provider Buttons read 'GitHub' and 'Google'. Commentify's popup shows nothing while it finishes.",
   seenIn: [
     { product: 'Scindo', path: 'apps/web/src/app/(auth)/cli-login/page.tsx' },
     { product: 'Commentify', path: 'src/app/connect/done/page.tsx' },

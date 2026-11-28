@@ -10,7 +10,7 @@ module.exports = {
   why: 'A message next to the problem tells the person what to fix without searching for it. Keeping what they typed means they fix one thing instead of starting again.',
   do: [
     'Show a problem with one field under that field, with `error` and `errorText`.',
-    "Say what to do, not only what is wrong: 'Enter an email address, like name@acme.com.'",
+    "Say what to do, not only what is wrong: 'Enter an email address, like name@example.com.'",
     'Show a problem with the whole request above the fields in `<Alert type="error" variant="inline" showCloseButton>`.',
     "Clear the message in the Alert's `onClose`.",
     'Keep everything the person typed after a failed submit.',
@@ -28,6 +28,10 @@ module.exports = {
     { product: 'Commentify', path: 'src/components/figmaImport/FigmaImportDialog.tsx' },
     { product: 'Scindo', path: 'apps/web/src/components/chat/ChannelHeader.tsx' },
     { product: 'Scindo', path: 'apps/web/src/components/settings/DataRetentionSettings.tsx' },
+    { product: 'Commentify', path: 'src/app/(main)/saved/ScrapSection.tsx' },
+    { product: 'Commentify', path: 'src/app/(main)/settings/[[...user-profile]]/Subscription.tsx' },
+    { product: 'Commentify', path: 'src/components/plan/UpgradeModal.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/components/chat/DocumentView.tsx' },
     { product: 'jinhwankim.com', path: 'components/ProtectedContent.js' },
   ],
 };

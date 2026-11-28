@@ -9,7 +9,8 @@ A person asks to delete or remove something, and it cannot be undone.
 - Follow the rule 'Confirm dialogs' for the Modal: `size="small"`, 'Cancel' first, then the action with `color="danger"`.
 - Name the thing and what goes with it: "This deletes 'Q3 plan' and its 12 tasks."
 - Turn the row's Buttons into 'Cancel' and a danger 'Remove' in place for the inline confirm. The rest of the row stays as it is.
-- Give each row's Buttons an `aria-label` that names the thing, such as 'Remove Dana Lee', 'Cancel removing Dana Lee' and 'Confirm removing Dana Lee', so a screen reader knows which row they act on.
+- Give each row's Buttons an `aria-label` that starts with the visible label and names the thing, such as 'Remove Dana Lee' and 'Cancel removing Dana Lee'.
+- Name the thing in the label so a screen reader knows which row a Button acts on.
 - Keep one row confirming at a time. Starting a confirm on another row cancels the first.
 - Show a toast that names the thing once it is gone.
 
@@ -186,7 +187,7 @@ export default function ConfirmDestructiveActionInline() {
                 {confirming === m.id ? (
                   <Cluster gap="small">
                     <Button size="small" type="tertiary" state={removing ? 'disabled' : 'enabled'} label="Cancel" aria-label={`Cancel removing ${m.name}`} onClickButton={() => setConfirming(null)} />
-                    <Button size="small" type="primary" color="danger" state="enabled" label="Remove" aria-label={`Confirm removing ${m.name}`} loading={removing} onClickButton={() => handleRemove(m.id, m.name)} />
+                    <Button size="small" type="primary" color="danger" state="enabled" label="Remove" aria-label={`Remove ${m.name}`} loading={removing} onClickButton={() => handleRemove(m.id, m.name)} />
                   </Cluster>
                 ) : (
                   <Cluster gap="small">

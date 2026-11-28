@@ -36,7 +36,7 @@ export default function UpgradePromptModal() {
         isOpen={open}
         size="small"
         // The title names the action only for a person who can take it.
-        title={canChangePlan ? 'Upgrade to Pro' : 'PDF Export Is on Pro'}
+        title={canChangePlan ? 'Upgrade to Pro' : 'Pro Feature'}
         onClose={() => setOpen(false)}
         actions={
           canChangePlan ? (

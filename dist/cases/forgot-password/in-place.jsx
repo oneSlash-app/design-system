@@ -31,9 +31,18 @@ export default function ForgotPasswordInPlace() {
     var _e = useState(''), emailError = _e[0], setEmailError = _e[1];
     var _f = useState(''), passwordError = _f[0], setPasswordError = _f[1];
     var _g = useState(false), loading = _g[0], setLoading = _g[1];
+    var _h = useState(false), resending = _h[0], setResending = _h[1];
+    var _j = useState(false), resent = _j[0], setResent = _j[1];
     var timer = useRef();
     // Stops the request if the example goes away before it ends.
     useEffect(function () { return function () { return clearTimeout(timer.current); }; }, []);
+    // 'Sent' shows for 2 seconds, then the Button reads 'Send Again'.
+    useEffect(function () {
+        if (!resent)
+            return;
+        var timer = setTimeout(function () { return setResent(false); }, 2000);
+        return function () { return clearTimeout(timer); };
+    }, [resent]);
     // Moves between the login form, the reset form and the confirmation. The email stays as typed.
     function showView(next) {
         setError('');
@@ -52,7 +61,7 @@ export default function ForgotPasswordInPlace() {
             return;
         }
         if (!looksLikeEmail(email.trim())) {
-            setEmailError('Enter a valid email address.');
+            setEmailError('Enter an email address, like name@example.com.');
             return;
         }
         if (!password) {
@@ -76,7 +85,7 @@ export default function ForgotPasswordInPlace() {
             return;
         }
         if (!looksLikeEmail(email.trim())) {
-            setEmailError('Enter a valid email address.');
+            setEmailError('Enter an email address, like name@example.com.');
             return;
         }
         setLoading(true);
@@ -88,6 +97,17 @@ export default function ForgotPasswordInPlace() {
             showView('sent');
         }, 1200);
     }
+    function handleSendAgain() {
+        // One click sends one email: clicks while it sends or reads 'Sent' do nothing.
+        if (resending || resent)
+            return;
+        setResending(true);
+        // Stands in for the request to the server.
+        timer.current = setTimeout(function () {
+            setResending(false);
+            setResent(true);
+        }, 1200);
+    }
     if (view === 'sent') {
         return (<Center fill>
         <Icon icon={Mail} size="large" color="secondary"/>
@@ -95,7 +115,10 @@ export default function ForgotPasswordInPlace() {
           <Heading level={1} size="h5">Check your email</Heading>
           <Paragraph tone="secondary" measure="none">If {email.trim()} has an Acme account, we sent it a link to reset the password.</Paragraph>
         </Stack>
-        <Button size="medium" type="textOnly" state="enabled" label="Back to Login" onClickButton={function () { return showView('login'); }}/>
+        <Stack gap="large">
+          <Button size="medium" type="secondary" state="enabled" label={resent ? 'Sent' : 'Send Again'} loading={resending} onClickButton={handleSendAgain}/>
+          <Button size="medium" type="textOnly" state="enabled" label="Back to Login" onClickButton={function () { return showView('login'); }}/>
+        </Stack>
       </Center>);
     }
     if (view === 'reset') {

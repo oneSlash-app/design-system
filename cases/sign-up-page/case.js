@@ -48,7 +48,9 @@ module.exports = {
   native: 'On Apple, Scindo opens the web sign-up page with a `Link`. A sign-up built in the app uses `SignInWithAppleButton` for Apple, a grouped form for the fields, and system buttons.',
   seenIn: [
     { product: 'Commentify', path: 'src/app/(auth)/signup/[[...signup]]/page.tsx' },
+    { product: 'Commentify', path: 'src/app/(auth)/reset-password/page.tsx' },
     { product: 'Scindo', path: 'apps/web/src/app/(auth)/signup/page.tsx' },
+    { product: 'Scindo', path: 'apps/web/src/app/(auth)/reset-password/page.tsx' },
     { product: 'Scindo', path: 'apps/apple/Shared/Views/SignInView.swift' },
   ],
 };

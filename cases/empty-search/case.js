@@ -9,14 +9,15 @@ module.exports = {
     {
       id: 'clear-search',
       title: 'The words and a way to clear them',
-      useWhen: 'A search or a filter finds nothing.',
+      useWhen: 'Any search or filter.',
       example: 'clear-search.tsx',
     },
   ],
   do: [
     'Use `icon="Search"`, so it reads as a search and not an empty list.',
-    'Show the words searched for: \'No results for "q3 plan"\'.',
+    'Show the words searched for, as `No <things> match "<words>"`: \'No projects match "q3 plan"\'.',
     "Pass a 'Clear Search' Button as `action`. It empties the field and shows the whole list again.",
+    "Put focus back in the search field after 'Clear Search'.",
     'Keep the words in the search field.',
   ],
   dont: [

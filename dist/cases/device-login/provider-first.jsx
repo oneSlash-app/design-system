@@ -40,7 +40,7 @@ export default function DeviceLoginProviderFirst() {
             return;
         }
         if (!looksLikeEmail(email.trim())) {
-            setEmailError('Enter a valid email address.');
+            setEmailError('Enter an email address, like name@example.com.');
             return;
         }
         if (!password) {
@@ -92,7 +92,7 @@ export default function DeviceLoginProviderFirst() {
         <TextField id="device-login-provider-first-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
         <TextField id="device-login-provider-first-password" label="Password" type="password" autoComplete="current-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={function (e) { setPassword(e.target.value); setPasswordError(''); }}/>
         <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading}/>
-        <Button size="medium" type="textOnly" state="enabled" label="Forgot password?"/>
+        <Button size="medium" type="textOnly" state="enabled" label="Forgot Password?"/>
       </Form>
     </Center>);
 }

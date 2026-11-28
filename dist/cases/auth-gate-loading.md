@@ -10,6 +10,7 @@ The app is checking whether the person is logged in, or running a step such as c
 - Replace the spinner with the page, or go to the login page, as soon as the check ends.
 - Show no text when the wait is normally under about a second.
 - Name the step in `LoadingScreen`'s `label` when it can take longer than about a second: `label="Checking invite…"`.
+- Use the same screen as the full-screen spinner in 'Page loading': `LoadingScreen` alone in `Center` with `fill`.
 
 ## Don't
 

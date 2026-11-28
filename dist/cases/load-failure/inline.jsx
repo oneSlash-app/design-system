@@ -42,7 +42,7 @@ export default function LoadFailureInline() {
                 {/* The section stays failed until it loads, so the Alert has no close button and does not close on its own. */}
                 <Alert type="error" variant="inline" message={error} autoDismiss={false}/>
                 <Cluster>
-                  <Button size="small" type="secondary" state="enabled" label="Try Again" loading={loading} onClickButton={handleTryAgain}/>
+                  <Button size="small" type="primary" state="enabled" label="Try Again" loading={loading} onClickButton={handleTryAgain}/>
                 </Cluster>
               </>) : (<List items={invoices} size="body2"/>)}
           </Stack>

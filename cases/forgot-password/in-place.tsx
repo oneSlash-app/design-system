@@ -36,10 +36,19 @@ export default function ForgotPasswordInPlace() {
   const [emailError, setEmailError] = useState('');
   const [passwordError, setPasswordError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [resending, setResending] = useState(false);
+  const [resent, setResent] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>();
 
   // Stops the request if the example goes away before it ends.
   useEffect(() => () => clearTimeout(timer.current), []);
+
+  // 'Sent' shows for 2 seconds, then the Button reads 'Send Again'.
+  useEffect(() => {
+    if (!resent) return;
+    const timer = setTimeout(() => setResent(false), 2000);
+    return () => clearTimeout(timer);
+  }, [resent]);
 
   // Moves between the login form, the reset form and the confirmation. The email stays as typed.
   function showView(next: 'login' | 'reset' | 'sent') {
@@ -59,7 +68,7 @@ export default function ForgotPasswordInPlace() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {
@@ -83,7 +92,7 @@ export default function ForgotPasswordInPlace() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     setLoading(true);
@@ -96,6 +105,17 @@ export default function ForgotPasswordInPlace() {
     }, 1200);
   }
 
+  function handleSendAgain() {
+    // One click sends one email: clicks while it sends or reads 'Sent' do nothing.
+    if (resending || resent) return;
+    setResending(true);
+    // Stands in for the request to the server.
+    timer.current = setTimeout(() => {
+      setResending(false);
+      setResent(true);
+    }, 1200);
+  }
+
   if (view === 'sent') {
     return (
       <Center fill>
@@ -104,7 +124,10 @@ export default function ForgotPasswordInPlace() {
           <Heading level={1} size="h5">Check your email</Heading>
           <Paragraph tone="secondary" measure="none">If {email.trim()} has an Acme account, we sent it a link to reset the password.</Paragraph>
         </Stack>
-        <Button size="medium" type="textOnly" state="enabled" label="Back to Login" onClickButton={() => showView('login')} />
+        <Stack gap="large">
+          <Button size="medium" type="secondary" state="enabled" label={resent ? 'Sent' : 'Send Again'} loading={resending} onClickButton={handleSendAgain} />
+          <Button size="medium" type="textOnly" state="enabled" label="Back to Login" onClickButton={() => showView('login')} />
+        </Stack>
       </Center>
     );
   }

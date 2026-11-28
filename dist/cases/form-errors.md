@@ -15,7 +15,7 @@ A message next to the problem tells the person what to fix without searching for
 ## Do
 
 - Show a problem with one field under that field, with `error` and `errorText`.
-- Say what to do, not only what is wrong: 'Enter an email address, like name@acme.com.'
+- Say what to do, not only what is wrong: 'Enter an email address, like name@example.com.'
 - Show a problem with the whole request above the fields in `<Alert type="error" variant="inline" showCloseButton>`.
 - Clear the message in the Alert's `onClose`.
 - Keep everything the person typed after a failed submit.

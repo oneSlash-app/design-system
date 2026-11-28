@@ -34,7 +34,7 @@ module.exports = {
     "Do not title the Modal 'Are you sure?'.",
   ],
   native: "On macOS a document window that closes with changes asks with the system alert: 'Save', 'Don't Save' and 'Cancel'. When the product cannot save, use a `confirmationDialog` with 'Discard' in the `.destructive` role and 'Keep Editing' in the `.cancel` role.",
-  notBuiltYet: 'No web product guards unsaved changes. Scindo on the web drops the changes to a document when the person chooses Cancel, with no question.',
+  notBuiltYet: 'Scindo on the web guards no unsaved changes. It drops the changes to a document when the person chooses Cancel, with no question.',
   seenIn: [
     { product: 'Scindo', path: 'apps/web/src/components/chat/DocumentView.tsx' },
     { product: 'Scindo', path: 'apps/apple/macOS/DocumentCloseGuard.swift' },

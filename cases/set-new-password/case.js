@@ -21,7 +21,7 @@ module.exports = {
     'Check the rule on the server too, and show its refusal under the field.',
     'Show a problem with one field under that field: a password that does not match shows under Confirm password, and clears when either field changes.',
     'Show the loading state on the submit Button while updating, and keep the form in place.',
-    'Sign the reset session out on success, so the person really logs in with the new password.',
+    "Log the person out of the reset link's session before showing the login form, so they really log in with the new password.",
     "Go to the login form on success, with a success Alert above it: 'Password updated. Log in with your new password.'",
     "Show an inline error Alert in place of the form when the link is invalid or expired, with a 'Back to Login' Button under it. The Alert reports a standing condition, so it has no close button and `autoDismiss={false}`: 'This link has expired or was already used. Ask for a new one from the login page.'",
   ],
@@ -31,7 +31,7 @@ module.exports = {
     'Do not replace the form with a spinner while updating.',
     'Do not show the form when the link is invalid or expired.',
   ],
-  notBuiltYet: "Commentify and Scindo on the web replace the form with a spinner while updating, show field problems in an Alert above the fields, and accept 6 characters, saying 'Password must be at least 6 characters.' only after it is broken. Scindo's reset page has no invalid-link state.",
+  notBuiltYet: "Commentify and Scindo on the web replace the form with a spinner while updating, and show field problems in an Alert above the fields. Both accept 6 characters, and say 'Password must be at least 6 characters.' only after it is broken. Scindo's reset page has no invalid-link state.",
   seenIn: [
     { product: 'Commentify', path: 'src/app/(auth)/reset-password/page.tsx' },
     { product: 'Scindo', path: 'apps/web/src/app/(auth)/reset-password/page.tsx' },

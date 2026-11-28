@@ -8,6 +8,7 @@ A person chooses Log Out.
 
 - Call it 'Log Out' everywhere: the menu item, the Modal title and the action Button. The way back in is 'Log In'.
 - Say in one sentence what logging out means on this device.
+- Ask before logging out, although logging out is easy to undo. A person can press it by mistake on a shared device, or with unsent work.
 - Leave the action Button in the plain primary color. Logging out destroys nothing.
 - Show `loading` on 'Log Out' while it runs, then show the logged-out page.
 

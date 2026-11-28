@@ -64,7 +64,7 @@ export default function InviteMemberByLink() {
         setConfirming(null);
         setOpen(false);
     }
-    function handleRevoke(id) {
+    function handleRevoke(id, createdBy) {
         if (revoking)
             return;
         setRevoking(true);
@@ -73,7 +73,7 @@ export default function InviteMemberByLink() {
             setRevoking(false);
             setConfirming(null);
             setLinks(function (list) { return list.filter(function (l) { return l.id !== id; }); });
-            toastIds.current.push(toast({ type: 'success', message: 'Invite link revoked.' }));
+            toastIds.current.push(toast({ type: 'success', message: "Link made by ".concat(createdBy, " revoked.") }));
         }, 1200);
     }
     return (<Center width="page">
@@ -108,8 +108,8 @@ export default function InviteMemberByLink() {
                   {/* A fixed last column keeps every row's Buttons in one place, so they do not jump when they change. */}
                   <TableCell width="168px">
                     {confirming === l.id ? (<Cluster gap="small">
-                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" aria-label={"Keep the link made by ".concat(l.createdBy)} onClickButton={function () { return setConfirming(null); }}/>
-                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" aria-label={"Confirm revoking the link made by ".concat(l.createdBy)} loading={revoking} onClickButton={function () { return handleRevoke(l.id); }}/>
+                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" aria-label={"Cancel, keep the link made by ".concat(l.createdBy)} onClickButton={function () { return setConfirming(null); }}/>
+                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" aria-label={"Revoke the link made by ".concat(l.createdBy)} loading={revoking} onClickButton={function () { return handleRevoke(l.id, l.createdBy); }}/>
                       </Cluster>) : (<Cluster gap="small">
                         <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Revoke" aria-label={"Revoke the link made by ".concat(l.createdBy)} onClickButton={function () { return setConfirming(l.id); }}/>
                       </Cluster>)}

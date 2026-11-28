@@ -4,24 +4,24 @@ module.exports = {
   kind: 'design',
   level: 'organism',
   area: 'state',
-  situation: 'A person submits a small form, such as a settings field, and the request ends.',
+  situation: 'A person submits a small form, such as a settings field, and the request ends. The three options are the three outcomes of one save: it worked in place, it failed, or the result is elsewhere.',
   options: [
     {
       id: 'button-label',
       title: 'Saved on the Button',
-      useWhen: 'The form saves in place, and the change shows where it is.',
+      useWhen: 'It worked in place: the change shows where it is.',
       example: 'button-label.tsx',
     },
     {
       id: 'inline-alert',
       title: 'Inline error Alert',
-      useWhen: 'The request failed.',
+      useWhen: 'It failed: the request did not go through.',
       example: 'inline-alert.tsx',
     },
     {
       id: 'toast',
       title: 'Toast',
-      useWhen: 'The result shows somewhere else, such as an invite that was sent.',
+      useWhen: 'The result is elsewhere, such as an invite that was sent.',
       example: 'toast.tsx',
     },
   ],

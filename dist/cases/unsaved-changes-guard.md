@@ -2,7 +2,7 @@
 
 A person closes or leaves something they changed and did not save.
 
-**Not built yet:** No web product guards unsaved changes. Scindo on the web drops the changes to a document when the person chooses Cancel, with no question.
+**Not built yet:** Scindo on the web guards no unsaved changes. It drops the changes to a document when the person chooses Cancel, with no question.
 
 ## Do
 
@@ -107,7 +107,7 @@ export default function UnsavedChangesSaveOrDiscard() {
         <Heading level={1} size="h5">Q3 plan</Heading>
         <TextField id="unsaved-changes-guard-body" label="Plan" multiline maxRows={4} value={draft} onChange={(e) => setDraft(e.target.value)} />
         <Cluster gap="small">
-          <Button size="small" type="tertiary" state="enabled" label="Close" onClickButton={handleCloseEditor} />
+          <Button size="small" type="tertiary" state="enabled" label="Close Draft" onClickButton={handleCloseEditor} />
         </Cluster>
       </Stack>
       <Modal

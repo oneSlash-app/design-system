@@ -24,6 +24,7 @@ module.exports = {
     "Ask only for the email, and send it with 'Send Reset Link'.",
     "Put a text-only 'Back to Login' Button under the form. In place, keep the email typed so far when it goes back.",
     'Keep the email out of the URL when the reset form has its own page.',
+    "Offer 'Send Again' on the confirmation, as on 'Check your email': `loading` while it sends, then 'Sent' for 2 seconds.",
     "Answer every address the same way: 'If ada@example.com has an Acme account, we sent it a link to reset the password.'",
     'Show a problem with the email under the field, and a failed request in an inline Alert above it.',
     'Show the loading state on the submit Button while sending, and keep the form in place.',

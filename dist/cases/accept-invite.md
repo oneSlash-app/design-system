@@ -8,14 +8,14 @@ A person opens an invite link to join a workspace.
 
 - Name the workspace in a `Heading` with `level={1}`: "You're invited to Acme Design".
 - Say the role the person joins as.
-- Show who invited the person, 'Invited by Dana Lee', only when the invite is tied to an address.
-- Say which address the invite is for, masked, such as 'a***@example.com'.
-- Offer 'Log In' as the primary Button and 'Create Account' as the secondary one, and bring the person back to the invite after either.
+- Show who invited the person, 'Invited by Dana Lee', on every invite. It builds trust, and it is not secret.
+- Say which address the invite is for, masked, such as 'a***@example.com', only when the invite is tied to an address.
+- Offer 'Log In' as the primary Button and 'Sign Up' as the secondary one, and bring the person back to the invite after either.
 - Join with no screen when the invite is tied to the verified address of the person who is logged in, and land them in the workspace.
 - Show one screen with a 'Join Acme Design' Button when the invite is an open link and the person is logged in.
-- Show an expired link with a heading, one line and one Button: 'Invite link expired', 'Ask the person who invited you to send a new link.', 'Go to Acme'.
+- Show an expired link with a heading, one line and one Button: 'Invite link expired', 'Ask the person who invited you to send a new link.', 'Go Home'.
 - Show a link for another account with a heading, one line and one Button: 'This invite is for a different account', 'You are logged in as ada@example.com. This invite is for d***@example.com.', 'Switch Account'. Say the logged-in address in full and the invited one masked.
-- Show a full workspace with a heading, one line and one Button: 'This workspace is full', 'Ask an admin of Acme Design to make room.', 'Go to Acme'.
+- Show a full workspace with a heading, one line and one Button: 'This workspace is full', 'Ask an admin of Acme Design to make room.', 'Go Home'.
 - Show `LoadingScreen` with `label="Checking invite…"` while the invite is checked, as in 'Auth gate loading'.
 
 ## Don't
@@ -23,7 +23,7 @@ A person opens an invite link to join a workspace.
 - Do not show the invite to a person whose verified address it is tied to. Join and go on.
 - Do not show the full invited address to whoever holds the link.
 - Do not show the login form before the invite is checked.
-- Do not remember the invite before the person chooses to log in or create an account, so an old link does not take over a later login.
+- Do not remember the invite before the person chooses to log in or sign up, so an old link does not take over a later login.
 
 ## Example: Signed out
 
@@ -54,16 +54,18 @@ export default function AcceptInviteSignedOut() {
       <Image src={productMark} alt="Acme" width={40} height={40} />
       <Stack gap="medium">
         <Heading level={1} size="h5">You&apos;re invited to Acme Design</Heading>
-        {/* Shown only when the invite is tied to an address. The address is masked: anyone who holds the link sees this page. */}
+        {/* 'Invited by' shows on every invite. */}
         <Cluster gap="small">
           <UserImage userHandle="Dana Lee" />
           <Paragraph size="body2" measure="none">Invited by Dana Lee</Paragraph>
         </Cluster>
-        <Paragraph tone="secondary" measure="none">You will join as a member. This invite is for a***@example.com, so log in or create your account with that address.</Paragraph>
+        {/* The address sentence shows only when the invite is tied to an address, and the address is masked: anyone who holds the link sees this page.
+            An open link shows nothing in its place, only the workspace and the role: 'You will join as a member.' */}
+        <Paragraph tone="secondary" measure="none">You will join as a member. This invite is for a***@example.com, so log in or sign up with that address.</Paragraph>
       </Stack>
       <Stack gap="medium">
         <Button size="medium" type="primary" state="enabled" label="Log In" onClickButton={() => router.push(`/login?next=${next}`)} />
-        <Button size="medium" type="secondary" state="enabled" label="Create Account" onClickButton={() => router.push(`/sign-up?next=${next}`)} />
+        <Button size="medium" type="secondary" state="enabled" label="Sign Up" onClickButton={() => router.push(`/sign-up?next=${next}`)} />
       </Stack>
     </Center>
   );
@@ -72,6 +74,6 @@ export default function AcceptInviteSignedOut() {
 
 ## Native
 
-On Apple, Scindo joins from a sheet with the invite link or code in a field, 'Cancel' and 'Join' in the toolbar, and a small `ProgressView` beside a line naming the step while it checks the invite.
+On Apple, Scindo joins from a sheet with the invite link or code in a field. 'Cancel' and 'Join' sit in the toolbar. While it checks the invite, a small `ProgressView` sits beside a line naming the step.
 
 Seen in: Scindo.

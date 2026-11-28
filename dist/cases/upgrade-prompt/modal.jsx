@@ -28,7 +28,7 @@ export default function UpgradePromptModal() {
       </Stack>
       <Modal isOpen={open} size="small" 
     // The title names the action only for a person who can take it.
-    title={canChangePlan ? 'Upgrade to Pro' : 'PDF Export Is on Pro'} onClose={function () { return setOpen(false); }} actions={canChangePlan ? (<>
+    title={canChangePlan ? 'Upgrade to Pro' : 'Pro Feature'} onClose={function () { return setOpen(false); }} actions={canChangePlan ? (<>
               <Button size="small" type="tertiary" state="enabled" label="Not Now" onClickButton={function () { return setOpen(false); }}/>
               <Button size="small" type="primary" state="enabled" label="Upgrade to Pro" onClickButton={handleUpgrade}/>
             </>) : (<Button size="small" type="tertiary" state="enabled" label="Not Now" onClickButton={function () { return setOpen(false); }}/>)}>

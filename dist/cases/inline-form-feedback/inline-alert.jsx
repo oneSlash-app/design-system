@@ -38,7 +38,7 @@ export default function InlineFormFeedbackInlineAlert() {
           <Heading level={2} size="h6">Profile</Heading>
           <Form aria-label="Profile" onSubmit={handleSubmit}>
             {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={function () { return setError(''); }}/>}
-            <TextField id="inline-form-feedback-alert-name" label="Display name" value={name} error={Boolean(nameError)} errorText={nameError} onChange={function (e) { setName(e.target.value); setNameError(''); }}/>
+            <TextField id="inline-form-feedback-alert-name" label="Display name" value={name} disabled={loading} error={Boolean(nameError)} errorText={nameError} onChange={function (e) { setName(e.target.value); setNameError(''); }}/>
             <Cluster>
               <Button size="medium" type="primary" state="enabled" label="Save" htmlType="submit" loading={loading}/>
             </Cluster>

@@ -64,7 +64,7 @@ export default function ConfirmDestructiveActionInline() {
                 {confirming === m.id ? (
                   <Cluster gap="small">
                     <Button size="small" type="tertiary" state={removing ? 'disabled' : 'enabled'} label="Cancel" aria-label={`Cancel removing ${m.name}`} onClickButton={() => setConfirming(null)} />
-                    <Button size="small" type="primary" color="danger" state="enabled" label="Remove" aria-label={`Confirm removing ${m.name}`} loading={removing} onClickButton={() => handleRemove(m.id, m.name)} />
+                    <Button size="small" type="primary" color="danger" state="enabled" label="Remove" aria-label={`Remove ${m.name}`} loading={removing} onClickButton={() => handleRemove(m.id, m.name)} />
                   </Cluster>
                 ) : (
                   <Cluster gap="small">

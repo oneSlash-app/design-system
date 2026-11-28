@@ -2,7 +2,7 @@
 
 A person opened the link to reset their password and now chooses a new one.
 
-**Not built yet:** Commentify and Scindo on the web replace the form with a spinner while updating, show field problems in an Alert above the fields, and accept 6 characters, saying 'Password must be at least 6 characters.' only after it is broken. Scindo's reset page has no invalid-link state.
+**Not built yet:** Commentify and Scindo on the web replace the form with a spinner while updating, and show field problems in an Alert above the fields. Both accept 6 characters, and say 'Password must be at least 6 characters.' only after it is broken. Scindo's reset page has no invalid-link state.
 
 ## Do
 
@@ -13,7 +13,7 @@ A person opened the link to reset their password and now chooses a new one.
 - Check the rule on the server too, and show its refusal under the field.
 - Show a problem with one field under that field: a password that does not match shows under Confirm password, and clears when either field changes.
 - Show the loading state on the submit Button while updating, and keep the form in place.
-- Sign the reset session out on success, so the person really logs in with the new password.
+- Log the person out of the reset link's session before showing the login form, so they really log in with the new password.
 - Go to the login form on success, with a success Alert above it: 'Password updated. Log in with your new password.'
 - Show an inline error Alert in place of the form when the link is invalid or expired, with a 'Back to Login' Button under it. The Alert reports a standing condition, so it has no close button and `autoDismiss={false}`: 'This link has expired or was already used. Ask for a new one from the login page.'
 
@@ -117,7 +117,7 @@ export default function SetNewPasswordForm() {
       return;
     }
     if (!looksLikeEmail(email.trim())) {
-      setEmailError('Enter a valid email address.');
+      setEmailError('Enter an email address, like name@example.com.');
       return;
     }
     if (!password) {

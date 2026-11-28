@@ -2,7 +2,7 @@
 
 A list or a section could not load.
 
-**Not built yet:** Scindo on the web offers no Try Again when a list fails to load the first time. Commentify puts its 'Try again' Button under `EmptyBox`, not in its `action`.
+**Not built yet:** Scindo on the web shows its empty list, with no Try Again, when its API keys or its members fail to load. Commentify puts its 'Try again' Button under `EmptyBox`, not in its `action`.
 
 ## Do
 
@@ -134,7 +134,7 @@ export default function LoadFailureInline() {
                 {/* The section stays failed until it loads, so the Alert has no close button and does not close on its own. */}
                 <Alert type="error" variant="inline" message={error} autoDismiss={false} />
                 <Cluster>
-                  <Button size="small" type="secondary" state="enabled" label="Try Again" loading={loading} onClickButton={handleTryAgain} />
+                  <Button size="small" type="primary" state="enabled" label="Try Again" loading={loading} onClickButton={handleTryAgain} />
                 </Cluster>
               </>
             ) : (

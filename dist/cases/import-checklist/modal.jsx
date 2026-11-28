@@ -51,7 +51,7 @@ export default function ImportChecklistModal() {
     var shownIds = shown.map(function (p) { return p.id; });
     var count = selected.length;
     // While a search is on, the labels say that they act only on the pages shown.
-    var scope = words ? " ".concat(shown.length, " Shown") : '';
+    var searching = words !== '';
     function toggle(id, checked) {
         setSelected(function (list) { return (checked ? __spreadArray(__spreadArray([], list, true), [id], false) : list.filter(function (x) { return x !== id; })); });
     }
@@ -112,8 +112,8 @@ export default function ImportChecklistModal() {
                 {count} of {available.length} pages selected.{words && " ".concat(shown.length, " match \"").concat(words, "\".")}
               </Paragraph>
               <Cluster gap="small">
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={"Select All".concat(scope)} onClickButton={selectShown}/>
-                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={"Clear".concat(scope)} onClickButton={clearShown}/>
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={searching ? 'Select Shown' : 'Select All'} onClickButton={selectShown}/>
+                <Button size="small" type="tertiary" state={importing || shown.length === 0 ? 'disabled' : 'enabled'} label={searching ? 'Clear Shown' : 'Clear'} onClickButton={clearShown}/>
               </Cluster>
             </Stack>
             {shown.length > 0 ? (<Stack gap="medium">

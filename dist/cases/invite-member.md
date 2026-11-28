@@ -2,21 +2,23 @@
 
 A person invites someone to join a workspace.
 
-**Not built yet:** Scindo on the web replaces the fields with a spinner while it creates an invite, labels the way out 'Close', reads 'Copied!', and cancels an invite link on one click with no confirm. Scindo's Apple app cancels a pending invite with no confirm too.
+**Not built yet:** Scindo on the web replaces the fields with a spinner while it creates an invite, labels the way out 'Close' and reads 'Copied!'. It cancels an invite link on one click with no confirm. Scindo's Apple app cancels a pending invite with no confirm too.
 
 ## Do
 
-- Title the Modal 'Invite Member' and label its action 'Send Invite', after 'Cancel'.
+- Title the Modal 'Invite Member' and label its action 'Invite', after 'Cancel'.
 - Send on Enter too: put the email field in a `Form`.
 - Focus the email field when the Modal opens, with `initialFocus="body"`, and disable it while the invite is sent.
 - Show a problem with the address under the field, such as a person who is already a member.
 - Close the Modal once the invite is sent, and show a toast that names the address: 'Invite sent to ada@example.com.'
+- Show a toast that names the link once it is revoked: 'Link made by Dana Lee revoked.'
 - Show the link in a `TextField` with `readOnly`, so it can be selected, and a 'Copy' Button next to it.
 - Change 'Copy' to 'Copied' for 2 seconds, and only when the link reached the clipboard.
 - Say under the field when copying is blocked: 'Copying is blocked here. Select the link and copy it.'
 - Say who can use the link and when it stops working.
 - List the links that still work, each with a 'Revoke' Button. Revoking removes access, so confirm it in the row, as the case 'Confirm a destructive action' does.
 - Give each row's 'Revoke', and the confirm's 'Cancel' and 'Revoke', an `aria-label` that names the link: 'Revoke the link made by Dana Lee'.
+- Start each `aria-label` with the visible label, so voice control still finds the Button.
 - Disable 'Done', and ignore Escape and a click outside, while a revoke runs.
 
 ## Don't
@@ -139,7 +141,7 @@ export default function InviteMemberByEmail() {
         actions={
           <>
             <Button size="small" type="tertiary" state={sending ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleClose} />
-            <Button size="small" type="primary" state={address === '' ? 'disabled' : 'enabled'} label="Send Invite" loading={sending} onClickButton={handleSend} />
+            <Button size="small" type="primary" state={address === '' ? 'disabled' : 'enabled'} label="Invite" loading={sending} onClickButton={handleSend} />
           </>
         }
       >
@@ -234,7 +236,7 @@ export default function InviteMemberByLink() {
     setOpen(false);
   }
 
-  function handleRevoke(id: string) {
+  function handleRevoke(id: string, createdBy: string) {
     if (revoking) return;
     setRevoking(true);
     // Stands in for the request to the server.
@@ -242,7 +244,7 @@ export default function InviteMemberByLink() {
       setRevoking(false);
       setConfirming(null);
       setLinks((list) => list.filter((l) => l.id !== id));
-      toastIds.current.push(toast({ type: 'success', message: 'Invite link revoked.' }));
+      toastIds.current.push(toast({ type: 'success', message: `Link made by ${createdBy} revoked.` }));
     }, 1200);
   }
 
@@ -290,8 +292,8 @@ export default function InviteMemberByLink() {
                   <TableCell width="168px">
                     {confirming === l.id ? (
                       <Cluster gap="small">
-                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" aria-label={`Keep the link made by ${l.createdBy}`} onClickButton={() => setConfirming(null)} />
-                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" aria-label={`Confirm revoking the link made by ${l.createdBy}`} loading={revoking} onClickButton={() => handleRevoke(l.id)} />
+                        <Button size="small" type="tertiary" state={revoking ? 'disabled' : 'enabled'} label="Cancel" aria-label={`Cancel, keep the link made by ${l.createdBy}`} onClickButton={() => setConfirming(null)} />
+                        <Button size="small" type="primary" color="danger" state="enabled" label="Revoke" aria-label={`Revoke the link made by ${l.createdBy}`} loading={revoking} onClickButton={() => handleRevoke(l.id, l.createdBy)} />
                       </Cluster>
                     ) : (
                       <Cluster gap="small">

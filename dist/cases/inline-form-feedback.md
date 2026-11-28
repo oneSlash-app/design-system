@@ -1,6 +1,6 @@
 # Form feedback
 
-A person submits a small form, such as a settings field, and the request ends.
+A person submits a small form, such as a settings field, and the request ends. The three options are the three outcomes of one save: it worked in place, it failed, or the result is elsewhere.
 
 **Not built yet:** Scindo on the web labels its save Buttons 'Saving...' while they save. Its profile settings show nothing when a save fails. Its instructions settings show the error's own message in an inline Alert with no close button.
 
@@ -20,7 +20,7 @@ A person submits a small form, such as a settings field, and the request ends.
 
 ## Option: Saved on the Button
 
-Use when: The form saves in place, and the change shows where it is.
+Use when: It worked in place: the change shows where it is.
 
 Uses: `Button`, `Center`, `Cluster`, `Form`, `Heading`, `Stack`, `Surface`, `TextField`
 
@@ -74,7 +74,7 @@ export default function InlineFormFeedbackButtonLabel() {
         <Stack gap="large">
           <Heading level={2} size="h6">Profile</Heading>
           <Form aria-label="Profile" onSubmit={handleSubmit}>
-            <TextField id="inline-form-feedback-name" label="Display name" value={name} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); setSaved(false); }} />
+            <TextField id="inline-form-feedback-name" label="Display name" value={name} disabled={loading} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); setSaved(false); }} />
             <Cluster>
               <Button size="medium" type="primary" state="enabled" label={saved ? 'Saved' : 'Save'} htmlType="submit" loading={loading} />
             </Cluster>
@@ -88,7 +88,7 @@ export default function InlineFormFeedbackButtonLabel() {
 
 ## Option: Inline error Alert
 
-Use when: The request failed.
+Use when: It failed: the request did not go through.
 
 Uses: `Alert`, `Button`, `Center`, `Cluster`, `Form`, `Heading`, `Stack`, `Surface`, `TextField`
 
@@ -137,7 +137,7 @@ export default function InlineFormFeedbackInlineAlert() {
           <Heading level={2} size="h6">Profile</Heading>
           <Form aria-label="Profile" onSubmit={handleSubmit}>
             {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
-            <TextField id="inline-form-feedback-alert-name" label="Display name" value={name} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); }} />
+            <TextField id="inline-form-feedback-alert-name" label="Display name" value={name} disabled={loading} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setName(e.target.value); setNameError(''); }} />
             <Cluster>
               <Button size="medium" type="primary" state="enabled" label="Save" htmlType="submit" loading={loading} />
             </Cluster>
@@ -151,7 +151,7 @@ export default function InlineFormFeedbackInlineAlert() {
 
 ## Option: Toast
 
-Use when: The result shows somewhere else, such as an invite that was sent.
+Use when: The result is elsewhere, such as an invite that was sent.
 
 Uses: `Button`, `Center`, `Cluster`, `Form`, `Heading`, `Stack`, `Surface`, `TextField`, `Toaster`, `dismissToast`, `toast`
 
@@ -218,7 +218,7 @@ export default function InlineFormFeedbackToast() {
         <Stack gap="large">
           <Heading level={2} size="h6">Invite people</Heading>
           <Form aria-label="Invite people" onSubmit={handleSubmit}>
-            <TextField id="inline-form-feedback-email" label="Email" type="email" value={email} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
+            <TextField id="inline-form-feedback-email" label="Email" type="email" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
             <Cluster>
               <Button size="medium" type="primary" state="enabled" label="Send Invite" htmlType="submit" loading={loading} />
             </Cluster>
