@@ -1,11 +1,12 @@
 'use client';
 import React, { useContext } from 'react';
 import IconSlot from './iconSlot';
-import { TabsContainerContext } from './tabsContainer';
+import { TabsContainerContext, TabsFillContext } from './tabsContainer';
 import { focusRing, pressFeedbackAny, stateTransition } from './sharedStyles';
 export default function Tab(_a) {
     var label = _a.label, secondLabel = _a.secondLabel, href = _a.href, isSelected = _a.isSelected, onClickTab = _a.onClickTab, onClickActionIcon = _a.onClickActionIcon, decoIcon = _a.decoIcon, actionIcon = _a.actionIcon, router = _a.router, _b = _a.size, size = _b === void 0 ? 'medium' : _b;
     var inContainer = useContext(TabsContainerContext);
+    var fill = useContext(TabsFillContext);
     var handleClick = function () {
         onClickTab();
         if (href && router) {
@@ -28,7 +29,7 @@ export default function Tab(_a) {
                 e.preventDefault();
                 handleClick();
             }
-        }} className={"\n        relative flex items-center space-x-1 rounded-control cursor-pointer justify-start ".concat(stateTransition, " ").concat(pressFeedbackAny, " ").concat(focusRing, "\n        ").concat(sizeClasses.tab, "\n        ").concat(isSelected
+        }} className={"\n        relative flex items-center space-x-1 rounded-control cursor-pointer ".concat(fill ? 'flex-1 justify-center' : 'justify-start', " ").concat(stateTransition, " ").concat(pressFeedbackAny, " ").concat(focusRing, "\n        ").concat(sizeClasses.tab, "\n        ").concat(isSelected
             ? selectedClasses
             : 'text-fg-primary hover:bg-background-accent200', "\n      ")} onClick={handleClick}>
       <IconSlot icon={decoIcon} className={sizeClasses.icon}/>

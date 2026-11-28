@@ -13,6 +13,12 @@ var TabsWrapper = function (_a) {
       {tabs.map(function (tab, index) { return (<Tab key={tab} label={tab} size={size} isSelected={selected === index} onClickTab={function () { return setSelected(index); }}/>); })}
     </TabsContainer>);
 };
+var TabsFillWrapper = function () {
+    var _a = useState(0), selected = _a[0], setSelected = _a[1];
+    return (<TabsContainer fill>
+      {["Log In", "Sign Up"].map(function (tab, index) { return (<Tab key={tab} label={tab} isSelected={selected === index} onClickTab={function () { return setSelected(index); }}/>); })}
+    </TabsContainer>);
+};
 export var Default = {
     render: function () { return <TabsWrapper tabs={["Tab 1", "Tab 2", "Tab 3"]}/>; },
 };
@@ -60,5 +66,11 @@ export var AllSizes = {
 export var Overflowing = {
     render: function () { return (<div style={{ width: "260px" }}>
       <TabsWrapper tabs={["Overview", "Analytics", "Reports", "Settings", "Users", "Billing"]}/>
+    </div>); },
+};
+// `fill`: as wide as the parent, every tab an equal share
+export var Fill = {
+    render: function () { return (<div style={{ width: 360 }}>
+      <TabsFillWrapper />
     </div>); },
 };

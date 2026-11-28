@@ -17,3 +17,4 @@ export declare const Required: Story;
 export declare const Number: Story;
 export declare const Autofill: Story;
 export declare const LengthLimits: Story;
+export declare const ReadOnly: Story;

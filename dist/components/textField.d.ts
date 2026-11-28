@@ -13,6 +13,8 @@ interface TextFieldProps {
     multiline?: boolean;
     maxRows?: number;
     disabled?: boolean;
+    /** Passed to the `<input>` or `<textarea>`: the text can be focused and selected but not changed. Keeps the normal colors, unlike `disabled`. */
+    readOnly?: boolean;
     error?: boolean;
     /** Message shown under the field when `error` is true */
     errorText?: string;
@@ -30,5 +32,5 @@ interface TextFieldProps {
     /** Passed to the `<input>` or `<textarea>`. Left to the browser's default when not set. */
     spellCheck?: boolean;
 }
-export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, error, errorText, required, size, placeholder, name, autoComplete, tabIndex, maxLength, minLength, spellCheck, }: TextFieldProps): React.JSX.Element;
+export default function TextField({ id, label, value, type, onChange, onBlur, onFocus, onKeyDown, onSubmit, autoFocus, multiline, maxRows, disabled, readOnly, error, errorText, required, size, placeholder, name, autoComplete, tabIndex, maxLength, minLength, spellCheck, }: TextFieldProps): React.JSX.Element;
 export {};

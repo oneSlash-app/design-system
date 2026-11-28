@@ -169,3 +169,14 @@ export var LengthLimits = {
         size: "medium",
     },
 };
+// `readOnly` keeps the normal colors; the text can be focused and selected but not changed
+export var ReadOnly = {
+    render: function (args) { return <TextFieldWrapper {...args}/>; },
+    args: {
+        id: "readonly-textfield",
+        label: "Invite link",
+        value: "https://acme.example.com/invite/4f9k2",
+        readOnly: true,
+        size: "medium",
+    },
+};

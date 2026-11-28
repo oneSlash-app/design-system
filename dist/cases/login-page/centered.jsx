@@ -52,7 +52,7 @@ export default function LoginCentered() {
     }
     return (<Center fill>
       <Image src={productMark} alt="Acme" width={40} height={40}/>
-      <TabsContainer>
+      <TabsContainer fill>
         <Tab label="Log In" isSelected onClickTab={function () { }}/>
         <Tab label="Sign Up" isSelected={false} href="/sign-up" router={router} onClickTab={function () { }}/>
       </TabsContainer>

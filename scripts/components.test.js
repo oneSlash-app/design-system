@@ -263,3 +263,66 @@ test('TabsContainer and Tooltip render on the server without a console.error', a
   }
   assert.deepEqual(errors, []);
 });
+
+// Output captured before heading level 1, TabsContainer fill and TextField readOnly existed.
+// Without the new props the markup must stay byte for byte the same.
+const before = {
+ "heading": "<h3 class=\"text-h6 text-fg-primary \">Hi</h3>",
+ "heading2": "<h2 class=\"text-h4 text-fg-primary \">Hi</h2>",
+ "tabs": "<div role=\"tablist\" class=\"\n          relative flex gap-0.5 p-1 rounded-container overflow-x-auto\n          bg-background-accent100\n        \" style=\"scrollbar-width:none;-ms-overflow-style:none\"><div data-tab-selected=\"true\" role=\"tab\" aria-selected=\"true\" tabindex=\"0\" class=\"\n        relative flex items-center space-x-1 rounded-control cursor-pointer justify-start transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-primary\n        py-1 px-[6px]\n        text-primary-contrast\n      \"><div class=\"flex flex-col text-center px-[6px] text-body1\"><span class=\"whitespace-nowrap\">A</span></div></div><div data-tab-selected=\"false\" role=\"tab\" aria-selected=\"false\" tabindex=\"-1\" class=\"\n        relative flex items-center space-x-1 rounded-control cursor-pointer justify-start transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none active:scale-[0.97] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-fg-primary\n        py-1 px-[6px]\n        text-fg-primary hover:bg-background-accent200\n      \"><div class=\"flex flex-col text-center px-[6px] text-body1\"><span class=\"whitespace-nowrap\">B</span></div></div></div>",
+ "tf": "<div class=\"flex flex-col w-full\"><label for=\"f\" class=\"mb-1 text-body2 text-fg-secondary\">L</label><div class=\"relative\"><input id=\"f\" type=\"text\" class=\"\n    bg-background-default text-fg-primary\n    w-full border rounded-control outline-none transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n    placeholder:text-fg-disabled\n    text-body1 p-2 leading-[22px]\n    border-fg-disabled\n      hover:border-fg-secondary\n      focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-fg-primary\n  \" autoComplete=\"off\" value=\"v\"/></div></div>",
+ "tfm": "<div class=\"flex flex-col w-full\"><label for=\"f\" class=\"mb-1 text-body2 text-fg-secondary\">L</label><div class=\"relative\"><textarea id=\"f\" rows=\"6\" class=\"\n    bg-background-default text-fg-primary\n    w-full border rounded-control outline-none transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n    placeholder:text-fg-disabled\n    text-body1 p-2 leading-[22px]\n    border-fg-disabled\n      hover:border-fg-secondary\n      focus:outline focus:outline-1 focus:outline-offset-2 focus:outline-fg-primary\n  \" autoComplete=\"off\">v</textarea></div></div>",
+ "tfd": "<div class=\"flex flex-col w-full\"><label for=\"f\" class=\"mb-1 text-body2 text-fg-secondary\">L</label><div class=\"relative\"><input id=\"f\" type=\"text\" class=\"\n    bg-transparent text-fg-disabled cursor-not-allowed\n    w-full border rounded-control outline-none transition duration-[var(--os-duration-fast)] ease-out motion-reduce:transition-none\n    placeholder:text-fg-disabled\n    text-body1 p-2 leading-[22px]\n    border-fg-disabled\n  \" disabled=\"\" autoComplete=\"off\" value=\"v\"/></div></div>"
+};
+
+test('Heading, TabsContainer and TextField render unchanged without the new props', () => {
+  const Heading = load('heading');
+  const TabsContainer = load('tabsContainer');
+  const Tab = load('tab');
+  const f = { id: 'f', label: 'L', value: 'v', onChange() {} };
+  const tab = (label, isSelected) => h(Tab, { label, isSelected, onClickTab() {} });
+  assert.equal(html(h(Heading, null, 'Hi')), before.heading);
+  assert.equal(html(h(Heading, { level: 2, size: 'h4' }, 'Hi')), before.heading2);
+  assert.equal(html(h(TabsContainer, null, tab('A', true), tab('B', false))), before.tabs);
+  assert.equal(html(h(TextField, f)), before.tf);
+  assert.equal(html(h(TextField, { ...f, multiline: true })), before.tfm);
+  assert.equal(html(h(TextField, { ...f, disabled: true })), before.tfd);
+});
+
+test('Heading level 1 is an <h1>', () => {
+  const Heading = load('heading');
+  assert.match(html(h(Heading, { level: 1, size: 'h4' }, 'Hi')), /^<h1 /);
+  assert.match(html(h(Heading, null, 'Hi')), /^<h3 /);
+});
+
+test('TabsContainer fill: full-width container, every tab grows equally and centers its label', () => {
+  const TabsContainer = load('tabsContainer');
+  const Tab = load('tab');
+  const tab = (label, isSelected) => h(Tab, { label, isSelected, onClickTab() {} });
+  const markup = html(h(TabsContainer, { fill: true }, tab('Log In', true), tab('Sign Up', false)));
+  assert.ok(classOf(markup).includes('w-full'));
+  const tabs = markup.split('role="tab"').slice(1).map((s) => s.match(/class="([^"]*)"/)[1].split(/\s+/));
+  assert.equal(tabs.length, 2);
+  for (const classes of tabs) {
+    assert.ok(classes.includes('flex-1'));
+    assert.ok(classes.includes('justify-center'));
+    assert.ok(!classes.includes('justify-start'));
+  }
+  // Not filled: neither the container nor a tab grows
+  const plain = html(h(TabsContainer, null, tab('Log In', true)));
+  assert.ok(!classOf(plain).includes('w-full'));
+  assert.doesNotMatch(plain, /flex-1/);
+});
+
+test('TextField readOnly reaches the element and keeps the normal colors', () => {
+  const field = { id: 'f', value: 'v', onChange() {} };
+  const input = html(h(TextField, { ...field, readOnly: true }));
+  assert.match(input, /<input [^>]*readOnly=""/i);
+  assert.match(html(h(TextField, { ...field, readOnly: true, multiline: true })), /<textarea [^>]*readOnly=""/i);
+  assert.doesNotMatch(input, /disabled=|cursor-not-allowed|bg-transparent/);
+  const inputClasses = input.match(/<input [^>]*class="([^"]*)"/)[1].split(/\s+/);
+  assert.ok(inputClasses.includes('text-fg-primary'));
+  assert.ok(inputClasses.includes('bg-background-default'));
+  assert.ok(!inputClasses.includes('text-fg-disabled'));
+  assert.doesNotMatch(html(h(TextField, field)), /readOnly/i);
+});

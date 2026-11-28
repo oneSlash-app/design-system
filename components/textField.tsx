@@ -16,6 +16,8 @@ interface TextFieldProps {
   multiline?: boolean;
   maxRows?: number;
   disabled?: boolean;
+  /** Passed to the `<input>` or `<textarea>`: the text can be focused and selected but not changed. Keeps the normal colors, unlike `disabled`. */
+  readOnly?: boolean;
   error?: boolean;
   /** Message shown under the field when `error` is true */
   errorText?: string;
@@ -48,6 +50,7 @@ export default function TextField({
   multiline = false,
   maxRows = 6,
   disabled = false,
+  readOnly = false,
   error = false,
   errorText = 'This field is required',
   required = false,
@@ -151,6 +154,7 @@ export default function TextField({
             onKeyDown={handleKeyDown}
             autoFocus={autoFocus}
             disabled={disabled}
+            readOnly={readOnly}
             required={required}
             name={name}
             autoComplete={autoComplete}
@@ -174,6 +178,7 @@ export default function TextField({
             onKeyDown={handleKeyDown}
             autoFocus={autoFocus}
             disabled={disabled}
+            readOnly={readOnly}
             required={required}
             name={name}
             autoComplete={autoComplete}

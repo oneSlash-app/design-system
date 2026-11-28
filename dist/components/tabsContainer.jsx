@@ -4,12 +4,14 @@ import React, { createContext, useEffect, useLayoutEffect, useRef, useState } fr
 var useIsomorphicLayoutEffect = typeof window === 'undefined' ? useEffect : useLayoutEffect;
 // Lets a Tab know a container draws its selected background (the sliding pill)
 export var TabsContainerContext = createContext(false);
+// Lets a Tab know every tab in the container takes an equal share of the width
+export var TabsFillContext = createContext(false);
 export default function TabsContainer(_a) {
-    var children = _a.children;
+    var children = _a.children, _b = _a.fill, fill = _b === void 0 ? false : _b;
     var tabCount = React.Children.count(children);
     var containerRef = useRef(null);
     var selectedRef = useRef(null);
-    var _b = useState(null), indicator = _b[0], setIndicator = _b[1];
+    var _c = useState(null), indicator = _c[0], setIndicator = _c[1];
     useIsomorphicLayoutEffect(function () {
         var _a;
         var container = containerRef.current;
@@ -61,6 +63,7 @@ export default function TabsContainer(_a) {
         };
     }, [children]);
     return (<TabsContainerContext.Provider value={true}>
+      <TabsFillContext.Provider value={fill}>
       <div ref={containerRef} role="tablist" onKeyDown={function (e) {
             var _a, _b;
             // Arrow keys move focus to the next tab and select it
@@ -79,7 +82,7 @@ export default function TabsContainer(_a) {
             e.preventDefault();
             tabs[next].focus();
             tabs[next].click();
-        }} className={"\n          relative flex gap-0.5 p-1 rounded-container overflow-x-auto\n          ".concat(tabCount > 0 ? 'bg-background-accent100' : 'bg-transparent', "\n        ")} style={{
+        }} className={"\n          relative flex gap-0.5 p-1 rounded-container overflow-x-auto".concat(fill ? ' w-full' : '', "\n          ").concat(tabCount > 0 ? 'bg-background-accent100' : 'bg-transparent', "\n        ")} style={{
             scrollbarWidth: 'none',
             msOverflowStyle: 'none',
         }}>
@@ -92,5 +95,6 @@ export default function TabsContainer(_a) {
             }}/>)}
         {children}
       </div>
+      </TabsFillContext.Provider>
     </TabsContainerContext.Provider>);
 }

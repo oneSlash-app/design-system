@@ -10,3 +10,4 @@ export declare const WithIcons: Story;
 export declare const WithSecondLabel: Story;
 export declare const AllSizes: Story;
 export declare const Overflowing: Story;
+export declare const Fill: Story;
