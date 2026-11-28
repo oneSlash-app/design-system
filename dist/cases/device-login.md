@@ -8,10 +8,11 @@ A CLI, an editor or another app opened the browser so the person can log in, and
 
 - Say in one line what the login connects: 'This connects Acme CLI on your computer to your account.'
 - Put the providers on top, then a `Line` with `label="or"`, then email and password, as on the 'Login page' with providers first.
-- Wait for the device to answer before showing success, with one line naming the step: 'Waiting for Acme CLI…'.
+- Wait for the device to answer before showing success, with `LoadingScreen` and `label="Waiting for Acme CLI…"`.
 - End on "You're logged in" and 'You can close this tab.' once the device has answered.
 - Go back to the form with an inline error Alert when the device does not answer, and say what to check.
-- Show 'Finishing login…' while a popup finishes, and close the popup when the page that opened it answers.
+- Show `LoadingScreen` with `label="Finishing login…"` while a popup finishes, and close the popup when the page that opened it answers.
+- Finish the login in this tab after a short wait when no page that opened the popup answers.
 - Show 'Done. You can close this window.' when the browser keeps the popup open.
 
 ## Don't
@@ -111,8 +112,7 @@ export default function DeviceLoginProviderFirst() {
   if (step === 'waiting') {
     return (
       <Center fill>
-        <LoadingScreen />
-        <Paragraph tone="secondary" measure="none">Waiting for Acme CLI…</Paragraph>
+        <LoadingScreen label="Waiting for Acme CLI…" />
       </Center>
     );
   }
@@ -146,45 +146,23 @@ export default function DeviceLoginProviderFirst() {
 
 Use when: A page opened a popup for the login, and the popup closes once the page has the login.
 
-Uses: `Center`, `LoadingScreen`, `Paragraph`
+Uses: `Center`, `LoadingScreen`
 
 ```tsx
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import Paragraph from 'oneslash-design-system/components/paragraph';
 import LoadingScreen from 'oneslash-design-system/components/loadingScreen';
 import { Center } from 'oneslash-design-system/components/layout';
 
 // The page the provider sends the popup back to. It finishes the login, tells the page
-// that opened it, and closes itself.
+// that opened it, and closes itself with window.close() once that page answers.
+// It stays on this state: the login does not finish by itself.
+// If the browser keeps the popup open after window.close(), the page shows one line
+// in place of the spinner: 'Done. You can close this window.'
+// If no page answers after a short wait, the login ran in this tab, so the page finishes it here.
 export default function DeviceLoginPopup() {
-  const [finished, setFinished] = useState(false);
-  const timer = useRef<ReturnType<typeof setTimeout>>();
-
-  useEffect(() => {
-    // Stands in for the request to the server.
-    // This one finishes the login and waits for the page that opened the popup to answer that it has it.
-    timer.current = setTimeout(() => {
-      // A real app closes the popup here with window.close(). An example cannot, so it shows
-      // what the person sees when the browser keeps the popup open.
-      setFinished(true);
-    }, 1200);
-    // Stops the request if the example goes away before it ends.
-    return () => clearTimeout(timer.current);
-  }, []);
-
-  if (finished) {
-    return (
-      <Center fill>
-        <Paragraph tone="secondary" measure="none">Done. You can close this window.</Paragraph>
-      </Center>
-    );
-  }
-
   return (
     <Center fill>
-      <LoadingScreen />
-      <Paragraph tone="secondary" measure="none">Finishing login…</Paragraph>
+      <LoadingScreen label="Finishing login…" />
     </Center>
   );
 }

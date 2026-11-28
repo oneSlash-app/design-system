@@ -16,12 +16,12 @@ export default function AcceptInviteSignedOut() {
       <Image src={productMark} alt="Acme" width={40} height={40}/>
       <Stack gap="medium">
         <Heading level={1} size="h5">You&apos;re invited to Acme Design</Heading>
-        {/* Shown when the invite knows who sent it. */}
+        {/* Shown only when the invite is tied to an address. The address is masked: anyone who holds the link sees this page. */}
         <Cluster gap="small">
           <UserImage userHandle="Dana Lee"/>
           <Paragraph size="body2" measure="none">Invited by Dana Lee</Paragraph>
         </Cluster>
-        <Paragraph tone="secondary" measure="none">You will join as a member. This invite is for ada@example.com, so log in or create your account with that address.</Paragraph>
+        <Paragraph tone="secondary" measure="none">You will join as a member. This invite is for a***@example.com, so log in or create your account with that address.</Paragraph>
       </Stack>
       <Stack gap="medium">
         <Button size="medium" type="primary" state="enabled" label="Log In" onClickButton={function () { return router.push("/login?next=".concat(next)); }}/>

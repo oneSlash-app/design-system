@@ -22,10 +22,11 @@ module.exports = {
   do: [
     "Say in one line what the login connects: 'This connects Acme CLI on your computer to your account.'",
     "Put the providers on top, then a `Line` with `label=\"or\"`, then email and password, as on the 'Login page' with providers first.",
-    "Wait for the device to answer before showing success, with one line naming the step: 'Waiting for Acme CLI…'.",
+    "Wait for the device to answer before showing success, with `LoadingScreen` and `label=\"Waiting for Acme CLI…\"`.",
     "End on \"You're logged in\" and 'You can close this tab.' once the device has answered.",
     'Go back to the form with an inline error Alert when the device does not answer, and say what to check.',
-    "Show 'Finishing login…' while a popup finishes, and close the popup when the page that opened it answers.",
+    "Show `LoadingScreen` with `label=\"Finishing login…\"` while a popup finishes, and close the popup when the page that opened it answers.",
+    'Finish the login in this tab after a short wait when no page that opened the popup answers.',
     "Show 'Done. You can close this window.' when the browser keeps the popup open.",
   ],
   dont: [

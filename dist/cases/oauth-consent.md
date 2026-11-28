@@ -9,11 +9,13 @@ Another app, such as a CLI or an MCP client, asks to act for a person who is log
 - Name the app in a `Heading` with `level={1}`: 'Acme CLI wants to connect to Acme'.
 - Say in one or two plain sentences what the app will be able to do, in the person's words: 'read your projects and tasks, and create tasks as you'.
 - Say how to remove the access later: 'You can remove its access at any time in Settings, under Connected apps.'
-- Show the account that gives the access.
+- Show the account that gives the access, with a text-only 'Not You? Switch Account' Button under it.
+- Take the app's name and the place the person goes back to from the server's record of the registered app, never from the link.
 - Say where the person goes next: 'You will go back to cli.acme.dev.'
 - Put 'Cancel' first and 'Allow' second, side by side and the same width, in a `Grid` with `columns={2}`.
 - Show `loading` on 'Allow' and disable 'Cancel' and every field while the request runs.
-- Show one line naming the step while the browser goes back, such as 'Going back to Acme CLI…', with the spinner from 'Auth gate loading'.
+- Show `LoadingScreen` with `label="Going back to Acme CLI…"` while the browser goes back, after 'Allow' and after 'Cancel'.
+- Send 'Cancel' back to the app with `error=access_denied`, and return the `state` value the app sent on both paths.
 - Leave wider access off until the person turns it on, and say under it what it adds.
 
 ## Don't
@@ -46,6 +48,7 @@ const productMark =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E";
 
 // A real app passes the router from its framework, such as Next's useRouter().
+// The app's name and cli.acme.dev come from the server's record of the registered app, never from the link.
 // Going back to another site is a full page load, such as window.location.assign() in a real app.
 const router = { push: (url: string) => console.info(`Go to ${url}`) };
 
@@ -67,12 +70,15 @@ export default function OAuthConsentSimple() {
     timer.current = setTimeout(() => {
       setAllowing(false);
       setHandingBack(true);
+      // A real app also returns the `state` value the app sent, so the app can match the answer to its request.
       router.push('https://cli.acme.dev/callback');
     }, 1200);
   }
 
   // The app hears that the person said no, and nothing is shared.
+  // A real app also returns the `state` value the app sent.
   function handleCancel() {
+    setHandingBack(true);
     router.push('https://cli.acme.dev/callback?error=access_denied');
   }
 
@@ -80,8 +86,7 @@ export default function OAuthConsentSimple() {
   if (handingBack) {
     return (
       <Center fill>
-        <LoadingScreen />
-        <Paragraph tone="secondary" measure="none">Going back to Acme CLI…</Paragraph>
+        <LoadingScreen label="Going back to Acme CLI…" />
       </Center>
     );
   }
@@ -94,10 +99,13 @@ export default function OAuthConsentSimple() {
         <Paragraph tone="secondary" measure="none">It will be able to read your projects and tasks, and create tasks as you. You can remove its access at any time in Settings, under Connected apps.</Paragraph>
       </Stack>
       {/* The account that gives the access, so the person can tell it is the right one. */}
-      <Cluster gap="small">
-        <UserImage userHandle="Ada Lovelace" />
-        <Paragraph size="body2" measure="none">ada@example.com</Paragraph>
-      </Cluster>
+      <Stack gap="small" align="start">
+        <Cluster gap="small">
+          <UserImage userHandle="Ada Lovelace" />
+          <Paragraph size="body2" measure="none">ada@example.com</Paragraph>
+        </Cluster>
+        <Button size="small" type="textOnly" state={allowing ? 'disabled' : 'enabled'} label="Not You? Switch Account" onClickButton={() => router.push('/login?next=%2Foauth%2Fauthorize')} />
+      </Stack>
       {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
       <Stack gap="medium">
         <Grid columns={2} gap="medium">
@@ -136,6 +144,7 @@ const productMark =
   "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E";
 
 // A real app passes the router from its framework, such as Next's useRouter().
+// The app's name and cli.acme.dev come from the server's record of the registered app, never from the link.
 // Going back to another site is a full page load, such as window.location.assign() in a real app.
 const router = { push: (url: string) => console.info(`Go to ${url}`) };
 
@@ -166,12 +175,15 @@ export default function OAuthConsentWithScope() {
     timer.current = setTimeout(() => {
       setAllowing(false);
       setHandingBack(true);
+      // A real app also returns the `state` value the app sent, so the app can match the answer to its request.
       router.push('https://cli.acme.dev/callback');
     }, 1200);
   }
 
   // The app hears that the person said no, and nothing is shared.
+  // A real app also returns the `state` value the app sent.
   function handleCancel() {
+    setHandingBack(true);
     router.push('https://cli.acme.dev/callback?error=access_denied');
   }
 
@@ -179,8 +191,7 @@ export default function OAuthConsentWithScope() {
   if (handingBack) {
     return (
       <Center fill>
-        <LoadingScreen />
-        <Paragraph tone="secondary" measure="none">Going back to Acme CLI…</Paragraph>
+        <LoadingScreen label="Going back to Acme CLI…" />
       </Center>
     );
   }
@@ -190,13 +201,16 @@ export default function OAuthConsentWithScope() {
       <Image src={productMark} alt="Acme" width={40} height={40} />
       <Stack gap="medium">
         <Heading level={1} size="h5">Acme CLI wants to connect to Acme</Heading>
-        <Paragraph tone="secondary" measure="none">It will be able to read the projects and tasks you can see in one workspace, and create tasks as you. You can remove its access at any time in Settings, under Connected apps.</Paragraph>
+        <Paragraph tone="secondary" measure="none">It will be able to read the projects and tasks you can see, and create tasks as you, in the workspaces you allow below. You can remove its access at any time in Settings, under Connected apps.</Paragraph>
       </Stack>
       {/* The account that gives the access, so the person can tell it is the right one. */}
-      <Cluster gap="small">
-        <UserImage userHandle="Ada Lovelace" />
-        <Paragraph size="body2" measure="none">ada@example.com</Paragraph>
-      </Cluster>
+      <Stack gap="small" align="start">
+        <Cluster gap="small">
+          <UserImage userHandle="Ada Lovelace" />
+          <Paragraph size="body2" measure="none">ada@example.com</Paragraph>
+        </Cluster>
+        <Button size="small" type="textOnly" state={allowing ? 'disabled' : 'enabled'} label="Not You? Switch Account" onClickButton={() => router.push('/login?next=%2Foauth%2Fauthorize')} />
+      </Stack>
       {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={() => setError('')} />}
       <Stack gap="small">
         {/* The line above names the field on screen, and `aria-label` names it for a screen reader. */}

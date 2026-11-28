@@ -72,8 +72,7 @@ export default function DeviceLoginProviderFirst() {
     }
     if (step === 'waiting') {
         return (<Center fill>
-        <LoadingScreen />
-        <Paragraph tone="secondary" measure="none">Waiting for Acme CLI…</Paragraph>
+        <LoadingScreen label="Waiting for Acme CLI…"/>
       </Center>);
     }
     return (<Center fill>

@@ -1,31 +1,14 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
-import Paragraph from '../../components/paragraph';
 import LoadingScreen from '../../components/loadingScreen';
 import { Center } from '../../components/layout';
 // The page the provider sends the popup back to. It finishes the login, tells the page
-// that opened it, and closes itself.
+// that opened it, and closes itself with window.close() once that page answers.
+// It stays on this state: the login does not finish by itself.
+// If the browser keeps the popup open after window.close(), the page shows one line
+// in place of the spinner: 'Done. You can close this window.'
+// If no page answers after a short wait, the login ran in this tab, so the page finishes it here.
 export default function DeviceLoginPopup() {
-    var _a = useState(false), finished = _a[0], setFinished = _a[1];
-    var timer = useRef();
-    useEffect(function () {
-        // Stands in for the request to the server.
-        // This one finishes the login and waits for the page that opened the popup to answer that it has it.
-        timer.current = setTimeout(function () {
-            // A real app closes the popup here with window.close(). An example cannot, so it shows
-            // what the person sees when the browser keeps the popup open.
-            setFinished(true);
-        }, 1200);
-        // Stops the request if the example goes away before it ends.
-        return function () { return clearTimeout(timer.current); };
-    }, []);
-    if (finished) {
-        return (<Center fill>
-        <Paragraph tone="secondary" measure="none">Done. You can close this window.</Paragraph>
-      </Center>);
-    }
     return (<Center fill>
-      <LoadingScreen />
-      <Paragraph tone="secondary" measure="none">Finishing login…</Paragraph>
+      <LoadingScreen label="Finishing login…"/>
     </Center>);
 }
