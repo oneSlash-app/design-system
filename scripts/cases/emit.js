@@ -32,8 +32,10 @@ function emitCasesJson(cases) {
   return `${JSON.stringify({ cases: out }, null, 2)}\n`;
 }
 
-function emitOption(o, label) {
-  const parts = [`## ${label}: ${o.title}`, `Use when: ${o.useWhen}`];
+// A one-option case has nothing to choose between, so its file leaves out "Use when"
+function emitOption(o, label, showUseWhen) {
+  const parts = [`## ${label}: ${o.title}`];
+  if (showUseWhen) parts.push(`Use when: ${o.useWhen}`);
   if (o.do && o.do.length) parts.push(`Do:\n${bullets(o.do)}`);
   if (o.dont && o.dont.length) parts.push(`Don't:\n${bullets(o.dont)}`);
   parts.push(`Uses: ${o.uses.map((u) => `\`${u}\``).join(', ')}`);
@@ -49,22 +51,21 @@ function emitCaseMd(c) {
     parts.push(...notBuilt(c));
     if (c.do && c.do.length) parts.push(`## Do\n\n${bullets(c.do)}`);
     if (c.dont && c.dont.length) parts.push(`## Don't\n\n${bullets(c.dont)}`);
-    const label = c.options.length === 1 ? 'Example' : 'Option';
-    parts.push(...c.options.map((o) => emitOption(o, label)));
+    const one = c.options.length === 1;
+    parts.push(...c.options.map((o) => emitOption(o, one ? 'Example' : 'Option', !one)));
   }
   if (c.native) parts.push(`## Native\n\n${c.native}`);
   parts.push(`Seen in: ${products(c).join(', ')}.`);
   return `${parts.join('\n\n')}\n`;
 }
 
-// Every rule in full, then one table row per design case.
+// Each rule's answer and its file, then one table row per design case.
 function emitCasesSection(cases) {
   const rules = cases.filter(isRule);
   const designs = cases.filter((c) => !isRule(c));
   if (rules.length === 0 && designs.length === 0) return 'There are no design cases yet.';
   const parts = rules.map((c) => [
-    `### ${c.title}`, c.situation, `Answer: ${c.answer}`, ...notBuilt(c), `Why: ${c.why}`,
-    `Do:\n${bullets(c.do)}`, `Don't:\n${bullets(c.dont)}`,
+    `### ${c.title}`, c.situation, `Answer: ${c.answer}`, ...notBuilt(c), `File: cases/${c.id}.md`,
   ].join('\n\n'));
   if (designs.length > 0) {
     const row = (cells) => `| ${cells.map((v) => cell(oneLine(v))).join(' | ')} |`;

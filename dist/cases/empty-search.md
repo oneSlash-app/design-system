@@ -19,8 +19,6 @@ A search or a filter finds nothing.
 
 ## Example: The words and a way to clear them
 
-Use when: A search or a filter finds nothing.
-
 Uses: `Button`, `EmptyBox`, `List`, `Stack`, `Surface`, `TextField`
 
 ```tsx

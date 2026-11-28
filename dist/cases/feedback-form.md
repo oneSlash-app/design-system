@@ -25,8 +25,6 @@ A person sends feedback about the product from inside it.
 
 ## Example: Send from a Modal
 
-Use when: Feedback can be sent from anywhere in the product, such as a help menu.
-
 Uses: `Alert`, `Button`, `Center`, `Cluster`, `Heading`, `Modal`, `Paragraph`, `Select`, `Stack`, `Textarea`, `Toaster`, `dismissToast`, `toast`
 
 ```tsx

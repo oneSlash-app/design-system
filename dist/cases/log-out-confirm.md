@@ -20,8 +20,6 @@ A person chooses Log Out.
 
 ## Example: Confirm in a Modal
 
-Use when: Any product with a Log Out action.
-
 Uses: `Button`, `Center`, `Cluster`, `Heading`, `Modal`, `Paragraph`, `Stack`
 
 ```tsx

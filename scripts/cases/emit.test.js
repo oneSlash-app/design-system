@@ -43,13 +43,14 @@ test('a case file and the DESIGN.md section never contain a seenIn path', () => 
   assert.match(emitCaseMd(design), /Seen in: Commentify, Scindo\./);
 });
 
-test('a rule is printed in full in the DESIGN.md section; a design case is one table row', () => {
+test('a rule in the DESIGN.md section is its answer and file; a design case is one table row', () => {
   const md = emitCasesSection(cases);
   assert.match(md, /^### Confirm delete$/m);
-  assert.match(md, /Ask first\./);
-  assert.match(md, /It is permanent\./);
-  assert.match(md, /Name the item/);
-  assert.match(md, /Use a generic title/);
+  assert.match(md, /Answer: Ask first\./);
+  assert.match(md, /^File: cases\/confirm-delete\.md$/m);
+  assert.doesNotMatch(md, /It is permanent\./);
+  assert.doesNotMatch(md, /Name the item/);
+  assert.doesNotMatch(md, /Use a generic title/);
   assert.doesNotMatch(md, /### Login page/);
   const rows = md.split('\n').filter((l) => l.startsWith('|'));
   const body = rows.slice(2);
@@ -79,6 +80,8 @@ test('a one-option case says Example where a many-option case says Option', () =
   const headings = one.split('\n').filter((l) => l.startsWith('## '));
   assert.deepEqual(headings, ['## Example: Provider first', '## Native']);
   assert.doesNotMatch(one, /Option/);
+  assert.doesNotMatch(one, /Use when:/);
+  assert.match(emitCaseMd(design), /^Use when: One provider$/m);
   assert.match(emitCaseMd(design), /^## Option: Provider first$/m);
 });
 
@@ -206,12 +209,13 @@ test('a build into a temp dir removes stale case files and keeps current ones', 
   execFileSync('node', [...args, '--check']);
 });
 
-test('notBuiltYet prints right after the Answer in a rule file and the DESIGN.md block', () => {
+test('notBuiltYet prints right after the Answer in a rule file and the DESIGN.md block; why, do and don\'t stay in the file', () => {
   const r = { ...rule, notBuiltYet: 'No product asks yet.' };
   const md = emitCaseMd(r);
   assert.match(md, /## Answer\n\nAsk first\.\n\n\*\*Not built yet:\*\* No product asks yet\.\n\n## Why/);
   const section = emitCasesSection([r]);
-  assert.match(section, /Answer: Ask first\.\n\n\*\*Not built yet:\*\* No product asks yet\.\n\nWhy: It is permanent\./);
+  assert.match(section, /Answer: Ask first\.\n\n\*\*Not built yet:\*\* No product asks yet\.\n\nFile: cases\/confirm-delete\.md$/);
+  assert.doesNotMatch(section, /Why:|It is permanent|Name the item|Use a generic title/);
   assert.doesNotMatch(emitCaseMd(rule), /Not built yet/);
   assert.doesNotMatch(emitCasesSection([rule]), /Not built yet/);
 });

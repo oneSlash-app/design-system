@@ -26,8 +26,6 @@ A person picks which items to bring in from another place, such as pages from a 
 
 ## Example: Pick in a Modal
 
-Use when: The person chooses some items out of a list they can search.
-
 Uses: `Button`, `Center`, `Checkbox`, `Cluster`, `EmptyBox`, `Heading`, `List`, `Modal`, `Paragraph`, `Stack`, `Surface`, `TextField`
 
 ```tsx

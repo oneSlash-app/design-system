@@ -27,8 +27,6 @@ A person opens an invite link to join a workspace.
 
 ## Example: Signed out
 
-Use when: The person is not logged in, so they log in or create an account before they join.
-
 Uses: `Button`, `Center`, `Cluster`, `Heading`, `Image`, `Paragraph`, `Stack`, `UserImage`
 
 ```tsx

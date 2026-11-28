@@ -26,8 +26,6 @@ A person opened the link to reset their password and now chooses a new one.
 
 ## Example: New password form
 
-Use when: The reset link is valid and the person sets a new password.
-
 Uses: `Alert`, `BrandIcon`, `Button`, `Center`, `Form`, `Heading`, `Image`, `Line`, `Paragraph`, `Stack`, `Tab`, `TabsContainer`, `TextField`
 
 ```tsx

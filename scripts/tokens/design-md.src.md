@@ -170,8 +170,8 @@ A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one
 
 ## Cases
 
-A case answers one design question the way oneSlash does, such as how to lay out a login page or how an agent asks before a risky action. A rule gives one answer and is printed here in full.
+A case answers one design question the way oneSlash does, such as how to lay out a login page or how an agent asks before a risky action. A rule gives one answer. Its answer is printed here; its reasons and its do and don't lines are in the file it names.
 
-A design case has a few options, each with a working example. Open the file named in the table for the one you need. In an app, import a component like this: `import Button from 'oneslash-design-system/components/button'`.
+A design case has one to four options, each with a working example. Open the file named in the table for the one you need. In an app, import a component like this: `import Button from 'oneslash-design-system/components/button'`.
 
 <!-- cases:index -->

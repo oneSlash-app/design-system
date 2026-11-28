@@ -374,9 +374,9 @@ A style is named `<part>.<variant>.<color or state>`. Each piece of it takes one
 
 ## Cases
 
-A case answers one design question the way oneSlash does, such as how to lay out a login page or how an agent asks before a risky action. A rule gives one answer and is printed here in full.
+A case answers one design question the way oneSlash does, such as how to lay out a login page or how an agent asks before a risky action. A rule gives one answer. Its answer is printed here; its reasons and its do and don't lines are in the file it names.
 
-A design case has a few options, each with a working example. Open the file named in the table for the one you need. In an app, import a component like this: `import Button from 'oneslash-design-system/components/button'`.
+A design case has one to four options, each with a working example. Open the file named in the table for the one you need. In an app, import a component like this: `import Button from 'oneslash-design-system/components/button'`.
 
 ### An agent asks before a risky action
 
@@ -386,19 +386,7 @@ Answer: An action is risky when it changes shared work or is hard to undo. In a 
 
 **Not built yet:** In Scindo the agent asks before carrying out a plan, opening a pull request and merging one. It does not yet ask before deleting files, closing an issue or rolling back a release.
 
-Why: A person can only approve what they can see, and an agent's mistake in shared work costs other people.
-
-Do:
-- List every step in the card, in the order the agent will do them.
-- Offer a way to see the full changes, such as a View Changes button, before the approve button is pressed.
-- Let the person edit the plan or cancel it, not only approve it.
-- Once decided, mark the card Approved or Cancelled and remove its buttons.
-
-Don't:
-- Do not carry out a risky action before the person approves it.
-- Do not replace the steps or the changes with a one-line summary.
-- Do not let the agent write the label of an approve or merge button.
-- Do not let a second click on a decided card approve or cancel it again.
+File: cases/agent-asks-before-risky-action.md
 
 ### An agent cancels and reports when nobody answers
 
@@ -408,17 +396,7 @@ Answer: The agent never takes silence as a yes: while a question or proposal wai
 
 **Not built yet:** No product cancels a waiting request on its own yet. In Scindo a request waits until a person answers, cancels or skips it, and the waiting time is not decided.
 
-Why: An agent that acts on silence does work nobody approved, and one that waits forever leaves work stuck without saying so.
-
-Do:
-- Keep the card and its buttons open until someone answers or the request is cancelled.
-- Notify the person who asked when the agent needs their answer.
-- When a request is cancelled, mark the card Cancelled and post one line on what was not done.
-- List questions asked before a plan that nobody answered as open questions in that plan.
-
-Don't:
-- Do not treat no answer as approval.
-- Do not cancel a request without saying so in the thread.
+File: cases/agent-cancels-when-unanswered.md
 
 ### An agent refuses clearly
 
@@ -428,17 +406,7 @@ Answer: The refusal says in one plain sentence which limit was reached, and eith
 
 **Not built yet:** Scindo on the web does not follow this yet: it shows the Upgrade button to everyone. Scindo's Apple app shows it only to admins.
 
-Why: A person who is refused needs to know why and what to do next, or they will just send the request again.
-
-Do:
-- Say which limit was reached, with the number when there is one: 'You've used all 50 AI agent responses this month.'
-- Say who can change it, or when to try again: 'Try again in a minute.'
-- Show the button that lifts the limit only to a person allowed to use it.
-- Let the person close the refusal without acting, with a button such as 'Not Now'.
-
-Don't:
-- Do not show a general error message for a refusal.
-- Do not show an Upgrade button to someone who cannot upgrade.
+File: cases/agent-refuses-clearly.md
 
 ### An agent says what it is
 
@@ -446,17 +414,7 @@ The agent posts in a thread where people also write, or replies to a person.
 
 Answer: Every agent message has marks no person's message has. It shows an icon avatar instead of a photo, and the agent's own name. When the product knows which model wrote the reply, it shows the model name in small text next to the time. An agent the workspace connects from outside gets a plain bot icon, not the product's logo.
 
-Why: People must see at a glance whether a person or an agent wrote what they are reading, and whose agent it is.
-
-Do:
-- Show the agent with an icon avatar, never a photo or an initial.
-- Name the agent in the message header: its role or given name, or 'Agent' when it has none.
-- Show the model name next to the time when the product knows it.
-- Show the product's logo on the product's own agent and a plain bot icon on an agent from outside, so people see whose agent it is.
-
-Don't:
-- Do not show a photo for an agent, even when one is set.
-- Do not show the product's logo on an agent the product does not run.
+File: cases/agent-says-what-it-is.md
 
 ### An agent shows its progress
 
@@ -464,18 +422,7 @@ The agent is working on a request and its reply is not ready yet.
 
 Answer: While it works, the agent shows a live row in the thread, where its reply will appear: its name, the model, the seconds so far, the steps it has finished with a check mark, and the step it is on now in plain words, such as 'Reading file'. A Stop button stays on that row for the whole run. When the run is stopped, the agent posts a short note that it stopped.
 
-Why: A person waiting on an agent needs to know it is still working, what it is doing, and that they can stop it.
-
-Do:
-- Show the progress row in the thread, where the reply will appear.
-- Name the current step in plain words, such as 'Reading file' or 'Editing code'.
-- Keep finished steps in view, each with a check mark.
-- Keep a Stop button on the row for the whole run.
-
-Don't:
-- Do not show a spinner with no words.
-- Do not hide the Stop button while the agent writes its reply.
-- Do not say the agent stopped before the run has really ended.
+File: cases/agent-shows-progress.md
 
 ### An agent shows its sources
 
@@ -483,18 +430,7 @@ The agent answers from things it read: documents, files, chat, tasks, or a conne
 
 Answer: Under the reply, the agent lists what it used. A small tag names the kinds of source, such as 'From Chat · Knowledge base', and one card per source shows its title, its kind and where it lives. Each card opens the source. A reply that used no sources shows no sources section.
 
-Why: A person can check an answer only when they can open what it came from.
-
-Do:
-- Put the sources directly under the reply they support.
-- Show each source as a card with its title and where it lives, such as the space name or the date.
-- Make each card open the source itself, in the product or on the service it came from.
-- Show the first six sources and a 'Show N more' button for the rest.
-
-Don't:
-- Do not show a sources section when the reply used no sources.
-- Do not show source cards on a person's message.
-- Do not link a source card to any site other than the product or the service the source came from.
+File: cases/agent-shows-sources.md
 
 ### Confirm dialogs
 
@@ -504,22 +440,7 @@ Answer: A confirm is a Modal with `size="small"`. Its title names the action in 
 
 **Not built yet:** No Commentify confirm Modal uses `color="danger"`, and two of them label Cancel 'No'. Scindo on the web makes Cancel a secondary Button in some confirms and a tertiary one in others, and leaves its Delete Task and Remove Member confirms uncolored. Scindo on the web revokes an API key, and Commentify revokes an agent client, with no confirm.
 
-Why: A confirm is the last chance to stop a mistake. It has to say exactly what will happen, and the safe choice has to be easy to find.
-
-Do:
-- Name the thing in the body: "This deletes 'Q3 plan' and its 12 tasks."
-- Say what is kept: 'Files in the repository are not changed.'
-- Give the title and the action the same verb, in Title Case: 'Delete Project' has a 'Delete' Button.
-- Disable 'Cancel' and ignore `onClose` while the request runs.
-- Close the Modal when the action works. Show the change where the thing is, or a toast that names it if the thing is gone.
-
-Don't:
-- Do not label Cancel 'No' or 'Close'.
-- Do not label the action 'Yes, Delete', 'Confirm' or 'OK'.
-- Do not title the Modal 'Confirm Deletion' or 'Sure?'.
-- Do not change the action's label while it is loading, such as to 'Deleting…'.
-- Do not replace the Modal body with a spinner, or close the Modal, while the request runs.
-- Do not ask for a confirm when the action is easy to undo.
+File: cases/confirm-dialogs.md
 
 ### Empty lists
 
@@ -529,20 +450,7 @@ Answer: Use `EmptyBox`, never a bare line of text. Its `size` is `large` when th
 
 **Not built yet:** Scindo on the web uses `EmptyBox` in three places and bare text elsewhere, such as 'No API keys yet.' Commentify uses `EmptyBox` in most lists and bare text in a few. Commentify admin and jinhwankim.com show bare text. No product passes an `action` yet.
 
-Why: An empty space looks like something is broken. Saying what is missing and what will fill it tells the person nothing is wrong and what to do next.
-
-Do:
-- Say what is empty in the person's words: 'No saved comments'.
-- Say in `secondText` what will appear here or what to do: 'Comments you save appear here.'
-- Pass the Button that fills the list as `action`, such as 'Create Project'.
-- Show the words searched for and a 'Clear Search' Button when a search finds nothing.
-- Say that loading failed and offer a 'Try Again' Button when the list could not load.
-
-Don't:
-- Do not show a bare line of text, or nothing at all, when a list is empty.
-- Do not show the empty text when the list failed to load.
-- Do not use the system's words, such as 'No data' or 'No records found'.
-- Do not pass an `action` the person is not allowed to use.
+File: cases/empty-lists.md
 
 ### Form errors
 
@@ -552,22 +460,7 @@ Answer: A problem with one field shows under that field, through the field's `er
 
 **Not built yet:** Commentify writes red captions by hand on its consent screen and in its Figma import dialog. Scindo on the web does the same in its dialogs, such as renaming a workspace or a task. Commentify uses the browser's `alert()` in three files, and Scindo on the web in one.
 
-Why: A message next to the problem tells the person what to fix without searching for it. Keeping what they typed means they fix one thing instead of starting again.
-
-Do:
-- Show a problem with one field under that field, with `error` and `errorText`.
-- Say what to do, not only what is wrong: 'Enter an email address, like name@acme.com.'
-- Show a problem with the whole request above the fields in `<Alert type="error" variant="inline" showCloseButton>`.
-- Clear the message in the Alert's `onClose`.
-- Keep everything the person typed after a failed submit.
-- Clear the old messages when the person submits again.
-
-Don't:
-- Do not leave out `variant="inline"`: the default variant is a toast at the top of the screen, away from the form.
-- Do not write a red caption by hand. Use `errorText` or an Alert.
-- Do not use the browser's `alert()`.
-- Do not clear the form after a failed submit.
-- Do not change the submit Button's label while it is loading, such as to 'Saving…'.
+File: cases/form-errors.md
 
 ### Success feedback
 
@@ -577,20 +470,7 @@ Answer: The feedback depends on where the result shows. A Button that is `loadin
 
 **Not built yet:** Scindo on the web has no toast. It shows success in five ways: a 'Saved' Button label, a green caption, an inline Alert, a thank-you that replaces a dialog and a 'Copied' label. The timed ones clear after 1.5, 2, 3 or 4 seconds. Commentify shows toasts through `Alert`, one at a time, and many of them say 'successfully'.
 
-Why: Feedback belongs where the person is looking. A change they can see needs only a word on the Button, and a result they cannot see needs a short message that names it.
-
-Do:
-- Show `loading` on the Button while a form saves, then 'Saved' for 2 seconds.
-- Write a toast as one short sentence in the past tense that names the thing: 'Invite sent to Dana.'
-- Show 'Copied' on a copy Button, or the `Check` icon on a copy IconButton, for 2 seconds.
-- Mount one `Toaster` near the app root, and show every toast with `toast()`.
-
-Don't:
-- Do not say 'successfully'.
-- Do not change a Button's label while it is loading, such as to 'Saving…' or 'Deleting…'.
-- Do not show a toast for a change the person can already see.
-- Do not build a toast from `Alert`. Use `toast()`.
-- Do not make the person close a success message.
+File: cases/success-feedback.md
 
 | Case | When | File |
 | --- | --- | --- |
