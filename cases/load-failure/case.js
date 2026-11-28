@@ -24,6 +24,7 @@ module.exports = {
     "Offer a 'Try Again' Button. It is `loading` while it loads, and keeps its label.",
     'Show the list as soon as it loads.',
     'Keep the rest of the page working when only one section failed.',
+    'Give the inline error Alert for a failed section no close button and `autoDismiss={false}`, so it stays until the section loads.',
   ],
   dont: [
     "Do not show the empty text, such as 'No projects yet', when the list failed to load.",

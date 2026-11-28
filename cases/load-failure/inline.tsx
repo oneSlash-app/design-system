@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Surface from '../../components/surface';
 import Heading from '../../components/heading';
 import Paragraph from '../../components/paragraph';
@@ -13,12 +13,16 @@ const invoices = ['November 2026: $240', 'October 2026: $240', 'September 2026: 
 export default function LoadFailureInline() {
   const [error, setError] = useState('Could not load your invoices.');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleTryAgain() {
     if (loading) return;
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setError('');
     }, 1200);

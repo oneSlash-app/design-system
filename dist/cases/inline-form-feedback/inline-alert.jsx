@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Surface from '../../components/surface';
 import Heading from '../../components/heading';
 import Form from '../../components/form';
@@ -13,6 +13,9 @@ export default function InlineFormFeedbackInlineAlert() {
     // Starts failed, so the example opens on the state it shows.
     var _c = useState('Your profile was not saved. Try again.'), error = _c[0], setError = _c[1];
     var _d = useState(false), loading = _d[0], setLoading = _d[1];
+    var timer = useRef();
+    // Stops the request if the example goes away before it ends.
+    useEffect(function () { return function () { return clearTimeout(timer.current); }; }, []);
     function handleSubmit() {
         if (loading)
             return;
@@ -24,7 +27,7 @@ export default function InlineFormFeedbackInlineAlert() {
         }
         setLoading(true);
         // Stands in for the request to the server.
-        setTimeout(function () {
+        timer.current = setTimeout(function () {
             setLoading(false);
             setError('Your profile was not saved. Try again.');
         }, 1200);

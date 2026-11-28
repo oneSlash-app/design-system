@@ -27,7 +27,7 @@ module.exports = {
   ],
   do: [
     'Show `loading` on the submit Button while the request runs, and keep its label.',
-    "Show 'Saved' on the Button for 2 seconds when the form saves in place.",
+    "Show 'Saved' on the Button for 2 seconds when the form saves in place, or until the person edits again.",
     'Show a failed request above the fields in `<Alert type="error" variant="inline" showCloseButton>`, and keep what the person typed.',
     "Call `toast({ type: 'success', message })` when the result is somewhere else.",
   ],
@@ -37,7 +37,7 @@ module.exports = {
     'Do not let a failed save pass with no message.',
     "Do not say 'successfully'.",
   ],
-  notBuiltYet: "Scindo on the web labels its Save Button 'Saving...' while it saves, and shows nothing when a save fails.",
+  notBuiltYet: "Scindo on the web labels its save Buttons 'Saving...' while they save. Its profile settings show nothing when a save fails. Its instructions settings show the error's own message in an inline Alert with no close button.",
   native: 'On Apple there is no toast. Show the result in place.',
   seenIn: [
     { product: 'Scindo', path: 'apps/web/src/components/chat/SettingsView.tsx' },

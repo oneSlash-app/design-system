@@ -2,7 +2,7 @@
 
 A search or a filter finds nothing.
 
-**Not built yet:** Scindo on the web shows a bare line, 'No results found', with no words and no way to clear them. Commentify shows the words in an `EmptyBox`, with no Clear Search Button.
+**Not built yet:** Scindo on the web shows a bare line, 'No results found', with no words and no way to clear them. Scindo on Apple shows 'No results found' in a `ContentUnavailableView`, without the words. Commentify shows the words in an `EmptyBox`, with no Clear Search Button.
 
 ## Do
 
@@ -17,7 +17,7 @@ A search or a filter finds nothing.
 - Do not show the list's own empty text, such as 'No projects yet'.
 - Do not clear the search field unless the person asks.
 
-## Example: Words searched for and Clear Search
+## Example: The words and a way to clear them
 
 Use when: A search or a filter finds nothing.
 

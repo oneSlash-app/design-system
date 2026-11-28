@@ -8,7 +8,7 @@ module.exports = {
   options: [
     {
       id: 'clear-search',
-      title: 'Words searched for and Clear Search',
+      title: 'The words and a way to clear them',
       useWhen: 'A search or a filter finds nothing.',
       example: 'clear-search.tsx',
     },
@@ -24,7 +24,7 @@ module.exports = {
     "Do not show the list's own empty text, such as 'No projects yet'.",
     'Do not clear the search field unless the person asks.',
   ],
-  notBuiltYet: "Scindo on the web shows a bare line, 'No results found', with no words and no way to clear them. Commentify shows the words in an `EmptyBox`, with no Clear Search Button.",
+  notBuiltYet: "Scindo on the web shows a bare line, 'No results found', with no words and no way to clear them. Scindo on Apple shows 'No results found' in a `ContentUnavailableView`, without the words. Commentify shows the words in an `EmptyBox`, with no Clear Search Button.",
   native: 'On Apple use `ContentUnavailableView.search(text:)`.',
   seenIn: [
     { product: 'Scindo', path: 'apps/web/src/components/chat/SearchModal.tsx' },

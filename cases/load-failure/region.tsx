@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Surface from '../../components/surface';
 import Heading from '../../components/heading';
 import EmptyBox from '../../components/emptyBox';
@@ -12,12 +12,16 @@ const projects = ['Website refresh', 'Hiring plan', 'Q4 budget', 'Office move'];
 export default function LoadFailureRegion() {
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleTryAgain() {
     if (loading) return;
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setLoaded(true);
     }, 1200);

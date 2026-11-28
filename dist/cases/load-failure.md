@@ -10,6 +10,7 @@ A list or a section could not load.
 - Offer a 'Try Again' Button. It is `loading` while it loads, and keeps its label.
 - Show the list as soon as it loads.
 - Keep the rest of the page working when only one section failed.
+- Give the inline error Alert for a failed section no close button and `autoDismiss={false}`, so it stays until the section loads.
 
 ## Don't
 
@@ -25,7 +26,7 @@ Uses: `Button`, `EmptyBox`, `Heading`, `List`, `Stack`, `Surface`
 
 ```tsx
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Surface from 'oneslash-design-system/components/surface';
 import Heading from 'oneslash-design-system/components/heading';
 import EmptyBox from 'oneslash-design-system/components/emptyBox';
@@ -38,12 +39,16 @@ const projects = ['Website refresh', 'Hiring plan', 'Q4 budget', 'Office move'];
 export default function LoadFailureRegion() {
   const [loaded, setLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleTryAgain() {
     if (loading) return;
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setLoaded(true);
     }, 1200);
@@ -80,7 +85,7 @@ Uses: `Alert`, `Button`, `Center`, `Cluster`, `Heading`, `List`, `Paragraph`, `S
 
 ```tsx
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Surface from 'oneslash-design-system/components/surface';
 import Heading from 'oneslash-design-system/components/heading';
 import Paragraph from 'oneslash-design-system/components/paragraph';
@@ -94,12 +99,16 @@ const invoices = ['November 2026: $240', 'October 2026: $240', 'September 2026: 
 export default function LoadFailureInline() {
   const [error, setError] = useState('Could not load your invoices.');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
 
   function handleTryAgain() {
     if (loading) return;
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setError('');
     }, 1200);

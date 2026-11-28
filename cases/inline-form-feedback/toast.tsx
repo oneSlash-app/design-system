@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Toaster, { toast, dismissToast } from '../../components/toaster';
 import Surface from '../../components/surface';
 import Heading from '../../components/heading';
@@ -17,11 +17,18 @@ export default function InlineFormFeedbackToast() {
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState('');
   const [loading, setLoading] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+  const toastIds = useRef<string[]>([]);
 
   // Opens on the toast the example shows, as if an invite was just sent.
+  // On unmount it stops the request and closes every toast it opened.
   useEffect(() => {
-    const id = toast({ type: 'success', message: 'Invite sent to dana@example.com.' });
-    return () => dismissToast(id);
+    toastIds.current.push(toast({ type: 'success', message: 'Invite sent to dana@example.com.' }));
+    return () => {
+      clearTimeout(timer.current);
+      toastIds.current.forEach((id) => dismissToast(id));
+      toastIds.current = [];
+    };
   }, []);
 
   function handleSubmit() {
@@ -38,10 +45,10 @@ export default function InlineFormFeedbackToast() {
     }
     setLoading(true);
     // Stands in for the request to the server.
-    setTimeout(() => {
+    timer.current = setTimeout(() => {
       setLoading(false);
       setEmail('');
-      toast({ type: 'success', message: `Invite sent to ${address}.` });
+      toastIds.current.push(toast({ type: 'success', message: `Invite sent to ${address}.` }));
     }, 1200);
   }
 

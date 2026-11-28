@@ -2,12 +2,12 @@
 
 A person opens a link to a page that does not exist.
 
-**Not built yet:** Commentify's page not found is one line of bare text with no way home. Scindo on the web shows '404' as its heading and bare text with a text link home.
+**Not built yet:** Commentify's page not found is one line of bare text, 'Page not found.', with no way home. Scindo on the web shows '404' as its heading, then bare text and a text link home. jinhwankim.com has no heading: it puts '404:' at the start of its `EmptyBox` text and labels its Button 'Go to Home'.
 
 ## Do
 
 - Say 'Page not found' in a `Heading` with `level={1}`.
-- Add one line on what may have happened: 'The link may be wrong, or the page was moved.'
+- Add one line on what may have happened: 'The link may be wrong, or the page was moved or removed.'
 - Offer one Button home: 'Go Home'.
 
 ## Don't
@@ -34,7 +34,7 @@ export default function NotFoundPageFullPage() {
     <Center fill>
       <Stack gap="medium">
         <Heading level={1} size="h5">Page not found</Heading>
-        <Paragraph tone="secondary" measure="none">The link may be wrong, or the page was moved.</Paragraph>
+        <Paragraph tone="secondary" measure="none">The link may be wrong, or the page was moved or removed.</Paragraph>
       </Stack>
       <Cluster>
         <Button size="medium" type="primary" state="enabled" label="Go Home" href="/" />
@@ -83,7 +83,7 @@ export default function NotFoundPageInShell() {
         <Stack gap="xlarge">
           <Stack gap="medium">
             <Heading level={1} size="h5">Page not found</Heading>
-            <Paragraph tone="secondary" measure="none">The link may be wrong, or the project was moved.</Paragraph>
+            <Paragraph tone="secondary" measure="none">The link may be wrong, or the page was moved or removed.</Paragraph>
           </Stack>
           <Cluster>
             <Button size="medium" type="primary" state="enabled" label="Go Home" href="/" />
