@@ -4,7 +4,7 @@ import { overlayHidden, overlayTransition, overlayVisible } from './sharedStyles
 import { useOverlayTransition } from './useOverlayTransition';
 import { initialFocusCandidates } from '../internal/modal';
 var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-// For picking the first focus: the same, minus a hidden input, which matches but cannot take focus
+// For the first focus and the Tab trap: the same, minus a hidden input, which matches but cannot take focus
 var PICKABLE = FOCUSABLE.replace('input:not([disabled])', 'input:not([disabled]):not([type="hidden"])');
 export default function Modal(_a) {
     var isOpen = _a.isOpen, title = _a.title, secondTitle = _a.secondTitle, children = _a.children, onClose = _a.onClose, actions = _a.actions, _b = _a.size, size = _b === void 0 ? 'medium' : _b, _c = _a.initialFocus, initialFocus = _c === void 0 ? 'first' : _c;
@@ -29,7 +29,7 @@ export default function Modal(_a) {
         for (var _i = 0, candidates_1 = candidates; _i < candidates_1.length; _i++) {
             var candidate = candidates_1[_i];
             candidate.focus();
-            if (document.activeElement === candidate)
+            if (panel === null || panel === void 0 ? void 0 : panel.contains(document.activeElement))
                 break;
         }
         if (panel && !panel.contains(document.activeElement))
@@ -43,7 +43,7 @@ export default function Modal(_a) {
             }
             if (e.key !== 'Tab' || !panel)
                 return;
-            var focusable = Array.from(panel.querySelectorAll(FOCUSABLE));
+            var focusable = Array.from(panel.querySelectorAll(PICKABLE));
             if (focusable.length === 0) {
                 e.preventDefault();
                 return;

@@ -2,7 +2,7 @@
 import React from 'react';
 export default function LoadingScreen(_a) {
     var _b = _a === void 0 ? {} : _a, label = _b.label;
-    return (<div role="status" aria-label="Loading" className={"flex ".concat(label ? 'flex-col ' : '', "justify-center items-center ").concat(label ? 'gap-1 ' : '', "h-full w-full min-h-[200px]")}>
+    return (<div role="status" aria-label={label !== null && label !== void 0 ? label : 'Loading'} className={"flex ".concat(label ? 'flex-col ' : '', "justify-center items-center ").concat(label ? 'gap-1 ' : '', "h-full w-full min-h-[200px]")}>
         <div className="w-12 h-12 rounded-full border-4 border-current border-t-transparent text-fg-primary animate-spin"></div>
         {label && <p className="text-body2 text-fg-secondary text-center">{label}</p>}
     </div>);

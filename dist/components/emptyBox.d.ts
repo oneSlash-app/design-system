@@ -4,7 +4,7 @@ interface EmptyBoxProps {
     text: string;
     secondText?: string;
     size: "small" | "large";
-    /** Shown under the text, centered, for the one thing to do next */
+    /** Shown under the text, centered, for the one thing to do next. Wrap more than one Button yourself. */
     action?: React.ReactNode;
     /** Replaces the default icon: a Lucide name, an icon component or an element */
     icon?: IconSource;

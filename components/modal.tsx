@@ -21,7 +21,7 @@ interface ModalProps {
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-// For picking the first focus: the same, minus a hidden input, which matches but cannot take focus
+// For the first focus and the Tab trap: the same, minus a hidden input, which matches but cannot take focus
 const PICKABLE = FOCUSABLE.replace('input:not([disabled])', 'input:not([disabled]):not([type="hidden"])');
 
 export default function Modal({
@@ -58,7 +58,7 @@ export default function Modal({
     // An element that is hidden or display:none ignores focus(); try the next one
     for (const candidate of candidates) {
       candidate.focus();
-      if (document.activeElement === candidate) break;
+      if (panel?.contains(document.activeElement)) break;
     }
     if (panel && !panel.contains(document.activeElement)) panel.focus();
 
@@ -71,7 +71,7 @@ export default function Modal({
         return;
       }
       if (e.key !== 'Tab' || !panel) return;
-      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(FOCUSABLE));
+      const focusable = Array.from(panel.querySelectorAll<HTMLElement>(PICKABLE));
       if (focusable.length === 0) {
         e.preventDefault();
         return;

@@ -6,13 +6,13 @@ interface LoadingSmallProps {
 }
 
 interface LoadingScreenProps {
-  /** One line of text centered under the spinner, announced with it */
+  /** One line of text centered under the spinner. It is also the status element's accessible name, in place of "Loading". */
   label?: string;
 }
 
 export default function LoadingScreen({ label }: LoadingScreenProps = {}) {
   return (
-    <div role="status" aria-label="Loading" className={`flex ${label ? 'flex-col ' : ''}justify-center items-center ${label ? 'gap-1 ' : ''}h-full w-full min-h-[200px]`}>
+    <div role="status" aria-label={label ?? 'Loading'} className={`flex ${label ? 'flex-col ' : ''}justify-center items-center ${label ? 'gap-1 ' : ''}h-full w-full min-h-[200px]`}>
         <div className="w-12 h-12 rounded-full border-4 border-current border-t-transparent text-fg-primary animate-spin"></div>
         {label && <p className="text-body2 text-fg-secondary text-center">{label}</p>}
     </div>

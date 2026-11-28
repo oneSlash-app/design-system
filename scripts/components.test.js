@@ -475,9 +475,9 @@ test('TextField without helperText renders as before (input and textarea)', () =
   assert.equal(html(h(TextField, { ...f, multiline: true })), before.tfm);
 });
 
-test('LoadingScreen label sits centered under the spinner inside the status element', () => {
+test('LoadingScreen label sits centered under the spinner inside the status element and is its name', () => {
   const out = html(h(LoadingScreen, { label: 'Checking invite\u2026' }));
-  assert.match(out, /^<div role="status" aria-label="Loading" class="flex flex-col justify-center items-center gap-1 h-full w-full min-h-\[200px\]">/);
+  assert.match(out, /^<div role="status" aria-label="Checking invite\u2026" class="flex flex-col justify-center items-center gap-1 h-full w-full min-h-\[200px\]">/);
   assert.match(out, /<p class="text-body2 text-fg-secondary text-center">Checking invite\u2026<\/p><\/div>$/);
   assert.equal(out.match(/role="status"/g).length, 1);
 });

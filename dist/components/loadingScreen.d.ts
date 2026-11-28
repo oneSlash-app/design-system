@@ -3,7 +3,7 @@ interface LoadingSmallProps {
     size?: 'large' | 'medium' | 'small' | 'tiny';
 }
 interface LoadingScreenProps {
-    /** One line of text centered under the spinner, announced with it */
+    /** One line of text centered under the spinner. It is also the status element's accessible name, in place of "Loading". */
     label?: string;
 }
 export default function LoadingScreen({ label }?: LoadingScreenProps): React.JSX.Element;

@@ -28,7 +28,7 @@ for (const { id } of stories) {
         route.fulfill({ contentType: 'image/png', body: PLACEHOLDER_PNG }),
       );
       await page.goto(`/iframe.html?id=${id}&viewMode=story&globals=theme:${mode}`);
-      // Alert and Modal flip classes from a timeout after mount, so a CSS transition can start after any wait
+      // Alert flips its classes from a timeout after mount and Modal from a layout effect, so a CSS transition can start after any wait
       // and leave the page on a different composited layer, which moves antialiased corners by one shade.
       // Turning transitions off makes the final state the only state.
       await page.addStyleTag({ content: '*, *::before, *::after { transition: none !important; }' });
@@ -37,8 +37,8 @@ for (const { id } of stories) {
       await page.evaluate(() =>
         Promise.all(Array.from(document.images).map((img) => img.decode().catch(() => {}))),
       );
-      // Some parts start their motion a moment after mount (Alert and Modal flip their classes from a
-      // timeout), so one pass can miss a transition that begins later. Finish animations frame by
+      // Some parts start their motion a moment after mount (Alert flips its classes from a timeout,
+      // Modal from a layout effect), so one pass can miss a transition that begins later. Finish animations frame by
       // frame until three frames in a row have none left to finish.
       await page.evaluate(async () => {
         const frame = () => new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
