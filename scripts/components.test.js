@@ -372,11 +372,23 @@ test('Alert shouldAutoDismiss: unset follows the close button, false never, true
   assert.equal(shouldAutoDismiss({ autoDismiss: false, showCloseButton: false }), false);
   assert.equal(shouldAutoDismiss({ autoDismiss: true, showCloseButton: true }), true);
 });
-test('Toaster with an empty store renders nothing on the server, and toast() there does not throw', () => {
-  const { default: Toaster, toast } = require(path.join(dist, 'components', 'toaster.jsx'));
-  assert.equal(html(h(Toaster)), '');
+// Checks that a server render of Toaster is empty even while the module's store holds a toast
+test('Toaster renders nothing on the server even with a toast in the store, and toast() there does not throw', () => {
+  const { default: Toaster, toast, dismissToast } = require(path.join(dist, 'components', 'toaster.jsx'));
   assert.equal(typeof toast('Saved'), 'string');
-  assert.equal(html(h(Toaster)), '');
+  // toast() only fills the store where window exists, as in a browser
+  globalThis.window = {};
+  let id;
+  try {
+    id = toast('In the client store');
+  } finally {
+    delete globalThis.window;
+  }
+  try {
+    assert.equal(html(h(Toaster)), '');
+  } finally {
+    dismissToast(id);
+  }
 });
 test('Toaster is a client component', () => {
   const first = fs.readFileSync(path.join(dist, 'components', 'toaster.jsx'), 'utf8').split('\n')[0];
