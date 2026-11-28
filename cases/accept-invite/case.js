@@ -8,9 +8,15 @@ module.exports = {
   options: [
     {
       id: 'signed-out',
-      title: 'Signed out',
-      useWhen: 'The person is not logged in, so they log in or create an account before they join.',
+      title: 'Logged out',
+      useWhen: 'The person is not logged in.',
       example: 'signed-out.tsx',
+    },
+    {
+      id: 'signed-in',
+      title: 'Logged in, open link',
+      useWhen: 'The person is logged in and the link is open to anyone who has it.',
+      example: 'signed-in.tsx',
     },
   ],
   do: [
@@ -21,6 +27,7 @@ module.exports = {
     "Offer 'Log In' as the primary Button and 'Sign Up' as the secondary one, and bring the person back to the invite after either.",
     'Join with no screen when the invite is tied to the verified address of the person who is logged in, and land them in the workspace.',
     "Show one screen with a 'Join Acme Design' Button when the invite is an open link and the person is logged in.",
+    "Name the account that will join on that screen, 'Joining as ada@example.com', with a text-only 'Not You? Switch Account'.",
     "Show an expired link with a heading, one line and one Button: 'Invite link expired', 'Ask the person who invited you to send a new link.', 'Go Home'.",
     "Show a link for another account with a heading, one line and one Button: 'This invite is for a different account', 'You are logged in as ada@example.com. This invite is for d***@example.com.', 'Switch Account'. Say the logged-in address in full and the invited one masked.",
     "Show a full workspace with a heading, one line and one Button: 'This workspace is full', 'Ask an admin of Acme Design to make room.', 'Go Home'.",

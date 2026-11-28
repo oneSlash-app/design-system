@@ -9,8 +9,14 @@ module.exports = {
     {
       id: 'form',
       title: 'New password form',
-      useWhen: 'The reset link is valid and the person sets a new password.',
+      useWhen: 'The link is valid.',
       example: 'form.tsx',
+    },
+    {
+      id: 'invalid-link',
+      title: 'Link no longer works',
+      useWhen: 'The link is invalid, expired or already used.',
+      example: 'invalid-link.tsx',
     },
   ],
   do: [
@@ -23,7 +29,6 @@ module.exports = {
     'Show the loading state on the submit Button while updating, and keep the form in place.',
     "Log the person out of the reset link's session before showing the login form, so they really log in with the new password.",
     "Go to the login form on success, with a success Alert above it: 'Password updated. Log in with your new password.'",
-    "Show an inline error Alert in place of the form when the link is invalid or expired, with a 'Back to Login' Button under it. The Alert reports a standing condition, so it has no close button and `autoDismiss={false}`: 'This link has expired or was already used. Ask for a new one from the login page.'",
   ],
   dont: [
     'Do not show the rule only after the person breaks it.',

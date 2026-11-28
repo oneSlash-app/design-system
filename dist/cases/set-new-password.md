@@ -15,7 +15,6 @@ A person opened the link to reset their password and now chooses a new one.
 - Show the loading state on the submit Button while updating, and keep the form in place.
 - Log the person out of the reset link's session before showing the login form, so they really log in with the new password.
 - Go to the login form on success, with a success Alert above it: 'Password updated. Log in with your new password.'
-- Show an inline error Alert in place of the form when the link is invalid or expired, with a 'Back to Login' Button under it. The Alert reports a standing condition, so it has no close button and `autoDismiss={false}`: 'This link has expired or was already used. Ask for a new one from the login page.'
 
 ## Don't
 
@@ -24,7 +23,9 @@ A person opened the link to reset their password and now chooses a new one.
 - Do not replace the form with a spinner while updating.
 - Do not show the form when the link is invalid or expired.
 
-## Example: New password form
+## Option: New password form
+
+Use when: The link is valid.
 
 Uses: `Alert`, `BrandIcon`, `Button`, `Center`, `Form`, `Heading`, `Image`, `Line`, `Paragraph`, `Stack`, `Tab`, `TabsContainer`, `TextField`
 
@@ -169,6 +170,75 @@ export default function SetNewPasswordForm() {
         <TextField id="set-new-password-confirm" label="Confirm password" type="password" autoComplete="new-password" value={confirmPassword} disabled={loading} error={Boolean(confirmPasswordError)} errorText={confirmPasswordError} onChange={(e) => { setConfirmPassword(e.target.value); setConfirmPasswordError(''); }} />
         <Button size="medium" type="primary" state="enabled" label="Update Password" htmlType="submit" loading={loading} />
       </Form>
+    </Center>
+  );
+}
+```
+
+## Option: Link no longer works
+
+Use when: The link is invalid, expired or already used.
+
+Uses: `Alert`, `Button`, `Center`, `Heading`, `Icon`, `Paragraph`, `Stack`
+
+```tsx
+'use client';
+import { useEffect, useRef, useState } from 'react';
+import { Mail } from 'lucide-react';
+import Icon from 'oneslash-design-system/components/icon';
+import Heading from 'oneslash-design-system/components/heading';
+import Paragraph from 'oneslash-design-system/components/paragraph';
+import Alert from 'oneslash-design-system/components/alert';
+import Button from 'oneslash-design-system/components/button';
+import { Center, Stack } from 'oneslash-design-system/components/layout';
+
+// A real app passes the router from its framework, such as Next's useRouter().
+const router = { push: (url: string) => console.info(`Go to ${url}`) };
+
+// A real app passes the address of the account the old link was sent for.
+const address = 'ada@example.com';
+
+export default function SetNewPasswordInvalidLink() {
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout>>();
+
+  // Stops the request if the example goes away before it ends.
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  function handleSendNewLink() {
+    if (loading) return;
+    setLoading(true);
+    // Stands in for the request to the server.
+    // A failed request shows an inline error Alert above the Buttons, such as 'The link was not sent. Try again.'
+    timer.current = setTimeout(() => {
+      setLoading(false);
+      setSent(true);
+    }, 1200);
+  }
+
+  if (sent) {
+    return (
+      <Center width="form" fill>
+        <Icon icon={Mail} size="large" color="secondary" />
+        <Stack gap="medium">
+          <Heading level={1} size="h5">Check your email</Heading>
+          <Paragraph tone="secondary" measure="none">We sent a new link to {address}. Open it to set a new password.</Paragraph>
+        </Stack>
+        <Button size="medium" type="textOnly" state="enabled" label="Back to Login" onClickButton={() => router.push('/login')} />
+      </Center>
+    );
+  }
+
+  return (
+    <Center width="form" fill>
+      <Heading level={1} size="h5">Set new password</Heading>
+      {/* The link cannot be used, so the form does not show. The Alert reports a standing condition: it has no close button and stays. */}
+      <Alert type="error" variant="inline" message="This link has expired or was already used." autoDismiss={false} />
+      <Stack gap="large">
+        <Button size="medium" type="primary" state="enabled" label="Send a New Link" loading={loading} onClickButton={handleSendNewLink} />
+        <Button size="medium" type="textOnly" state={loading ? 'disabled' : 'enabled'} label="Back to Login" onClickButton={() => router.push('/login')} />
+      </Stack>
     </Center>
   );
 }

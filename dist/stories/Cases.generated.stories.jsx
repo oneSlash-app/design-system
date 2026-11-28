@@ -1,6 +1,7 @@
 // Generated from cases/ by npm run build. Do not edit.
 import React from "react";
 import AcceptInvite_SignedOutExample from "../cases/accept-invite/signed-out";
+import AcceptInvite_SignedInExample from "../cases/accept-invite/signed-in";
 import AuthGateLoading_SpinnerExample from "../cases/auth-gate-loading/spinner";
 import AuthGateLoading_SpinnerWithLineExample from "../cases/auth-gate-loading/spinner-with-line";
 import CheckYourEmail_PageExample from "../cases/check-your-email/page";
@@ -45,6 +46,7 @@ import Rename_InlineExample from "../cases/rename/inline";
 import RouteLoading_FullScreenExample from "../cases/route-loading/full-screen";
 import RouteLoading_RegionExample from "../cases/route-loading/region";
 import SetNewPassword_FormExample from "../cases/set-new-password/form";
+import SetNewPassword_InvalidLinkExample from "../cases/set-new-password/invalid-link";
 import SignUpPage_CenteredExample from "../cases/sign-up-page/centered";
 import SignUpPage_SplitExample from "../cases/sign-up-page/split";
 import SignUpPage_ProviderFirstExample from "../cases/sign-up-page/provider-first";
@@ -57,6 +59,7 @@ import UpgradePrompt_InlineExample from "../cases/upgrade-prompt/inline";
 var meta = { title: "Cases" };
 export default meta;
 export var AcceptInvite_SignedOut = { render: function () { return <AcceptInvite_SignedOutExample />; } };
+export var AcceptInvite_SignedIn = { render: function () { return <AcceptInvite_SignedInExample />; } };
 export var AuthGateLoading_Spinner = { render: function () { return <AuthGateLoading_SpinnerExample />; } };
 export var AuthGateLoading_SpinnerWithLine = { render: function () { return <AuthGateLoading_SpinnerWithLineExample />; } };
 export var CheckYourEmail_Page = { render: function () { return <CheckYourEmail_PageExample />; } };
@@ -101,6 +104,7 @@ export var Rename_Inline = { render: function () { return <Rename_InlineExample 
 export var RouteLoading_FullScreen = { render: function () { return <RouteLoading_FullScreenExample />; } };
 export var RouteLoading_Region = { render: function () { return <RouteLoading_RegionExample />; } };
 export var SetNewPassword_Form = { render: function () { return <SetNewPassword_FormExample />; } };
+export var SetNewPassword_InvalidLink = { render: function () { return <SetNewPassword_InvalidLinkExample />; } };
 export var SignUpPage_Centered = { render: function () { return <SignUpPage_CenteredExample />; } };
 export var SignUpPage_Split = { render: function () { return <SignUpPage_SplitExample />; } };
 export var SignUpPage_ProviderFirst = { render: function () { return <SignUpPage_ProviderFirstExample />; } };
