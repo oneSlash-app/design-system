@@ -1,4 +1,4 @@
-# Auth gate loading
+# Login check loading
 
 The app is checking whether the person is logged in, or running a step such as checking an invite, before it knows what to show.
 

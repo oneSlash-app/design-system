@@ -1,6 +1,6 @@
 module.exports = {
   id: 'import-checklist',
-  title: 'Import from a checklist',
+  title: 'Import checklist',
   kind: 'design',
   level: 'organism',
   area: 'confirm',

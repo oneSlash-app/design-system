@@ -1,6 +1,6 @@
 module.exports = {
   id: 'auth-gate-loading',
-  title: 'Auth gate loading',
+  title: 'Login check loading',
   kind: 'design',
   level: 'page',
   area: 'auth',

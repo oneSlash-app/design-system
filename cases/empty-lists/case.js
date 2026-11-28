@@ -1,6 +1,6 @@
 module.exports = {
   id: 'empty-lists',
-  title: 'Empty lists',
+  title: 'An empty list says what will fill it',
   kind: 'rule',
   level: 'rule',
   area: 'state',

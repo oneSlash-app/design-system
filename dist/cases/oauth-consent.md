@@ -82,7 +82,7 @@ export default function OAuthConsentSimple() {
     router.push('https://cli.acme.dev/callback?error=access_denied');
   }
 
-  // Shown while the browser goes back to the app, the same as a named step in 'Auth gate loading'.
+  // Shown while the browser goes back to the app, the same as a named step in 'Login check loading'.
   if (handingBack) {
     return (
       <Center fill>
@@ -187,7 +187,7 @@ export default function OAuthConsentWithScope() {
     router.push('https://cli.acme.dev/callback?error=access_denied');
   }
 
-  // Shown while the browser goes back to the app, the same as a named step in 'Auth gate loading'.
+  // Shown while the browser goes back to the app, the same as a named step in 'Login check loading'.
   if (handingBack) {
     return (
       <Center fill>

@@ -1,6 +1,6 @@
 module.exports = {
   id: 'create-modal',
-  title: 'Create in a Modal',
+  title: 'Create modal',
   kind: 'design',
   level: 'organism',
   area: 'confirm',

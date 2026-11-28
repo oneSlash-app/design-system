@@ -1,4 +1,4 @@
-# Create in a Modal
+# Create modal
 
 A person creates something new, such as a project or a task, and it needs a name before it exists.
 

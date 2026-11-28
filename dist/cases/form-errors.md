@@ -1,4 +1,4 @@
-# Form errors
+# A form error shows next to the problem
 
 A form was submitted and something is wrong.
 

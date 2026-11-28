@@ -432,17 +432,17 @@ Answer: Under the reply, the agent lists what it used. A small tag names the kin
 
 File: cases/agent-shows-sources.md
 
-### Confirm dialogs
+### A confirm says exactly what will happen
 
 An action a person takes themselves needs their yes before it happens. An action the agent wants to take follows the rule 'An agent asks before a risky action', a card in the conversation, not this one.
 
-Answer: A confirm is a Modal with `size="small"`. Its title names the action in Title Case, such as 'Delete Project'. The body says in one or two sentences what will happen and what is kept. Two Buttons sit in the Modal's `actions`. 'Cancel' comes first, a `<Button type="tertiary" size="small">`. Then comes the action, a `<Button type="primary" size="small">` labelled in Title Case with the same verb as the title. When the action destroys or removes something, the action Button also has `color="danger"`. One case differs: 'Unsaved changes'. Its guard may have three Buttons, 'Cancel', "Don't Save" and 'Save', in that order. When it has two, its safe Button reads 'Keep Editing'. Escape and a click outside the Modal mean Cancel. While the request runs, the action Button is `loading` and keeps its label, and 'Cancel' is `state="disabled"`. The Modal stays open. It still calls `onClose` on Escape or a click outside, and the page ignores that call until the request ends. If the request fails, the Modal stays open and shows an inline error Alert at the top of its body, as the rule 'Form errors' says. When the action works, the Modal closes. If the thing is still on screen, the change shows where it is. If the thing is gone, a toast names it, as the rule 'Success feedback' says.
+Answer: A confirm is a Modal with `size="small"`. Its title names the action in Title Case, such as 'Delete Project'. The body says in one or two sentences what will happen and what is kept. Two Buttons sit in the Modal's `actions`. 'Cancel' comes first, a `<Button type="tertiary" size="small">`. Then comes the action, a `<Button type="primary" size="small">` labelled in Title Case with the same verb as the title. When the action destroys or removes something, the action Button also has `color="danger"`. One case differs: 'Unsaved changes'. Its guard may have three Buttons, 'Cancel', "Don't Save" and 'Save', in that order. When it has two, its safe Button reads 'Keep Editing'. Escape and a click outside the Modal mean Cancel. While the request runs, the action Button is `loading` and keeps its label, and 'Cancel' is `state="disabled"`. The Modal stays open. It still calls `onClose` on Escape or a click outside, and the page ignores that call until the request ends. If the request fails, the Modal stays open and shows an inline error Alert at the top of its body, as the rule 'A form error shows next to the problem' says. When the action works, the Modal closes. If the thing is still on screen, the change shows where it is. If the thing is gone, a toast names it, as the rule 'Success shows where the person is looking' says.
 
 **Not built yet:** No Commentify confirm Modal uses `color="danger"`, and two of them label Cancel 'No'. Scindo on the web makes Cancel a secondary Button in some confirms and a tertiary one in others. It leaves its Delete Task and Remove Member confirms uncolored. Scindo on the web revokes an API key, and Commentify revokes an agent client, with no confirm.
 
 File: cases/confirm-dialogs.md
 
-### Empty lists
+### An empty list says what will fill it
 
 A list, table or pane has nothing to show.
 
@@ -452,7 +452,7 @@ Answer: Use `EmptyBox`, never a bare line of text. Its `size` is `large` when th
 
 File: cases/empty-lists.md
 
-### Form errors
+### A form error shows next to the problem
 
 A form was submitted and something is wrong.
 
@@ -462,7 +462,7 @@ Answer: A problem with one field shows under that field, through the field's `er
 
 File: cases/form-errors.md
 
-### Success feedback
+### Success shows where the person is looking
 
 Something the person did has worked.
 
@@ -474,24 +474,24 @@ File: cases/success-feedback.md
 
 | Case | When | File |
 | --- | --- | --- |
-| Accept an invite | A person opens an invite link to join a workspace. | cases/accept-invite.md |
-| Auth gate loading | The app is checking whether the person is logged in, or running a step such as checking an invite, before it knows what to show. | cases/auth-gate-loading.md |
+| Invite link page | A person opens an invite link to join a workspace. | cases/accept-invite.md |
+| Login check loading | The app is checking whether the person is logged in, or running a step such as checking an invite, before it knows what to show. | cases/auth-gate-loading.md |
 | Check your email | A person signed up, and the product sent a link to confirm their email. | cases/check-your-email.md |
-| Confirm a destructive action | A person asks to delete or remove something, and it cannot be undone. | cases/confirm-destructive-action.md |
-| Create in a Modal | A person creates something new, such as a project or a task, and it needs a name before it exists. | cases/create-modal.md |
+| Delete confirm | A person asks to delete or remove something, and it cannot be undone. | cases/confirm-destructive-action.md |
+| Create modal | A person creates something new, such as a project or a task, and it needs a name before it exists. | cases/create-modal.md |
 | Device login | A CLI, an editor or another app opened the browser so the person can log in, and the login must reach that app. | cases/device-login.md |
 | Email confirmed | A person opened the link that confirms their email. | cases/email-confirmed.md |
 | Empty list | A list has loaded, and there is nothing in it yet. | cases/empty-list.md |
-| Empty because it is not set up | A pane is empty because something it needs is not set up yet, such as a connected account. | cases/empty-not-set-up.md |
+| Empty until set up | A pane is empty because something it needs is not set up yet, such as a connected account. | cases/empty-not-set-up.md |
 | Empty search | A search or a filter finds nothing. | cases/empty-search.md |
 | Error page | Something broke while showing a page, and the app cannot show it. | cases/error-page.md |
 | Feedback form | A person sends feedback about the product from inside it. | cases/feedback-form.md |
 | Forgot password | A person cannot remember their password and asks for a link to set a new one. | cases/forgot-password.md |
-| Import from a checklist | A person picks which items to bring in from another place, such as pages from a wiki. | cases/import-checklist.md |
+| Import checklist | A person picks which items to bring in from another place, such as pages from a wiki. | cases/import-checklist.md |
 | Form feedback | A person submits a small form, such as a settings field, and the request ends. The three options are the three outcomes of one save: it worked in place, it failed, or the result is elsewhere. | cases/inline-form-feedback.md |
-| Invite a member | A person invites someone to join a workspace. | cases/invite-member.md |
+| Member invite | A person invites someone to join a workspace. | cases/invite-member.md |
 | Load failure | A list or a section could not load. | cases/load-failure.md |
-| Log out confirm | A person chooses Log Out. | cases/log-out-confirm.md |
+| Log-out confirm | A person chooses Log Out. | cases/log-out-confirm.md |
 | Login page | A person who already has an account opens the product and is not logged in. | cases/login-page.md |
 | Page not found | A person opens a link to a page that does not exist. | cases/not-found-page.md |
 | OAuth consent | Another app, such as a CLI or an MCP client, asks to act for a person who is logged in, and the person must allow it. | cases/oauth-consent.md |

@@ -35,7 +35,7 @@ module.exports = {
     'Do not replace the form with a spinner while sending the link.',
   ],
   notBuiltYet: "Commentify and Scindo on the web replace the form with a spinner while sending the link. Both then say 'We sent a password reset link to' the address, even when it has no account.",
-  native: "On Apple, put 'Forgot Password?' under the sign-in Button and open the web reset form from it.",
+  native: "On Apple, put 'Forgot Password?' under the 'Log In' Button and open the web reset form from it.",
   seenIn: [
     { product: 'Commentify', path: 'src/app/(auth)/login/[[...login]]/page.tsx' },
     { product: 'Scindo', path: 'apps/web/src/app/(auth)/login/page.tsx' },

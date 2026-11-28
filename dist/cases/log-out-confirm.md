@@ -1,4 +1,4 @@
-# Log out confirm
+# Log-out confirm
 
 A person chooses Log Out.
 

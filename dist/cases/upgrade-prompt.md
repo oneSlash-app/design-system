@@ -11,7 +11,7 @@ A person reaches something their plan does not include, or a limit of their plan
 - Offer 'Not Now' as a tertiary Button, then 'Upgrade to Pro' as a primary Button.
 - Show 'Upgrade to Pro' only to a person who can change the plan. Tell everyone else to ask a workspace admin, and give them only 'Not Now'.
 - Title the Modal 'Upgrade to Pro' only for a person who can upgrade. For everyone else, title it 'Pro Feature'.
-- Follow the rule 'Confirm dialogs' for the Modal: `size="small"`, and Escape or a click outside means 'Not Now'.
+- Follow the rule 'A confirm says exactly what will happen' for the Modal: `size="small"`, and Escape or a click outside means 'Not Now'.
 - Put the notice where the control was, with the same two Buttons, when a limit is reached inside a flow.
 - Follow the rule 'An agent refuses clearly' too when the agent is the one refused.
 

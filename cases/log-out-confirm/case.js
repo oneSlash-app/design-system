@@ -1,6 +1,6 @@
 module.exports = {
   id: 'log-out-confirm',
-  title: 'Log out confirm',
+  title: 'Log-out confirm',
   kind: 'design',
   level: 'organism',
   area: 'confirm',

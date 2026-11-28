@@ -1,6 +1,6 @@
 module.exports = {
   id: 'invite-member',
-  title: 'Invite a member',
+  title: 'Member invite',
   kind: 'design',
   level: 'organism',
   area: 'confirm',
@@ -30,7 +30,7 @@ module.exports = {
     "Change 'Copy' to 'Copied' for 2 seconds, and only when the link reached the clipboard.",
     "Say under the field when copying is blocked: 'Copying is blocked here. Select the link and copy it.'",
     'Say who can use the link and when it stops working.',
-    "List the links that still work, each with a 'Revoke' Button. Revoking removes access, so confirm it in the row, as the case 'Confirm a destructive action' does.",
+    "List the links that still work, each with a 'Revoke' Button. Revoking removes access, so confirm it in the row, as the case 'Delete confirm' does.",
     "Give each row's 'Revoke', and the confirm's 'Cancel' and 'Revoke', an `aria-label` that names the link: 'Revoke the link made by Dana Lee'.",
     'Start each `aria-label` with the visible label, so voice control still finds the Button.',
     "Disable 'Done', and ignore Escape and a click outside, while a revoke runs.",

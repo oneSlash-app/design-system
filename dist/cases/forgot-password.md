@@ -323,6 +323,6 @@ export default function ForgotPasswordOwnPage() {
 
 ## Native
 
-On Apple, put 'Forgot Password?' under the sign-in Button and open the web reset form from it.
+On Apple, put 'Forgot Password?' under the 'Log In' Button and open the web reset form from it.
 
 Seen in: Commentify, Scindo.

@@ -1,4 +1,4 @@
-# Empty lists
+# An empty list says what will fill it
 
 A list, table or pane has nothing to show.
 

@@ -1,6 +1,6 @@
 module.exports = {
   id: 'form-errors',
-  title: 'Form errors',
+  title: 'A form error shows next to the problem',
   kind: 'rule',
   level: 'rule',
   area: 'state',

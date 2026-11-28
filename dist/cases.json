@@ -2,7 +2,7 @@
   "cases": [
     {
       "id": "accept-invite",
-      "title": "Accept an invite",
+      "title": "Invite link page",
       "kind": "design",
       "level": "page",
       "area": "auth",
@@ -19,7 +19,7 @@
         "Show an expired link with a heading, one line and one Button: 'Invite link expired', 'Ask the person who invited you to send a new link.', 'Go Home'.",
         "Show a link for another account with a heading, one line and one Button: 'This invite is for a different account', 'You are logged in as ada@example.com. This invite is for d***@example.com.', 'Switch Account'. Say the logged-in address in full and the invited one masked.",
         "Show a full workspace with a heading, one line and one Button: 'This workspace is full', 'Ask an admin of Acme Design to make room.', 'Go Home'.",
-        "Show `LoadingScreen` with `label=\"Checking invite…\"` while the invite is checked, as in 'Auth gate loading'."
+        "Show `LoadingScreen` with `label=\"Checking invite…\"` while the invite is checked, as in 'Login check loading'."
       ],
       "dont": [
         "Do not show the invite to a person whose verified address it is tied to. Join and go on.",
@@ -218,7 +218,7 @@
     },
     {
       "id": "auth-gate-loading",
-      "title": "Auth gate loading",
+      "title": "Login check loading",
       "kind": "design",
       "level": "page",
       "area": "auth",
@@ -328,13 +328,13 @@
     },
     {
       "id": "confirm-destructive-action",
-      "title": "Confirm a destructive action",
+      "title": "Delete confirm",
       "kind": "design",
       "level": "organism",
       "area": "confirm",
       "situation": "A person asks to delete or remove something, and it cannot be undone.",
       "do": [
-        "Follow the rule 'Confirm dialogs' for the Modal: `size=\"small\"`, 'Cancel' first, then the action with `color=\"danger\"`.",
+        "Follow the rule 'A confirm says exactly what will happen' for the Modal: `size=\"small\"`, 'Cancel' first, then the action with `color=\"danger\"`.",
         "Name the thing and what goes with it: \"This deletes 'Q3 plan' and its 12 tasks.\"",
         "Turn the row's Buttons into 'Cancel' and a danger 'Remove' in place for the inline confirm. The rest of the row stays as it is.",
         "Give each row's Buttons an `aria-label` that starts with the visible label and names the thing, such as 'Remove Dana Lee' and 'Cancel removing Dana Lee'.",
@@ -399,12 +399,12 @@
     },
     {
       "id": "confirm-dialogs",
-      "title": "Confirm dialogs",
+      "title": "A confirm says exactly what will happen",
       "kind": "rule",
       "level": "rule",
       "area": "confirm",
       "situation": "An action a person takes themselves needs their yes before it happens. An action the agent wants to take follows the rule 'An agent asks before a risky action', a card in the conversation, not this one.",
-      "answer": "A confirm is a Modal with `size=\"small\"`. Its title names the action in Title Case, such as 'Delete Project'. The body says in one or two sentences what will happen and what is kept. Two Buttons sit in the Modal's `actions`. 'Cancel' comes first, a `<Button type=\"tertiary\" size=\"small\">`. Then comes the action, a `<Button type=\"primary\" size=\"small\">` labelled in Title Case with the same verb as the title. When the action destroys or removes something, the action Button also has `color=\"danger\"`. One case differs: 'Unsaved changes'. Its guard may have three Buttons, 'Cancel', \"Don't Save\" and 'Save', in that order. When it has two, its safe Button reads 'Keep Editing'. Escape and a click outside the Modal mean Cancel. While the request runs, the action Button is `loading` and keeps its label, and 'Cancel' is `state=\"disabled\"`. The Modal stays open. It still calls `onClose` on Escape or a click outside, and the page ignores that call until the request ends. If the request fails, the Modal stays open and shows an inline error Alert at the top of its body, as the rule 'Form errors' says. When the action works, the Modal closes. If the thing is still on screen, the change shows where it is. If the thing is gone, a toast names it, as the rule 'Success feedback' says.",
+      "answer": "A confirm is a Modal with `size=\"small\"`. Its title names the action in Title Case, such as 'Delete Project'. The body says in one or two sentences what will happen and what is kept. Two Buttons sit in the Modal's `actions`. 'Cancel' comes first, a `<Button type=\"tertiary\" size=\"small\">`. Then comes the action, a `<Button type=\"primary\" size=\"small\">` labelled in Title Case with the same verb as the title. When the action destroys or removes something, the action Button also has `color=\"danger\"`. One case differs: 'Unsaved changes'. Its guard may have three Buttons, 'Cancel', \"Don't Save\" and 'Save', in that order. When it has two, its safe Button reads 'Keep Editing'. Escape and a click outside the Modal mean Cancel. While the request runs, the action Button is `loading` and keeps its label, and 'Cancel' is `state=\"disabled\"`. The Modal stays open. It still calls `onClose` on Escape or a click outside, and the page ignores that call until the request ends. If the request fails, the Modal stays open and shows an inline error Alert at the top of its body, as the rule 'A form error shows next to the problem' says. When the action works, the Modal closes. If the thing is still on screen, the change shows where it is. If the thing is gone, a toast names it, as the rule 'Success shows where the person is looking' says.",
       "why": "A confirm is the last chance to stop a mistake. It has to say exactly what will happen, and the safe choice has to be easy to find.",
       "do": [
         "Name the thing in the body: \"This deletes 'Q3 plan' and its 12 tasks.\"",
@@ -430,7 +430,7 @@
     },
     {
       "id": "create-modal",
-      "title": "Create in a Modal",
+      "title": "Create modal",
       "kind": "design",
       "level": "organism",
       "area": "confirm",
@@ -672,7 +672,7 @@
     },
     {
       "id": "empty-lists",
-      "title": "Empty lists",
+      "title": "An empty list says what will fill it",
       "kind": "rule",
       "level": "rule",
       "area": "state",
@@ -704,7 +704,7 @@
     },
     {
       "id": "empty-not-set-up",
-      "title": "Empty because it is not set up",
+      "title": "Empty until set up",
       "kind": "design",
       "level": "organism",
       "area": "state",
@@ -927,7 +927,7 @@
         "Do not clear the email the person typed on the login form.",
         "Do not replace the form with a spinner while sending the link."
       ],
-      "native": "On Apple, put 'Forgot Password?' under the sign-in Button and open the web reset form from it.",
+      "native": "On Apple, put 'Forgot Password?' under the 'Log In' Button and open the web reset form from it.",
       "notBuiltYet": "Commentify and Scindo on the web replace the form with a spinner while sending the link. Both then say 'We sent a password reset link to' the address, even when it has no account.",
       "seenIn": [
         "Commentify",
@@ -978,7 +978,7 @@
     },
     {
       "id": "form-errors",
-      "title": "Form errors",
+      "title": "A form error shows next to the problem",
       "kind": "rule",
       "level": "rule",
       "area": "state",
@@ -1009,7 +1009,7 @@
     },
     {
       "id": "import-checklist",
-      "title": "Import from a checklist",
+      "title": "Import checklist",
       "kind": "design",
       "level": "organism",
       "area": "confirm",
@@ -1140,7 +1140,7 @@
     },
     {
       "id": "invite-member",
-      "title": "Invite a member",
+      "title": "Member invite",
       "kind": "design",
       "level": "organism",
       "area": "confirm",
@@ -1156,7 +1156,7 @@
         "Change 'Copy' to 'Copied' for 2 seconds, and only when the link reached the clipboard.",
         "Say under the field when copying is blocked: 'Copying is blocked here. Select the link and copy it.'",
         "Say who can use the link and when it stops working.",
-        "List the links that still work, each with a 'Revoke' Button. Revoking removes access, so confirm it in the row, as the case 'Confirm a destructive action' does.",
+        "List the links that still work, each with a 'Revoke' Button. Revoking removes access, so confirm it in the row, as the case 'Delete confirm' does.",
         "Give each row's 'Revoke', and the confirm's 'Cancel' and 'Revoke', an `aria-label` that names the link: 'Revoke the link made by Dana Lee'.",
         "Start each `aria-label` with the visible label, so voice control still finds the Button.",
         "Disable 'Done', and ignore Escape and a click outside, while a revoke runs."
@@ -1283,7 +1283,7 @@
     },
     {
       "id": "log-out-confirm",
-      "title": "Log out confirm",
+      "title": "Log-out confirm",
       "kind": "design",
       "level": "organism",
       "area": "confirm",
@@ -1524,7 +1524,7 @@
           "id": "simple",
           "title": "One account, one access",
           "useWhen": "The app gets one set of access to one account, so the only choice is to allow it or not.",
-          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Image from 'oneslash-design-system/components/image';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport UserImage from 'oneslash-design-system/components/userImage';\nimport Alert from 'oneslash-design-system/components/alert';\nimport Button from 'oneslash-design-system/components/button';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center, Cluster, Grid, Stack } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A real app passes the router from its framework, such as Next's useRouter().\n// The app's name and cli.acme.dev come from the server's record of the registered app, never from the link.\n// Going back to another site is a full page load, such as window.location.assign() in a real app.\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\nexport default function OAuthConsentSimple() {\n  const [allowing, setAllowing] = useState(false);\n  const [handingBack, setHandingBack] = useState(false);\n  const [error, setError] = useState('');\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  function handleAllow() {\n    if (allowing) return;\n    setError('');\n    setAllowing(true);\n    // Stands in for the request to the server.\n    // A failed request calls setError with one sentence instead, such as 'Acme CLI was not connected. Try again.'\n    timer.current = setTimeout(() => {\n      setAllowing(false);\n      setHandingBack(true);\n      // A real app also returns the `state` value the app sent, so the app can match the answer to its request.\n      router.push('https://cli.acme.dev/callback');\n    }, 1200);\n  }\n\n  // The app hears that the person said no, and nothing is shared.\n  // A real app also returns the `state` value the app sent.\n  function handleCancel() {\n    setHandingBack(true);\n    router.push('https://cli.acme.dev/callback?error=access_denied');\n  }\n\n  // Shown while the browser goes back to the app, the same as a named step in 'Auth gate loading'.\n  if (handingBack) {\n    return (\n      <Center fill>\n        <LoadingScreen label=\"Going back to Acme CLI…\" />\n      </Center>\n    );\n  }\n\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Acme CLI wants to connect to Acme</Heading>\n        <Paragraph tone=\"secondary\" measure=\"none\">It will be able to read your projects and tasks, and create tasks as you. You can remove its access at any time in Settings, under Connected apps.</Paragraph>\n      </Stack>\n      {/* The account that gives the access, so the person can tell it is the right one. */}\n      <Stack gap=\"small\" align=\"start\">\n        <Cluster gap=\"small\">\n          <UserImage userHandle=\"Ada Lovelace\" />\n          <Paragraph size=\"body2\" measure=\"none\">ada@example.com</Paragraph>\n        </Cluster>\n        <Button size=\"small\" type=\"textOnly\" state={allowing ? 'disabled' : 'enabled'} label=\"Not You? Switch Account\" onClickButton={() => router.push('/login?next=%2Foauth%2Fauthorize')} />\n      </Stack>\n      {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n      <Stack gap=\"medium\">\n        <Grid columns={2} gap=\"medium\">\n          <Button size=\"medium\" type=\"secondary\" state={allowing ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleCancel} />\n          <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Allow\" loading={allowing} onClickButton={handleAllow} />\n        </Grid>\n        <Paragraph tone=\"secondary\" size=\"caption\" measure=\"none\">You will go back to cli.acme.dev.</Paragraph>\n      </Stack>\n    </Center>\n  );\n}\n",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Image from 'oneslash-design-system/components/image';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport UserImage from 'oneslash-design-system/components/userImage';\nimport Alert from 'oneslash-design-system/components/alert';\nimport Button from 'oneslash-design-system/components/button';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center, Cluster, Grid, Stack } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A real app passes the router from its framework, such as Next's useRouter().\n// The app's name and cli.acme.dev come from the server's record of the registered app, never from the link.\n// Going back to another site is a full page load, such as window.location.assign() in a real app.\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\nexport default function OAuthConsentSimple() {\n  const [allowing, setAllowing] = useState(false);\n  const [handingBack, setHandingBack] = useState(false);\n  const [error, setError] = useState('');\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  function handleAllow() {\n    if (allowing) return;\n    setError('');\n    setAllowing(true);\n    // Stands in for the request to the server.\n    // A failed request calls setError with one sentence instead, such as 'Acme CLI was not connected. Try again.'\n    timer.current = setTimeout(() => {\n      setAllowing(false);\n      setHandingBack(true);\n      // A real app also returns the `state` value the app sent, so the app can match the answer to its request.\n      router.push('https://cli.acme.dev/callback');\n    }, 1200);\n  }\n\n  // The app hears that the person said no, and nothing is shared.\n  // A real app also returns the `state` value the app sent.\n  function handleCancel() {\n    setHandingBack(true);\n    router.push('https://cli.acme.dev/callback?error=access_denied');\n  }\n\n  // Shown while the browser goes back to the app, the same as a named step in 'Login check loading'.\n  if (handingBack) {\n    return (\n      <Center fill>\n        <LoadingScreen label=\"Going back to Acme CLI…\" />\n      </Center>\n    );\n  }\n\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Acme CLI wants to connect to Acme</Heading>\n        <Paragraph tone=\"secondary\" measure=\"none\">It will be able to read your projects and tasks, and create tasks as you. You can remove its access at any time in Settings, under Connected apps.</Paragraph>\n      </Stack>\n      {/* The account that gives the access, so the person can tell it is the right one. */}\n      <Stack gap=\"small\" align=\"start\">\n        <Cluster gap=\"small\">\n          <UserImage userHandle=\"Ada Lovelace\" />\n          <Paragraph size=\"body2\" measure=\"none\">ada@example.com</Paragraph>\n        </Cluster>\n        <Button size=\"small\" type=\"textOnly\" state={allowing ? 'disabled' : 'enabled'} label=\"Not You? Switch Account\" onClickButton={() => router.push('/login?next=%2Foauth%2Fauthorize')} />\n      </Stack>\n      {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n      <Stack gap=\"medium\">\n        <Grid columns={2} gap=\"medium\">\n          <Button size=\"medium\" type=\"secondary\" state={allowing ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleCancel} />\n          <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Allow\" loading={allowing} onClickButton={handleAllow} />\n        </Grid>\n        <Paragraph tone=\"secondary\" size=\"caption\" measure=\"none\">You will go back to cli.acme.dev.</Paragraph>\n      </Stack>\n    </Center>\n  );\n}\n",
           "uses": [
             "Alert",
             "Button",
@@ -1543,7 +1543,7 @@
           "id": "with-scope",
           "title": "Workspace and wider access",
           "useWhen": "The person picks the workspace the app can use, or turns on wider access.",
-          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Image from 'oneslash-design-system/components/image';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport UserImage from 'oneslash-design-system/components/userImage';\nimport Alert from 'oneslash-design-system/components/alert';\nimport Select from 'oneslash-design-system/components/select';\nimport Checkbox from 'oneslash-design-system/components/checkBox';\nimport Button from 'oneslash-design-system/components/button';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center, Cluster, Grid, Stack } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A real app passes the router from its framework, such as Next's useRouter().\n// The app's name and cli.acme.dev come from the server's record of the registered app, never from the link.\n// Going back to another site is a full page load, such as window.location.assign() in a real app.\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\n// The workspaces the person belongs to.\nconst workspaces = [\n  { value: 'design', label: 'Acme Design' },\n  { value: 'marketing', label: 'Acme Marketing' },\n];\n\nexport default function OAuthConsentWithScope() {\n  const [workspace, setWorkspace] = useState('design');\n  // The wider access is off until the person turns it on.\n  const [allWorkspaces, setAllWorkspaces] = useState(false);\n  const [allowing, setAllowing] = useState(false);\n  const [handingBack, setHandingBack] = useState(false);\n  const [error, setError] = useState('');\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  function handleAllow() {\n    if (allowing) return;\n    setError('');\n    setAllowing(true);\n    // Stands in for the request to the server.\n    // A failed request calls setError with one sentence instead, such as 'Acme CLI was not connected. Try again.'\n    timer.current = setTimeout(() => {\n      setAllowing(false);\n      setHandingBack(true);\n      // A real app also returns the `state` value the app sent, so the app can match the answer to its request.\n      router.push('https://cli.acme.dev/callback');\n    }, 1200);\n  }\n\n  // The app hears that the person said no, and nothing is shared.\n  // A real app also returns the `state` value the app sent.\n  function handleCancel() {\n    setHandingBack(true);\n    router.push('https://cli.acme.dev/callback?error=access_denied');\n  }\n\n  // Shown while the browser goes back to the app, the same as a named step in 'Auth gate loading'.\n  if (handingBack) {\n    return (\n      <Center fill>\n        <LoadingScreen label=\"Going back to Acme CLI…\" />\n      </Center>\n    );\n  }\n\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Acme CLI wants to connect to Acme</Heading>\n        <Paragraph tone=\"secondary\" measure=\"none\">It will be able to read the projects and tasks you can see, and create tasks as you, in the workspaces you allow below. You can remove its access at any time in Settings, under Connected apps.</Paragraph>\n      </Stack>\n      {/* The account that gives the access, so the person can tell it is the right one. */}\n      <Stack gap=\"small\" align=\"start\">\n        <Cluster gap=\"small\">\n          <UserImage userHandle=\"Ada Lovelace\" />\n          <Paragraph size=\"body2\" measure=\"none\">ada@example.com</Paragraph>\n        </Cluster>\n        <Button size=\"small\" type=\"textOnly\" state={allowing ? 'disabled' : 'enabled'} label=\"Not You? Switch Account\" onClickButton={() => router.push('/login?next=%2Foauth%2Fauthorize')} />\n      </Stack>\n      {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n      <Stack gap=\"small\">\n        {/* The line above names the field on screen, and `aria-label` names it for a screen reader. */}\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">Workspace</Paragraph>\n        <Select aria-label=\"Workspace\" value={workspace} options={workspaces} disabled={allowing} onChange={(v) => setWorkspace(typeof v === 'string' ? v : v[0])} />\n      </Stack>\n      <Checkbox label=\"Also allow my other workspaces\" secondLabel=\"It can then do the same in every workspace you belong to. It still sees only what you can see.\" checked={allWorkspaces} disabled={allowing} onChange={setAllWorkspaces} />\n      <Stack gap=\"medium\">\n        <Grid columns={2} gap=\"medium\">\n          <Button size=\"medium\" type=\"secondary\" state={allowing ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleCancel} />\n          <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Allow\" loading={allowing} onClickButton={handleAllow} />\n        </Grid>\n        <Paragraph tone=\"secondary\" size=\"caption\" measure=\"none\">You will go back to cli.acme.dev.</Paragraph>\n      </Stack>\n    </Center>\n  );\n}\n",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Image from 'oneslash-design-system/components/image';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport UserImage from 'oneslash-design-system/components/userImage';\nimport Alert from 'oneslash-design-system/components/alert';\nimport Select from 'oneslash-design-system/components/select';\nimport Checkbox from 'oneslash-design-system/components/checkBox';\nimport Button from 'oneslash-design-system/components/button';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center, Cluster, Grid, Stack } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A real app passes the router from its framework, such as Next's useRouter().\n// The app's name and cli.acme.dev come from the server's record of the registered app, never from the link.\n// Going back to another site is a full page load, such as window.location.assign() in a real app.\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\n// The workspaces the person belongs to.\nconst workspaces = [\n  { value: 'design', label: 'Acme Design' },\n  { value: 'marketing', label: 'Acme Marketing' },\n];\n\nexport default function OAuthConsentWithScope() {\n  const [workspace, setWorkspace] = useState('design');\n  // The wider access is off until the person turns it on.\n  const [allWorkspaces, setAllWorkspaces] = useState(false);\n  const [allowing, setAllowing] = useState(false);\n  const [handingBack, setHandingBack] = useState(false);\n  const [error, setError] = useState('');\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  function handleAllow() {\n    if (allowing) return;\n    setError('');\n    setAllowing(true);\n    // Stands in for the request to the server.\n    // A failed request calls setError with one sentence instead, such as 'Acme CLI was not connected. Try again.'\n    timer.current = setTimeout(() => {\n      setAllowing(false);\n      setHandingBack(true);\n      // A real app also returns the `state` value the app sent, so the app can match the answer to its request.\n      router.push('https://cli.acme.dev/callback');\n    }, 1200);\n  }\n\n  // The app hears that the person said no, and nothing is shared.\n  // A real app also returns the `state` value the app sent.\n  function handleCancel() {\n    setHandingBack(true);\n    router.push('https://cli.acme.dev/callback?error=access_denied');\n  }\n\n  // Shown while the browser goes back to the app, the same as a named step in 'Login check loading'.\n  if (handingBack) {\n    return (\n      <Center fill>\n        <LoadingScreen label=\"Going back to Acme CLI…\" />\n      </Center>\n    );\n  }\n\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Acme CLI wants to connect to Acme</Heading>\n        <Paragraph tone=\"secondary\" measure=\"none\">It will be able to read the projects and tasks you can see, and create tasks as you, in the workspaces you allow below. You can remove its access at any time in Settings, under Connected apps.</Paragraph>\n      </Stack>\n      {/* The account that gives the access, so the person can tell it is the right one. */}\n      <Stack gap=\"small\" align=\"start\">\n        <Cluster gap=\"small\">\n          <UserImage userHandle=\"Ada Lovelace\" />\n          <Paragraph size=\"body2\" measure=\"none\">ada@example.com</Paragraph>\n        </Cluster>\n        <Button size=\"small\" type=\"textOnly\" state={allowing ? 'disabled' : 'enabled'} label=\"Not You? Switch Account\" onClickButton={() => router.push('/login?next=%2Foauth%2Fauthorize')} />\n      </Stack>\n      {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n      <Stack gap=\"small\">\n        {/* The line above names the field on screen, and `aria-label` names it for a screen reader. */}\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">Workspace</Paragraph>\n        <Select aria-label=\"Workspace\" value={workspace} options={workspaces} disabled={allowing} onChange={(v) => setWorkspace(typeof v === 'string' ? v : v[0])} />\n      </Stack>\n      <Checkbox label=\"Also allow my other workspaces\" secondLabel=\"It can then do the same in every workspace you belong to. It still sees only what you can see.\" checked={allWorkspaces} disabled={allowing} onChange={setAllWorkspaces} />\n      <Stack gap=\"medium\">\n        <Grid columns={2} gap=\"medium\">\n          <Button size=\"medium\" type=\"secondary\" state={allowing ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleCancel} />\n          <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Allow\" loading={allowing} onClickButton={handleAllow} />\n        </Grid>\n        <Paragraph tone=\"secondary\" size=\"caption\" measure=\"none\">You will go back to cli.acme.dev.</Paragraph>\n      </Stack>\n    </Center>\n  );\n}\n",
           "uses": [
             "Alert",
             "Button",
@@ -1636,8 +1636,8 @@
         "Show the shell as soon as it can, and the spinner only where content is loading.",
         "Center the spinner in the space that is loading.",
         "Replace the spinner with the content as soon as it loads.",
-        "Name the step in `LoadingScreen`'s `label` when a named step can take longer than about a second, as in 'Auth gate loading'.",
-        "Use the same screen as the spinner in 'Auth gate loading' when nothing can show yet: `LoadingScreen` alone in `Center` with `fill`."
+        "Name the step in `LoadingScreen`'s `label` when a named step can take longer than about a second, as in 'Login check loading'.",
+        "Use the same screen as the spinner in 'Login check loading' when nothing can show yet: `LoadingScreen` alone in `Center` with `fill`."
       ],
       "dont": [
         "Do not write a line that names no step, such as 'Loading…'.",
@@ -1848,7 +1848,7 @@
     },
     {
       "id": "success-feedback",
-      "title": "Success feedback",
+      "title": "Success shows where the person is looking",
       "kind": "rule",
       "level": "rule",
       "area": "state",
@@ -2018,7 +2018,7 @@
         "Offer 'Not Now' as a tertiary Button, then 'Upgrade to Pro' as a primary Button.",
         "Show 'Upgrade to Pro' only to a person who can change the plan. Tell everyone else to ask a workspace admin, and give them only 'Not Now'.",
         "Title the Modal 'Upgrade to Pro' only for a person who can upgrade. For everyone else, title it 'Pro Feature'.",
-        "Follow the rule 'Confirm dialogs' for the Modal: `size=\"small\"`, and Escape or a click outside means 'Not Now'.",
+        "Follow the rule 'A confirm says exactly what will happen' for the Modal: `size=\"small\"`, and Escape or a click outside means 'Not Now'.",
         "Put the notice where the control was, with the same two Buttons, when a limit is reached inside a flow.",
         "Follow the rule 'An agent refuses clearly' too when the agent is the one refused."
       ],

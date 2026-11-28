@@ -1,6 +1,6 @@
 module.exports = {
   id: 'accept-invite',
-  title: 'Accept an invite',
+  title: 'Invite link page',
   kind: 'design',
   level: 'page',
   area: 'auth',
@@ -31,7 +31,7 @@ module.exports = {
     "Show an expired link with a heading, one line and one Button: 'Invite link expired', 'Ask the person who invited you to send a new link.', 'Go Home'.",
     "Show a link for another account with a heading, one line and one Button: 'This invite is for a different account', 'You are logged in as ada@example.com. This invite is for d***@example.com.', 'Switch Account'. Say the logged-in address in full and the invited one masked.",
     "Show a full workspace with a heading, one line and one Button: 'This workspace is full', 'Ask an admin of Acme Design to make room.', 'Go Home'.",
-    "Show `LoadingScreen` with `label=\"Checking invite…\"` while the invite is checked, as in 'Auth gate loading'.",
+    "Show `LoadingScreen` with `label=\"Checking invite…\"` while the invite is checked, as in 'Login check loading'.",
   ],
   dont: [
     'Do not show the invite to a person whose verified address it is tied to. Join and go on.',

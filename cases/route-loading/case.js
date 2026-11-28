@@ -23,8 +23,8 @@ module.exports = {
     'Show the shell as soon as it can, and the spinner only where content is loading.',
     'Center the spinner in the space that is loading.',
     'Replace the spinner with the content as soon as it loads.',
-    "Name the step in `LoadingScreen`'s `label` when a named step can take longer than about a second, as in 'Auth gate loading'.",
-    "Use the same screen as the spinner in 'Auth gate loading' when nothing can show yet: `LoadingScreen` alone in `Center` with `fill`.",
+    "Name the step in `LoadingScreen`'s `label` when a named step can take longer than about a second, as in 'Login check loading'.",
+    "Use the same screen as the spinner in 'Login check loading' when nothing can show yet: `LoadingScreen` alone in `Center` with `fill`.",
   ],
   dont: [
     "Do not write a line that names no step, such as 'Loading…'.",

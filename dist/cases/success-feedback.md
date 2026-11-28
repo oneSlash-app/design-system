@@ -1,4 +1,4 @@
-# Success feedback
+# Success shows where the person is looking
 
 Something the person did has worked.
 

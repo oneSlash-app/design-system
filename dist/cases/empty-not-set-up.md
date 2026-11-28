@@ -1,4 +1,4 @@
-# Empty because it is not set up
+# Empty until set up
 
 A pane is empty because something it needs is not set up yet, such as a connected account.
 

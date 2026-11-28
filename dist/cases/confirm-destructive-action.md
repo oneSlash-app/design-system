@@ -1,4 +1,4 @@
-# Confirm a destructive action
+# Delete confirm
 
 A person asks to delete or remove something, and it cannot be undone.
 
@@ -6,7 +6,7 @@ A person asks to delete or remove something, and it cannot be undone.
 
 ## Do
 
-- Follow the rule 'Confirm dialogs' for the Modal: `size="small"`, 'Cancel' first, then the action with `color="danger"`.
+- Follow the rule 'A confirm says exactly what will happen' for the Modal: `size="small"`, 'Cancel' first, then the action with `color="danger"`.
 - Name the thing and what goes with it: "This deletes 'Q3 plan' and its 12 tasks."
 - Turn the row's Buttons into 'Cancel' and a danger 'Remove' in place for the inline confirm. The rest of the row stays as it is.
 - Give each row's Buttons an `aria-label` that starts with the visible label and names the thing, such as 'Remove Dana Lee' and 'Cancel removing Dana Lee'.

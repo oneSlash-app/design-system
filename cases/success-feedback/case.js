@@ -1,6 +1,6 @@
 module.exports = {
   id: 'success-feedback',
-  title: 'Success feedback',
+  title: 'Success shows where the person is looking',
   kind: 'rule',
   level: 'rule',
   area: 'state',

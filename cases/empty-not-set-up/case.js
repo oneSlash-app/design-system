@@ -1,6 +1,6 @@
 module.exports = {
   id: 'empty-not-set-up',
-  title: 'Empty because it is not set up',
+  title: 'Empty until set up',
   kind: 'design',
   level: 'organism',
   area: 'state',

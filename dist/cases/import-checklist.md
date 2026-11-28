@@ -1,4 +1,4 @@
-# Import from a checklist
+# Import checklist
 
 A person picks which items to bring in from another place, such as pages from a wiki.
 
