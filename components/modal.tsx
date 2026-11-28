@@ -2,6 +2,7 @@
 import React, { useEffect, useId, useRef } from 'react';
 import { overlayHidden, overlayTransition, overlayVisible } from './sharedStyles';
 import { useOverlayTransition } from './useOverlayTransition';
+import { initialFocusCandidates } from '../internal/modal';
 
 interface ModalProps {
   isOpen: boolean;
@@ -22,25 +23,6 @@ const FOCUSABLE =
 
 // For picking the first focus: the same, minus a hidden input, which matches but cannot take focus
 const PICKABLE = FOCUSABLE.replace('input:not([disabled])', 'input:not([disabled]):not([type="hidden"])');
-
-// Elements to try for the first focus, best first. 'body' puts the body's elements ahead of the
-// panel's, so it falls back to 'first' when the body has none or none of them takes focus.
-export function initialFocusCandidates<T>(
-  panelFocusables: T[],
-  bodyFocusables: T[],
-  initialFocus: 'first' | 'body' = 'first',
-): T[] {
-  return initialFocus === 'body' ? [...bodyFocusables, ...panelFocusables] : panelFocusables;
-}
-
-// Which element gets focus when the panel opens
-export function pickInitialFocus<T>(
-  panelFocusables: T[],
-  bodyFocusables: T[],
-  initialFocus: 'first' | 'body' = 'first',
-): T | undefined {
-  return initialFocusCandidates(panelFocusables, bodyFocusables, initialFocus)[0];
-}
 
 export default function Modal({
   isOpen,

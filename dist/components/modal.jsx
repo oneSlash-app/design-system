@@ -1,30 +1,11 @@
 'use client';
-var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
-    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
-        if (ar || !(i in from)) {
-            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
-            ar[i] = from[i];
-        }
-    }
-    return to.concat(ar || Array.prototype.slice.call(from));
-};
 import React, { useEffect, useId, useRef } from 'react';
 import { overlayHidden, overlayTransition, overlayVisible } from './sharedStyles';
 import { useOverlayTransition } from './useOverlayTransition';
+import { initialFocusCandidates } from '../internal/modal';
 var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 // For picking the first focus: the same, minus a hidden input, which matches but cannot take focus
 var PICKABLE = FOCUSABLE.replace('input:not([disabled])', 'input:not([disabled]):not([type="hidden"])');
-// Elements to try for the first focus, best first. 'body' puts the body's elements ahead of the
-// panel's, so it falls back to 'first' when the body has none or none of them takes focus.
-export function initialFocusCandidates(panelFocusables, bodyFocusables, initialFocus) {
-    if (initialFocus === void 0) { initialFocus = 'first'; }
-    return initialFocus === 'body' ? __spreadArray(__spreadArray([], bodyFocusables, true), panelFocusables, true) : panelFocusables;
-}
-// Which element gets focus when the panel opens
-export function pickInitialFocus(panelFocusables, bodyFocusables, initialFocus) {
-    if (initialFocus === void 0) { initialFocus = 'first'; }
-    return initialFocusCandidates(panelFocusables, bodyFocusables, initialFocus)[0];
-}
 export default function Modal(_a) {
     var isOpen = _a.isOpen, title = _a.title, secondTitle = _a.secondTitle, children = _a.children, onClose = _a.onClose, actions = _a.actions, _b = _a.size, size = _b === void 0 ? 'medium' : _b, _c = _a.initialFocus, initialFocus = _c === void 0 ? 'first' : _c;
     var panelRef = useRef(null);

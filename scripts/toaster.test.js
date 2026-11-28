@@ -1,10 +1,10 @@
-// The toast store's pure helpers, from the compiled dist/components/toaster.jsx.
+// The toast store's pure helpers, from the compiled dist/internal/toaster.js.
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 const { dist } = require('./compile-dist');
 
-const file = path.join(dist, 'components', 'toaster.jsx');
+const file = path.join(dist, 'internal', 'toaster.js');
 const { addToast, removeToast, visibleToasts, pauseReducer, isPaused } = require(file);
 
 const four = () => ['a', 'b', 'c', 'd'].reduce((s, id) => addToast(s, `Toast ${id}`, id), []);

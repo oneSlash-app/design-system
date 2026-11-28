@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import IconButton from './iconButton';
+import { shouldAutoDismiss } from '../internal/alert';
 
 interface AlertProps {
   open?: boolean;
@@ -21,11 +22,6 @@ const bgClassMap = {
   success: 'bg-success-alertBg',
   default: 'bg-secondary-main',
 } as const;
-
-// Whether the alert starts its own dismiss timer
-export function shouldAutoDismiss({ autoDismiss, showCloseButton }: { autoDismiss?: boolean; showCloseButton?: boolean }) {
-  return autoDismiss ?? !showCloseButton;
-}
 
 const AUTO_DISMISS_MS = 5000;
 const EXIT_MS = 150;

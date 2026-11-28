@@ -11,7 +11,7 @@ const { dist, htmlWhenReady } = require('./compile-dist');
 
 const load = (name) => require(path.join(dist, 'components', `${name}.jsx`)).default;
 const BrandIcon = load('brandIcon');
-const { shouldAutoDismiss } = require(path.join(dist, 'components', 'alert.jsx'));
+const { shouldAutoDismiss } = require(path.join(dist, 'internal', 'alert.js'));
 const Button = load('button');
 const EmptyBox = load('emptyBox');
 const Form = load('form');
@@ -419,7 +419,7 @@ test('Modal renders as before without initialFocus, and the same with either val
 });
 
 test('Modal pickInitialFocus: first in the panel, or first in the body with a fallback', () => {
-  const { pickInitialFocus } = require(path.join(dist, 'components', 'modal.jsx'));
+  const { pickInitialFocus } = require(path.join(dist, 'internal', 'modal.js'));
   const cancel = { id: 'cancel' };
   const confirm = { id: 'confirm' };
   const field = { id: 'field' };
@@ -433,7 +433,7 @@ test('Modal pickInitialFocus: first in the panel, or first in the body with a fa
 });
 
 test('Modal initialFocusCandidates: body elements first, then the panel as the fallback', () => {
-  const { initialFocusCandidates } = require(path.join(dist, 'components', 'modal.jsx'));
+  const { initialFocusCandidates } = require(path.join(dist, 'internal', 'modal.js'));
   assert.deepEqual(initialFocusCandidates(['cancel', 'a', 'b'], ['a', 'b'], 'body'), ['a', 'b', 'cancel', 'a', 'b']);
   assert.deepEqual(initialFocusCandidates(['cancel', 'a'], [], 'body'), ['cancel', 'a']);
   assert.deepEqual(initialFocusCandidates(['cancel', 'a'], ['a'], 'first'), ['cancel', 'a']);

@@ -1,6 +1,7 @@
 'use client';
 import React, { useEffect, useRef, useState } from 'react';
 import IconButton from './iconButton';
+import { shouldAutoDismiss } from '../internal/alert';
 var bgClassMap = {
     error: 'bg-error-alertBg',
     warning: 'bg-warning-alertBg',
@@ -8,11 +9,6 @@ var bgClassMap = {
     success: 'bg-success-alertBg',
     default: 'bg-secondary-main',
 };
-// Whether the alert starts its own dismiss timer
-export function shouldAutoDismiss(_a) {
-    var autoDismiss = _a.autoDismiss, showCloseButton = _a.showCloseButton;
-    return autoDismiss !== null && autoDismiss !== void 0 ? autoDismiss : !showCloseButton;
-}
 var AUTO_DISMISS_MS = 5000;
 var EXIT_MS = 150;
 // Toasts slide in from the top edge (position + opacity only), overshooting once, and leave quickly

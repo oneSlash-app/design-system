@@ -21,38 +21,9 @@ var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
 };
 import React, { useEffect, useReducer, useRef, useState, useSyncExternalStore } from 'react';
 import Alert from './alert';
-var DEFAULT_DURATION_MS = 5000;
-var MAX_VISIBLE = 3;
+import { addToast, removeToast, visibleToasts, pauseReducer, isPaused } from '../internal/toaster';
 // Matches Alert's exit transition
 var EXIT_MS = 150;
-// The longest delay setTimeout can hold; a longer one fires at once
-var MAX_TIMEOUT_MS = Math.pow(2, 31) - 1;
-// Pure helpers. The state lists toasts newest first.
-export function addToast(state, input, id) {
-    var _a = typeof input === 'string' ? { message: input } : input, _b = _a.type, type = _b === void 0 ? 'default' : _b, message = _a.message, secondMessage = _a.secondMessage, duration = _a.duration;
-    var wanted = duration !== undefined ? duration : type === 'error' ? null : DEFAULT_DURATION_MS;
-    var item = { id: id, type: type, message: message, secondMessage: secondMessage, duration: wanted !== null && Number.isFinite(wanted) && wanted <= MAX_TIMEOUT_MS ? wanted : null };
-    return __spreadArray([item], state, true);
-}
-export function removeToast(state, id) {
-    return state.some(function (t) { return t.id === id; }) ? state.filter(function (t) { return t.id !== id; }) : state;
-}
-// The three oldest are shown, newest on top; the rest wait for room
-export function visibleToasts(state) {
-    return state.slice(-MAX_VISIBLE);
-}
-export function pauseReducer(state, event) {
-    switch (event) {
-        case 'pointerEnter': return __assign(__assign({}, state), { hovered: true });
-        case 'pointerLeave': return __assign(__assign({}, state), { hovered: false });
-        case 'focus': return __assign(__assign({}, state), { focused: true });
-        case 'blur': return __assign(__assign({}, state), { focused: false });
-    }
-}
-export var isPaused = function (_a) {
-    var hovered = _a.hovered, focused = _a.focused;
-    return hovered || focused;
-};
 var store = { toasts: [], mounts: [] };
 var serverStore = { toasts: [], mounts: [] };
 var listeners = new Set();
