@@ -333,6 +333,7 @@ For each web component, the table gives the native control to use. System contro
 | textarea | `TextField(_:text:axis: .vertical)` or `TextEditor` | `OutlinedTextField` with `minLines` |  |
 | textField | `TextField` (`SecureField` for passwords) | `OutlinedTextField` or `TextField` |  |
 | timeStamp | `Text(_:style:)` (`.relative`) or `Text(_:format:)` (`.dateTime`) | `Text` with `DateUtils.getRelativeTimeSpanString` or `DateTimeFormatter.ofLocalizedDateTime` |  |
+| toaster | `ODSBanner` for an inline message; a system banner (a local notification) when the app is not in front | `Snackbar` in a `SnackbarHost` | SwiftUI has no toast, so ODS adds none: show the message in the screen. |
 | tooltip | `.help` | `TooltipBox` | `.help` shows on pointer hover only. `TooltipBox` needs `@OptIn(ExperimentalMaterial3Api::class)`. |
 | userImage | `ODSAvatar` | `OdsAvatar` | Load the picture yourself and pass it as an `Image` / a `Painter`. |
 

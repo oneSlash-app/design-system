@@ -236,6 +236,12 @@
       "compose": "`Text` with `DateUtils.getRelativeTimeSpanString` or `DateTimeFormatter.ofLocalizedDateTime`"
     },
     {
+      "ods": "toaster",
+      "swiftui": "`ODSBanner` for an inline message; a system banner (a local notification) when the app is not in front",
+      "compose": "`Snackbar` in a `SnackbarHost`",
+      "note": "SwiftUI has no toast, so ODS adds none: show the message in the screen."
+    },
+    {
       "ods": "tooltip",
       "swiftui": "`.help`",
       "compose": "`TooltipBox`",
