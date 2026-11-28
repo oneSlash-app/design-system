@@ -62,7 +62,7 @@ export default function InlineFormFeedbackToast() {
           <Form aria-label="Invite people" onSubmit={handleSubmit}>
             <TextField id="inline-form-feedback-email" label="Email" type="email" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />
             <Cluster>
-              <Button size="medium" type="primary" state="enabled" label="Send Invite" htmlType="submit" loading={loading} />
+              <Button size="medium" type="primary" state="enabled" label="Invite" htmlType="submit" loading={loading} />
             </Cluster>
           </Form>
         </Stack>

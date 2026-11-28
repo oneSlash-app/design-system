@@ -16,7 +16,7 @@ var thread = [
     { id: 'm3', from: 'Dana Lee', text: 'Draft the launch email, please.' },
 ];
 export default function UpgradePromptInline() {
-    // Opens on the notice, as if the workspace just used its last agent reply of the month.
+    // Opens on the notice, as if the workspace just used its last AI agent response of the month.
     var _a = useState(true), showNotice = _a[0], setShowNotice = _a[1];
     return (<Center width="page">
       <Stack gap="large">
@@ -32,10 +32,10 @@ export default function UpgradePromptInline() {
         <Surface padding="medium">
             <Stack gap="medium">
               <Stack gap="small">
-                <Paragraph measure="none">You&apos;ve used all 50 agent replies this month. They start again on December 1.</Paragraph>
+                <Paragraph measure="none">You&apos;ve used all 50 AI agent responses this month. They start again on December 1.</Paragraph>
                 <Paragraph tone="secondary" size="body2" measure="none">
                   {canChangePlan
-                ? 'The Pro plan gives Acme Design 1,000 agent replies a month.'
+                ? 'The Pro plan gives Acme Design 1,000 AI agent responses a month.'
                 : 'Ask a workspace admin to upgrade Acme Design to Pro for more replies.'}
                 </Paragraph>
               </Stack>

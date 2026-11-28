@@ -7,7 +7,7 @@ A person reaches something their plan does not include, or a limit of their plan
 ## Do
 
 - Say what is locked and which plan unlocks it: 'Exporting to PDF is part of the Pro plan.'
-- Say which limit was reached, with the number, and when it resets: "You've used all 50 agent replies this month. They start again on December 1."
+- Say which limit was reached, with the number, and when it resets: "You've used all 50 AI agent responses this month. They start again on December 1."
 - Offer 'Not Now' as a tertiary Button, then 'Upgrade to Pro' as a primary Button.
 - Show 'Upgrade to Pro' only to a person who can change the plan. Tell everyone else to ask a workspace admin, and give them only 'Not Now'.
 - Title the Modal 'Upgrade to Pro' only for a person who can upgrade. For everyone else, title it 'Pro Feature'.
@@ -122,7 +122,7 @@ const thread = [
 ];
 
 export default function UpgradePromptInline() {
-  // Opens on the notice, as if the workspace just used its last agent reply of the month.
+  // Opens on the notice, as if the workspace just used its last AI agent response of the month.
   const [showNotice, setShowNotice] = useState(true);
 
   return (
@@ -142,10 +142,10 @@ export default function UpgradePromptInline() {
           <Surface padding="medium">
             <Stack gap="medium">
               <Stack gap="small">
-                <Paragraph measure="none">You&apos;ve used all 50 agent replies this month. They start again on December 1.</Paragraph>
+                <Paragraph measure="none">You&apos;ve used all 50 AI agent responses this month. They start again on December 1.</Paragraph>
                 <Paragraph tone="secondary" size="body2" measure="none">
                   {canChangePlan
-                    ? 'The Pro plan gives Acme Design 1,000 agent replies a month.'
+                    ? 'The Pro plan gives Acme Design 1,000 AI agent responses a month.'
                     : 'Ask a workspace admin to upgrade Acme Design to Pro for more replies.'}
                 </Paragraph>
               </Stack>

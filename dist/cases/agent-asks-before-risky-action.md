@@ -17,7 +17,7 @@ A person can only approve what they can see, and an agent's mistake in shared wo
 - List every step in the card, in the order the agent will do them.
 - Offer a way to see the full changes, such as a View Changes button, before the approve button is pressed.
 - Let the person edit the plan or cancel it, not only approve it.
-- Once decided, mark the card Approved or Cancelled and remove its buttons.
+- Mark the card Approved or Cancelled once it is decided, and remove its buttons.
 
 ## Don't
 

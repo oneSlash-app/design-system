@@ -21,7 +21,7 @@ module.exports = {
   ],
   do: [
     "Say what is locked and which plan unlocks it: 'Exporting to PDF is part of the Pro plan.'",
-    "Say which limit was reached, with the number, and when it resets: \"You've used all 50 agent replies this month. They start again on December 1.\"",
+    "Say which limit was reached, with the number, and when it resets: \"You've used all 50 AI agent responses this month. They start again on December 1.\"",
     "Offer 'Not Now' as a tertiary Button, then 'Upgrade to Pro' as a primary Button.",
     "Show 'Upgrade to Pro' only to a person who can change the plan. Tell everyone else to ask a workspace admin, and give them only 'Not Now'.",
     "Title the Modal 'Upgrade to Pro' only for a person who can upgrade. For everyone else, title it 'Pro Feature'.",

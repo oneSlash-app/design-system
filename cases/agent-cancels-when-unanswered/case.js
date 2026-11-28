@@ -11,7 +11,7 @@ module.exports = {
   do: [
     'Keep the card and its buttons open until someone answers or the request is cancelled.',
     'Notify the person who asked when the agent needs their answer.',
-    'When a request is cancelled, mark the card Cancelled and post one line on what was not done.',
+    'Mark the card Cancelled when a request is cancelled, and post one line on what was not done.',
     'List questions asked before a plan that nobody answered as open questions in that plan.',
   ],
   dont: [

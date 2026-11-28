@@ -203,7 +203,7 @@ export default function LoginSplit() {
         <Button size="medium" type="secondary" state="enabled" label="Continue with Google" decoIcon={<BrandIcon name="google" />} />
         <Cluster gap="small">
           <Paragraph tone="secondary" size="body2" measure="none">New here?</Paragraph>
-          <Link href="/signup" size="body2">Create an account</Link>
+          <Link href="/sign-up" size="body2">Sign Up</Link>
         </Cluster>
       </Center>
     </Split>

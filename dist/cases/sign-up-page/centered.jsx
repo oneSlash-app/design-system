@@ -91,7 +91,7 @@ export default function SignUpCentered() {
             setResent(true);
         }, 1200);
     }
-    // The same view as the check-your-email case, in place of the form.
+    // The same view as the 'Check your email' case, in place of the form.
     if (sentTo) {
         return (<Center fill>
         <Icon icon={Mail} size="large" color="secondary"/>
