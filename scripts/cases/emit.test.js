@@ -74,6 +74,38 @@ test('a design case file has one fenced example per option, in order', () => {
   assert.match(md, /Use when: One provider/);
 });
 
+test('a one-option case says Example where a many-option case says Option', () => {
+  const one = emitCaseMd({ ...design, options: [design.options[0]] });
+  const headings = one.split('\n').filter((l) => l.startsWith('## '));
+  assert.deepEqual(headings, ['## Example: Provider first', '## Native']);
+  assert.doesNotMatch(one, /Option/);
+  assert.match(emitCaseMd(design), /^## Option: Provider first$/m);
+});
+
+test('the DESIGN.md row for a one-option case is the same row shape as for any design case', () => {
+  const row = (c) => emitCasesSection([c]).split('\n').pop();
+  assert.equal(row({ ...design, options: [design.options[0]] }), row(design));
+});
+
+test('a two-option design case file is unchanged (login-page snapshot)', () => {
+  assert.equal(emitCaseMd(design), [
+    '# Login page',
+    'People sign in with `a | b`.\nSecond line.',
+    '## Option: Provider first',
+    'Use when: One provider',
+    'Do:\n- Lead with it',
+    'Uses: `Button`',
+    '```tsx\nexport default function A() { return null; }\n```',
+    '## Option: Email first',
+    "Use when: Many users",
+    "Don't:\n- Hide it",
+    'Uses: `Button`, `TextField`',
+    '```tsx\nexport default function B() { return null; }\n```',
+    '## Native\n\nSystem sign in sheet',
+    'Seen in: Commentify, Scindo.',
+  ].join('\n\n') + '\n');
+});
+
 test('a design case file prints its own Do and Don\'t before the options', () => {
   const md = emitCaseMd({ ...design, do: ['Put the error above the fields'], dont: ['Clear the email'] });
   const headings = md.split('\n').filter((l) => l.startsWith('## '));

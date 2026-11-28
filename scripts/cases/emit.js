@@ -32,8 +32,8 @@ function emitCasesJson(cases) {
   return `${JSON.stringify({ cases: out }, null, 2)}\n`;
 }
 
-function emitOption(o) {
-  const parts = [`## Option: ${o.title}`, `Use when: ${o.useWhen}`];
+function emitOption(o, label) {
+  const parts = [`## ${label}: ${o.title}`, `Use when: ${o.useWhen}`];
   if (o.do && o.do.length) parts.push(`Do:\n${bullets(o.do)}`);
   if (o.dont && o.dont.length) parts.push(`Don't:\n${bullets(o.dont)}`);
   parts.push(`Uses: ${o.uses.map((u) => `\`${u}\``).join(', ')}`);
@@ -49,7 +49,8 @@ function emitCaseMd(c) {
     parts.push(...notBuilt(c));
     if (c.do && c.do.length) parts.push(`## Do\n\n${bullets(c.do)}`);
     if (c.dont && c.dont.length) parts.push(`## Don't\n\n${bullets(c.dont)}`);
-    parts.push(...c.options.map(emitOption));
+    const label = c.options.length === 1 ? 'Example' : 'Option';
+    parts.push(...c.options.map((o) => emitOption(o, label)));
   }
   if (c.native) parts.push(`## Native\n\n${c.native}`);
   parts.push(`Seen in: ${products(c).join(', ')}.`);
