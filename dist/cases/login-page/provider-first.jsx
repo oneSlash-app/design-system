@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Heading from '../../components/heading';
 import Form from '../../components/form';
 import Alert from '../../components/alert';
@@ -19,6 +19,9 @@ export default function LoginProviderFirst() {
     var _d = useState(''), emailError = _d[0], setEmailError = _d[1];
     var _e = useState(''), passwordError = _e[0], setPasswordError = _e[1];
     var _f = useState(false), loading = _f[0], setLoading = _f[1];
+    var timer = useRef();
+    // Stops the request if the example goes away before it ends.
+    useEffect(function () { return function () { return clearTimeout(timer.current); }; }, []);
     function handleSubmit() {
         if (loading)
             return;
@@ -30,7 +33,7 @@ export default function LoginProviderFirst() {
             return;
         }
         if (!looksLikeEmail(email.trim())) {
-            setEmailError('Enter a valid email address.');
+            setEmailError('Enter an email address, like name@example.com.');
             return;
         }
         if (!password) {
@@ -39,25 +42,25 @@ export default function LoginProviderFirst() {
         }
         setLoading(true);
         // Stands in for the request to the server.
-        setTimeout(function () {
+        timer.current = setTimeout(function () {
             setLoading(false);
             setError('That email and password do not match.');
         }, 1200);
     }
     return (<Center fill>
-      <Heading level={2} size="h5">Sign in to Acme</Heading>
+      <Heading level={1} size="h5">Log in to Acme</Heading>
       <Stack gap="medium">
         <Button size="medium" type="secondary" state="enabled" label="Continue with Google" decoIcon={<BrandIcon name="google"/>}/>
         <Button size="medium" type="secondary" state="enabled" label="Continue with GitHub" decoIcon={<BrandIcon name="github"/>}/>
         <Button size="medium" type="secondary" state="enabled" label="Continue with Apple" decoIcon={<BrandIcon name="apple"/>}/>
       </Stack>
       <Line label="or"/>
-      <Form aria-label="Sign in with email" onSubmit={handleSubmit}>
+      <Form aria-label="Log in with email" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={function () { return setError(''); }}/>}
-        <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
-        <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={function (e) { setPassword(e.target.value); setPasswordError(''); }}/>
-        <Button size="medium" type="primary" state="enabled" label="Sign in with email" htmlType="submit" loading={loading}/>
-        <Button size="medium" type="textOnly" state="enabled" label="Forgot password?"/>
+        <TextField id="provider-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
+        <TextField id="provider-password" label="Password" type="password" autoComplete="current-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={function (e) { setPassword(e.target.value); setPasswordError(''); }}/>
+        <Button size="medium" type="primary" state="enabled" label="Log In with Email" htmlType="submit" loading={loading}/>
+        <Button size="medium" type="textOnly" state={loading ? 'disabled' : 'enabled'} label="Forgot Password?"/>
       </Form>
     </Center>);
 }

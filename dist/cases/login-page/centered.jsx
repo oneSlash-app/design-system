@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from '../../components/image';
 import TabsContainer from '../../components/tabsContainer';
 import Tab from '../../components/tab';
@@ -25,6 +25,9 @@ export default function LoginCentered() {
     var _d = useState(''), emailError = _d[0], setEmailError = _d[1];
     var _e = useState(''), passwordError = _e[0], setPasswordError = _e[1];
     var _f = useState(false), loading = _f[0], setLoading = _f[1];
+    var timer = useRef();
+    // Stops the request if the example goes away before it ends.
+    useEffect(function () { return function () { return clearTimeout(timer.current); }; }, []);
     function handleSubmit() {
         if (loading)
             return;
@@ -36,7 +39,7 @@ export default function LoginCentered() {
             return;
         }
         if (!looksLikeEmail(email.trim())) {
-            setEmailError('Enter a valid email address.');
+            setEmailError('Enter an email address, like name@example.com.');
             return;
         }
         if (!password) {
@@ -45,7 +48,7 @@ export default function LoginCentered() {
         }
         setLoading(true);
         // Stands in for the request to the server.
-        setTimeout(function () {
+        timer.current = setTimeout(function () {
             setLoading(false);
             setError('That email and password do not match.');
         }, 1200);
@@ -58,10 +61,10 @@ export default function LoginCentered() {
       </TabsContainer>
       <Form aria-label="Log in" onSubmit={handleSubmit}>
         {error && <Alert type="error" variant="inline" message={error} showCloseButton onClose={function () { return setError(''); }}/>}
-        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
-        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} error={Boolean(passwordError)} errorText={passwordError} onChange={function (e) { setPassword(e.target.value); setPasswordError(''); }}/>
+        <TextField id="login-email" label="Email" type="email" autoComplete="username" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={function (e) { setEmail(e.target.value); setEmailError(''); }}/>
+        <TextField id="login-password" label="Password" type="password" autoComplete="current-password" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={function (e) { setPassword(e.target.value); setPasswordError(''); }}/>
         <Button size="medium" type="primary" state="enabled" label="Log In" htmlType="submit" loading={loading}/>
-        <Button size="medium" type="textOnly" state="enabled" label="Forgot password?"/>
+        <Button size="medium" type="textOnly" state={loading ? 'disabled' : 'enabled'} label="Forgot Password?"/>
       </Form>
       <Line label="or"/>
       <Button size="medium" type="secondary" state="enabled" label="Continue with Google" decoIcon={<BrandIcon name="google"/>}/>

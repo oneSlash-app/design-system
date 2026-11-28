@@ -492,7 +492,7 @@ File: cases/success-feedback.md
 | Invite a member | A person invites someone to join a workspace. | cases/invite-member.md |
 | Load failure | A list or a section could not load. | cases/load-failure.md |
 | Log out confirm | A person chooses Log Out. | cases/log-out-confirm.md |
-| Login page | A person who already has an account opens the product and is not signed in. | cases/login-page.md |
+| Login page | A person who already has an account opens the product and is not logged in. | cases/login-page.md |
 | Page not found | A person opens a link to a page that does not exist. | cases/not-found-page.md |
 | OAuth consent | Another app, such as a CLI or an MCP client, asks to act for a person who is logged in, and the person must allow it. | cases/oauth-consent.md |
 | Rename | A person renames something, such as a project or a channel. | cases/rename.md |
