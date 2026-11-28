@@ -13,20 +13,33 @@ interface ModalProps {
   size?: 'small' | 'medium' | 'large';
   // 'first' focuses the first focusable element in the panel (the header actions come first);
   // 'body' focuses the first one inside the children, for a form dialog.
+  // Only children present when the Modal opens are considered, not ones mounted later.
   initialFocus?: 'first' | 'body';
 }
 
 const FOCUSABLE =
   'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
-// Which element gets focus when the panel opens. 'body' falls back to 'first' when the body has none.
+// For picking the first focus: the same, minus a hidden input, which matches but cannot take focus
+const PICKABLE = FOCUSABLE.replace('input:not([disabled])', 'input:not([disabled]):not([type="hidden"])');
+
+// Elements to try for the first focus, best first. 'body' puts the body's elements ahead of the
+// panel's, so it falls back to 'first' when the body has none or none of them takes focus.
+export function initialFocusCandidates<T>(
+  panelFocusables: T[],
+  bodyFocusables: T[],
+  initialFocus: 'first' | 'body' = 'first',
+): T[] {
+  return initialFocus === 'body' ? [...bodyFocusables, ...panelFocusables] : panelFocusables;
+}
+
+// Which element gets focus when the panel opens
 export function pickInitialFocus<T>(
   panelFocusables: T[],
   bodyFocusables: T[],
   initialFocus: 'first' | 'body' = 'first',
 ): T | undefined {
-  if (initialFocus === 'body' && bodyFocusables.length > 0) return bodyFocusables[0];
-  return panelFocusables[0];
+  return initialFocusCandidates(panelFocusables, bodyFocusables, initialFocus)[0];
 }
 
 export default function Modal({
@@ -55,12 +68,17 @@ export default function Modal({
     if (!isOpen || !mounted) return;
     const previouslyFocused = document.activeElement as HTMLElement | null;
     const panel = panelRef.current;
-    const firstFocusable = pickInitialFocus(
-      Array.from(panel?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []),
-      Array.from(bodyRef.current?.querySelectorAll<HTMLElement>(FOCUSABLE) ?? []),
+    const candidates = initialFocusCandidates(
+      Array.from(panel?.querySelectorAll<HTMLElement>(PICKABLE) ?? []),
+      Array.from(bodyRef.current?.querySelectorAll<HTMLElement>(PICKABLE) ?? []),
       initialFocus,
     );
-    (firstFocusable ?? panel)?.focus();
+    // An element that is hidden or display:none ignores focus(); try the next one
+    for (const candidate of candidates) {
+      candidate.focus();
+      if (document.activeElement === candidate) break;
+    }
+    if (panel && !panel.contains(document.activeElement)) panel.focus();
 
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';

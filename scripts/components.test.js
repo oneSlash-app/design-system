@@ -429,3 +429,11 @@ test('Modal pickInitialFocus: first in the panel, or first in the body with a fa
   assert.equal(pickInitialFocus([], [], 'body'), undefined);
   assert.equal(pickInitialFocus([], [], 'first'), undefined);
 });
+
+test('Modal initialFocusCandidates: body elements first, then the panel as the fallback', () => {
+  const { initialFocusCandidates } = require(path.join(dist, 'components', 'modal.jsx'));
+  assert.deepEqual(initialFocusCandidates(['cancel', 'a', 'b'], ['a', 'b'], 'body'), ['a', 'b', 'cancel', 'a', 'b']);
+  assert.deepEqual(initialFocusCandidates(['cancel', 'a'], [], 'body'), ['cancel', 'a']);
+  assert.deepEqual(initialFocusCandidates(['cancel', 'a'], ['a'], 'first'), ['cancel', 'a']);
+  assert.deepEqual(initialFocusCandidates([], [], 'body'), []);
+});

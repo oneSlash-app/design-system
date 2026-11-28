@@ -1,14 +1,29 @@
 'use client';
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 import React, { useEffect, useId, useRef } from 'react';
 import { overlayHidden, overlayTransition, overlayVisible } from './sharedStyles';
 import { useOverlayTransition } from './useOverlayTransition';
 var FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
-// Which element gets focus when the panel opens. 'body' falls back to 'first' when the body has none.
+// For picking the first focus: the same, minus a hidden input, which matches but cannot take focus
+var PICKABLE = FOCUSABLE.replace('input:not([disabled])', 'input:not([disabled]):not([type="hidden"])');
+// Elements to try for the first focus, best first. 'body' puts the body's elements ahead of the
+// panel's, so it falls back to 'first' when the body has none or none of them takes focus.
+export function initialFocusCandidates(panelFocusables, bodyFocusables, initialFocus) {
+    if (initialFocus === void 0) { initialFocus = 'first'; }
+    return initialFocus === 'body' ? __spreadArray(__spreadArray([], bodyFocusables, true), panelFocusables, true) : panelFocusables;
+}
+// Which element gets focus when the panel opens
 export function pickInitialFocus(panelFocusables, bodyFocusables, initialFocus) {
     if (initialFocus === void 0) { initialFocus = 'first'; }
-    if (initialFocus === 'body' && bodyFocusables.length > 0)
-        return bodyFocusables[0];
-    return panelFocusables[0];
+    return initialFocusCandidates(panelFocusables, bodyFocusables, initialFocus)[0];
 }
 export default function Modal(_a) {
     var isOpen = _a.isOpen, title = _a.title, secondTitle = _a.secondTitle, children = _a.children, onClose = _a.onClose, actions = _a.actions, _b = _a.size, size = _b === void 0 ? 'medium' : _b, _c = _a.initialFocus, initialFocus = _c === void 0 ? 'first' : _c;
@@ -22,14 +37,22 @@ export default function Modal(_a) {
     // Move focus into the panel, trap Tab inside it, close on Escape,
     // lock page scroll, and give focus back to the trigger on close
     useEffect(function () {
-        var _a, _b, _c, _d;
+        var _a, _b, _c;
         // Wait for the panel to mount before moving focus into it
         if (!isOpen || !mounted)
             return;
         var previouslyFocused = document.activeElement;
         var panel = panelRef.current;
-        var firstFocusable = pickInitialFocus(Array.from((_a = panel === null || panel === void 0 ? void 0 : panel.querySelectorAll(FOCUSABLE)) !== null && _a !== void 0 ? _a : []), Array.from((_c = (_b = bodyRef.current) === null || _b === void 0 ? void 0 : _b.querySelectorAll(FOCUSABLE)) !== null && _c !== void 0 ? _c : []), initialFocus);
-        (_d = (firstFocusable !== null && firstFocusable !== void 0 ? firstFocusable : panel)) === null || _d === void 0 ? void 0 : _d.focus();
+        var candidates = initialFocusCandidates(Array.from((_a = panel === null || panel === void 0 ? void 0 : panel.querySelectorAll(PICKABLE)) !== null && _a !== void 0 ? _a : []), Array.from((_c = (_b = bodyRef.current) === null || _b === void 0 ? void 0 : _b.querySelectorAll(PICKABLE)) !== null && _c !== void 0 ? _c : []), initialFocus);
+        // An element that is hidden or display:none ignores focus(); try the next one
+        for (var _i = 0, candidates_1 = candidates; _i < candidates_1.length; _i++) {
+            var candidate = candidates_1[_i];
+            candidate.focus();
+            if (document.activeElement === candidate)
+                break;
+        }
+        if (panel && !panel.contains(document.activeElement))
+            panel.focus();
         var previousOverflow = document.body.style.overflow;
         document.body.style.overflow = 'hidden';
         var handleKeyDown = function (e) {
