@@ -1,6 +1,53 @@
 {
   "cases": [
     {
+      "id": "accept-invite",
+      "title": "Accept an invite",
+      "kind": "design",
+      "level": "page",
+      "area": "auth",
+      "situation": "A person opens an invite link to join a workspace.",
+      "do": [
+        "Name the workspace in a `Heading` with `level={1}`: \"You're invited to Acme Design\".",
+        "Say the role the person joins as, and who invited them when the invite knows: 'Invited by Dana Lee'.",
+        "Say which address the invite is for when it is bound to one.",
+        "Offer 'Log In' as the primary Button and 'Create Account' as the secondary one, and bring the person back to the invite after either.",
+        "Join with no screen when the person is already logged in with the right account, and land them in the workspace.",
+        "Show an expired link with a heading, one line and one Button: 'Invite link expired', 'Ask the person who invited you to send a new link.', 'Go to Acme'.",
+        "Show a link for another account with a heading, one line that names both addresses and one Button: 'This invite is for a different account', 'Switch Account'.",
+        "Show a full workspace with a heading, one line and one Button: 'This workspace is full', 'Ask an admin of Acme Design to make room.', 'Go to Acme'.",
+        "Show the spinner from 'Auth gate loading' with 'Checking invite…' while the invite is checked."
+      ],
+      "dont": [
+        "Do not show the invite to a person who is already logged in with the right account. Join and go on.",
+        "Do not show the login form before the invite is checked.",
+        "Do not remember the invite before the person chooses to log in or create an account, so an old link does not take over a later login."
+      ],
+      "native": "On Apple, Scindo joins from a sheet with the invite link or code in a field, 'Cancel' and 'Join' in the toolbar, and a small `ProgressView` beside a line naming the step while it checks the invite.",
+      "notBuiltYet": "Scindo on the web labels its Buttons 'Log in' and 'Create account' in sentence case, and shows 'Please wait' under its spinner. Its wrong-account Button reads 'Sign out and switch accounts'.",
+      "seenIn": [
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "signed-out",
+          "title": "Signed out",
+          "useWhen": "The person is not logged in, so they log in or create an account before they join.",
+          "source": "'use client';\nimport Image from 'oneslash-design-system/components/image';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport UserImage from 'oneslash-design-system/components/userImage';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A real app passes the router from its framework, such as Next's useRouter().\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\n// The invite's own page, so login and sign-up bring the person back here to join.\nconst next = encodeURIComponent('/invite/7f3k2q');\n\nexport default function AcceptInviteSignedOut() {\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">You&apos;re invited to Acme Design</Heading>\n        {/* Shown when the invite knows who sent it. */}\n        <Cluster gap=\"small\">\n          <UserImage userHandle=\"Dana Lee\" />\n          <Paragraph size=\"body2\" measure=\"none\">Invited by Dana Lee</Paragraph>\n        </Cluster>\n        <Paragraph tone=\"secondary\" measure=\"none\">You will join as a member. This invite is for ada@example.com, so log in or create your account with that address.</Paragraph>\n      </Stack>\n      <Stack gap=\"medium\">\n        <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Log In\" onClickButton={() => router.push(`/login?next=${next}`)} />\n        <Button size=\"medium\" type=\"secondary\" state=\"enabled\" label=\"Create Account\" onClickButton={() => router.push(`/sign-up?next=${next}`)} />\n      </Stack>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "Image",
+            "Paragraph",
+            "Stack",
+            "UserImage"
+          ]
+        }
+      ]
+    },
+    {
       "id": "agent-asks-before-risky-action",
       "title": "An agent asks before a risky action",
       "kind": "rule",
@@ -146,6 +193,54 @@
       ],
       "seenIn": [
         "Scindo"
+      ]
+    },
+    {
+      "id": "auth-gate-loading",
+      "title": "Auth gate loading",
+      "kind": "design",
+      "level": "page",
+      "area": "auth",
+      "situation": "The app is checking whether the person is logged in, or running a step such as checking an invite, before it knows what to show.",
+      "do": [
+        "Show the spinner from the first render, before anything else, as `LoadingScreen` in `Center` with `fill`.",
+        "Replace the spinner with the page, or go to the login page, as soon as the check ends.",
+        "Show no text for a check that takes under a second.",
+        "Add one line naming the step when it can take more than a few seconds: 'Checking invite…'."
+      ],
+      "dont": [
+        "Do not show the login form, or the page, before the check ends. It flashes and then goes away.",
+        "Do not write a line that names no step, such as 'Loading…' or 'Please wait'.",
+        "Do not put more than one line under the spinner."
+      ],
+      "native": "On Apple use `ProgressView()` centered in the window, with a label only for a named step that can take longer.",
+      "notBuiltYet": "Scindo on the web shows 'Please wait' under the step while it checks an invite, and a small spinner instead of `LoadingScreen` while onboarding checks for a workspace.",
+      "seenIn": [
+        "Commentify admin",
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "spinner",
+          "title": "Spinner",
+          "useWhen": "The check takes under a second, such as reading the session.",
+          "source": "'use client';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center } from 'oneslash-design-system/components/layout';\n\n// Shown while the app checks the session, before it knows whether to show the page or the login form.\n// A real app swaps it for the page, or goes to the login page, as soon as the check ends.\nexport default function AuthGateLoadingSpinner() {\n  return (\n    <Center fill>\n      <LoadingScreen />\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Center",
+            "LoadingScreen"
+          ]
+        },
+        {
+          "id": "spinner-with-line",
+          "title": "Spinner with a line",
+          "useWhen": "A named step can take longer, such as 'Checking invite…' or 'Joining workspace…'.",
+          "source": "'use client';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center } from 'oneslash-design-system/components/layout';\n\n// Shown while a step that can take a few seconds runs, before the app knows where to send the person.\n// A real app swaps it for the next page as soon as the step ends.\nexport default function AuthGateLoadingSpinnerWithLine() {\n  return (\n    <Center fill>\n      <LoadingScreen />\n      <Paragraph tone=\"secondary\" measure=\"none\">Checking invite…</Paragraph>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Center",
+            "LoadingScreen",
+            "Paragraph"
+          ]
+        }
       ]
     },
     {
@@ -378,6 +473,66 @@
             "Stack",
             "Surface",
             "TextField"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "device-login",
+      "title": "Device login",
+      "kind": "design",
+      "level": "page",
+      "area": "auth",
+      "situation": "A CLI, an editor or another app opened the browser so the person can log in, and the login must reach that app.",
+      "do": [
+        "Say in one line what the login connects: 'This connects Acme CLI on your computer to your account.'",
+        "Put the providers on top, then a `Line` with `label=\"or\"`, then email and password, as on the 'Login page' with providers first.",
+        "Wait for the device to answer before showing success, with one line naming the step: 'Waiting for Acme CLI…'.",
+        "End on \"You're logged in\" and 'You can close this tab.' once the device has answered.",
+        "Go back to the form with an inline error Alert when the device does not answer, and say what to check.",
+        "Show 'Finishing login…' while a popup finishes, and close the popup when the page that opened it answers.",
+        "Show 'Done. You can close this window.' when the browser keeps the popup open."
+      ],
+      "dont": [
+        "Do not show success before the device answers.",
+        "Do not leave a popup blank while it finishes.",
+        "Do not label a provider Button with its name alone, such as 'Google'. Write 'Continue with Google'."
+      ],
+      "notBuiltYet": "Scindo's CLI login shows 'Login successful!' as soon as its request to the CLI gets any reply. It sends that request with `no-cors`, so it cannot read whether the CLI took the login. Its provider Buttons read 'GitHub' and 'Google'. Commentify's popup shows nothing while it finishes.",
+      "seenIn": [
+        "Commentify",
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "provider-first",
+          "title": "Login page for a device",
+          "useWhen": "A CLI or an editor opened a browser tab; most people log in with a provider and email is the fallback.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Image from 'oneslash-design-system/components/image';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport Form from 'oneslash-design-system/components/form';\nimport Alert from 'oneslash-design-system/components/alert';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport Line from 'oneslash-design-system/components/line';\nimport BrandIcon from 'oneslash-design-system/components/brandIcon';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center, Stack } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A small check: some text, an @, then some text.\nfunction looksLikeEmail(value: string) {\n  return /^[^@\\s]+@[^@\\s]+$/.test(value);\n}\n\nexport default function DeviceLoginProviderFirst() {\n  const [email, setEmail] = useState('ada@example.com');\n  const [password, setPassword] = useState('');\n  const [error, setError] = useState('');\n  const [emailError, setEmailError] = useState('');\n  const [passwordError, setPasswordError] = useState('');\n  const [loading, setLoading] = useState(false);\n  // 'form', then 'waiting' for the device to answer, then 'done'.\n  const [step, setStep] = useState<'form' | 'waiting' | 'done'>('form');\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the requests if the example goes away before they end.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  function handleSubmit() {\n    if (loading) return;\n    setError('');\n    setEmailError('');\n    setPasswordError('');\n    if (!email.trim()) {\n      setEmailError('Enter your email.');\n      return;\n    }\n    if (!looksLikeEmail(email.trim())) {\n      setEmailError('Enter a valid email address.');\n      return;\n    }\n    if (!password) {\n      setPasswordError('Enter your password.');\n      return;\n    }\n    setLoading(true);\n    // Stands in for the request to the server.\n    // A refused login calls setError instead: 'That email and password do not match.'\n    timer.current = setTimeout(() => {\n      setLoading(false);\n      setStep('waiting');\n      // Stands in for the request to the server.\n      // This one hands the login to Acme CLI and waits for it to answer that it has it.\n      // If it does not answer, go back to the form with setStep('form') and\n      // setError('Acme CLI did not answer. Make sure acme login is still running, then try again.').\n      timer.current = setTimeout(() => setStep('done'), 1200);\n    }, 1200);\n  }\n\n  // Success shows only after the device has answered.\n  if (step === 'done') {\n    return (\n      <Center fill>\n        <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n        <Stack gap=\"medium\">\n          <Heading level={1} size=\"h5\">You&apos;re logged in</Heading>\n          <Paragraph tone=\"secondary\" measure=\"none\">You can close this tab.</Paragraph>\n        </Stack>\n      </Center>\n    );\n  }\n\n  if (step === 'waiting') {\n    return (\n      <Center fill>\n        <LoadingScreen />\n        <Paragraph tone=\"secondary\" measure=\"none\">Waiting for Acme CLI…</Paragraph>\n      </Center>\n    );\n  }\n\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Log in to Acme</Heading>\n        <Paragraph tone=\"secondary\" measure=\"none\">This connects Acme CLI on your computer to your account.</Paragraph>\n      </Stack>\n      {/* A real app sends the person to the provider, which brings them back to this page to hand the login to Acme CLI. */}\n      <Stack gap=\"medium\">\n        <Button size=\"medium\" type=\"secondary\" state={loading ? 'disabled' : 'enabled'} label=\"Continue with Google\" decoIcon={<BrandIcon name=\"google\" />} />\n        <Button size=\"medium\" type=\"secondary\" state={loading ? 'disabled' : 'enabled'} label=\"Continue with GitHub\" decoIcon={<BrandIcon name=\"github\" />} />\n      </Stack>\n      <Line label=\"or\" />\n      <Form aria-label=\"Log in with email\" onSubmit={handleSubmit}>\n        {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n        <TextField id=\"device-login-provider-first-email\" label=\"Email\" type=\"email\" autoComplete=\"username\" value={email} disabled={loading} error={Boolean(emailError)} errorText={emailError} onChange={(e) => { setEmail(e.target.value); setEmailError(''); }} />\n        <TextField id=\"device-login-provider-first-password\" label=\"Password\" type=\"password\" autoComplete=\"current-password\" value={password} disabled={loading} error={Boolean(passwordError)} errorText={passwordError} onChange={(e) => { setPassword(e.target.value); setPasswordError(''); }} />\n        <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Log In\" htmlType=\"submit\" loading={loading} />\n        <Button size=\"medium\" type=\"textOnly\" state=\"enabled\" label=\"Forgot password?\" />\n      </Form>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "BrandIcon",
+            "Button",
+            "Center",
+            "Form",
+            "Heading",
+            "Image",
+            "Line",
+            "LoadingScreen",
+            "Paragraph",
+            "Stack",
+            "TextField"
+          ]
+        },
+        {
+          "id": "popup",
+          "title": "Popup that closes itself",
+          "useWhen": "A page opened a popup for the login, and the popup closes once the page has the login.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center } from 'oneslash-design-system/components/layout';\n\n// The page the provider sends the popup back to. It finishes the login, tells the page\n// that opened it, and closes itself.\nexport default function DeviceLoginPopup() {\n  const [finished, setFinished] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  useEffect(() => {\n    // Stands in for the request to the server.\n    // This one finishes the login and waits for the page that opened the popup to answer that it has it.\n    timer.current = setTimeout(() => {\n      // A real app closes the popup here with window.close(). An example cannot, so it shows\n      // what the person sees when the browser keeps the popup open.\n      setFinished(true);\n    }, 1200);\n    // Stops the request if the example goes away before it ends.\n    return () => clearTimeout(timer.current);\n  }, []);\n\n  if (finished) {\n    return (\n      <Center fill>\n        <Paragraph tone=\"secondary\" measure=\"none\">Done. You can close this window.</Paragraph>\n      </Center>\n    );\n  }\n\n  return (\n    <Center fill>\n      <LoadingScreen />\n      <Paragraph tone=\"secondary\" measure=\"none\">Finishing login…</Paragraph>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Center",
+            "LoadingScreen",
+            "Paragraph"
           ]
         }
       ]
@@ -1296,6 +1451,78 @@
             "Surface",
             "Tab",
             "TabsContainer"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "oauth-consent",
+      "title": "OAuth consent",
+      "kind": "design",
+      "level": "page",
+      "area": "auth",
+      "situation": "Another app, such as a CLI or an MCP client, asks to act for a person who is logged in, and the person must allow it.",
+      "do": [
+        "Name the app in a `Heading` with `level={1}`: 'Acme CLI wants to connect to Acme'.",
+        "Say in one or two plain sentences what the app will be able to do, in the person's words: 'read your projects and tasks, and create tasks as you'.",
+        "Say how to remove the access later: 'You can remove its access at any time in Settings, under Connected apps.'",
+        "Show the account that gives the access.",
+        "Say where the person goes next: 'You will go back to cli.acme.dev.'",
+        "Put 'Cancel' first and 'Allow' second, side by side and the same width, in a `Grid` with `columns={2}`.",
+        "Show `loading` on 'Allow' and disable 'Cancel' and every field while the request runs.",
+        "Show one line naming the step while the browser goes back, such as 'Going back to Acme CLI…', with the spinner from 'Auth gate loading'.",
+        "Leave wider access off until the person turns it on, and say under it what it adds."
+      ],
+      "dont": [
+        "Do not color 'Allow' or 'Cancel' as danger. Allowing is the person's choice, not a destructive action.",
+        "Do not turn on wider access for the person.",
+        "Do not name the access by its scope id, such as 'tasks:write'.",
+        "Do not label Cancel 'Deny' or 'No'."
+      ],
+      "notBuiltYet": "Scindo on the web turns on access to every workspace for the person, and shows its spinner on neither Button while the request runs. Commentify puts 'Allow' before 'Deny', writes its error in a red caption by hand, and says nothing about how to remove the access.",
+      "seenIn": [
+        "Commentify",
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "simple",
+          "title": "One account, one access",
+          "useWhen": "The app gets one set of access to one account, so the only choice is to allow it or not.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Image from 'oneslash-design-system/components/image';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport UserImage from 'oneslash-design-system/components/userImage';\nimport Alert from 'oneslash-design-system/components/alert';\nimport Button from 'oneslash-design-system/components/button';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center, Cluster, Grid, Stack } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A real app passes the router from its framework, such as Next's useRouter().\n// Going back to another site is a full page load, such as window.location.assign() in a real app.\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\nexport default function OAuthConsentSimple() {\n  const [allowing, setAllowing] = useState(false);\n  const [handingBack, setHandingBack] = useState(false);\n  const [error, setError] = useState('');\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  function handleAllow() {\n    if (allowing) return;\n    setError('');\n    setAllowing(true);\n    // Stands in for the request to the server.\n    // A failed request calls setError with one sentence instead, such as 'Acme CLI was not connected. Try again.'\n    timer.current = setTimeout(() => {\n      setAllowing(false);\n      setHandingBack(true);\n      router.push('https://cli.acme.dev/callback');\n    }, 1200);\n  }\n\n  // The app hears that the person said no, and nothing is shared.\n  function handleCancel() {\n    router.push('https://cli.acme.dev/callback?error=access_denied');\n  }\n\n  // Shown while the browser goes back to the app, the same as a named step in 'Auth gate loading'.\n  if (handingBack) {\n    return (\n      <Center fill>\n        <LoadingScreen />\n        <Paragraph tone=\"secondary\" measure=\"none\">Going back to Acme CLI…</Paragraph>\n      </Center>\n    );\n  }\n\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Acme CLI wants to connect to Acme</Heading>\n        <Paragraph tone=\"secondary\" measure=\"none\">It will be able to read your projects and tasks, and create tasks as you. You can remove its access at any time in Settings, under Connected apps.</Paragraph>\n      </Stack>\n      {/* The account that gives the access, so the person can tell it is the right one. */}\n      <Cluster gap=\"small\">\n        <UserImage userHandle=\"Ada Lovelace\" />\n        <Paragraph size=\"body2\" measure=\"none\">ada@example.com</Paragraph>\n      </Cluster>\n      {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n      <Stack gap=\"medium\">\n        <Grid columns={2} gap=\"medium\">\n          <Button size=\"medium\" type=\"secondary\" state={allowing ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleCancel} />\n          <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Allow\" loading={allowing} onClickButton={handleAllow} />\n        </Grid>\n        <Paragraph tone=\"secondary\" size=\"caption\" measure=\"none\">You will go back to cli.acme.dev.</Paragraph>\n      </Stack>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "Button",
+            "Center",
+            "Cluster",
+            "Grid",
+            "Heading",
+            "Image",
+            "LoadingScreen",
+            "Paragraph",
+            "Stack",
+            "UserImage"
+          ]
+        },
+        {
+          "id": "with-scope",
+          "title": "Workspace and wider access",
+          "useWhen": "The person picks the workspace the app can use, or turns on wider access.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Image from 'oneslash-design-system/components/image';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport UserImage from 'oneslash-design-system/components/userImage';\nimport Alert from 'oneslash-design-system/components/alert';\nimport Select from 'oneslash-design-system/components/select';\nimport Checkbox from 'oneslash-design-system/components/checkBox';\nimport Button from 'oneslash-design-system/components/button';\nimport LoadingScreen from 'oneslash-design-system/components/loadingScreen';\nimport { Center, Cluster, Grid, Stack } from 'oneslash-design-system/components/layout';\n\n// The product's mark. A real app passes its own file.\nconst productMark =\n  \"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='10' fill='%232f6b4f'/%3E%3Cpath d='M20 9 31 31h-6l-5-11-5 11H9z' fill='%23fff'/%3E%3C/svg%3E\";\n\n// A real app passes the router from its framework, such as Next's useRouter().\n// Going back to another site is a full page load, such as window.location.assign() in a real app.\nconst router = { push: (url: string) => console.info(`Go to ${url}`) };\n\n// The workspaces the person belongs to.\nconst workspaces = [\n  { value: 'design', label: 'Acme Design' },\n  { value: 'marketing', label: 'Acme Marketing' },\n];\n\nexport default function OAuthConsentWithScope() {\n  const [workspace, setWorkspace] = useState('design');\n  // The wider access is off until the person turns it on.\n  const [allWorkspaces, setAllWorkspaces] = useState(false);\n  const [allowing, setAllowing] = useState(false);\n  const [handingBack, setHandingBack] = useState(false);\n  const [error, setError] = useState('');\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  function handleAllow() {\n    if (allowing) return;\n    setError('');\n    setAllowing(true);\n    // Stands in for the request to the server.\n    // A failed request calls setError with one sentence instead, such as 'Acme CLI was not connected. Try again.'\n    timer.current = setTimeout(() => {\n      setAllowing(false);\n      setHandingBack(true);\n      router.push('https://cli.acme.dev/callback');\n    }, 1200);\n  }\n\n  // The app hears that the person said no, and nothing is shared.\n  function handleCancel() {\n    router.push('https://cli.acme.dev/callback?error=access_denied');\n  }\n\n  // Shown while the browser goes back to the app, the same as a named step in 'Auth gate loading'.\n  if (handingBack) {\n    return (\n      <Center fill>\n        <LoadingScreen />\n        <Paragraph tone=\"secondary\" measure=\"none\">Going back to Acme CLI…</Paragraph>\n      </Center>\n    );\n  }\n\n  return (\n    <Center fill>\n      <Image src={productMark} alt=\"Acme\" width={40} height={40} />\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Acme CLI wants to connect to Acme</Heading>\n        <Paragraph tone=\"secondary\" measure=\"none\">It will be able to read the projects and tasks you can see in one workspace, and create tasks as you. You can remove its access at any time in Settings, under Connected apps.</Paragraph>\n      </Stack>\n      {/* The account that gives the access, so the person can tell it is the right one. */}\n      <Cluster gap=\"small\">\n        <UserImage userHandle=\"Ada Lovelace\" />\n        <Paragraph size=\"body2\" measure=\"none\">ada@example.com</Paragraph>\n      </Cluster>\n      {error && <Alert type=\"error\" variant=\"inline\" message={error} showCloseButton onClose={() => setError('')} />}\n      <Stack gap=\"small\">\n        {/* The line above names the field on screen, and `aria-label` names it for a screen reader. */}\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">Workspace</Paragraph>\n        <Select aria-label=\"Workspace\" value={workspace} options={workspaces} disabled={allowing} onChange={(v) => setWorkspace(typeof v === 'string' ? v : v[0])} />\n      </Stack>\n      <Checkbox label=\"Also allow my other workspaces\" secondLabel=\"It can then do the same in every workspace you belong to. It still sees only what you can see.\" checked={allWorkspaces} disabled={allowing} onChange={setAllWorkspaces} />\n      <Stack gap=\"medium\">\n        <Grid columns={2} gap=\"medium\">\n          <Button size=\"medium\" type=\"secondary\" state={allowing ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleCancel} />\n          <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Allow\" loading={allowing} onClickButton={handleAllow} />\n        </Grid>\n        <Paragraph tone=\"secondary\" size=\"caption\" measure=\"none\">You will go back to cli.acme.dev.</Paragraph>\n      </Stack>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Alert",
+            "Button",
+            "Center",
+            "Checkbox",
+            "Cluster",
+            "Grid",
+            "Heading",
+            "Image",
+            "LoadingScreen",
+            "Paragraph",
+            "Select",
+            "Stack",
+            "UserImage"
           ]
         }
       ]

@@ -594,9 +594,12 @@ Don't:
 
 | Case | When | File |
 | --- | --- | --- |
+| Accept an invite | A person opens an invite link to join a workspace. | cases/accept-invite.md |
+| Auth gate loading | The app is checking whether the person is logged in, or running a step such as checking an invite, before it knows what to show. | cases/auth-gate-loading.md |
 | Check your email | A person signed up, and the product sent a link to confirm their email. | cases/check-your-email.md |
 | Confirm a destructive action | A person asks to delete or remove something, and it cannot be undone. | cases/confirm-destructive-action.md |
 | Create in a Modal | A person creates something new, such as a project or a task, and it needs a name before it exists. | cases/create-modal.md |
+| Device login | A CLI, an editor or another app opened the browser so the person can log in, and the login must reach that app. | cases/device-login.md |
 | Email confirmed | A person opened the link that confirms their email. | cases/email-confirmed.md |
 | Empty list | A list has loaded, and there is nothing in it yet. | cases/empty-list.md |
 | Empty because it is not set up | A pane is empty because something it needs is not set up yet, such as a connected account. | cases/empty-not-set-up.md |
@@ -611,6 +614,7 @@ Don't:
 | Log out confirm | A person chooses Log Out. | cases/log-out-confirm.md |
 | Login page | A person who already has an account opens the product and is not signed in. | cases/login-page.md |
 | Page not found | A person opens a link to a page that does not exist. | cases/not-found-page.md |
+| OAuth consent | Another app, such as a CLI or an MCP client, asks to act for a person who is logged in, and the person must allow it. | cases/oauth-consent.md |
 | Rename | A person renames something, such as a project or a channel. | cases/rename.md |
 | Page loading | A page or a pane is loading, and there is nothing to show yet. | cases/route-loading.md |
 | Set new password | A person opened the link to reset their password and now chooses a new one. | cases/set-new-password.md |
