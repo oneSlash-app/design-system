@@ -9,13 +9,15 @@ import Button from '../../components/button';
 import { Center, Cluster, Stack } from '../../components/layout';
 
 export default function UnsavedChangesDiscard() {
-  const [replies, setReplies] = useState<string[]>([]);
+  const [replies, setReplies] = useState<{ id: number; text: string }[]>([]);
   const [writing, setWriting] = useState(true);
   const [draft, setDraft] = useState('Friday works for me. I will move the review to Thursday.');
   // Opens on the question, as if the person just chose Cancel with a reply written.
   const [asking, setAsking] = useState(true);
   const [posting, setPosting] = useState(false);
   const timer = useRef<ReturnType<typeof setTimeout>>();
+  // Gives each posted reply its own key, even when two read the same.
+  const nextId = useRef(1);
 
   // Stops the request if the example goes away before it ends.
   useEffect(() => () => clearTimeout(timer.current), []);
@@ -39,7 +41,8 @@ export default function UnsavedChangesDiscard() {
     // Stands in for the request to the server.
     timer.current = setTimeout(() => {
       setPosting(false);
-      setReplies((list) => [...list, text]);
+      const id = nextId.current++;
+      setReplies((list) => [...list, { id, text }]);
       setDraft('');
       setWriting(false);
     }, 1200);
@@ -52,7 +55,7 @@ export default function UnsavedChangesDiscard() {
           <Heading level={2} size="h6">Dana Lee</Heading>
           <Paragraph size="body2" measure="none">Can we move the launch to Friday?</Paragraph>
           {replies.map((reply) => (
-            <Paragraph key={reply} tone="secondary" size="body2" measure="none">You: {reply}</Paragraph>
+            <Paragraph key={reply.id} tone="secondary" size="body2" measure="none">You: {reply.text}</Paragraph>
           ))}
           {writing ? (
             <>

@@ -18,14 +18,14 @@ export default function RenameInline() {
         setDraft(name);
         setEditing(true);
     }
-    // A real app sends the new name to the server here and shows it at once.
     function save() {
         if (ended.current)
             return;
         ended.current = true;
         var next = draft.trim();
-        // An empty name cancels.
-        if (next)
+        // An empty or unchanged name cancels: there is nothing to send.
+        // Otherwise a real app sends the new name to the server here and shows it at once.
+        if (next && next !== name)
             setName(next);
         setEditing(false);
     }

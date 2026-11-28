@@ -54,7 +54,7 @@ export default function TypeToConfirmInline() {
             <Heading level={2} size="h6">Delete account</Heading>
             <Paragraph size="body2" measure="none">This deletes your account, your private documents and your settings. It cannot be undone. Projects you shared stay with your team.</Paragraph>
             {confirming ? (<>
-                <TextField id="type-to-confirm-word" label={"Type ".concat(word, " to confirm")} value={typed} onChange={function (e) { return setTyped(e.target.value); }}/>
+                <TextField id="type-to-confirm-word" label={"Type ".concat(word, " to confirm")} value={typed} disabled={deleting} onChange={function (e) { return setTyped(e.target.value); }}/>
                 <Cluster gap="small">
                   <Button size="small" type="tertiary" state={deleting ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleCancel}/>
                   <Button size="small" type="primary" color="danger" state={matches ? 'enabled' : 'disabled'} label="Delete Account" loading={deleting} onClickButton={handleDelete}/>

@@ -500,7 +500,7 @@ Don't:
 
 An action a person takes themselves needs their yes before it happens. An action the agent wants to take follows the rule 'An agent asks before a risky action', a card in the conversation, not this one.
 
-Answer: A confirm is a Modal with `size="small"`. Its title names the action in Title Case, such as 'Delete Project'. The body says in one or two sentences what will happen and what is kept. Two Buttons sit in the Modal's `actions`: 'Cancel' first, a `<Button type="tertiary" size="small">`, then the action, a `<Button type="primary" size="small">` labelled in Title Case with the same verb as the title. When the action destroys or removes something, the action Button also has `color="danger"`. Escape and a click outside the Modal mean Cancel. While the request runs, the action Button is `loading` and keeps its label, 'Cancel' is `state="disabled"`, and the Modal stays open: it still calls `onClose` on Escape or a click outside, and the page ignores that call until the request ends. If the request fails, the Modal stays open and shows an inline error Alert at the top of its body, as the rule 'Form errors' says. When the action works, the Modal closes. If the thing is still on screen, the change shows where it is. If the thing is gone, a toast names it, as the rule 'Success feedback' says.
+Answer: A confirm is a Modal with `size="small"`. Its title names the action in Title Case, such as 'Delete Project'. The body says in one or two sentences what will happen and what is kept. Two Buttons sit in the Modal's `actions`: 'Cancel' first, a `<Button type="tertiary" size="small">`, then the action, a `<Button type="primary" size="small">` labelled in Title Case with the same verb as the title. When the action destroys or removes something, the action Button also has `color="danger"`. One case differs: 'Unsaved changes'. Its guard may have three Buttons, 'Cancel', "Don't Save" and 'Save', in that order. When it has two, its safe Button reads 'Keep Editing'. Escape and a click outside the Modal mean Cancel. While the request runs, the action Button is `loading` and keeps its label, and 'Cancel' is `state="disabled"`. The Modal stays open. It still calls `onClose` on Escape or a click outside, and the page ignores that call until the request ends. If the request fails, the Modal stays open and shows an inline error Alert at the top of its body, as the rule 'Form errors' says. When the action works, the Modal closes. If the thing is still on screen, the change shows where it is. If the thing is gone, a toast names it, as the rule 'Success feedback' says.
 
 **Not built yet:** No Commentify confirm Modal uses `color="danger"`, and two of them label Cancel 'No'. Scindo on the web makes Cancel a secondary Button in some confirms and a tertiary one in others, and leaves its Delete Task and Remove Member confirms uncolored. Scindo on the web revokes an API key, and Commentify revokes an agent client, with no confirm.
 
@@ -605,11 +605,11 @@ Don't:
 | Form feedback | A person submits a small form, such as a settings field, and the request ends. | cases/inline-form-feedback.md |
 | Invite a member | A person invites someone to join a workspace. | cases/invite-member.md |
 | Load failure | A list or a section could not load. | cases/load-failure.md |
+| Log out confirm | A person chooses Log Out. | cases/log-out-confirm.md |
 | Login page | A person who already has an account opens the product and is not signed in. | cases/login-page.md |
 | Page not found | A person opens a link to a page that does not exist. | cases/not-found-page.md |
 | Rename | A person renames something, such as a project or a channel. | cases/rename.md |
 | Page loading | A page or a pane is loading, and there is nothing to show yet. | cases/route-loading.md |
-| Sign out | A person chooses Sign Out. | cases/sign-out-confirm.md |
 | Type to confirm | A person asks to delete something large that cannot be brought back, such as a workspace or an account. | cases/type-to-confirm.md |
 | Unsaved changes | A person closes or leaves something they changed and did not save. | cases/unsaved-changes-guard.md |
 | Upgrade prompt | A person reaches something their plan does not include, or a limit of their plan. When the agent is the one refused, follow the rule 'An agent refuses clearly' too. | cases/upgrade-prompt.md |

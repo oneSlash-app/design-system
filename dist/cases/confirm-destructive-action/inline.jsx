@@ -56,10 +56,10 @@ export default function ConfirmDestructiveActionInline() {
               {/* A fixed last column keeps every row's Buttons in one place, so they do not jump when they change. */}
               <TableCell width="168px">
                 {confirming === m.id ? (<Cluster gap="small">
-                    <Button size="small" type="tertiary" state={removing ? 'disabled' : 'enabled'} label="Cancel" onClickButton={function () { return setConfirming(null); }}/>
-                    <Button size="small" type="primary" color="danger" state="enabled" label="Remove" loading={removing} onClickButton={function () { return handleRemove(m.id, m.name); }}/>
+                    <Button size="small" type="tertiary" state={removing ? 'disabled' : 'enabled'} label="Cancel" aria-label={"Cancel removing ".concat(m.name)} onClickButton={function () { return setConfirming(null); }}/>
+                    <Button size="small" type="primary" color="danger" state="enabled" label="Remove" aria-label={"Confirm removing ".concat(m.name)} loading={removing} onClickButton={function () { return handleRemove(m.id, m.name); }}/>
                   </Cluster>) : (<Cluster gap="small">
-                    <Button size="small" type="tertiary" state={removing ? 'disabled' : 'enabled'} label="Remove" onClickButton={function () { return setConfirming(m.id); }}/>
+                    <Button size="small" type="tertiary" state={removing ? 'disabled' : 'enabled'} label="Remove" aria-label={"Remove ".concat(m.name)} onClickButton={function () { return setConfirming(m.id); }}/>
                   </Cluster>)}
               </TableCell>
             </TableRow>); })}

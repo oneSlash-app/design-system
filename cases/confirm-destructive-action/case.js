@@ -23,6 +23,7 @@ module.exports = {
     "Follow the rule 'Confirm dialogs' for the Modal: `size=\"small\"`, 'Cancel' first, then the action with `color=\"danger\"`.",
     "Name the thing and what goes with it: \"This deletes 'Q3 plan' and its 12 tasks.\"",
     "Turn the row's Buttons into 'Cancel' and a danger 'Remove' in place for the inline confirm. The rest of the row stays as it is.",
+    "Give each row's Buttons an `aria-label` that names the thing, such as 'Remove Dana Lee', 'Cancel removing Dana Lee' and 'Confirm removing Dana Lee', so a screen reader knows which row they act on.",
     'Keep one row confirming at a time. Starting a confirm on another row cancels the first.',
     'Show a toast that names the thing once it is gone.',
   ],

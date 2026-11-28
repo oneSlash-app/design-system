@@ -24,6 +24,8 @@ export default function UnsavedChangesDiscard() {
     var _d = useState(true), asking = _d[0], setAsking = _d[1];
     var _e = useState(false), posting = _e[0], setPosting = _e[1];
     var timer = useRef();
+    // Gives each posted reply its own key, even when two read the same.
+    var nextId = useRef(1);
     // Stops the request if the example goes away before it ends.
     useEffect(function () { return function () { return clearTimeout(timer.current); }; }, []);
     // With nothing written, Cancel closes at once.
@@ -46,7 +48,8 @@ export default function UnsavedChangesDiscard() {
         // Stands in for the request to the server.
         timer.current = setTimeout(function () {
             setPosting(false);
-            setReplies(function (list) { return __spreadArray(__spreadArray([], list, true), [text], false); });
+            var id = nextId.current++;
+            setReplies(function (list) { return __spreadArray(__spreadArray([], list, true), [{ id: id, text: text }], false); });
             setDraft('');
             setWriting(false);
         }, 1200);
@@ -56,7 +59,7 @@ export default function UnsavedChangesDiscard() {
         <Stack gap="medium">
           <Heading level={2} size="h6">Dana Lee</Heading>
           <Paragraph size="body2" measure="none">Can we move the launch to Friday?</Paragraph>
-          {replies.map(function (reply) { return (<Paragraph key={reply} tone="secondary" size="body2" measure="none">You: {reply}</Paragraph>); })}
+          {replies.map(function (reply) { return (<Paragraph key={reply.id} tone="secondary" size="body2" measure="none">You: {reply.text}</Paragraph>); })}
           {writing ? (<>
               <TextField id="unsaved-changes-guard-reply" label="Reply" multiline maxRows={3} value={draft} onChange={function (e) { return setDraft(e.target.value); }}/>
               <Cluster gap="small">

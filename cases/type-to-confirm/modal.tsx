@@ -85,7 +85,7 @@ export default function TypeToConfirmModal() {
       >
         <Paragraph measure="none">This deletes the workspace &apos;{workspace}&apos; with its 14 channels, tasks and messages. It cannot be undone.</Paragraph>
         <Paragraph tone="secondary" size="body2" measure="none">Members keep their Acme accounts.</Paragraph>
-        <TextField id="type-to-confirm-name" label={`Type ${workspace} to confirm`} value={typed} onChange={(e) => setTyped(e.target.value)} />
+        <TextField id="type-to-confirm-name" label={`Type ${workspace} to confirm`} value={typed} disabled={deleting} onChange={(e) => setTyped(e.target.value)} />
       </Modal>
     </Center>
   );

@@ -65,7 +65,7 @@ export default function TypeToConfirmInline() {
             <Paragraph size="body2" measure="none">This deletes your account, your private documents and your settings. It cannot be undone. Projects you shared stay with your team.</Paragraph>
             {confirming ? (
               <>
-                <TextField id="type-to-confirm-word" label={`Type ${word} to confirm`} value={typed} onChange={(e) => setTyped(e.target.value)} />
+                <TextField id="type-to-confirm-word" label={`Type ${word} to confirm`} value={typed} disabled={deleting} onChange={(e) => setTyped(e.target.value)} />
                 <Cluster gap="small">
                   <Button size="small" type="tertiary" state={deleting ? 'disabled' : 'enabled'} label="Cancel" onClickButton={handleCancel} />
                   <Button size="small" type="primary" color="danger" state={matches ? 'enabled' : 'disabled'} label="Delete Account" loading={deleting} onClickButton={handleDelete} />
