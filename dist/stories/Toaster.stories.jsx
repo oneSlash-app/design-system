@@ -11,7 +11,7 @@ var StackDemo = function () {
     var ids = useRef([]);
     var show = function (input) { return ids.current.push(toast(input)); };
     useEffect(function () {
-        show({ type: "success", message: "Changes saved" });
+        show({ type: "success", message: "Q3 plan deleted" });
         show({ type: "info", message: "Sync runs every hour", secondMessage: "The next one starts at 1:00 PM." });
         show({ type: "error", message: "Could not upload photo.jpg" });
         return function () {
@@ -20,7 +20,7 @@ var StackDemo = function () {
         };
     }, []);
     return (<div>
-      <Button size="medium" type="primary" state="enabled" label="Show a toast" onClickButton={function () { return show("Saved"); }}/>
+      <Button size="medium" type="primary" state="enabled" label="Show a toast" onClickButton={function () { return show({ type: "success", message: "Invite sent" }); }}/>
       <Toaster />
     </div>);
 };

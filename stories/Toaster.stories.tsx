@@ -16,7 +16,7 @@ const StackDemo = () => {
   const ids = useRef<string[]>([]);
   const show = (input: Parameters<typeof toast>[0]) => ids.current.push(toast(input));
   useEffect(() => {
-    show({ type: "success", message: "Changes saved" });
+    show({ type: "success", message: "Q3 plan deleted" });
     show({ type: "info", message: "Sync runs every hour", secondMessage: "The next one starts at 1:00 PM." });
     show({ type: "error", message: "Could not upload photo.jpg" });
     return () => {
@@ -26,7 +26,7 @@ const StackDemo = () => {
   }, []);
   return (
     <div>
-      <Button size="medium" type="primary" state="enabled" label="Show a toast" onClickButton={() => show("Saved")} />
+      <Button size="medium" type="primary" state="enabled" label="Show a toast" onClickButton={() => show({ type: "success", message: "Invite sent" })} />
       <Toaster />
     </div>
   );
