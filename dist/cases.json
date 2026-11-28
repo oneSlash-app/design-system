@@ -149,6 +149,75 @@
       ]
     },
     {
+      "id": "confirm-destructive-action",
+      "title": "Confirm a destructive action",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person asks to delete or remove something, and it cannot be undone.",
+      "do": [
+        "Follow the rule 'Confirm dialogs' for the Modal: `size=\"small\"`, 'Cancel' first, then the action with `color=\"danger\"`.",
+        "Name the thing and what goes with it: \"This deletes 'Q3 plan' and its 12 tasks.\"",
+        "Turn the row's Buttons into 'Cancel' and a danger 'Remove' in place for the inline confirm. The rest of the row stays as it is.",
+        "Keep one row confirming at a time. Starting a confirm on another row cancels the first.",
+        "Show a toast that names the thing once it is gone."
+      ],
+      "dont": [
+        "Do not ask for a confirm when the action is easy to undo.",
+        "Do not remove a row on the first click of its Button.",
+        "Do not open a Modal for a row in a long list when the inline confirm keeps the place.",
+        "Do not ask a question in place of the action, such as 'Are you sure?'."
+      ],
+      "native": "On Apple use a system `confirmationDialog` or `.alert`, with the action in the `.destructive` role and 'Cancel' in the `.cancel` role.",
+      "notBuiltYet": "Commentify's Delete project confirm is not danger-colored and asks a question in its body. Scindo on the web confirms removing a saved card in place, but asks 'Are you sure?' and labels its Buttons 'Confirm' and 'No'.",
+      "seenIn": [
+        "Commentify",
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "modal",
+          "title": "Confirm in a Modal",
+          "useWhen": "The default, for any delete or remove that cannot be undone.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Toaster, { toast, dismissToast } from 'oneslash-design-system/components/toaster';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Surface from 'oneslash-design-system/components/surface';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport List from 'oneslash-design-system/components/list';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nconst otherProjects = ['Website refresh', 'Hiring plan', 'Office move'];\n\nexport default function ConfirmDestructiveActionModal() {\n  // Opens on the confirm, as if the person just chose Delete Project.\n  const [open, setOpen] = useState(true);\n  const [deleting, setDeleting] = useState(false);\n  const [deleted, setDeleted] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n  const toastIds = useRef<string[]>([]);\n\n  // On unmount it stops the request and closes every toast it opened.\n  useEffect(() => () => {\n    clearTimeout(timer.current);\n    toastIds.current.forEach((id) => dismissToast(id));\n    toastIds.current = [];\n  }, []);\n\n  // Escape, a click outside and Cancel all close it, except while the request runs.\n  function handleClose() {\n    if (deleting) return;\n    setOpen(false);\n  }\n\n  function handleDelete() {\n    if (deleting) return;\n    setDeleting(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setDeleting(false);\n      setOpen(false);\n      setDeleted(true);\n      toastIds.current.push(toast({ type: 'success', message: \"Project 'Q3 plan' deleted.\" }));\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      {/* A real app mounts one Toaster near its root. */}\n      <Toaster />\n      {deleted ? (\n        <Stack gap=\"large\">\n          <Heading level={2} size=\"h5\">Projects</Heading>\n          <Surface padding=\"large\">\n            <List items={otherProjects} size=\"body1\" />\n          </Surface>\n        </Stack>\n      ) : (\n        <Stack gap=\"medium\">\n          <Heading level={2} size=\"h5\">Q3 plan</Heading>\n          <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">12 tasks. Updated 2 days ago by Dana Lee.</Paragraph>\n          <Cluster>\n            <Button size=\"small\" type=\"secondary\" color=\"danger\" state=\"enabled\" label=\"Delete Project\" onClickButton={() => setOpen(true)} />\n          </Cluster>\n        </Stack>\n      )}\n      <Modal\n        isOpen={open}\n        size=\"small\"\n        title=\"Delete Project\"\n        onClose={handleClose}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state={deleting ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleClose} />\n            <Button size=\"small\" type=\"primary\" color=\"danger\" state=\"enabled\" label=\"Delete\" loading={deleting} onClickButton={handleDelete} />\n          </>\n        }\n      >\n        <Paragraph measure=\"none\">This deletes &apos;Q3 plan&apos; and its 12 tasks.</Paragraph>\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">Files attached to the tasks stay in Files.</Paragraph>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "List",
+            "Modal",
+            "Paragraph",
+            "Stack",
+            "Surface",
+            "Toaster",
+            "dismissToast",
+            "toast"
+          ]
+        },
+        {
+          "id": "inline",
+          "title": "Confirm in the row",
+          "useWhen": "The action is on a row inside a dense list, and a Modal would lose the place.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Toaster, { toast, dismissToast } from 'oneslash-design-system/components/toaster';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport TableContainer from 'oneslash-design-system/components/tableContainer';\nimport TableRow from 'oneslash-design-system/components/tableRow';\nimport TableCell from 'oneslash-design-system/components/tableCell';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nconst people = [\n  { id: 'dana', name: 'Dana Lee', email: 'dana@example.com', role: 'Admin' },\n  { id: 'omar', name: 'Omar Haddad', email: 'omar@example.com', role: 'Member' },\n  { id: 'mei', name: 'Mei Tanaka', email: 'mei@example.com', role: 'Member' },\n  { id: 'luis', name: 'Luis Ortega', email: 'luis@example.com', role: 'Guest' },\n  { id: 'ada', name: 'Ada Brooks', email: 'ada@example.com', role: 'Member' },\n];\n\nexport default function ConfirmDestructiveActionInline() {\n  const [members, setMembers] = useState(people);\n  // Opens with one row confirming, as if the person just chose Remove on it.\n  const [confirming, setConfirming] = useState<string | null>('omar');\n  const [removing, setRemoving] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n  const toastIds = useRef<string[]>([]);\n\n  // On unmount it stops the request and closes every toast it opened.\n  useEffect(() => () => {\n    clearTimeout(timer.current);\n    toastIds.current.forEach((id) => dismissToast(id));\n    toastIds.current = [];\n  }, []);\n\n  function handleRemove(id: string, name: string) {\n    if (removing) return;\n    setRemoving(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setRemoving(false);\n      setConfirming(null);\n      setMembers((list) => list.filter((m) => m.id !== id));\n      toastIds.current.push(toast({ type: 'success', message: `${name} removed from Acme Design.` }));\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      {/* A real app mounts one Toaster near its root. */}\n      <Toaster />\n      <Stack gap=\"large\">\n        <Stack gap=\"small\">\n          <Heading level={2} size=\"h5\">Members</Heading>\n          <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">People who can open Acme Design.</Paragraph>\n        </Stack>\n        <TableContainer>\n          {members.map((m) => (\n            <TableRow key={m.id}>\n              <TableCell>{m.name}</TableCell>\n              <TableCell>{m.email}</TableCell>\n              <TableCell width=\"100px\">{m.role}</TableCell>\n              {/* A fixed last column keeps every row's Buttons in one place, so they do not jump when they change. */}\n              <TableCell width=\"168px\">\n                {confirming === m.id ? (\n                  <Cluster gap=\"small\">\n                    <Button size=\"small\" type=\"tertiary\" state={removing ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={() => setConfirming(null)} />\n                    <Button size=\"small\" type=\"primary\" color=\"danger\" state=\"enabled\" label=\"Remove\" loading={removing} onClickButton={() => handleRemove(m.id, m.name)} />\n                  </Cluster>\n                ) : (\n                  <Cluster gap=\"small\">\n                    <Button size=\"small\" type=\"tertiary\" state={removing ? 'disabled' : 'enabled'} label=\"Remove\" onClickButton={() => setConfirming(m.id)} />\n                  </Cluster>\n                )}\n              </TableCell>\n            </TableRow>\n          ))}\n        </TableContainer>\n      </Stack>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "Paragraph",
+            "Stack",
+            "TableCell",
+            "TableContainer",
+            "TableRow",
+            "Toaster",
+            "dismissToast",
+            "toast"
+          ]
+        }
+      ]
+    },
+    {
       "id": "confirm-dialogs",
       "title": "Confirm dialogs",
       "kind": "rule",
@@ -743,6 +812,69 @@
       ]
     },
     {
+      "id": "rename",
+      "title": "Rename",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person renames something, such as a project or a channel.",
+      "do": [
+        "Title the Modal 'Rename' and the thing, such as 'Rename Project', and give its action the same verb: 'Rename'.",
+        "Keep 'Rename' `state=\"disabled\"` while the name is empty or unchanged.",
+        "Save on Enter too: put the field in a `Form`.",
+        "Show a name that is taken under the field, with `error` and `errorText`, and keep the Modal open.",
+        "Focus the field with `autoFocus` when the name becomes a field in place.",
+        "Save on Enter and when the person leaves the field. Cancel on Escape, and when the name is empty."
+      ],
+      "dont": [
+        "Do not label the Modal's action 'Save' or 'OK'.",
+        "Do not show a toast after a rename. The new name shows where the old one was.",
+        "Do not save an empty name.",
+        "Do not drop what the person typed when they leave the field."
+      ],
+      "native": "On Apple rename in place in a list with a `TextField` and `.onSubmit`. Use an `.alert` with a `TextField` when the name is not on screen.",
+      "notBuiltYet": "Commentify's two renames disagree on what leaving the field does: a project name cancels, a tag name saves. Scindo on the web labels its rename Modals' action 'Save', shows 'Saving...' while it runs, and writes a taken name as a red caption by hand.",
+      "seenIn": [
+        "Commentify",
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "modal",
+          "title": "Rename in a Modal",
+          "useWhen": "Rename is opened from a menu or from far away from the name.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport Form from 'oneslash-design-system/components/form';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\n// Names the server already has. Type one to see the request fail.\nconst takenNames = ['website refresh', 'hiring plan', 'office move'];\n\nexport default function RenameModal() {\n  const [name, setName] = useState('Q3 plan');\n  // Opens on the Modal, as if the person just chose Rename Project.\n  const [open, setOpen] = useState(true);\n  const [draft, setDraft] = useState('Q3 plan');\n  const [nameError, setNameError] = useState('');\n  const [saving, setSaving] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  const next = draft.trim();\n  const canRename = next !== '' && next !== name;\n\n  function handleOpen() {\n    setDraft(name);\n    setNameError('');\n    setOpen(true);\n  }\n\n  // Escape, a click outside and Cancel all close it, except while the request runs.\n  function handleClose() {\n    if (saving) return;\n    setOpen(false);\n  }\n\n  function handleRename() {\n    if (saving || !canRename) return;\n    setNameError('');\n    setSaving(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setSaving(false);\n      if (takenNames.includes(next.toLowerCase())) {\n        setNameError(`A project named '${next}' already exists. Choose another name.`);\n        return;\n      }\n      setName(next);\n      setOpen(false);\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">{name}</Heading>\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">12 tasks. Updated 2 days ago by Dana Lee.</Paragraph>\n        {/* A real app often opens Rename from a menu on the project. */}\n        <Cluster>\n          <Button size=\"small\" type=\"secondary\" state=\"enabled\" label=\"Rename Project\" onClickButton={handleOpen} />\n        </Cluster>\n      </Stack>\n      <Modal\n        isOpen={open}\n        size=\"small\"\n        title=\"Rename Project\"\n        onClose={handleClose}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state={saving ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleClose} />\n            <Button size=\"small\" type=\"primary\" state={canRename ? 'enabled' : 'disabled'} label=\"Rename\" loading={saving} onClickButton={handleRename} />\n          </>\n        }\n      >\n        {/* The Form lets Enter in the field rename too. */}\n        <Form aria-label=\"Rename project\" onSubmit={handleRename}>\n          <TextField id=\"rename-name\" label=\"Project name\" value={draft} error={Boolean(nameError)} errorText={nameError} onChange={(e) => { setDraft(e.target.value); setNameError(''); }} />\n        </Form>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Form",
+            "Heading",
+            "Modal",
+            "Paragraph",
+            "Stack",
+            "TextField"
+          ]
+        },
+        {
+          "id": "inline",
+          "title": "Rename in place",
+          "useWhen": "The name is on screen, and it becomes a field.",
+          "source": "'use client';\nimport { useRef, useState } from 'react';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport TextField from 'oneslash-design-system/components/textField';\nimport IconButton from 'oneslash-design-system/components/iconButton';\nimport Tooltip from 'oneslash-design-system/components/tooltip';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nexport default function RenameInline() {\n  const [name, setName] = useState('Q3 plan');\n  // Opens with the name as a field, as if the person just chose Rename.\n  const [editing, setEditing] = useState(true);\n  const [draft, setDraft] = useState('Q3 plan');\n  // Enter and Escape end the edit before the field goes away, so its blur must not save again.\n  const ended = useRef(false);\n\n  function startEditing() {\n    ended.current = false;\n    setDraft(name);\n    setEditing(true);\n  }\n\n  // A real app sends the new name to the server here and shows it at once.\n  function save() {\n    if (ended.current) return;\n    ended.current = true;\n    const next = draft.trim();\n    // An empty name cancels.\n    if (next) setName(next);\n    setEditing(false);\n  }\n\n  function cancel() {\n    if (ended.current) return;\n    ended.current = true;\n    setEditing(false);\n  }\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"medium\">\n        {editing ? (\n          <TextField\n            id=\"rename-inline-name\"\n            label=\"Project name\"\n            value={draft}\n            autoFocus\n            onChange={(e) => setDraft(e.target.value)}\n            onKeyDown={(e) => {\n              if (e.key === 'Enter') {\n                e.preventDefault();\n                save();\n              } else if (e.key === 'Escape') {\n                e.preventDefault();\n                cancel();\n              }\n            }}\n            onBlur={save}\n          />\n        ) : (\n          <Cluster gap=\"small\">\n            <Heading level={1} size=\"h5\">{name}</Heading>\n            <Tooltip title=\"Rename\">\n              <IconButton color=\"iconOnly\" state=\"enabled\" size=\"small\" iconName=\"Pencil\" ariaLabel=\"Rename project\" onClick={startEditing} />\n            </Tooltip>\n          </Cluster>\n        )}\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">12 tasks. Updated 2 days ago by Dana Lee.</Paragraph>\n      </Stack>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Center",
+            "Cluster",
+            "Heading",
+            "IconButton",
+            "Paragraph",
+            "Stack",
+            "TextField",
+            "Tooltip"
+          ]
+        }
+      ]
+    },
+    {
       "id": "route-loading",
       "title": "Page loading",
       "kind": "design",
@@ -793,6 +925,50 @@
       ]
     },
     {
+      "id": "sign-out-confirm",
+      "title": "Sign out",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person chooses Sign Out.",
+      "do": [
+        "Call it 'Sign Out' everywhere: the menu item, the Modal title and the action Button.",
+        "Say in one sentence what signing out means on this device.",
+        "Leave the action Button in the plain primary color. Signing out destroys nothing.",
+        "Show `loading` on 'Sign Out' while it runs, then show the signed-out page."
+      ],
+      "dont": [
+        "Do not say 'Log Out' anywhere.",
+        "Do not give the action Button `color=\"danger\"`.",
+        "Do not ask 'Are you sure you want to sign out?'.",
+        "Do not show a toast after signing out. The signed-out page says it."
+      ],
+      "native": "On Apple use a system `confirmationDialog` titled 'Sign Out', with a 'Sign Out' Button and 'Cancel' in the `.cancel` role. Leave out the `.destructive` role: nothing is destroyed.",
+      "notBuiltYet": "Scindo says 'Log Out' on the web and 'Sign Out' on Apple, and colors it as danger. Commentify and Commentify admin title the Modal 'Confirm Sign Out', label the action 'Yes, Sign Out' and ask 'Are you sure you want to sign out?'.",
+      "seenIn": [
+        "Commentify",
+        "Commentify admin",
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "modal",
+          "title": "Confirm in a Modal",
+          "useWhen": "Any product with a Sign Out action.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nexport default function SignOutConfirmModal() {\n  // Opens on the confirm, as if the person just chose Sign Out.\n  const [open, setOpen] = useState(true);\n  const [signingOut, setSigningOut] = useState(false);\n  const [signedOut, setSignedOut] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  // Escape, a click outside and Cancel all close it, except while the request runs.\n  function handleClose() {\n    if (signingOut) return;\n    setOpen(false);\n  }\n\n  function handleSignOut() {\n    if (signingOut) return;\n    setSigningOut(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setSigningOut(false);\n      setOpen(false);\n      setSignedOut(true);\n    }, 1200);\n  }\n\n  // A real app goes to its login page here. The example shows a short signed-out page instead.\n  if (signedOut) {\n    return (\n      <Center fill>\n        <Heading level={1} size=\"h5\">You are signed out</Heading>\n        <Cluster>\n          <Button size=\"medium\" type=\"primary\" state=\"enabled\" label=\"Log In\" onClickButton={() => setSignedOut(false)} />\n        </Cluster>\n      </Center>\n    );\n  }\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Account</Heading>\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">Signed in as ada@example.com.</Paragraph>\n        <Cluster>\n          <Button size=\"small\" type=\"secondary\" state=\"enabled\" label=\"Sign Out\" onClickButton={() => setOpen(true)} />\n        </Cluster>\n      </Stack>\n      <Modal\n        isOpen={open}\n        size=\"small\"\n        title=\"Sign Out\"\n        onClose={handleClose}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state={signingOut ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleClose} />\n            <Button size=\"small\" type=\"primary\" state=\"enabled\" label=\"Sign Out\" loading={signingOut} onClickButton={handleSignOut} />\n          </>\n        }\n      >\n        <Paragraph measure=\"none\">You will need to log in again to use Acme on this device.</Paragraph>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "Modal",
+            "Paragraph",
+            "Stack"
+          ]
+        }
+      ]
+    },
+    {
       "id": "success-feedback",
       "title": "Success feedback",
       "kind": "rule",
@@ -819,6 +995,135 @@
       "seenIn": [
         "Commentify",
         "Scindo"
+      ]
+    },
+    {
+      "id": "type-to-confirm",
+      "title": "Type to confirm",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person asks to delete something large that cannot be brought back, such as a workspace or an account.",
+      "do": [
+        "Ask for typing only when the loss is permanent and large, such as a workspace with everything in it, or an account.",
+        "Ask for the thing's name when it has one. Ask for a fixed word, such as DELETE, when it does not.",
+        "Put the text to type in the field's label: 'Type Acme Design to confirm'.",
+        "Keep the action Button `state=\"disabled\"` until the typed text matches exactly.",
+        "Match with case: 'acme design' does not match 'Acme Design'. Allow pasting the text.",
+        "Say above the field what is deleted and what is kept."
+      ],
+      "dont": [
+        "Do not ask for typing for an everyday delete. A plain confirm is enough.",
+        "Do not block pasting into the field.",
+        "Do not change the action's label while it is loading, such as to 'Deleting…'.",
+        "Do not show a failed request as a red caption written by hand. Use an inline error Alert."
+      ],
+      "native": "On Apple use an `.alert` with a `TextField` in it. Put the action in the `.destructive` role and disable it until the text matches.",
+      "notBuiltYet": "Commentify matches its phrase with any case and ignores spaces around it, and labels its Button 'Deleting…' while it runs. Scindo labels its Button 'Deleting...' on the web and on Apple, and on the web its Delete Workspace Modal shows a failed request as a red caption written by hand.",
+      "seenIn": [
+        "Commentify",
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "modal",
+          "title": "Type the name in a Modal",
+          "useWhen": "The thing has a name to type, such as a workspace.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Toaster, { toast, dismissToast } from 'oneslash-design-system/components/toaster';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Surface from 'oneslash-design-system/components/surface';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport List from 'oneslash-design-system/components/list';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nconst workspace = 'Acme Design';\nconst otherWorkspaces = ['Acme Marketing', 'Acme Support'];\n\nexport default function TypeToConfirmModal() {\n  // Opens on the confirm, as if the person just chose Delete Workspace.\n  const [open, setOpen] = useState(true);\n  const [typed, setTyped] = useState('');\n  const [deleting, setDeleting] = useState(false);\n  const [deleted, setDeleted] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n  const toastIds = useRef<string[]>([]);\n\n  // On unmount it stops the request and closes every toast it opened.\n  useEffect(() => () => {\n    clearTimeout(timer.current);\n    toastIds.current.forEach((id) => dismissToast(id));\n    toastIds.current = [];\n  }, []);\n\n  // An exact match, with case. Pasting the name is fine.\n  const matches = typed === workspace;\n\n  // Escape, a click outside and Cancel all close it, except while the request runs.\n  function handleClose() {\n    if (deleting) return;\n    setOpen(false);\n    setTyped('');\n  }\n\n  function handleDelete() {\n    if (deleting || !matches) return;\n    setDeleting(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setDeleting(false);\n      setOpen(false);\n      setDeleted(true);\n      toastIds.current.push(toast({ type: 'success', message: `Workspace '${workspace}' deleted.` }));\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      {/* A real app mounts one Toaster near its root. */}\n      <Toaster />\n      {deleted ? (\n        <Stack gap=\"large\">\n          <Heading level={2} size=\"h5\">Workspaces</Heading>\n          <Surface padding=\"large\">\n            <List items={otherWorkspaces} size=\"body1\" />\n          </Surface>\n        </Stack>\n      ) : (\n        <Stack gap=\"medium\">\n          <Heading level={2} size=\"h5\">{workspace}</Heading>\n          <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">6 members and 14 channels.</Paragraph>\n          <Cluster>\n            <Button size=\"small\" type=\"secondary\" color=\"danger\" state=\"enabled\" label=\"Delete Workspace\" onClickButton={() => setOpen(true)} />\n          </Cluster>\n        </Stack>\n      )}\n      <Modal\n        isOpen={open}\n        size=\"small\"\n        title=\"Delete Workspace\"\n        onClose={handleClose}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state={deleting ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleClose} />\n            <Button size=\"small\" type=\"primary\" color=\"danger\" state={matches ? 'enabled' : 'disabled'} label=\"Delete\" loading={deleting} onClickButton={handleDelete} />\n          </>\n        }\n      >\n        <Paragraph measure=\"none\">This deletes the workspace &apos;{workspace}&apos; with its 14 channels, tasks and messages. It cannot be undone.</Paragraph>\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">Members keep their Acme accounts.</Paragraph>\n        <TextField id=\"type-to-confirm-name\" label={`Type ${workspace} to confirm`} value={typed} onChange={(e) => setTyped(e.target.value)} />\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "List",
+            "Modal",
+            "Paragraph",
+            "Stack",
+            "Surface",
+            "TextField",
+            "Toaster",
+            "dismissToast",
+            "toast"
+          ]
+        },
+        {
+          "id": "inline",
+          "title": "Type a word in place",
+          "useWhen": "A danger zone on a settings page: the field appears in place, under what it deletes.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Surface from 'oneslash-design-system/components/surface';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\n// An account has no name to type, so the person types a fixed word.\nconst word = 'DELETE';\n\nexport default function TypeToConfirmInline() {\n  // Opens with the field showing, as if the person just chose Delete Account.\n  const [confirming, setConfirming] = useState(true);\n  const [typed, setTyped] = useState('');\n  const [deleting, setDeleting] = useState(false);\n  const [deleted, setDeleted] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  // An exact match, with case. Pasting the word is fine.\n  const matches = typed === word;\n\n  function handleCancel() {\n    setConfirming(false);\n    setTyped('');\n  }\n\n  function handleDelete() {\n    if (deleting || !matches) return;\n    setDeleting(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setDeleting(false);\n      setDeleted(true);\n    }, 1200);\n  }\n\n  // The account is gone, so the page that showed it is gone too.\n  if (deleted) {\n    return (\n      <Center fill>\n        <Heading level={1} size=\"h5\">Your account is deleted</Heading>\n        <Paragraph tone=\"secondary\" measure=\"none\">We sent a note to ada@example.com to say so.</Paragraph>\n      </Center>\n    );\n  }\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"xlarge\">\n        <Heading level={1} size=\"h5\">Account settings</Heading>\n        <Surface padding=\"large\">\n          <Stack gap=\"medium\">\n            <Heading level={2} size=\"h6\">Profile</Heading>\n            <Paragraph size=\"body2\" measure=\"none\">Ada Brooks, ada@example.com</Paragraph>\n          </Stack>\n        </Surface>\n        <Surface padding=\"large\">\n          <Stack gap=\"medium\">\n            <Heading level={2} size=\"h6\">Delete account</Heading>\n            <Paragraph size=\"body2\" measure=\"none\">This deletes your account, your private documents and your settings. It cannot be undone. Projects you shared stay with your team.</Paragraph>\n            {confirming ? (\n              <>\n                <TextField id=\"type-to-confirm-word\" label={`Type ${word} to confirm`} value={typed} onChange={(e) => setTyped(e.target.value)} />\n                <Cluster gap=\"small\">\n                  <Button size=\"small\" type=\"tertiary\" state={deleting ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleCancel} />\n                  <Button size=\"small\" type=\"primary\" color=\"danger\" state={matches ? 'enabled' : 'disabled'} label=\"Delete Account\" loading={deleting} onClickButton={handleDelete} />\n                </Cluster>\n              </>\n            ) : (\n              <Cluster>\n                <Button size=\"small\" type=\"secondary\" color=\"danger\" state=\"enabled\" label=\"Delete Account\" onClickButton={() => setConfirming(true)} />\n              </Cluster>\n            )}\n          </Stack>\n        </Surface>\n      </Stack>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "Paragraph",
+            "Stack",
+            "Surface",
+            "TextField"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "unsaved-changes-guard",
+      "title": "Unsaved changes",
+      "kind": "design",
+      "level": "organism",
+      "area": "confirm",
+      "situation": "A person closes or leaves something they changed and did not save.",
+      "do": [
+        "Ask only when there are changes. With nothing changed, close at once.",
+        "Title the Modal with the action it offers, such as 'Save Changes' or 'Discard Reply', and name the thing in the body.",
+        "Put 'Cancel' first, then 'Don't Save', then 'Save'. As in every confirm, the safe choice comes first and the main action last.",
+        "Make 'Cancel' tertiary, 'Don't Save' secondary and 'Save' primary, all `size=\"small\"`.",
+        "Offer 'Keep Editing' and a danger 'Discard' when the product cannot save. 'Keep Editing' comes first.",
+        "Disable 'Cancel' and 'Don't Save' while 'Save' runs, and leave only when the save works."
+      ],
+      "dont": [
+        "Do not ask when nothing changed.",
+        "Do not leave when the save fails. Keep the changes on screen.",
+        "Do not label the choices 'Yes' and 'No'.",
+        "Do not title the Modal 'Are you sure?'."
+      ],
+      "native": "On macOS a document window that closes with changes asks with the system alert: 'Save', 'Don't Save' and 'Cancel'. When the product cannot save, use a `confirmationDialog` with 'Discard' in the `.destructive` role and 'Keep Editing' in the `.cancel` role.",
+      "notBuiltYet": "No web product guards unsaved changes. Scindo on the web drops the changes to a document when the person chooses Cancel, with no question.",
+      "seenIn": [
+        "Scindo"
+      ],
+      "options": [
+        {
+          "id": "save-or-discard",
+          "title": "Save or discard",
+          "useWhen": "The product can save the changes for the person, such as an edited document.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nconst savedText = 'Ship the new onboarding in October.';\n\nexport default function UnsavedChangesSaveOrDiscard() {\n  const [saved, setSaved] = useState(savedText);\n  const [draft, setDraft] = useState('Ship the new onboarding in October. Hire two designers by November.');\n  const [editorOpen, setEditorOpen] = useState(true);\n  // Opens on the question, as if the person just chose Close with changes not saved.\n  const [asking, setAsking] = useState(true);\n  const [saving, setSaving] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  const changed = draft !== saved;\n\n  function handleOpenEditor() {\n    setDraft(saved);\n    setEditorOpen(true);\n  }\n\n  // With nothing changed, Close closes at once.\n  function handleCloseEditor() {\n    if (changed) setAsking(true);\n    else setEditorOpen(false);\n  }\n\n  // Escape, a click outside and Cancel all keep the person editing, except while the save runs.\n  function handleCancel() {\n    if (saving) return;\n    setAsking(false);\n  }\n\n  function handleDontSave() {\n    if (saving) return;\n    setAsking(false);\n    setEditorOpen(false);\n  }\n\n  function handleSave() {\n    if (saving) return;\n    setSaving(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setSaving(false);\n      setSaved(draft);\n      setAsking(false);\n      setEditorOpen(false);\n    }, 1200);\n  }\n\n  if (!editorOpen) {\n    return (\n      <Center width=\"page\">\n        <Stack gap=\"medium\">\n          <Heading level={1} size=\"h5\">Documents</Heading>\n          <Paragraph size=\"body2\" measure=\"none\">Q3 plan: {saved}</Paragraph>\n          <Cluster>\n            <Button size=\"small\" type=\"secondary\" state=\"enabled\" label=\"Open Q3 Plan\" onClickButton={handleOpenEditor} />\n          </Cluster>\n        </Stack>\n      </Center>\n    );\n  }\n\n  return (\n    <Center width=\"page\">\n      <Stack gap=\"medium\">\n        <Heading level={1} size=\"h5\">Q3 plan</Heading>\n        <TextField id=\"unsaved-changes-guard-body\" label=\"Plan\" multiline maxRows={4} value={draft} onChange={(e) => setDraft(e.target.value)} />\n        <Cluster gap=\"small\">\n          <Button size=\"small\" type=\"tertiary\" state=\"enabled\" label=\"Close\" onClickButton={handleCloseEditor} />\n        </Cluster>\n      </Stack>\n      <Modal\n        isOpen={asking}\n        size=\"small\"\n        title=\"Save Changes\"\n        onClose={handleCancel}\n        actions={\n          <>\n            {/* The safe choice first, the main action last, as in every confirm. */}\n            <Button size=\"small\" type=\"tertiary\" state={saving ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleCancel} />\n            <Button size=\"small\" type=\"secondary\" state={saving ? 'disabled' : 'enabled'} label=\"Don't Save\" onClickButton={handleDontSave} />\n            <Button size=\"small\" type=\"primary\" state=\"enabled\" label=\"Save\" loading={saving} onClickButton={handleSave} />\n          </>\n        }\n      >\n        <Paragraph measure=\"none\">You changed &apos;Q3 plan&apos; and did not save it.</Paragraph>\n        <Paragraph tone=\"secondary\" size=\"body2\" measure=\"none\">If you do not save, your changes are lost.</Paragraph>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "Modal",
+            "Paragraph",
+            "Stack",
+            "TextField"
+          ]
+        },
+        {
+          "id": "discard",
+          "title": "Discard or keep editing",
+          "useWhen": "The product cannot save for the person, such as a reply that only posts when they say so.",
+          "source": "'use client';\nimport { useEffect, useRef, useState } from 'react';\nimport Modal from 'oneslash-design-system/components/modal';\nimport Surface from 'oneslash-design-system/components/surface';\nimport Heading from 'oneslash-design-system/components/heading';\nimport Paragraph from 'oneslash-design-system/components/paragraph';\nimport TextField from 'oneslash-design-system/components/textField';\nimport Button from 'oneslash-design-system/components/button';\nimport { Center, Cluster, Stack } from 'oneslash-design-system/components/layout';\n\nexport default function UnsavedChangesDiscard() {\n  const [replies, setReplies] = useState<string[]>([]);\n  const [writing, setWriting] = useState(true);\n  const [draft, setDraft] = useState('Friday works for me. I will move the review to Thursday.');\n  // Opens on the question, as if the person just chose Cancel with a reply written.\n  const [asking, setAsking] = useState(true);\n  const [posting, setPosting] = useState(false);\n  const timer = useRef<ReturnType<typeof setTimeout>>();\n\n  // Stops the request if the example goes away before it ends.\n  useEffect(() => () => clearTimeout(timer.current), []);\n\n  // With nothing written, Cancel closes at once.\n  function handleCancelReply() {\n    if (draft.trim()) setAsking(true);\n    else setWriting(false);\n  }\n\n  function handleDiscard() {\n    setAsking(false);\n    setWriting(false);\n    setDraft('');\n  }\n\n  function handlePost() {\n    const text = draft.trim();\n    if (posting || !text) return;\n    setPosting(true);\n    // Stands in for the request to the server.\n    timer.current = setTimeout(() => {\n      setPosting(false);\n      setReplies((list) => [...list, text]);\n      setDraft('');\n      setWriting(false);\n    }, 1200);\n  }\n\n  return (\n    <Center width=\"page\">\n      <Surface padding=\"large\">\n        <Stack gap=\"medium\">\n          <Heading level={2} size=\"h6\">Dana Lee</Heading>\n          <Paragraph size=\"body2\" measure=\"none\">Can we move the launch to Friday?</Paragraph>\n          {replies.map((reply) => (\n            <Paragraph key={reply} tone=\"secondary\" size=\"body2\" measure=\"none\">You: {reply}</Paragraph>\n          ))}\n          {writing ? (\n            <>\n              <TextField id=\"unsaved-changes-guard-reply\" label=\"Reply\" multiline maxRows={3} value={draft} onChange={(e) => setDraft(e.target.value)} />\n              <Cluster gap=\"small\">\n                <Button size=\"small\" type=\"tertiary\" state={posting ? 'disabled' : 'enabled'} label=\"Cancel\" onClickButton={handleCancelReply} />\n                <Button size=\"small\" type=\"primary\" state={draft.trim() ? 'enabled' : 'disabled'} label=\"Reply\" loading={posting} onClickButton={handlePost} />\n              </Cluster>\n            </>\n          ) : (\n            <Cluster>\n              <Button size=\"small\" type=\"secondary\" state=\"enabled\" label=\"Reply\" onClickButton={() => setWriting(true)} />\n            </Cluster>\n          )}\n        </Stack>\n      </Surface>\n      <Modal\n        isOpen={asking}\n        size=\"small\"\n        title=\"Discard Reply\"\n        onClose={() => setAsking(false)}\n        actions={\n          <>\n            <Button size=\"small\" type=\"tertiary\" state=\"enabled\" label=\"Keep Editing\" onClickButton={() => setAsking(false)} />\n            <Button size=\"small\" type=\"primary\" color=\"danger\" state=\"enabled\" label=\"Discard\" onClickButton={handleDiscard} />\n          </>\n        }\n      >\n        <Paragraph measure=\"none\">Your reply to Dana is not posted. If you discard it, it is gone.</Paragraph>\n      </Modal>\n    </Center>\n  );\n}\n",
+          "uses": [
+            "Button",
+            "Center",
+            "Cluster",
+            "Heading",
+            "Modal",
+            "Paragraph",
+            "Stack",
+            "Surface",
+            "TextField"
+          ]
+        }
       ]
     }
   ]

@@ -1,6 +1,8 @@
 // Generated from cases/ by npm run build. Do not edit.
 import React from "react";
 import type { Meta, StoryObj } from "@storybook/react";
+import ConfirmDestructiveAction_ModalExample from "../cases/confirm-destructive-action/modal";
+import ConfirmDestructiveAction_InlineExample from "../cases/confirm-destructive-action/inline";
 import EmptyList_RegionExample from "../cases/empty-list/region";
 import EmptyList_SectionExample from "../cases/empty-list/section";
 import EmptyNotSetUp_ActionExample from "../cases/empty-not-set-up/action";
@@ -19,13 +21,22 @@ import LoginPage_ProviderFirstExample from "../cases/login-page/provider-first";
 import LoginPage_EmailOnlyExample from "../cases/login-page/email-only";
 import NotFoundPage_FullPageExample from "../cases/not-found-page/full-page";
 import NotFoundPage_InShellExample from "../cases/not-found-page/in-shell";
+import Rename_ModalExample from "../cases/rename/modal";
+import Rename_InlineExample from "../cases/rename/inline";
 import RouteLoading_FullScreenExample from "../cases/route-loading/full-screen";
 import RouteLoading_RegionExample from "../cases/route-loading/region";
+import SignOutConfirm_ModalExample from "../cases/sign-out-confirm/modal";
+import TypeToConfirm_ModalExample from "../cases/type-to-confirm/modal";
+import TypeToConfirm_InlineExample from "../cases/type-to-confirm/inline";
+import UnsavedChangesGuard_SaveOrDiscardExample from "../cases/unsaved-changes-guard/save-or-discard";
+import UnsavedChangesGuard_DiscardExample from "../cases/unsaved-changes-guard/discard";
 
 const meta: Meta = { title: "Cases" };
 export default meta;
 type Story = StoryObj;
 
+export const ConfirmDestructiveAction_Modal: Story = { render: () => <ConfirmDestructiveAction_ModalExample /> };
+export const ConfirmDestructiveAction_Inline: Story = { render: () => <ConfirmDestructiveAction_InlineExample /> };
 export const EmptyList_Region: Story = { render: () => <EmptyList_RegionExample /> };
 export const EmptyList_Section: Story = { render: () => <EmptyList_SectionExample /> };
 export const EmptyNotSetUp_Action: Story = { render: () => <EmptyNotSetUp_ActionExample /> };
@@ -44,5 +55,12 @@ export const LoginPage_ProviderFirst: Story = { render: () => <LoginPage_Provide
 export const LoginPage_EmailOnly: Story = { render: () => <LoginPage_EmailOnlyExample /> };
 export const NotFoundPage_FullPage: Story = { render: () => <NotFoundPage_FullPageExample /> };
 export const NotFoundPage_InShell: Story = { render: () => <NotFoundPage_InShellExample /> };
+export const Rename_Modal: Story = { render: () => <Rename_ModalExample /> };
+export const Rename_Inline: Story = { render: () => <Rename_InlineExample /> };
 export const RouteLoading_FullScreen: Story = { render: () => <RouteLoading_FullScreenExample /> };
 export const RouteLoading_Region: Story = { render: () => <RouteLoading_RegionExample /> };
+export const SignOutConfirm_Modal: Story = { render: () => <SignOutConfirm_ModalExample /> };
+export const TypeToConfirm_Modal: Story = { render: () => <TypeToConfirm_ModalExample /> };
+export const TypeToConfirm_Inline: Story = { render: () => <TypeToConfirm_InlineExample /> };
+export const UnsavedChangesGuard_SaveOrDiscard: Story = { render: () => <UnsavedChangesGuard_SaveOrDiscardExample /> };
+export const UnsavedChangesGuard_Discard: Story = { render: () => <UnsavedChangesGuard_DiscardExample /> };

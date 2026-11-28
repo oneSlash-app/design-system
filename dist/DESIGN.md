@@ -594,6 +594,7 @@ Don't:
 
 | Case | When | File |
 | --- | --- | --- |
+| Confirm a destructive action | A person asks to delete or remove something, and it cannot be undone. | cases/confirm-destructive-action.md |
 | Empty list | A list has loaded, and there is nothing in it yet. | cases/empty-list.md |
 | Empty because it is not set up | A pane is empty because something it needs is not set up yet, such as a connected account. | cases/empty-not-set-up.md |
 | Empty search | A search or a filter finds nothing. | cases/empty-search.md |
@@ -602,4 +603,8 @@ Don't:
 | Load failure | A list or a section could not load. | cases/load-failure.md |
 | Login page | A person who already has an account opens the product and is not signed in. | cases/login-page.md |
 | Page not found | A person opens a link to a page that does not exist. | cases/not-found-page.md |
+| Rename | A person renames something, such as a project or a channel. | cases/rename.md |
 | Page loading | A page or a pane is loading, and there is nothing to show yet. | cases/route-loading.md |
+| Sign out | A person chooses Sign Out. | cases/sign-out-confirm.md |
+| Type to confirm | A person asks to delete something large that cannot be brought back, such as a workspace or an account. | cases/type-to-confirm.md |
+| Unsaved changes | A person closes or leaves something they changed and did not save. | cases/unsaved-changes-guard.md |
